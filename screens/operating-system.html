@@ -1,0 +1,816 @@
+<div class="screen" id="screen-operating-system">
+
+  <!-- ── Page header ─────────────────────────────────────── -->
+  <div class="page-header" style="padding-top:24px">
+    <div class="page-header-left">
+      <div class="page-header-title">SKC Operating System</div>
+      <div class="page-header-sub">The retention loop that turns detected leaks into verified value, operator habit, GM upside, and compounding restaurant memory.</div>
+    </div>
+    <div class="page-header-right">
+      <span class="skc-aud-badge skc-aud-both" title="Strategic cockpit · used by both GM and Owner">Both</span>
+      <button class="btn btn-primary" onclick="osOpen('renewal')">Open Renewal Packet</button>
+      <button class="btn btn-secondary btn-sm" onclick="osOpen('memory')">Operating Memory</button>
+    </div>
+  </div>
+
+  <!-- (v26 · Fix 9) What's live · what's roadmap disclosure ─ -->
+  <details class="os-disclosure-banner">
+    <summary class="os-disclosure-sum">
+      <span class="os-disclosure-icon" aria-hidden="true">●</span>
+      <span class="os-disclosure-title">What's live · what's roadmap</span>
+      <span class="os-disclosure-sub">This page mixes live capabilities with roadmap modules. The table below shows which is which today.</span>
+      <span class="os-disclosure-caret">Show details ▾</span>
+    </summary>
+    <div class="os-disclosure-body">
+      <div class="os-disclosure-table">
+        <div class="os-disclosure-hd">
+          <span>Module</span><span>Status</span><span>Notes</span>
+        </div>
+        <div class="os-disclosure-row">
+          <span class="os-disclosure-mod">Monthly Verified Value Cycle</span>
+          <span><span class="os-chip os-chip-green">Live</span></span>
+          <span class="os-disclosure-note">Computed from real Toast + 7shifts data once connected. Verification queue and ROI counter are live now.</span>
+        </div>
+        <div class="os-disclosure-row">
+          <span class="os-disclosure-mod">Push Digest System</span>
+          <span><span class="os-chip os-chip-amber">Roadmap · Q3</span></span>
+          <span class="os-disclosure-note">Design and copy finalized. SMS/Email/Slack delivery integrations activate in Q3. In-app preview is what you see here.</span>
+        </div>
+        <div class="os-disclosure-row">
+          <span class="os-disclosure-mod">GM Impact Scorecard</span>
+          <span><span class="os-chip os-chip-amber">Roadmap · Q3</span></span>
+          <span class="os-disclosure-note">Manual scorecard generation supported at launch (founder-assisted). Automated monthly generation ships Q3.</span>
+        </div>
+        <div class="os-disclosure-row">
+          <span class="os-disclosure-mod">Value Review Cadence</span>
+          <span><span class="os-chip os-chip-green">Live at launch</span></span>
+          <span class="os-disclosure-note">Founder-led weekly through Day 90, then CSM-led monthly. Cadence is operational from kickoff.</span>
+        </div>
+        <div class="os-disclosure-row">
+          <span class="os-disclosure-mod">Detector Roadmap</span>
+          <span><span class="os-chip os-chip-green">Live · quarterly cadence</span></span>
+          <span class="os-disclosure-note">3 live detection categories today (Labor / Menu / Throughput). 5 new categories shipping Q3, 5+ more planned Q4.</span>
+        </div>
+        <div class="os-disclosure-row">
+          <span class="os-disclosure-mod">Operating Memory</span>
+          <span><span class="os-chip os-chip-gray">Partial · Q3 expansion</span></span>
+          <span class="os-disclosure-note">Baselines and rejected actions are captured at launch. Operator preferences and custom playbooks expand quarterly.</span>
+        </div>
+        <div class="os-disclosure-row">
+          <span class="os-disclosure-mod">Renewal Moat scoreboard</span>
+          <span><span class="os-chip os-chip-green">Live</span></span>
+          <span class="os-disclosure-note">Derived from the metrics already computed elsewhere in the platform. No new data sources required.</span>
+        </div>
+      </div>
+      <div class="os-disclosure-foot">
+        <strong>Why this is here:</strong> a buyer who asks "show me yours, not the demo" needs to see what's actually live today. This disclosure is non-negotiable. If you want the full live/roadmap breakdown in writing, ask for it during the pilot conversation.
+      </div>
+    </div>
+  </details>
+
+  <!-- ══════════════════════════════════════════════════════
+       HERO — Positioning + Renewal Health
+       ══════════════════════════════════════════════════════ -->
+  <div class="os-card os-hero">
+    <div class="os-hero-grid">
+      <div>
+        <div class="os-eyebrow os-hero-eyebrow">Positioning</div>
+        <h1 class="os-hero-h1">Your AI Restaurant Profit Manager</h1>
+        <p class="os-hero-sub">SKC finds margin leaks, pushes the decision, monitors the result, verifies the value, and builds operating memory across every location.</p>
+        <div class="os-hero-doctrine">Operators should not have to log in to find value. SKC brings the weekly profit plan to them.</div>
+      </div>
+
+      <div class="os-hero-right">
+        <div class="os-eyebrow os-hero-health-label">Renewal Health</div>
+        <div class="os-hero-health-val">Strong</div>
+        <div class="os-hero-health-rows">
+          <div class="os-hero-health-row"><span>Verified cadence</span><strong style="color:var(--green)">On track</strong></div>
+          <div class="os-hero-health-row"><span>Push engagement</span><strong>4/4 this week</strong></div>
+          <div class="os-hero-health-row"><span>GM adoption</span><strong>Scorecard ready</strong></div>
+          <div class="os-hero-health-row"><span>Memory depth</span><strong>42 entries</strong></div>
+          <div class="os-hero-health-row"><span>Next review</span><strong>Friday · 10:00 AM</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       (v26 · Fix 8) WHO USES WHAT — audience disclosure strip
+       ══════════════════════════════════════════════════════ -->
+  <div class="os-card os-whouses">
+    <div class="os-section-h">
+      <div>
+        <div class="os-mod-h">Who uses what</div>
+        <div class="os-mod-sub">SKC is one product with two audiences. This page tells the buyer which surfaces are built for which role, so the sales conversation doesn't dead-end on "who logs in here daily."</div>
+      </div>
+    </div>
+    <div class="os-whouses-table">
+      <div class="os-whouses-row">
+        <div class="os-whouses-when">Daily user</div>
+        <div class="os-whouses-who"><span class="skc-aud-badge skc-aud-gm">GM</span></div>
+        <div class="os-whouses-what">Today · Actions · Data Quality · push digests (when live)</div>
+      </div>
+      <div class="os-whouses-row">
+        <div class="os-whouses-when">Weekly reviewer</div>
+        <div class="os-whouses-who"><span class="skc-aud-badge skc-aud-owner">Owner</span></div>
+        <div class="os-whouses-what">ROI Proof · Reports · GM Scorecard</div>
+      </div>
+      <div class="os-whouses-row">
+        <div class="os-whouses-when">Monthly stakeholder</div>
+        <div class="os-whouses-who"><span class="skc-aud-badge skc-aud-owner">Owner</span></div>
+        <div class="os-whouses-what">Renewal Packet · Detector Roadmap · Operating Memory review</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       RETENTION LOOP DIAGRAM
+       ══════════════════════════════════════════════════════ -->
+  <div class="os-card os-loop">
+    <div class="os-loop-h">Retention loop · how SKC keeps working every week</div>
+    <div class="os-loop-track">
+      <div class="os-loop-step os-loop-live">
+        <div class="os-loop-step-num">1</div>
+        <div class="os-loop-step-name">Detect</div>
+        <div class="os-loop-step-status">Live</div>
+      </div>
+      <div class="os-loop-arrow">→</div>
+      <div class="os-loop-step os-loop-live">
+        <div class="os-loop-step-num">2</div>
+        <div class="os-loop-step-name">Push</div>
+        <div class="os-loop-step-status">Live</div>
+      </div>
+      <div class="os-loop-arrow">→</div>
+      <div class="os-loop-step os-loop-pending">
+        <div class="os-loop-step-num">3</div>
+        <div class="os-loop-step-name">Decide</div>
+        <div class="os-loop-step-status">Pending</div>
+      </div>
+      <div class="os-loop-arrow">→</div>
+      <div class="os-loop-step os-loop-live">
+        <div class="os-loop-step-num">4</div>
+        <div class="os-loop-step-name">Act</div>
+        <div class="os-loop-step-status">Live</div>
+      </div>
+      <div class="os-loop-arrow">→</div>
+      <div class="os-loop-step os-loop-active">
+        <div class="os-loop-step-num">5</div>
+        <div class="os-loop-step-name">Monitor</div>
+        <div class="os-loop-step-status">Active</div>
+      </div>
+      <div class="os-loop-arrow">→</div>
+      <div class="os-loop-step os-loop-live">
+        <div class="os-loop-step-num">6</div>
+        <div class="os-loop-step-name">Verify</div>
+        <div class="os-loop-step-status">Verified</div>
+      </div>
+      <div class="os-loop-arrow">→</div>
+      <div class="os-loop-step os-loop-live">
+        <div class="os-loop-step-num">7</div>
+        <div class="os-loop-step-name">Report</div>
+        <div class="os-loop-step-status">Ready</div>
+      </div>
+      <div class="os-loop-arrow">→</div>
+      <div class="os-loop-step os-loop-growing">
+        <div class="os-loop-step-num">8</div>
+        <div class="os-loop-step-name">Remember</div>
+        <div class="os-loop-step-status">Growing</div>
+      </div>
+      <div class="os-loop-arrow">→</div>
+      <div class="os-loop-step os-loop-growing">
+        <div class="os-loop-step-num">9</div>
+        <div class="os-loop-step-name">Expand</div>
+        <div class="os-loop-step-status">Roadmap</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       MONTHLY VERIFIED VALUE CYCLE
+       ══════════════════════════════════════════════════════ -->
+  <div class="os-card os-mvv">
+    <div class="os-section-h">
+      <div>
+        <div class="os-section-title">Monthly Verified Value Cycle</div>
+        <div class="os-section-sub">Every reporting cycle needs counted value, blocked value, or a clear reason verification is still pending.</div>
+      </div>
+      <span class="os-chip os-chip-gray">Reporting cycle: May 1–31</span>
+    </div>
+
+    <!-- Cycle steps -->
+    <div class="os-mvv-cycle">
+      <div class="os-mvv-cycle-step">Active Recovery</div>
+      <span class="os-mvv-arrow">→</span>
+      <div class="os-mvv-cycle-step os-mvv-active">Guardrail Monitoring</div>
+      <span class="os-mvv-arrow">→</span>
+      <div class="os-mvv-cycle-step">Verified Savings</div>
+    </div>
+
+    <!-- Four-tile status grid -->
+    <div class="os-mvv-grid">
+      <div class="os-mvv-cell">
+        <div class="os-mvv-cell-label">Verified this cycle</div>
+        <div class="os-mvv-cell-val" style="color:var(--green)">$420<span style="font-size:11px;color:var(--t3);font-weight:400;letter-spacing:0">/mo</span></div>
+        <div class="os-mvv-cell-sub">Run-rate equivalent · 1 verified line</div>
+      </div>
+      <div class="os-mvv-cell">
+        <div class="os-mvv-cell-label">Pending verification</div>
+        <div class="os-mvv-cell-val" style="color:var(--blue)">3</div>
+        <div class="os-mvv-cell-sub">Active Recovery in monitoring window</div>
+      </div>
+      <div class="os-mvv-cell">
+        <div class="os-mvv-cell-label">Blocked</div>
+        <div class="os-mvv-cell-val" style="color:var(--red)">1</div>
+        <div class="os-mvv-cell-sub">Payroll/accounting confirmation missing</div>
+      </div>
+      <div class="os-mvv-cell">
+        <div class="os-mvv-cell-label">Cycle health</div>
+        <div class="os-mvv-cell-val" style="color:var(--green);font-size:15px">On cadence</div>
+        <div class="os-mvv-cell-sub">Verified line added this cycle</div>
+      </div>
+    </div>
+
+    <div class="os-mvv-status">
+      <span class="os-mvv-status-dot"></span>
+      <span><strong>On cadence:</strong> SKC adds a verified line every reporting cycle when actions pass monitoring and guardrails. If nothing verifies, the owner sees exactly what is pending or blocked.</span>
+    </div>
+
+    <!-- Verification queue -->
+    <div class="os-vq">
+      <div class="os-vq-h" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <span>Verification Queue</span>
+        <span style="font-size:10.5px;font-weight:500;color:var(--t3);font-style:italic">On standard accounts, expect 2–4 weeks per verification window.</span>
+      </div>
+      <div class="os-vq-list">
+        <div class="os-vq-row os-vq-monitoring">
+          <div>
+            <div class="os-vq-title">Labor adjustment · Oakland Tuesday Lunch</div>
+            <div class="os-vq-meta">Monitoring closes in 6 days · Avg check guardrail stable · 7shifts confidence-reduced</div>
+          </div>
+          <span class="os-vq-val">$370/wk EST</span>
+          <span class="os-vq-status os-chip-blue">Active Recovery</span>
+        </div>
+        <div class="os-vq-row os-vq-monitoring">
+          <div>
+            <div class="os-vq-title">Table-turn playbook · Oakland Friday Dinner</div>
+            <div class="os-vq-meta">Monitoring window open · Guest sentiment stable · ~$680/wk EST</div>
+          </div>
+          <span class="os-vq-val">~$680/wk EST</span>
+          <span class="os-vq-status os-chip-blue">Active Recovery</span>
+        </div>
+        <div class="os-vq-row os-vq-ready">
+          <div>
+            <div class="os-vq-title">Menu mix cleanup · Berkeley</div>
+            <div class="os-vq-meta">Monitoring window closed · All guardrails passed · Ready to verify</div>
+          </div>
+          <span class="os-vq-val">$210/wk</span>
+          <span class="os-vq-status os-chip-green">Ready to Verify</span>
+        </div>
+        <div class="os-vq-row os-vq-blocked">
+          <div>
+            <div class="os-vq-title">Prep waste reduction · Walnut Creek</div>
+            <div class="os-vq-meta">COGS upload missing · Cannot enter monitoring until verified item costs available</div>
+          </div>
+          <span class="os-vq-val">$185/wk EST</span>
+          <span class="os-vq-status os-chip-red">Blocked</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="os-mvv-doctrine">Only guardrail-safe monitored recovery enters Verified Savings. Active Recovery, Open Exposure, Blocked Value, and Rejected value never count toward ROI.</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       PUSH DIGEST + GM SCORECARD (two-up)
+       ══════════════════════════════════════════════════════ -->
+  <div class="os-grid-2">
+
+    <!-- ── Push Digest System ─────────────────────────── -->
+    <div class="os-card">
+      <div class="os-section-h">
+        <div>
+          <div class="os-mod-h">Push Digest System</div>
+          <div class="os-mod-sub">SKC works while the operator is asleep. Value arrives by SMS, email, or Slack before the browser is opened.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+          <span class="os-chip os-chip-amber">Roadmap · Q3</span>
+          <span class="os-chip os-chip-gray">In-app preview · 4/4</span>
+        </div>
+      </div>
+
+      <div class="os-pd-chips">
+        <span class="os-chip os-chip-blue">SMS</span>
+        <span class="os-chip os-chip-blue">Email</span>
+        <span class="os-chip os-chip-blue">Slack</span>
+        <span class="os-chip os-chip-gray">In-app</span>
+      </div>
+
+      <div class="os-pd-types">
+        <div class="os-pd-type"><strong>Daily Morning Brief</strong>Pre-service summary · 7:15 AM</div>
+        <div class="os-pd-type"><strong>Weekly Operator Digest</strong>Monday recap + pending decisions</div>
+        <div class="os-pd-type"><strong>Pending Decisions Ping</strong>Time-sensitive items only</div>
+        <div class="os-pd-type"><strong>Monthly ROI Proof Summary</strong>Owner-ready verification recap</div>
+      </div>
+
+      <div class="os-pd-preview">
+        <div class="os-pd-preview-hd">
+          <strong>Daily Morning Brief</strong>
+          <span>Delivered 7:15 AM</span>
+        </div>
+        <div class="os-pd-preview-msg">SKC found 3 items yesterday:
+1. Oakland Friday dinner closeout delay is still +6.5 min above baseline.
+2. Tuesday lunch labor adjustment is ready to verify in 6 days.
+3. Berkeley menu mix shifted toward low-margin items.
+
+Pending your decision:
+Approve Friday dinner closeout playbook.
+Review Tuesday lunch labor adjustment.</div>
+      </div>
+
+      <div class="os-mod-stats">
+        <div class="os-mod-stat-row"><span>Next digest</span><strong>Tomorrow · 7:15 AM</strong></div>
+        <div class="os-mod-stat-row"><span>Digest health</span><strong style="color:var(--green)">4/4 sent this week</strong></div>
+      </div>
+
+      <div class="os-mod-ctas">
+        <button class="btn btn-secondary btn-sm" onclick="osOpen('digest')">Preview Digest</button>
+        <button class="btn btn-ghost btn-sm" onclick="showDemoToast('Test digest sent · Owner SMS + GM email','green')">Send Test</button>
+        <button class="btn btn-ghost btn-sm" onclick="showScreen('actions',null,'Actions')">Open Pending Decisions</button>
+      </div>
+    </div>
+
+    <!-- ── GM Impact Scorecard ───────────────────────── -->
+    <div class="os-card">
+      <div class="os-section-h">
+        <div>
+          <div class="os-mod-h">GM Impact Scorecard</div>
+          <div class="os-mod-sub">SKC turns the GM into the hero by showing the value they recovered using SKC.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+          <span class="os-chip os-chip-amber">Roadmap · Q3</span>
+          <span class="os-chip os-chip-gray">Manual at launch</span>
+        </div>
+      </div>
+
+      <div class="os-gm-card">
+        <div class="os-gm-head">
+          <div>
+            <div class="os-gm-name">Maya Patel</div>
+            <div class="os-gm-loc">Oakland GM · May</div>
+          </div>
+          <span class="os-chip os-chip-blue">Reputation tool</span>
+        </div>
+
+        <div class="os-gm-metrics">
+          <div class="os-gm-metric">
+            <div class="os-gm-metric-label">Verified recovery</div>
+            <div class="os-gm-metric-val" style="color:var(--green)">$2,840</div>
+          </div>
+          <div class="os-gm-metric">
+            <div class="os-gm-metric-label">Actions completed</div>
+            <div class="os-gm-metric-val">4</div>
+          </div>
+          <div class="os-gm-metric">
+            <div class="os-gm-metric-label">Guardrails held</div>
+            <div class="os-gm-metric-val" style="color:var(--green)">3/3</div>
+          </div>
+          <div class="os-gm-metric">
+            <div class="os-gm-metric-label">False-win flags</div>
+            <div class="os-gm-metric-val">0</div>
+          </div>
+        </div>
+
+        <div class="os-gm-list">
+          <div class="os-gm-list-item"><span class="os-gm-list-icon">✓</span><span>Labor % improved by 1.4 pts</span></div>
+          <div class="os-gm-list-item"><span class="os-gm-list-icon">✓</span><span>Table-turn playbook active on Friday dinner</span></div>
+          <div class="os-gm-list-item"><span class="os-gm-list-icon">✓</span><span>Guest sentiment stable across all monitored actions</span></div>
+        </div>
+
+        <div class="os-gm-note">"Maya converted SKC recommendations into verified operating improvement while holding guest-experience guardrails."</div>
+      </div>
+
+      <div class="os-mod-stats" style="margin-top:8px">
+        <div class="os-mod-stat-row"><span>Owner visibility</span><strong>Monthly report ready</strong></div>
+        <div class="os-mod-stat-row"><span>Framing</span><strong style="color:var(--green)">Reputation tool · not surveillance</strong></div>
+      </div>
+
+      <div class="os-mod-ctas">
+        <button class="btn btn-secondary btn-sm" onclick="osOpen('gm')">Open Scorecard Preview</button>
+        <button class="btn btn-ghost btn-sm" onclick="showDemoToast('GM scorecard queued for owner summary','green')">Send to Owner</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       VALUE REVIEW + OPERATING MEMORY (two-up)
+       ══════════════════════════════════════════════════════ -->
+  <div class="os-grid-2">
+
+    <!-- ── Value Review Cadence ──────────────────────── -->
+    <div class="os-card">
+      <div class="os-section-h">
+        <div>
+          <div class="os-mod-h">Value Review Cadence</div>
+          <div class="os-mod-sub">First 90 days: weekly founder/CSM value review. After day 90: monthly CSM value review and quarterly profit review.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+          <span class="os-chip os-chip-green">Live at launch</span>
+          <span class="os-chip os-chip-blue">Day 47</span>
+        </div>
+      </div>
+
+      <div class="os-vr-timeline">
+        <div class="os-vr-step"><div class="os-vr-step-when">Day 0</div><div class="os-vr-step-what">Kickoff + baseline setup</div></div>
+        <div class="os-vr-step"><div class="os-vr-step-when">Weeks 1–12</div><div class="os-vr-step-what">Weekly value review</div></div>
+        <div class="os-vr-step"><div class="os-vr-step-when">Day 90</div><div class="os-vr-step-what">Retention checkpoint</div></div>
+        <div class="os-vr-step"><div class="os-vr-step-when">Post-90</div><div class="os-vr-step-what">Monthly CSM review</div></div>
+        <div class="os-vr-step"><div class="os-vr-step-when">Quarterly</div><div class="os-vr-step-what">Profit review + detector roadmap</div></div>
+      </div>
+
+      <div class="os-vr-next">
+        <div class="os-vr-next-eyebrow">Next value review</div>
+        <div class="os-vr-next-when">Friday · 10:00 AM</div>
+        <div class="os-vr-agenda">
+          <div class="os-vr-agenda-item"><span class="os-vr-agenda-num">1.</span>What SKC found this week</div>
+          <div class="os-vr-agenda-item"><span class="os-vr-agenda-num">2.</span>What moved to Active Recovery</div>
+          <div class="os-vr-agenda-item"><span class="os-vr-agenda-num">3.</span>What verified</div>
+          <div class="os-vr-agenda-item"><span class="os-vr-agenda-num">4.</span>What is blocked</div>
+          <div class="os-vr-agenda-item"><span class="os-vr-agenda-num">5.</span>What decision the operator needs to make</div>
+          <div class="os-vr-agenda-item"><span class="os-vr-agenda-num">6.</span>What SKC learned about this restaurant</div>
+        </div>
+      </div>
+
+      <div class="os-mod-ctas">
+        <button class="btn btn-secondary btn-sm" onclick="osOpen('review')">Open Review Packet</button>
+        <button class="btn btn-ghost btn-sm" onclick="showDemoToast('Agenda copied','blue')">Copy Agenda</button>
+        <button class="btn btn-ghost btn-sm" onclick="showDemoToast('Value review marked complete','green')">Mark Complete</button>
+      </div>
+
+      <div class="os-om-foot">Value review, not product feedback.</div>
+    </div>
+
+    <!-- ── Operating Memory ──────────────────────────── -->
+    <div class="os-card">
+      <div class="os-section-h">
+        <div>
+          <div class="os-mod-h">Operating Memory</div>
+          <div class="os-mod-sub">SKC remembers how this restaurant runs, what the operator cares about, and which actions are safe.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+          <span class="os-chip os-chip-gray">Partial · Q3 expansion</span>
+          <span class="os-chip os-chip-green">42 entries</span>
+        </div>
+      </div>
+
+      <div class="os-om-cats">
+        <div class="os-om-cat">
+          <div class="os-om-cat-h">Operator preferences <span>11</span></div>
+          <div class="os-om-cat-list">
+            <div class="os-om-cat-item">Owner does not want labor cuts during Friday dinner</div>
+            <div class="os-om-cat-item">GM prefers table-turn actions before menu pricing</div>
+            <div class="os-om-cat-item">Labor changes require manager approval if sentiment ≤ baseline</div>
+          </div>
+        </div>
+        <div class="os-om-cat">
+          <div class="os-om-cat-h">Guardrail thresholds <span>8</span></div>
+          <div class="os-om-cat-list">
+            <div class="os-om-cat-item">Avg check cannot drop more than 5%</div>
+            <div class="os-om-cat-item">Ticket time cannot worsen by more than 2 min</div>
+            <div class="os-om-cat-item">Guest sentiment cannot decline after a speed action</div>
+          </div>
+        </div>
+        <div class="os-om-cat">
+          <div class="os-om-cat-h">Location baselines <span>12</span></div>
+          <div class="os-om-cat-list">
+            <div class="os-om-cat-item">Oakland lunch labor: $38.10 RPLH</div>
+            <div class="os-om-cat-item">Friday dinner dining duration: 63 min</div>
+            <div class="os-om-cat-item">Berkeley ticket time: 18.5 min</div>
+          </div>
+        </div>
+        <div class="os-om-cat">
+          <div class="os-om-cat-h">Custom playbooks <span>4</span></div>
+          <div class="os-om-cat-list">
+            <div class="os-om-cat-item">Friday dinner handheld closeout script</div>
+            <div class="os-om-cat-item">Tuesday lunch FOH slot adjustment</div>
+            <div class="os-om-cat-item">Risotto removal verification playbook</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="os-mod-stats">
+        <div class="os-mod-stat-row"><span>Verified wins</span><strong style="color:var(--green)">7</strong></div>
+        <div class="os-mod-stat-row"><span>Rejected actions</span><strong>4</strong></div>
+        <div class="os-mod-stat-row"><span>Blocked items</span><strong>3</strong></div>
+      </div>
+
+      <div class="os-om-moat">
+        <strong>Switching cost (earned, not dark):</strong> eight months in, leaving SKC means losing baselines, playbooks, thresholds, decisions, and verified recovery history. SKC becomes more useful because it learns how this restaurant operates.
+      </div>
+
+      <div class="os-mod-ctas">
+        <button class="btn btn-secondary btn-sm" onclick="osOpen('memory')">Open Operating Memory</button>
+      </div>
+
+      <div class="os-om-foot">Memory is editable by the operator.</div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       (v26 · Fix 13) WHEN SKC IS WRONG — confident wrongness surface
+       ══════════════════════════════════════════════════════ -->
+  <div class="os-card os-wrong">
+    <div class="os-section-h">
+      <div>
+        <div class="os-mod-h">When SKC is wrong</div>
+        <div class="os-mod-sub">Confident wrongness is the fastest way to lose operator trust. SKC must have a surface for being told it was wrong — and a behavior change when it learns it was.</div>
+      </div>
+      <span class="os-chip os-chip-gray">3 surfaces</span>
+    </div>
+
+    <!-- A. Reverification of a previously verified win -->
+    <div class="os-wrong-sub">
+      <div class="os-wrong-sub-h">
+        <span class="os-wrong-sub-eyebrow">A · Reverification</span>
+        <span class="os-wrong-sub-title">A verified action can be reopened</span>
+      </div>
+      <div class="os-wrong-card" id="os-wrong-reverify-row">
+        <div>
+          <div class="os-wrong-card-title">Risotto removal</div>
+          <div class="os-wrong-card-meta">Verified $97/wk · 4 weeks ago · Berkeley menu cleanup</div>
+        </div>
+        <div class="os-wrong-card-action">
+          <span class="os-chip os-chip-green" id="os-wrong-reverify-status">Verified</span>
+          <button class="btn btn-secondary btn-sm" id="os-wrong-reverify-btn" onclick="reopenForReverification()">Reopen for reverification</button>
+        </div>
+      </div>
+      <div class="os-wrong-explainer">Guardrails will re-evaluate against the last 4 weeks of data. If guardrails now fail, the line is removed from Verified Savings and the value reverts.</div>
+    </div>
+
+    <!-- B. Pattern-of-rejection alert -->
+    <div class="os-wrong-sub">
+      <div class="os-wrong-sub-h">
+        <span class="os-wrong-sub-eyebrow">B · Pattern-of-rejection alert</span>
+        <span class="os-wrong-sub-title">SKC reduces its own confidence when a category is repeatedly rejected</span>
+      </div>
+      <div class="os-wrong-card os-wrong-card-warn">
+        <div>
+          <div class="os-wrong-card-title">Labor recommendations · 2 of last 5 rejected by operator</div>
+          <div class="os-wrong-card-meta">SKC reducing labor detection confidence for this account by 10%. New labor recommendations will require manager review before surfacing.</div>
+        </div>
+        <div class="os-wrong-card-action">
+          <span class="os-chip os-chip-amber">40% rejection rate</span>
+          <button class="btn btn-ghost btn-sm" onclick="osOpen('memory')">View rejected reasons</button>
+        </div>
+      </div>
+      <div class="os-wrong-explainer">Triggers when more than 30% of recommendations in a category have been rejected. Rejected reasons are stored in Operating Memory and used to recalibrate the detector.</div>
+    </div>
+
+    <!-- C. Confident-wrongness escalation -->
+    <div class="os-wrong-sub">
+      <div class="os-wrong-sub-h">
+        <span class="os-wrong-sub-eyebrow">C · Dispute a verification</span>
+        <span class="os-wrong-sub-title">A previously verified line can be flagged as wrong</span>
+      </div>
+      <div class="os-wrong-card" id="os-wrong-dispute-row">
+        <div>
+          <div class="os-wrong-card-title">Tuesday lunch labor adjustment</div>
+          <div class="os-wrong-card-meta">Verified $42/wk · 8 weeks ago · Oakland</div>
+        </div>
+        <div class="os-wrong-card-action">
+          <span class="os-chip os-chip-green" id="os-wrong-dispute-status">Verified</span>
+          <button class="btn btn-secondary btn-sm" id="os-wrong-dispute-btn" onclick="openDisputePanel()">Dispute this verification</button>
+        </div>
+      </div>
+
+      <!-- Dispute panel (inline) -->
+      <div class="os-wrong-dispute-panel" id="os-wrong-dispute-panel" style="display:none">
+        <div class="os-wrong-dispute-h">Why are you disputing this verification?</div>
+        <div class="os-wrong-dispute-options">
+          <label class="os-wrong-dispute-opt"><input type="radio" name="dispute-reason" value="not-held"> Outcome did not hold over time</label>
+          <label class="os-wrong-dispute-opt"><input type="radio" name="dispute-reason" value="side-effects"> Side effects appeared after monitoring closed</label>
+          <label class="os-wrong-dispute-opt"><input type="radio" name="dispute-reason" value="implementation"> Implementation differed from recommendation</label>
+          <label class="os-wrong-dispute-opt"><input type="radio" name="dispute-reason" value="other"> Other</label>
+        </div>
+        <div class="os-wrong-dispute-ctas">
+          <button class="btn btn-ghost btn-sm" onclick="closeDisputePanel()">Cancel</button>
+          <button class="btn btn-primary btn-sm" onclick="submitDispute()">Submit dispute</button>
+        </div>
+      </div>
+
+      <div class="os-wrong-explainer">Disputed verifications are flagged for human review. The $/mo run-rate associated with the line is not retroactively removed from ROI without review — but it stops contributing to subscription-coverage math until reviewed.</div>
+    </div>
+
+    <div class="os-wrong-doctrine">
+      <strong>Doctrine:</strong> SKC must surface its own wrongness, change behavior in response, and never quietly delete history. Reverification, pattern-of-rejection alerts, and dispute escalation are the three surfaces where this happens. Operators are explicitly empowered to tell SKC it was wrong.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       DETECTOR ROADMAP
+       ══════════════════════════════════════════════════════ -->
+  <div class="os-card" style="padding:20px 22px;margin-bottom:22px;border-top:3px solid var(--blue)">
+    <div class="os-section-h">
+      <div>
+        <div class="os-mod-h">Quarterly Leak Detector Expansion</div>
+        <div class="os-mod-sub">We ship new restaurant profit leak detectors every quarter. Your subscription expands as new categories go live.</div>
+      </div>
+      <span class="os-chip os-chip-blue">5 new categories next quarter</span>
+    </div>
+
+    <!-- (v26 · Fix 5) Detection categories vs surfaces/infrastructure -->
+    <div class="os-dr-cols">
+      <div>
+        <div class="os-dr-col-h os-dr-col-live">Live detection categories · 3</div>
+        <div class="os-dr-item os-dr-live">Labor Efficiency</div>
+        <div class="os-dr-item os-dr-live" role="button" tabindex="0" style="cursor:pointer" onclick="showScreen('menu',null,'Menu Optimization');showMenuSubpage('overview')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showScreen('menu',null,'Menu Optimization');showMenuSubpage('overview')}" aria-label="Open Menu Optimization Overview">Menu Profitability</div>
+        <div class="os-dr-item os-dr-live">Throughput</div>
+      </div>
+      <div>
+        <div class="os-dr-col-h os-dr-col-next">Next quarter · 5 new detection categories</div>
+        <div class="os-dr-item os-dr-next">Happy Hour Mix Optimization</div>
+        <div class="os-dr-item os-dr-next">Comp Policy Leak</div>
+        <div class="os-dr-item os-dr-next">Prep Waste</div>
+        <div class="os-dr-item os-dr-next">Host-Stand Abandonment</div>
+        <div class="os-dr-item os-dr-next">Online-Order Margin</div>
+      </div>
+      <div>
+        <div class="os-dr-col-h os-dr-col-later">Later · 10 candidates</div>
+        <div class="os-dr-item">Discount Abuse</div>
+        <div class="os-dr-item">Delivery Channel Margin</div>
+        <div class="os-dr-item">Void / Refund Patterning</div>
+        <div class="os-dr-item">Review-to-Revenue Impact</div>
+        <div class="os-dr-item">Staff Role Productivity</div>
+        <div class="os-dr-item">Reservation No-Show Exposure</div>
+        <div class="os-dr-item">Overtime Displacement</div>
+        <div class="os-dr-item">Menu Complexity Drag</div>
+        <div class="os-dr-item">Server Upsell Leakage</div>
+        <div class="os-dr-item">Catering Margin Leak</div>
+      </div>
+    </div>
+
+    <!-- (v26 · Fix 5) Surfaces and infrastructure — NOT detectors -->
+    <div class="os-dr-surfaces">
+      <div class="os-dr-surfaces-h">Surfaces and infrastructure · not detection categories</div>
+      <div class="os-dr-surfaces-sub">These are the views and plumbing that sit on top of the three live detection categories. Counting them as detectors would overstate the system.</div>
+      <div class="os-dr-surfaces-grid">
+        <div class="os-dr-surface-row">
+          <span class="os-dr-surface-name">Profit Recovery</span>
+          <span class="os-chip os-chip-gray">Surface · ranking</span>
+          <span class="os-dr-surface-note">Ranks active opportunities across the three live detection categories. Not itself a detector.</span>
+        </div>
+        <div class="os-dr-surface-row">
+          <span class="os-dr-surface-name">Table Turns</span>
+          <span class="os-chip os-chip-gray">Surface · Throughput detail</span>
+          <span class="os-dr-surface-note">A detail surface within the Throughput detection category. Uses the same seat-based capacity math.</span>
+        </div>
+        <div class="os-dr-surface-row">
+          <span class="os-dr-surface-name">Kitchen Speed</span>
+          <span class="os-chip os-chip-gray">Surface · Throughput detail</span>
+          <span class="os-dr-surface-note">A detail surface within the Throughput detection category. Overlaps with Table Turns on ticket time + dining duration.</span>
+        </div>
+        <div class="os-dr-surface-row">
+          <span class="os-dr-surface-name">Data Quality</span>
+          <span class="os-chip os-chip-gray">Infrastructure</span>
+          <span class="os-dr-surface-note">Source freshness, missing inputs, and verification eligibility. Required by every detector — not itself a detector.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="os-dr-pitch">
+      <strong>Your subscription expands every quarter.</strong> SKC ships new detection categories on a quarterly cadence. Active subscriptions get each new category at launch — no upsell, no separate SKU.
+    </div>
+
+    <div class="os-mod-ctas">
+      <button class="btn btn-secondary btn-sm" onclick="osOpen('detectors')">View Detector Library</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       RENEWAL MOAT SCORECARD
+       ══════════════════════════════════════════════════════ -->
+  <div class="os-card os-rm">
+    <div class="os-rm-head">
+      <div>
+        <div class="os-mod-h">Renewal Moat</div>
+        <div class="os-mod-sub">Retention is driven by verified value cadence, pushed decisions, GM upside, human review, and compounding memory.</div>
+      </div>
+      <div class="os-rm-health">
+        <span class="os-eyebrow">Renewal health</span>
+        <span class="os-rm-health-val">Strong</span>
+      </div>
+    </div>
+
+    <div class="os-rm-scoreboard">
+      <div class="os-rm-cell">
+        <div class="os-rm-cell-label">Verified cadence</div>
+        <div class="os-rm-cell-val" style="color:var(--green)">On track</div>
+        <div class="os-rm-cell-sub">1 verified line this cycle</div>
+      </div>
+      <div class="os-rm-cell">
+        <div class="os-rm-cell-label">Push engagement</div>
+        <div class="os-rm-cell-val">4 / 4</div>
+        <div class="os-rm-cell-sub">Digests delivered this week</div>
+      </div>
+      <div class="os-rm-cell">
+        <div class="os-rm-cell-label">GM adoption</div>
+        <div class="os-rm-cell-val">4 actions</div>
+        <div class="os-rm-cell-sub">Scorecard ready for owner</div>
+      </div>
+      <div class="os-rm-cell">
+        <div class="os-rm-cell-label">Human review</div>
+        <div class="os-rm-cell-val">Friday</div>
+        <div class="os-rm-cell-sub">Next review scheduled</div>
+      </div>
+      <div class="os-rm-cell">
+        <div class="os-rm-cell-label">Memory depth</div>
+        <div class="os-rm-cell-val">42</div>
+        <div class="os-rm-cell-sub">Preferences · baselines · playbooks</div>
+      </div>
+      <div class="os-rm-cell">
+        <div class="os-rm-cell-label">Detector expansion</div>
+        <div class="os-rm-cell-val">5</div>
+        <div class="os-rm-cell-sub">New detection categories planned next quarter</div>
+      </div>
+    </div>
+
+    <div class="os-mod-ctas">
+      <button class="btn btn-primary btn-sm" onclick="osOpen('renewal')">Open Renewal Packet</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       (v26 · Fix 7) HOW SKC WORKS — automated vs rules vs AI
+       ══════════════════════════════════════════════════════ -->
+  <details class="os-card os-howworks">
+    <summary class="os-howworks-sum">
+      <div>
+        <div class="os-mod-h">How SKC works · what's automated, what's rules-based, what's AI</div>
+        <div class="os-mod-sub">SKC is positioned as an "AI Restaurant Profit Manager." Here is exactly what that means — and what it doesn't mean.</div>
+      </div>
+      <span class="os-howworks-caret">▾</span>
+    </summary>
+    <div class="os-howworks-body">
+
+      <div class="os-howworks-section os-howworks-deterministic">
+        <div class="os-howworks-h">
+          <span class="os-howworks-pill os-howworks-pill-det">Automated · deterministic</span>
+          <span class="os-howworks-h-sub">Computed by SKC from your data — no model judgment involved</span>
+        </div>
+        <ul class="os-howworks-list">
+          <li>Detection thresholds (e.g. "CM gap &gt; 10 pts for 3+ weeks")</li>
+          <li>Guardrail monitoring (every service · pass/fail against limits)</li>
+          <li>Source freshness tracking (Toast, 7shifts, KDS, Recipe Cost, Reviews, Accounting)</li>
+          <li>Baseline calculation (rolling windows · weighted averages · anomaly exclusion)</li>
+          <li>Lost-cover math (seat-based capacity model)</li>
+          <li>Time-basis arithmetic (per-service → weekly → monthly run-rate)</li>
+        </ul>
+      </div>
+
+      <div class="os-howworks-section os-howworks-rules">
+        <div class="os-howworks-h">
+          <span class="os-howworks-pill os-howworks-pill-rules">Rules-based · logic SKC executes</span>
+          <span class="os-howworks-h-sub">Deterministic decision rules — not learned, not adaptive without an explicit update</span>
+        </div>
+        <ul class="os-howworks-list">
+          <li>Recommendation ranking (by weekly exposure × confidence)</li>
+          <li>Action sequencing (which leak to surface first today)</li>
+          <li>Blocker resolution order (which DQ failure to ask the operator to fix first)</li>
+          <li>Verification eligibility (which monitoring windows can close into Verified Savings)</li>
+          <li>Approval-required gating (e.g. price changes &gt;5% require owner sign-off)</li>
+          <li>FOH-action lockout when kitchen root cause is unconfirmed</li>
+        </ul>
+      </div>
+
+      <div class="os-howworks-section os-howworks-ai">
+        <div class="os-howworks-h">
+          <span class="os-howworks-pill os-howworks-pill-ai">AI-assisted · LLM-generated narrative only</span>
+          <span class="os-howworks-h-sub">An LLM writes the words. It does not compute the numbers.</span>
+        </div>
+        <ul class="os-howworks-list">
+          <li>Evidence drawer explanatory text (the prose around the numbers)</li>
+          <li>"Ask SKC" responses (cite the rules engine output; never invent figures)</li>
+          <li>Weekly digest narrative wording (numbers plug in from the rules engine)</li>
+          <li>Operator memo phrasing (do this / don't change / watch / reverse if)</li>
+        </ul>
+      </div>
+
+      <div class="os-howworks-doctrine">
+        <strong>Doctrine:</strong> every dollar value on SKC is computed by deterministic rules, not generated by an LLM. AI is a language layer over the rules engine — it explains numbers, it never produces them. If the rules engine cannot compute a number, no narrative is generated; the surface stays empty until the rules can fire.
+      </div>
+    </div>
+  </details>
+
+  <!-- ══════════════════════════════════════════════════════
+       RETENTION DOCTRINE
+       ══════════════════════════════════════════════════════ -->
+  <div class="os-retention-doctrine">
+    <div class="os-retention-doctrine-h">
+      <span>Why this loop improves retention</span>
+      <span class="os-chip os-chip-gray">Doctrine</span>
+    </div>
+    <div class="os-retention-doctrine-sub">Verified value creates renewal proof. Push digest creates habit without requiring login. GM scorecard creates internal adoption. Human value review prevents silent churn. Operating memory creates legitimate switching cost. Quarterly detectors expand value surface area.</div>
+  </div>
+
+</div>
