@@ -1,0 +1,763 @@
+  <div class="screen" id="screen-menu">
+    <div class="menu-page-shell">
+
+      <!-- ── SHARED HEADER + FILTER BAR ──────────────────── -->
+      <div class="menu-page-header">
+        <div class="menu-hdr-row1">
+          <div class="menu-hdr-left">
+            <div class="menu-hdr-title" id="menuHdrTitle">Menu Optimization · Overview</div>
+            <div class="menu-hdr-sub">Oakland · Dinner · Last 28 Days · 2,004 items</div>
+          </div>
+          <div class="menu-hdr-right">
+            <span class="menu-mode-chip menu-mode-est">ESTIMATED MODE</span>
+            <span class="menu-mode-chip menu-mode-blocked">VERIFICATION BLOCKED</span>
+            <button class="btn btn-secondary btn-sm" onclick="showScreen('settings',null,'Data Quality');switchTab('dq','overview')">Fix Cost Data</button>
+          </div>
+        </div>
+        <div class="menu-filter-bar">
+          <span class="menu-filter"><span class="menu-filter-k">Location</span><span class="menu-filter-v">Oakland</span></span>
+          <span class="menu-filter"><span class="menu-filter-k">Period</span><span class="menu-filter-v">Last 28 Days</span></span>
+          <span class="menu-filter"><span class="menu-filter-k">Daypart</span><span class="menu-filter-v">Dinner</span></span>
+          <span class="menu-filter"><span class="menu-filter-k">Category</span><span class="menu-filter-v">All</span></span>
+          <span class="menu-filter-sep"></span>
+          <span class="menu-src menu-src-ok"><span class="menu-src-dot"></span>Toast POS</span>
+          <span class="menu-src menu-src-warn"><span class="menu-src-dot"></span>Recipe cost · stale 18d</span>
+          <span class="menu-src menu-src-miss"><span class="menu-src-dot"></span>COGS · not connected</span>
+          <span class="menu-src menu-src-ok"><span class="menu-src-dot"></span>Baseline · 8wk</span>
+        </div>
+      </div>
+
+      <!-- ── BODY · holds all 7 subpages ─────────────────── -->
+      <div class="menu-page-body">
+
+        <!-- ═══════════════════════════════════════════════
+             1. OVERVIEW
+             grid-template-columns: 1.05fr 1.2fr .9fr
+             ═══════════════════════════════════════════════ -->
+        <div class="menu-subpage active" id="menu-subpage-overview">
+          <div class="menu-grid menu-grid-overview">
+
+            <!-- LEFT · main exposure card -->
+            <div class="menu-panel menu-panel-exposure">
+              <div class="menu-exp-eyebrow">Estimated menu exposure · 28 days</div>
+              <div class="menu-exp-val">~$1,420<span class="menu-exp-per">/mo</span></div>
+              <div class="menu-exp-tag">[ESTIMATED — verification blocked]</div>
+              <div class="menu-exp-headline">Oakland dinner menu mix is under-earning by <strong>$0.71 per item.</strong></div>
+              <div class="menu-exp-sub">Popular low-margin items are taking share from higher-margin items.</div>
+
+              <div class="menu-exp-mini-waterfall">
+                <div class="menu-exp-mini-step"><div class="menu-exp-mini-k">Baseline CM</div><div class="menu-exp-mini-v">$9.13</div></div>
+                <div class="menu-exp-mini-arrow">→</div>
+                <div class="menu-exp-mini-step"><div class="menu-exp-mini-k">Current CM</div><div class="menu-exp-mini-v">$8.42</div></div>
+                <div class="menu-exp-mini-arrow">→</div>
+                <div class="menu-exp-mini-step menu-exp-mini-loss"><div class="menu-exp-mini-k">Shift</div><div class="menu-exp-mini-v">−$0.71</div></div>
+                <div class="menu-exp-mini-arrow">×</div>
+                <div class="menu-exp-mini-step"><div class="menu-exp-mini-k">Items</div><div class="menu-exp-mini-v">2,004</div></div>
+                <div class="menu-exp-mini-arrow">=</div>
+                <div class="menu-exp-mini-step menu-exp-mini-total"><div class="menu-exp-mini-k">Exposure</div><div class="menu-exp-mini-v">~$1,420</div></div>
+              </div>
+
+              <!-- Verification blocker -->
+              <div class="menu-blocker">
+                <div class="menu-blocker-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <div class="menu-blocker-body">
+                  <div class="menu-blocker-title">Verification blocker · Recipe costs stale 18d</div>
+                  <div class="menu-blocker-sub">SKC can estimate menu exposure, but menu ROI cannot move to Verified Savings until food costs refresh.</div>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="showScreen('settings',null,'Data Quality')">Fix source</button>
+              </div>
+            </div>
+
+            <!-- CENTER · visual breakdown -->
+            <div class="menu-panel menu-panel-visual">
+              <div class="menu-panel-h">Visual breakdown</div>
+
+              <!-- Mix shift waterfall (visual bars) -->
+              <div class="menu-mini-section">
+                <div class="menu-mini-h">Mix-shift waterfall · weighted CM</div>
+                <svg viewBox="0 0 360 100" preserveAspectRatio="none" class="menu-waterfall-svg">
+                  <!-- baseline bar -->
+                  <rect x="10" y="20" width="50" height="60" fill="var(--green)" opacity="0.85"/>
+                  <text x="35" y="14" text-anchor="middle" font-size="9" fill="var(--t3)" font-family="var(--mono)">$9.13</text>
+                  <!-- delta down -->
+                  <rect x="80" y="20" width="30" height="6" fill="var(--amber)" opacity="0.9"/>
+                  <text x="95" y="14" text-anchor="middle" font-size="8.5" fill="var(--amber)" font-family="var(--mono)">−$0.46</text>
+                  <text x="95" y="36" text-anchor="middle" font-size="8" fill="var(--t3)">Plowhorse</text>
+                  <rect x="130" y="20" width="30" height="6" fill="var(--blue)" opacity="0.9"/>
+                  <text x="145" y="14" text-anchor="middle" font-size="8.5" fill="var(--blue)" font-family="var(--mono)">−$0.18</text>
+                  <text x="145" y="36" text-anchor="middle" font-size="8" fill="var(--t3)">Puzzle</text>
+                  <rect x="180" y="20" width="30" height="6" fill="#a1a1aa" opacity="0.8"/>
+                  <text x="195" y="14" text-anchor="middle" font-size="8.5" fill="var(--t3)" font-family="var(--mono)">−$0.07</text>
+                  <text x="195" y="36" text-anchor="middle" font-size="8" fill="var(--t3)">Dogs</text>
+                  <!-- current bar -->
+                  <rect x="230" y="32" width="50" height="48" fill="var(--amber)" opacity="0.85"/>
+                  <text x="255" y="26" text-anchor="middle" font-size="9" fill="var(--t3)" font-family="var(--mono)">$8.42</text>
+                  <!-- equation right -->
+                  <text x="305" y="44" font-size="11" fill="var(--t1)" font-family="var(--mono)" font-weight="600">−$0.71</text>
+                  <text x="305" y="58" font-size="9" fill="var(--t3)">per item</text>
+                  <!-- baseline ground line -->
+                  <line x1="5" y1="80" x2="290" y2="80" stroke="var(--border)" stroke-dasharray="2 3"/>
+                </svg>
+              </div>
+
+              <!-- Quadrant distribution -->
+              <div class="menu-mini-section">
+                <div class="menu-mini-h">Quadrant distribution · 9 dinner items</div>
+                <div class="menu-quad-strip">
+                  <div class="menu-quad-cell menu-q-star"><div class="menu-q-name">Stars</div><div class="menu-q-count">2</div><div class="menu-q-note">Protect</div></div>
+                  <div class="menu-quad-cell menu-q-plow"><div class="menu-q-name">Plowhorses</div><div class="menu-q-count">3</div><div class="menu-q-note">Reprice <span style="opacity:.7">· incl. 1 Watch</span></div></div>
+                  <div class="menu-quad-cell menu-q-puzz"><div class="menu-q-name">Puzzles</div><div class="menu-q-count">2</div><div class="menu-q-note">Promote</div></div>
+                  <div class="menu-quad-cell menu-q-dog"><div class="menu-q-name">Dogs</div><div class="menu-q-count">2</div><div class="menu-q-note">Review</div></div>
+                </div>
+                <div class="menu-issue-row">
+                  <span class="menu-issue-pill menu-q-plow">Top issue</span>
+                  <span class="menu-issue-text"><strong>Popular low-margin items.</strong> Primary Plowhorses drive 30.6% of dinner volume. Including Truffle Fries Watch, popular below-threshold items represent 46.4%.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT · top money moves -->
+            <div class="menu-panel menu-panel-moves">
+              <div class="menu-panel-h">Top money moves</div>
+              <div class="menu-moves-list">
+                <div class="menu-move menu-move-1">
+                  <div class="menu-move-rank">1</div>
+                  <div class="menu-move-body">
+                    <div class="menu-move-title">Review Crispy Chicken Sandwich</div>
+                    <div class="menu-move-sub">$5.80 CM · $2.95 below threshold · Plowhorse</div>
+                    <div class="menu-move-val">~$300/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                  </div>
+                </div>
+                <div class="menu-move menu-move-2">
+                  <div class="menu-move-rank">2</div>
+                  <div class="menu-move-body">
+                    <div class="menu-move-title">Review Burger price/portion</div>
+                    <div class="menu-move-sub">$6.40 CM · $2.35 below threshold · Plowhorse</div>
+                    <div class="menu-move-val">~$210/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                  </div>
+                </div>
+                <div class="menu-move menu-move-3">
+                  <div class="menu-move-rank">3</div>
+                  <div class="menu-move-body">
+                    <div class="menu-move-title">Promote Mushroom Risotto</div>
+                    <div class="menu-move-sub">$14.20 CM · only 4.2% popularity · Puzzle</div>
+                    <div class="menu-move-val">~$355/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-moves-ctas">
+                <button class="btn btn-primary btn-sm" onclick="showMenuSubpage('matrix')">Open Matrix</button>
+                <button class="btn btn-secondary btn-sm" onclick="showMenuSubpage('actions')">Review Actions</button>
+                <button class="btn btn-ghost btn-sm" onclick="showMenuSubpage('evidence')">Open Evidence</button>
+              </div>
+            </div>
+
+          </div>
+        </div><!-- /Overview -->
+
+        <!-- ═══════════════════════════════════════════════
+             2. MATRIX
+             grid-template-columns: minmax(0, 1.7fr) 360px
+             ═══════════════════════════════════════════════ -->
+        <div class="menu-subpage" id="menu-subpage-matrix">
+          <div class="menu-grid menu-grid-matrix">
+
+            <!-- LEFT · bubble matrix -->
+            <div class="menu-panel menu-panel-matrix">
+              <div class="menu-panel-h-row">
+                <div class="menu-panel-h">Menu engineering matrix · Popularity × CM/item</div>
+                <div class="menu-axis-legend">
+                  <span><span class="menu-dot menu-q-star"></span>Star</span>
+                  <span><span class="menu-dot menu-q-plow"></span>Plowhorse</span>
+                  <span><span class="menu-dot menu-q-puzz"></span>Puzzle</span>
+                  <span><span class="menu-dot menu-q-dog"></span>Dog</span>
+                </div>
+              </div>
+              <div class="menu-matrix-wrap">
+                <svg viewBox="0 0 600 400" preserveAspectRatio="xMidYMid meet" class="menu-matrix-svg" id="menuMatrixSvg">
+                  <!-- background quadrants -->
+                  <rect x="50" y="20" width="155" height="170" fill="var(--blue-d)" opacity="0.18"/>
+                  <rect x="205" y="20" width="345" height="170" fill="var(--green-d)" opacity="0.18"/>
+                  <rect x="50" y="190" width="155" height="180" fill="rgba(161,161,170,.18)"/>
+                  <rect x="205" y="190" width="345" height="180" fill="var(--amber-d)" opacity="0.18"/>
+                  <!-- quadrant labels -->
+                  <text x="58" y="36" font-size="10" fill="var(--blue)" font-weight="700" letter-spacing=".05em">PUZZLE</text>
+                  <text x="213" y="36" font-size="10" fill="var(--green)" font-weight="700" letter-spacing=".05em">STAR</text>
+                  <text x="58" y="206" font-size="10" fill="var(--t3)" font-weight="700" letter-spacing=".05em">DOG</text>
+                  <text x="213" y="206" font-size="10" fill="var(--amber)" font-weight="700" letter-spacing=".05em">PLOWHORSE</text>
+                  <!-- threshold lines -->
+                  <line x1="205" y1="20" x2="205" y2="370" stroke="var(--border)" stroke-dasharray="4 4" stroke-width="1"/>
+                  <line x1="50" y1="190" x2="550" y2="190" stroke="var(--border)" stroke-dasharray="4 4" stroke-width="1"/>
+                  <!-- threshold labels -->
+                  <text x="207" y="385" font-size="9" fill="var(--t3)">popularity 8.0%</text>
+                  <text x="555" y="193" font-size="9" fill="var(--t3)">CM $8.75</text>
+                  <!-- axes -->
+                  <line x1="50" y1="370" x2="550" y2="370" stroke="var(--border)" stroke-width="1.5"/>
+                  <line x1="50" y1="20" x2="50" y2="370" stroke="var(--border)" stroke-width="1.5"/>
+                  <!-- y axis ticks (CM) -->
+                  <text x="42" y="200" font-size="9" fill="var(--t3)" text-anchor="end">$8.75</text>
+                  <text x="42" y="60" font-size="9" fill="var(--t3)" text-anchor="end">$15</text>
+                  <text x="42" y="367" font-size="9" fill="var(--t3)" text-anchor="end">$0</text>
+                  <!-- x axis ticks (popularity) -->
+                  <text x="50" y="383" font-size="9" fill="var(--t3)">0%</text>
+                  <text x="207" y="383" font-size="9" fill="var(--t3)" text-anchor="middle">8%</text>
+                  <text x="550" y="383" font-size="9" fill="var(--t3)" text-anchor="end">22%</text>
+                  <!-- Y-axis label -->
+                  <text x="14" y="200" font-size="10" fill="var(--t2)" font-weight="600" text-anchor="middle" transform="rotate(-90 14 200)">CM / item</text>
+                  <!-- X-axis label -->
+                  <text x="300" y="397" font-size="10" fill="var(--t2)" font-weight="600" text-anchor="middle">Popularity %</text>
+                  <!-- BUBBLES (computed inline; x=50+(pop/22)*500, y=370-(cm/15)*350) -->
+                  <!-- Crispy Chicken: pop 18.6, cm 5.80, plowhorse, units 373 (big) -->
+                  <g class="menu-bubble menu-q-plow" data-item="crispy" tabindex="0" role="button" aria-label="Crispy Chicken Sandwich · Plowhorse · CM $5.80 · 18.6% popularity" onclick="menuMatrixSelect('crispy')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuMatrixSelect('crispy')}">
+                    <circle cx="473" cy="235" r="28" fill="var(--amber)" opacity="0.55" stroke="var(--amber)" stroke-width="2.5"/>
+                    <text x="473" y="239" font-size="10" fill="var(--t1)" text-anchor="middle" font-weight="700">Crispy</text>
+                  </g>
+                  <!-- Burger: pop 12.0, cm 6.40, plowhorse, 240 -->
+                  <g class="menu-bubble menu-q-plow" data-item="burger" tabindex="0" role="button" aria-label="Burger · Plowhorse · CM $6.40 · 12.0% popularity" onclick="menuMatrixSelect('burger')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuMatrixSelect('burger')}">
+                    <circle cx="323" cy="221" r="22" fill="var(--amber)" opacity="0.55" stroke="var(--amber)" stroke-width="1.5"/>
+                    <text x="323" y="225" font-size="9.5" fill="var(--t1)" text-anchor="middle" font-weight="700">Burger</text>
+                  </g>
+                  <!-- Spicy Vodka Pasta: pop 13.1, cm 12.40, star, 263 -->
+                  <g class="menu-bubble menu-q-star" data-item="vodka" tabindex="0" role="button" aria-label="Spicy Vodka Pasta · Star · CM $12.40 · 13.1% popularity" onclick="menuMatrixSelect('vodka')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuMatrixSelect('vodka')}">
+                    <circle cx="348" cy="81" r="23" fill="var(--green)" opacity="0.55" stroke="var(--green)" stroke-width="1.5"/>
+                    <text x="348" y="85" font-size="9" fill="var(--t1)" text-anchor="middle" font-weight="700">Vodka</text>
+                  </g>
+                  <!-- Truffle Fries: pop 15.8, cm 7.60, watch (below CM threshold) -->
+                  <g class="menu-bubble menu-q-plow" data-item="fries" tabindex="0" role="button" aria-label="Truffle Fries · Plowhorse Watch · CM $7.60 · 15.8% popularity" onclick="menuMatrixSelect('fries')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuMatrixSelect('fries')}">
+                    <circle cx="411" cy="193" r="24" fill="var(--amber)" opacity="0.4" stroke="var(--amber)" stroke-width="1.5" stroke-dasharray="3 3"/>
+                    <text x="411" y="197" font-size="9.5" fill="var(--t1)" text-anchor="middle" font-weight="700">Fries</text>
+                  </g>
+                  <!-- Espresso Martini: pop 11.4, cm 10.80, star, 228 -->
+                  <g class="menu-bubble menu-q-star" data-item="martini" tabindex="0" role="button" aria-label="Espresso Martini · Star · CM $10.80 · 11.4% popularity" onclick="menuMatrixSelect('martini')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuMatrixSelect('martini')}">
+                    <circle cx="309" cy="118" r="22" fill="var(--green)" opacity="0.55" stroke="var(--green)" stroke-width="1.5"/>
+                    <text x="309" y="122" font-size="9" fill="var(--t1)" text-anchor="middle" font-weight="700">Martini</text>
+                  </g>
+                  <!-- Mushroom Risotto: pop 4.2, cm 14.20, puzzle, 84 -->
+                  <g class="menu-bubble menu-q-puzz" data-item="risotto" tabindex="0" role="button" aria-label="Mushroom Risotto · Puzzle · CM $14.20 · 4.2% popularity" onclick="menuMatrixSelect('risotto')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuMatrixSelect('risotto')}">
+                    <circle cx="146" cy="39" r="18" fill="var(--blue)" opacity="0.55" stroke="var(--blue)" stroke-width="1.5"/>
+                    <text x="146" y="43" font-size="9" fill="var(--t1)" text-anchor="middle" font-weight="700">Risotto</text>
+                  </g>
+                  <!-- Burrata Toast: pop 5.6, cm 9.90, puzzle, 112 -->
+                  <g class="menu-bubble menu-q-puzz" data-item="burrata" tabindex="0" role="button" aria-label="Burrata Toast · Puzzle · CM $9.90 · 5.6% popularity" onclick="menuMatrixSelect('burrata')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuMatrixSelect('burrata')}">
+                    <circle cx="177" cy="139" r="19" fill="var(--blue)" opacity="0.5" stroke="var(--blue)" stroke-width="1.5"/>
+                    <text x="177" y="143" font-size="9" fill="var(--t1)" text-anchor="middle" font-weight="700">Burrata</text>
+                  </g>
+                  <!-- Beet Salad: pop 2.6, cm 4.10, dog, 52 -->
+                  <g class="menu-bubble menu-q-dog" data-item="beet" tabindex="0" role="button" aria-label="Beet Salad · Dog · CM $4.10 · 2.6% popularity" onclick="menuMatrixSelect('beet')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuMatrixSelect('beet')}">
+                    <circle cx="109" cy="274" r="15" fill="#a1a1aa" opacity="0.5" stroke="#a1a1aa" stroke-width="1.5"/>
+                    <text x="109" y="278" font-size="9" fill="var(--t1)" text-anchor="middle" font-weight="700">Beet</text>
+                  </g>
+                  <!-- Kids Pasta: pop 3.1, cm 3.20, dog, 62 -->
+                  <g class="menu-bubble menu-q-dog" data-item="kids" tabindex="0" role="button" aria-label="Kids Pasta · Dog · CM $3.20 · 3.1% popularity" onclick="menuMatrixSelect('kids')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuMatrixSelect('kids')}">
+                    <circle cx="120" cy="295" r="15" fill="#a1a1aa" opacity="0.5" stroke="#a1a1aa" stroke-width="1.5"/>
+                    <text x="120" y="299" font-size="9" fill="var(--t1)" text-anchor="middle" font-weight="700">Kids</text>
+                  </g>
+                  <!-- Selection ring -->
+                  <circle id="menuMatrixSelectionRing" cx="473" cy="235" r="34" fill="none" stroke="var(--t1)" stroke-width="2" stroke-dasharray="3 3" opacity="0.6"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- RIGHT · selected item + legend -->
+            <div class="menu-panel menu-panel-side">
+              <div class="menu-side-card" id="menuMatrixDetail">
+                <!-- Populated dynamically; default: Crispy Chicken Sandwich -->
+                <div class="menu-side-eyebrow">Selected item</div>
+                <div class="menu-side-title">Crispy Chicken Sandwich</div>
+                <div class="menu-side-class menu-q-plow">Plowhorse</div>
+                <div class="menu-side-rows">
+                  <div class="menu-side-row"><span>CM/item</span><strong>$5.80</strong></div>
+                  <div class="menu-side-row"><span>Popularity</span><strong>18.6%</strong></div>
+                  <div class="menu-side-row"><span>Units</span><strong>373</strong></div>
+                  <div class="menu-side-row"><span>Revenue</span><strong>$6,714</strong></div>
+                  <div class="menu-side-row"><span>Total CM</span><strong>$2,163</strong></div>
+                </div>
+                <div class="menu-side-insight">Popular but <strong>$2.95 below</strong> CM threshold. Reviewing price or portion is the highest-impact menu move this period.</div>
+                <div class="menu-side-rec">
+                  <div class="menu-side-rec-k">Recommended action</div>
+                  <div class="menu-side-rec-v">Review price or portion cost.</div>
+                </div>
+                <div class="menu-side-ctas">
+                  <button class="btn btn-primary btn-sm" onclick="showMenuSubpage('actions')">Create Action</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showMenuSubpage('simulations')">Simulate Price</button>
+                  <button class="btn btn-ghost btn-sm" onclick="showMenuSubpage('evidence')">Open Evidence</button>
+                </div>
+              </div>
+              <div class="menu-side-legend">
+                <div class="menu-legend-h">Legend</div>
+                <div class="menu-legend-row"><span class="menu-dot menu-q-star"></span><span><strong>Star</strong> · protect</span></div>
+                <div class="menu-legend-row"><span class="menu-dot menu-q-plow"></span><span><strong>Plowhorse</strong> · reprice/simplify</span></div>
+                <div class="menu-legend-row"><span class="menu-dot menu-q-puzz"></span><span><strong>Puzzle</strong> · promote/reposition</span></div>
+                <div class="menu-legend-row"><span class="menu-dot menu-q-dog"></span><span><strong>Dog</strong> · review/remove</span></div>
+                <div class="menu-legend-foot">Truffle Fries flagged Plowhorse·Watch — CM $7.60 sits below $8.75 threshold.</div>
+                <div class="menu-legend-foot" style="margin-top:6px;border-top:1px dashed var(--border);padding-top:6px;">Matrix shows top 9 dinner items. 273 other mapped dinner items are included in weighted average CM ($8.42).</div>
+              </div>
+            </div>
+
+          </div>
+        </div><!-- /Matrix -->
+
+        <!-- ═══════════════════════════════════════════════
+             3. MIX SHIFT
+             top metric strip + grid 1.2fr .8fr + bottom formula
+             ═══════════════════════════════════════════════ -->
+        <div class="menu-subpage" id="menu-subpage-mix">
+          <div class="menu-mix-wrap">
+            <!-- top metric strip -->
+            <div class="menu-mix-metrics">
+              <div class="menu-mix-metric"><div class="menu-mix-metric-k">Current weighted CM</div><div class="menu-mix-metric-v">$8.42</div></div>
+              <div class="menu-mix-metric"><div class="menu-mix-metric-k">Baseline (8 weeks)</div><div class="menu-mix-metric-v">$9.13</div></div>
+              <div class="menu-mix-metric menu-mix-metric-loss"><div class="menu-mix-metric-k">Mix shift</div><div class="menu-mix-metric-v">−$0.71<span class="menu-mix-metric-u">/item</span></div></div>
+              <div class="menu-mix-metric menu-mix-metric-exp"><div class="menu-mix-metric-k">Estimated exposure</div><div class="menu-mix-metric-v">~$1,420<span class="menu-mix-metric-u">/mo</span></div><div class="menu-mix-metric-tag">[ESTIMATED]</div></div>
+            </div>
+
+            <div class="menu-grid menu-grid-mix">
+              <!-- LEFT · trend -->
+              <div class="menu-panel">
+                <div class="menu-panel-h">Weighted Avg CM · 8-week trend</div>
+                <svg viewBox="0 0 460 200" preserveAspectRatio="none" class="menu-trend-svg">
+                  <!-- gridlines -->
+                  <line x1="40" y1="40"  x2="450" y2="40"  stroke="var(--border)" stroke-dasharray="2 4" stroke-width="0.8"/>
+                  <line x1="40" y1="100" x2="450" y2="100" stroke="var(--border)" stroke-dasharray="2 4" stroke-width="0.8"/>
+                  <line x1="40" y1="160" x2="450" y2="160" stroke="var(--border)" stroke-dasharray="2 4" stroke-width="0.8"/>
+                  <!-- y axis labels (range $8.20 - $9.30) -->
+                  <text x="36" y="44"  font-size="9" fill="var(--t3)" text-anchor="end" font-family="var(--mono)">$9.30</text>
+                  <text x="36" y="104" font-size="9" fill="var(--t3)" text-anchor="end" font-family="var(--mono)">$8.75</text>
+                  <text x="36" y="164" font-size="9" fill="var(--t3)" text-anchor="end" font-family="var(--mono)">$8.20</text>
+                  <!-- baseline reference at $9.13 → y = 40 + (9.30 - 9.13)/(9.30-8.20)*120 = 58.5 -->
+                  <line x1="40" y1="58.5" x2="450" y2="58.5" stroke="var(--green)" stroke-dasharray="4 4" stroke-width="1.2" opacity="0.7"/>
+                  <text x="455" y="62" font-size="9" fill="var(--green)" font-weight="600">baseline $9.13</text>
+                  <!-- trend line: 9.20, 9.15, 9.18, 9.08, 8.94, 8.71, 8.55, 8.42 -->
+                  <!-- map: y = 40 + (9.30 - v)/(9.30 - 8.20) * 120; x = 60 + i*55 -->
+                  <!-- v=9.20 → y=51 ; 9.15→56 ; 9.18→53 ; 9.08→64 ; 8.94→79 ; 8.71→104 ; 8.55→122 ; 8.42→136 -->
+                  <polyline points="60,51 115,56 170,53 225,64 280,79 335,104 390,122 445,136"
+                            fill="none" stroke="var(--amber)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- dots -->
+                  <circle cx="60"  cy="51"  r="3" fill="var(--amber)"/>
+                  <circle cx="115" cy="56"  r="3" fill="var(--amber)"/>
+                  <circle cx="170" cy="53"  r="3" fill="var(--amber)"/>
+                  <circle cx="225" cy="64"  r="3" fill="var(--amber)"/>
+                  <circle cx="280" cy="79"  r="3" fill="var(--amber)"/>
+                  <circle cx="335" cy="104" r="3" fill="var(--amber)"/>
+                  <circle cx="390" cy="122" r="3" fill="var(--amber)"/>
+                  <circle cx="445" cy="136" r="4" fill="var(--amber)" stroke="var(--card)" stroke-width="2"/>
+                  <!-- current value label -->
+                  <text x="445" y="151" font-size="10" fill="var(--amber)" text-anchor="middle" font-weight="700" font-family="var(--mono)">$8.42</text>
+                  <!-- x axis labels -->
+                  <text x="60"  y="190" font-size="9" fill="var(--t3)" text-anchor="middle">W1</text>
+                  <text x="115" y="190" font-size="9" fill="var(--t3)" text-anchor="middle">W2</text>
+                  <text x="170" y="190" font-size="9" fill="var(--t3)" text-anchor="middle">W3</text>
+                  <text x="225" y="190" font-size="9" fill="var(--t3)" text-anchor="middle">W4</text>
+                  <text x="280" y="190" font-size="9" fill="var(--t3)" text-anchor="middle">W5</text>
+                  <text x="335" y="190" font-size="9" fill="var(--t3)" text-anchor="middle">W6</text>
+                  <text x="390" y="190" font-size="9" fill="var(--t3)" text-anchor="middle">W7</text>
+                  <text x="445" y="190" font-size="9" fill="var(--t3)" text-anchor="middle">W8</text>
+                </svg>
+              </div>
+
+              <!-- RIGHT · waterfall -->
+              <div class="menu-panel">
+                <div class="menu-panel-h">CM movement · waterfall</div>
+                <div class="menu-wf">
+                  <div class="menu-wf-row menu-wf-base">
+                    <div class="menu-wf-label">Baseline CM</div>
+                    <div class="menu-wf-bar"><div class="menu-wf-fill" style="width:90%;background:var(--green)"></div></div>
+                    <div class="menu-wf-val">$9.13</div>
+                  </div>
+                  <div class="menu-wf-row menu-wf-loss">
+                    <div class="menu-wf-label">Plowhorse mix</div>
+                    <div class="menu-wf-bar"><div class="menu-wf-fill" style="width:38%;background:var(--amber);margin-left:50%"></div></div>
+                    <div class="menu-wf-val menu-wf-neg">−$0.46</div>
+                  </div>
+                  <div class="menu-wf-row menu-wf-loss">
+                    <div class="menu-wf-label">Puzzle under-promo</div>
+                    <div class="menu-wf-bar"><div class="menu-wf-fill" style="width:15%;background:var(--blue);margin-left:50%"></div></div>
+                    <div class="menu-wf-val menu-wf-neg">−$0.18</div>
+                  </div>
+                  <div class="menu-wf-row menu-wf-loss">
+                    <div class="menu-wf-label">Dogs · low perf</div>
+                    <div class="menu-wf-bar"><div class="menu-wf-fill" style="width:6%;background:#a1a1aa;margin-left:50%"></div></div>
+                    <div class="menu-wf-val menu-wf-neg">−$0.07</div>
+                  </div>
+                  <div class="menu-wf-row menu-wf-base">
+                    <div class="menu-wf-label">Current CM</div>
+                    <div class="menu-wf-bar"><div class="menu-wf-fill" style="width:83%;background:var(--amber)"></div></div>
+                    <div class="menu-wf-val">$8.42</div>
+                  </div>
+                </div>
+                <div class="menu-wf-foot menu-mono">$9.13 − $0.46 − $0.18 − $0.07 = $8.42</div>
+              </div>
+            </div>
+
+            <!-- Bottom formula strip -->
+            <div class="menu-mix-formula">
+              <span class="menu-mix-formula-label">Estimated exposure</span>
+              <span class="menu-mono">2,004 items × $0.71 = $1,422.84</span>
+              <span class="menu-mix-formula-arrow">→</span>
+              <span class="menu-mix-formula-result">~$1,420/mo <span class="menu-val-tag">[ESTIMATED]</span></span>
+              <div class="menu-mix-formula-ctas">
+                <button class="btn btn-ghost btn-sm" onclick="openMenuEvidenceDrawer()">Show Formula</button>
+                <button class="btn btn-secondary btn-sm" onclick="showMenuSubpage('actions')">Open Actions</button>
+                <button class="btn btn-ghost btn-sm" onclick="showScreen('settings',null,'Data Quality')">Fix Cost Data</button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /Mix Shift -->
+
+        <!-- ═══════════════════════════════════════════════
+             4. ITEM ECONOMICS
+             grid: minmax(0,1fr) 360px
+             ═══════════════════════════════════════════════ -->
+        <div class="menu-subpage" id="menu-subpage-items">
+          <div class="menu-grid menu-grid-items">
+
+            <div class="menu-panel menu-table-panel">
+              <div class="menu-panel-h-row">
+                <div class="menu-panel-h">Item economics · all dinner items</div>
+                <div class="menu-items-filters">
+                  <select class="menu-items-select" aria-label="Classification filter">
+                    <option>All classes</option><option>Star</option><option>Plowhorse</option><option>Puzzle</option><option>Dog</option>
+                  </select>
+                  <select class="menu-items-select" aria-label="Sort">
+                    <option>Sort: Total CM</option><option>CM/item</option><option>Popularity</option><option>Units</option>
+                  </select>
+                </div>
+              </div>
+              <div class="menu-items-table">
+                <div class="menu-items-th">
+                  <span>Item</span>
+                  <span data-tip="Menu engineering classification: Star, Plowhorse, Puzzle, or Dog">Class</span>
+                  <span data-tip="Contribution Margin per item — price minus food cost">CM</span>
+                  <span data-tip="Popularity % — share of total dinner items sold">Pop %</span>
+                  <span data-tip="Units sold in the trailing 28-day window">Units</span>
+                  <span data-tip="Total Contribution Margin — CM/item × units sold">Total CM</span>
+                  <span>Action</span>
+                </div>
+                <div class="menu-items-body" id="menuItemsBody">
+                  <!-- Rows generated by JS via renderMenuItemsTable() -->
+                </div>
+              </div>
+            </div>
+
+            <div class="menu-panel menu-panel-side">
+              <div class="menu-side-card" id="menuItemDetail">
+                <!-- Default: Crispy Chicken Sandwich -->
+                <div class="menu-side-eyebrow">Selected item</div>
+                <div class="menu-side-title">Crispy Chicken Sandwich</div>
+                <div class="menu-side-class menu-q-plow">Plowhorse</div>
+                <div class="menu-side-rows">
+                  <div class="menu-side-row"><span data-tip="Contribution Margin per item — price minus food cost — vs $8.75 threshold">CM vs $8.75 threshold</span><strong>$5.80 · −$2.95</strong></div>
+                  <div class="menu-side-row"><span data-tip="Popularity % — share of total dinner items sold — vs 8.0% threshold">Popularity vs 8.0%</span><strong>18.6% · +10.6 pts</strong></div>
+                  <div class="menu-side-row"><span data-tip="Units sold in trailing 28 days">Units (28d)</span><strong>373</strong></div>
+                  <div class="menu-side-row"><span>Revenue</span><strong>$6,714</strong></div>
+                  <div class="menu-side-row"><span data-tip="Total Contribution Margin — CM × units">Total CM</span><strong>$2,163</strong></div>
+                </div>
+                <div class="menu-side-insight"><strong>Why it matters:</strong> Popular but $2.95 below the CM threshold. Plowhorses drive volume but starve the menu of margin.</div>
+                <div class="menu-side-rec">
+                  <div class="menu-side-rec-k">Recommendation</div>
+                  <div class="menu-side-rec-v">Review price or portion cost.</div>
+                </div>
+                <div class="menu-side-guards">
+                  <div class="menu-side-guards-h">Guardrails</div>
+                  <ul class="menu-side-guards-list">
+                    <li>Unit sales decline ≤ 7%</li>
+                    <li>Guest sentiment stable</li>
+                    <li>Refund/comp rate stable</li>
+                    <li>No negative review spike</li>
+                  </ul>
+                </div>
+                <div class="menu-side-ctas">
+                  <button class="btn btn-primary btn-sm" onclick="showMenuSubpage('actions')">Create Action</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showMenuSubpage('simulations')">Simulate</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div><!-- /Item Economics -->
+
+        <!-- ═══════════════════════════════════════════════
+             5. ACTIONS
+             top strip + 4-column kanban
+             ═══════════════════════════════════════════════ -->
+        <div class="menu-subpage" id="menu-subpage-actions">
+          <div class="menu-actions-wrap">
+            <div class="menu-act-strip">
+              <div class="menu-act-strip-cell"><div class="menu-act-strip-k">Estimated exposure</div><div class="menu-act-strip-v">~$1,420/mo <span class="menu-val-tag">[ESTIMATED]</span></div></div>
+              <div class="menu-act-strip-cell"><div class="menu-act-strip-k">Simulated lift · ready approvals</div><div class="menu-act-strip-v">~$510/28d <span class="menu-val-tag">[SIMULATED]</span></div><div class="menu-act-strip-sub" style="font-size:10.5px;color:var(--t3);margin-top:2px">Crispy + Burger price/portion reviews only</div></div>
+              <div class="menu-act-strip-cell"><div class="menu-act-strip-k">All scenario upside</div><div class="menu-act-strip-v">~$865/28d <span class="menu-val-tag">[SIMULATED]</span></div><div class="menu-act-strip-sub" style="font-size:10.5px;color:var(--t3);margin-top:2px">Incl. Risotto promo test</div></div>
+              <div class="menu-act-strip-cell"><div class="menu-act-strip-k">Verified menu savings</div><div class="menu-act-strip-v menu-val-zero">$0</div></div>
+              <div class="menu-act-strip-cell menu-act-strip-block"><div class="menu-act-strip-k">Verification blocker</div><div class="menu-act-strip-v">Recipe cost stale 18d</div></div>
+            </div>
+
+            <div class="menu-grid menu-grid-actions">
+              <!-- Column 1: Ready for Approval -->
+              <div class="menu-kanban-col">
+                <div class="menu-kanban-h"><span class="menu-kanban-dot menu-q-plow"></span>Ready for Approval <span class="menu-kanban-count">2</span></div>
+                <div class="menu-kanban-cards">
+                  <div class="menu-kanban-card">
+                    <div class="menu-kanban-card-title">Crispy Chicken Sandwich · price/portion review</div>
+                    <div class="menu-kanban-card-val">~$300/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                    <div class="menu-kanban-card-reason">$5.80 CM vs $8.75 threshold · Plowhorse</div>
+                    <div class="menu-kanban-card-block"><span class="menu-kanban-block-icon">⚠</span> Recipe cost stale</div>
+                    <button class="btn btn-primary btn-sm" onclick="showDemoToast('Menu action drafted · Pending Owner Approval · Actions','blue')">Send for owner approval</button>
+                  </div>
+                  <div class="menu-kanban-card">
+                    <div class="menu-kanban-card-title">Burger · price/portion review</div>
+                    <div class="menu-kanban-card-val">~$210/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                    <div class="menu-kanban-card-reason">$6.40 CM vs $8.75 threshold · Plowhorse</div>
+                    <button class="btn btn-secondary btn-sm" onclick="showMenuSubpage('simulations')">Simulate</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Column 2: Testing -->
+              <div class="menu-kanban-col">
+                <div class="menu-kanban-h"><span class="menu-kanban-dot menu-q-puzz"></span>Testing <span class="menu-kanban-count">1</span></div>
+                <div class="menu-kanban-cards">
+                  <div class="menu-kanban-card">
+                    <div class="menu-kanban-card-title">Promote Mushroom Risotto</div>
+                    <div class="menu-kanban-card-val">~$355/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                    <div class="menu-kanban-card-reason">$14.20 CM, only 4.2% popularity · Puzzle</div>
+                    <button class="btn btn-secondary btn-sm" onclick="showDemoToast('Test action drafted · Promo placement test queued','blue')">Create test</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Column 3: Monitoring -->
+              <div class="menu-kanban-col">
+                <div class="menu-kanban-h"><span class="menu-kanban-dot" style="background:var(--blue)"></span>Monitoring <span class="menu-kanban-count">0</span></div>
+                <div class="menu-kanban-cards">
+                  <div class="menu-kanban-empty">
+                    No menu tests monitoring yet.<br>
+                    <span style="color:var(--t3);font-size:11px">Menu actions appear here after owner approval and implementation.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Column 4: Blocked -->
+              <div class="menu-kanban-col">
+                <div class="menu-kanban-h"><span class="menu-kanban-dot" style="background:var(--red)"></span>Blocked <span class="menu-kanban-count">1</span></div>
+                <div class="menu-kanban-cards">
+                  <div class="menu-kanban-card menu-kanban-card-blocked">
+                    <div class="menu-kanban-card-title">Refresh recipe cost file</div>
+                    <div class="menu-kanban-card-reason">Menu ROI verification blocked until recipe costs refresh.</div>
+                    <button class="btn btn-primary btn-sm" onclick="showScreen('settings',null,'Data Quality')">Fix Data Quality</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div><!-- /Actions -->
+
+        <!-- ═══════════════════════════════════════════════
+             6. SIMULATIONS
+             grid: 360px minmax(0,1fr) + bottom guardrails
+             ═══════════════════════════════════════════════ -->
+        <div class="menu-subpage" id="menu-subpage-simulations">
+          <div class="menu-sim-wrap">
+            <div class="menu-grid menu-grid-sim">
+
+              <!-- LEFT · scenario selector -->
+              <div class="menu-panel menu-sim-selector">
+                <div class="menu-panel-h">Scenarios</div>
+                <div class="menu-sim-cards">
+                  <div class="menu-sim-card menu-sim-active" data-scenario="crispy" onclick="menuSimSelect('crispy', this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuSimSelect('crispy',this)}">
+                    <div class="menu-sim-card-title">Crispy Chicken Sandwich +$1.00</div>
+                    <div class="menu-sim-card-row"><span>Current price</span><strong>$18.00</strong></div>
+                    <div class="menu-sim-card-row"><span>Simulated price</span><strong>$19.00</strong></div>
+                    <div class="menu-sim-card-row"><span>Sensitivity</span><strong>−3.0% units</strong></div>
+                    <div class="menu-sim-card-lift">~$300/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                  </div>
+                  <div class="menu-sim-card" data-scenario="burger" onclick="menuSimSelect('burger', this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuSimSelect('burger',this)}">
+                    <div class="menu-sim-card-title">Burger +$1.00</div>
+                    <div class="menu-sim-card-row"><span>Current price</span><strong>$19.00</strong></div>
+                    <div class="menu-sim-card-row"><span>Simulated price</span><strong>$20.00</strong></div>
+                    <div class="menu-sim-card-row"><span>Sensitivity</span><strong>−1.7% units</strong></div>
+                    <div class="menu-sim-card-lift">~$210/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                  </div>
+                  <div class="menu-sim-card" data-scenario="risotto" onclick="menuSimSelect('risotto', this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuSimSelect('risotto',this)}">
+                    <div class="menu-sim-card-title">Promote Mushroom Risotto</div>
+                    <div class="menu-sim-card-row"><span>Current units</span><strong>84</strong></div>
+                    <div class="menu-sim-card-row"><span>Expected units</span><strong>109</strong></div>
+                    <div class="menu-sim-card-row"><span>Sensitivity</span><strong>+30% units</strong></div>
+                    <div class="menu-sim-card-lift">~$355/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- RIGHT · stacked: chart + selected detail -->
+              <div class="menu-sim-right">
+                <div class="menu-panel">
+                  <div class="menu-panel-h">Scenario comparison · 28-day simulated lift</div>
+                  <svg viewBox="0 0 480 240" preserveAspectRatio="xMidYMid meet" class="menu-sim-chart-svg">
+                    <!-- gridlines -->
+                    <line x1="60" y1="40"  x2="460" y2="40"  stroke="var(--border)" stroke-dasharray="2 4"/>
+                    <line x1="60" y1="100" x2="460" y2="100" stroke="var(--border)" stroke-dasharray="2 4"/>
+                    <line x1="60" y1="160" x2="460" y2="160" stroke="var(--border)" stroke-dasharray="2 4"/>
+                    <line x1="60" y1="200" x2="460" y2="200" stroke="var(--border)"/>
+                    <text x="55" y="44"  font-size="9" fill="var(--t3)" text-anchor="end" font-family="var(--mono)">$400</text>
+                    <text x="55" y="104" font-size="9" fill="var(--t3)" text-anchor="end" font-family="var(--mono)">$200</text>
+                    <text x="55" y="164" font-size="9" fill="var(--t3)" text-anchor="end" font-family="var(--mono)">$0</text>
+                    <!-- bars: max $400 → 160px tall; Crispy 300 → 120; Burger 210 → 84; Risotto 355 → 142 -->
+                    <rect x="100" y="80"  width="80" height="120" fill="var(--amber)" opacity="0.78" stroke="var(--amber)"/>
+                    <text x="140" y="218" font-size="10" fill="var(--t2)" text-anchor="middle" font-weight="600">Crispy</text>
+                    <text x="140" y="74"  font-size="11" fill="var(--t1)" text-anchor="middle" font-weight="700" font-family="var(--mono)">~$300</text>
+                    <rect x="220" y="116" width="80" height="84"  fill="var(--amber)" opacity="0.78" stroke="var(--amber)"/>
+                    <text x="260" y="218" font-size="10" fill="var(--t2)" text-anchor="middle" font-weight="600">Burger</text>
+                    <text x="260" y="110" font-size="11" fill="var(--t1)" text-anchor="middle" font-weight="700" font-family="var(--mono)">~$210</text>
+                    <rect x="340" y="58"  width="80" height="142" fill="var(--blue)" opacity="0.78" stroke="var(--blue)"/>
+                    <text x="380" y="218" font-size="10" fill="var(--t2)" text-anchor="middle" font-weight="600">Risotto</text>
+                    <text x="380" y="52"  font-size="11" fill="var(--t1)" text-anchor="middle" font-weight="700" font-family="var(--mono)">~$355</text>
+                    <text x="260" y="234" font-size="9" fill="var(--t3)" text-anchor="middle">Simulated lift · 28 days · not verified savings</text>
+                  </svg>
+                </div>
+
+                <!-- Selected scenario detail panel -->
+                <div class="menu-panel menu-sim-detail-panel" id="menuSimDetail">
+                  <div class="menu-panel-h-row">
+                    <div class="menu-panel-h" id="menuSimDetailTitle">Crispy Chicken Sandwich · price +$1.00</div>
+                    <span class="menu-val-tag" id="menuSimDetailTag">[SIMULATED — not verified]</span>
+                  </div>
+                  <div class="menu-sim-detail-why" id="menuSimDetailWhy">Plowhorse. $5.80 CM is $2.95 below the $8.75 threshold. Highest single-item exposure on the dinner menu.</div>
+                  <div class="menu-sim-detail-grid">
+                    <div>
+                      <div class="menu-sim-detail-col-h">Current state</div>
+                      <div class="menu-sim-detail-row" id="menuSimDetailCurPrice"><span>Price</span><strong>$18.00</strong></div>
+                      <div class="menu-sim-detail-row" id="menuSimDetailCurCm"><span>CM/item</span><strong>$5.80</strong></div>
+                      <div class="menu-sim-detail-row" id="menuSimDetailCurUnits"><span>Units (28d)</span><strong>373</strong></div>
+                      <div class="menu-sim-detail-row" id="menuSimDetailCurTotal"><span>Total CM</span><strong>$2,163.40</strong></div>
+                    </div>
+                    <div>
+                      <div class="menu-sim-detail-col-h">Simulated state</div>
+                      <div class="menu-sim-detail-row" id="menuSimDetailSimPrice"><span>Price</span><strong>$19.00</strong></div>
+                      <div class="menu-sim-detail-row" id="menuSimDetailSimCm"><span>CM/item</span><strong>$6.80</strong></div>
+                      <div class="menu-sim-detail-row" id="menuSimDetailSimUnits"><span>Expected units</span><strong>362 (−3.0%)</strong></div>
+                      <div class="menu-sim-detail-row" id="menuSimDetailSimTotal"><span>Total CM</span><strong>$2,461.60</strong></div>
+                    </div>
+                  </div>
+                  <div style="margin-top:8px">
+                    <div class="menu-sim-detail-col-h">Formula trace</div>
+                    <div class="menu-sim-detail-formula" id="menuSimDetailFormula">Lift = (362 × $6.80) − (373 × $5.80) = $2,461.60 − $2,163.40 = $298.20</div>
+                    <div class="menu-sim-detail-cm-src" id="menuSimDetailCmSrc">CM source: recipe cost file · stale 18d · EST</div>
+                  </div>
+                  <div class="menu-sim-detail-lift">
+                    <span class="menu-sim-detail-lift-k">Estimated lift · 28d</span>
+                    <span class="menu-sim-detail-lift-v" id="menuSimDetailLift">~$300</span>
+                  </div>
+                  <div class="menu-sim-detail-ctas">
+                    <button class="btn btn-primary btn-sm" onclick="showDemoToast('Menu test action drafted · Monitor 28 days before ROI Proof','blue')">Create Test Action</button>
+                    <button class="btn btn-secondary btn-sm" onclick="showDemoToast('Sent for Owner Approval · Actions','blue')">Send for Owner Approval</button>
+                    <button class="btn btn-ghost btn-sm" onclick="showMenuSubpage('evidence')">Open Evidence</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Bottom guardrail strip + CTAs -->
+            <div class="menu-sim-foot">
+              <div class="menu-sim-guards">
+                <div class="menu-sim-guards-h">Guardrails (apply to all scenarios)</div>
+                <div class="menu-sim-guards-row">
+                  <span class="menu-sim-guard">Unit sales decline ≤ 7%</span>
+                  <span class="menu-sim-guard">Guest sentiment stable</span>
+                  <span class="menu-sim-guard">Refund/comp rate stable</span>
+                  <span class="menu-sim-guard">Avg check stable</span>
+                  <span class="menu-sim-guard">No negative review spike</span>
+                </div>
+              </div>
+              <div class="menu-sim-ctas">
+                <button class="btn btn-secondary btn-sm" onclick="showMenuSubpage('evidence')">Open Evidence</button>
+                <button class="btn btn-primary btn-sm" onclick="showDemoToast('Test action drafted · Pending Owner Approval · Actions','blue')">Send for Owner Approval</button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /Simulations -->
+
+        <!-- ═══════════════════════════════════════════════
+             7. EVIDENCE
+             grid: 3 cols × 2 rows compact cards
+             ═══════════════════════════════════════════════ -->
+        <div class="menu-subpage" id="menu-subpage-evidence">
+          <div class="menu-grid menu-grid-evidence">
+
+            <div class="menu-ev-card">
+              <div class="menu-ev-h">Formula trace</div>
+              <div class="menu-ev-body">
+                <div class="menu-mono menu-ev-mono">Weighted Avg CM = SUM(CM × units) ÷ SUM(units)</div>
+                <div class="menu-mono menu-ev-mono">Mix Shift = $8.42 − $9.13 = −$0.71/item</div>
+                <div class="menu-mono menu-ev-mono">Exposure = 2,004 × $0.71 = $1,422.84</div>
+                <div class="menu-mono menu-ev-mono" style="color:var(--t3);font-size:10px;margin-top:4px">Top 9 + 273 other mapped items reconcile to $8.42 weighted CM.</div>
+                <div class="menu-ev-result">~$1,420/mo <span class="menu-val-tag">[ESTIMATED]</span></div>
+              </div>
+            </div>
+
+            <div class="menu-ev-card">
+              <div class="menu-ev-h">Source health</div>
+              <div class="menu-ev-body">
+                <div class="menu-ev-src menu-src-ok"><span class="menu-src-dot"></span>Toast POS · connected</div>
+                <div class="menu-ev-src menu-src-ok"><span class="menu-src-dot"></span>Price at sale · connected</div>
+                <div class="menu-ev-src menu-src-warn"><span class="menu-src-dot"></span>Recipe cost · stale 18d</div>
+                <div class="menu-ev-src menu-src-miss"><span class="menu-src-dot"></span>COGS · not connected</div>
+                <div class="menu-ev-src menu-src-ok"><span class="menu-src-dot"></span>Baseline · connected</div>
+              </div>
+            </div>
+
+            <div class="menu-ev-card">
+              <div class="menu-ev-h">Classification logic</div>
+              <div class="menu-ev-body">
+                <div class="menu-ev-row"><span>Popularity threshold</span><strong>8.0%</strong></div>
+                <div class="menu-ev-row"><span>CM threshold</span><strong>$8.75</strong></div>
+                <div class="menu-ev-cls-grid">
+                  <span class="menu-ev-cls menu-q-star">Star · 2</span>
+                  <span class="menu-ev-cls menu-q-plow">Plowhorse · 3</span>
+                  <span class="menu-ev-cls menu-q-puzz">Puzzle · 2</span>
+                  <span class="menu-ev-cls menu-q-dog">Dog · 2</span>
+                </div>
+                <div style="font-size:10.5px;color:var(--t3);margin-top:6px;line-height:1.5">
+                  Truffle Fries flagged <strong>Plowhorse · Watch</strong> — CM $7.60 sits below $8.75 threshold (high pop + below-threshold CM).
+                </div>
+              </div>
+            </div>
+
+            <div class="menu-ev-card">
+              <div class="menu-ev-h">Verification rules</div>
+              <div class="menu-ev-body menu-ev-text">
+                Estimated exposure is not ROI.<br>
+                Simulated lift is not ROI.<br>
+                <strong>Verified savings</strong> requires monitoring + guardrails + fresh food cost.
+              </div>
+            </div>
+
+            <div class="menu-ev-card menu-ev-card-warn">
+              <div class="menu-ev-h">Data quality blocker</div>
+              <div class="menu-ev-body menu-ev-text">
+                Recipe costs <strong>stale 18d</strong>.<br>
+                Menu ROI cannot verify until refresh.
+                <button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="showScreen('settings',null,'Data Quality')">Fix source</button>
+              </div>
+            </div>
+
+            <div class="menu-ev-card">
+              <div class="menu-ev-h">LLM restrictions</div>
+              <div class="menu-ev-body menu-ev-text">
+                LLM explains only.<br>
+                No invented costs.<br>
+                No changing classifications.<br>
+                No removing labels.
+              </div>
+            </div>
+
+          </div>
+          <div class="menu-ev-foot">
+            <button class="btn btn-primary btn-sm" onclick="openMenuEvidenceDrawer()">Open Full Evidence Drawer</button>
+          </div>
+        </div><!-- /Evidence -->
+
+      </div><!-- /menu-page-body -->
+    </div><!-- /menu-page-shell -->
+  </div><!-- /screen-menu -->
