@@ -1,0 +1,281 @@
+  <div class="screen active" id="screen-home">
+    <div id="preBaselineBanner" class="pbb">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div class="pbb-left">
+        <div class="pbb-title">Building your baseline — <span id="baselineDaysRemaining">11</span> days to first recommendations</div>
+        <div class="pbb-body">SKC needs 14 days of data before it can detect leaks. In the meantime, your KPIs are shown against industry benchmarks. <span style="color:var(--t3)">[INDUSTRY BENCHMARK]</span></div>
+      </div>
+      <div class="pbb-right">
+        <div class="pbb-bar-track">
+          <div class="pbb-bar-fill"></div>
+        </div>
+        <div class="pbb-day">Day 3 of 14</div>
+      </div>
+    </div>
+
+    <!-- DQ banner — only for true blocked source failures -->
+    <div id="dq-today-banner" style="display:none;margin:0 0 16px"></div>
+
+    <!-- (v28) Today-page DQ banner removed by request — DQ surface remains on Data Quality screen -->
+
+    <!-- (Fix 1) SKC Trust onboarding overlay — replaces home content when active -->
+    <div id="skc-tr-onboarding"></div>
+
+    <!-- ══ TAB: PRIORITY ══════════════════════════════════════ -->
+
+    <!-- ══ FIRST FOLD ══════════════════════════════════════════════ -->
+    <div class="td-first-fold">
+
+      <!-- Hero: action-first, spacious, doctrine-quiet -->
+      <div class="td-hero">
+        <div class="td-hero-meta">Rosewood Group · Tuesday, May 19 · <span class="skc-aud-badge skc-aud-gm" title="Today is the GM's daily decision surface">GM view</span> · <span style="color:var(--amber);font-weight:600">1 decision ready</span></div>
+        <h1 class="td-hero-headline">Today's highest-value recovery decision is ready.</h1>
+        <p class="td-hero-sub">SKC found 1 profit recovery decision today.</p>
+        <p class="td-hero-doctrine">Toast records what happened. SKC decides what to fix and proves whether it worked.</p>
+      </div>
+
+      <!-- Primary decision card -->
+      <div class="td-card" id="demo-target-today-priority">
+
+        <!-- Card header: category + location -->
+        <div class="td-card-header">
+          <div class="td-card-flag">
+            <span class="td-flag-dot"></span>
+            <span class="td-flag-label">Priority Action</span>
+          </div>
+          <div class="td-card-loc">Oakland · Tuesday Dinner · Labor</div>
+        </div>
+
+        <!-- Card body: decision + value -->
+        <div class="td-card-body">
+
+          <!-- Left: decision -->
+          <div class="td-card-left">
+            <div class="td-decision">Remove one 5&ndash;10 PM FOH server from Oakland Tuesday dinner.</div>
+            <div class="td-reason">RPLH is below the normal range for 6 of the last 6 comparable Tuesday dinners.</div>
+
+            <!-- Owner + due -->
+            <div class="td-meta-row">
+              <span class="td-meta-item">Owner: <strong>Sarah C.</strong></span>
+              <span class="td-meta-sep">·</span>
+              <span class="td-meta-item td-due">Due before 3 PM</span>
+            </div>
+
+            <!-- Confidence strip -->
+            <div class="td-conf-strip">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span class="td-conf-val" data-skc="conf-labor">78%</span> confidence
+              <span class="td-conf-sep">·</span>
+              <span class="td-conf-note">85% base &minus;7 pts · 7shifts stale 18h</span>
+              <span class="td-conf-sep">·</span>
+              <span class="td-conf-action">Action allowed · verification limited</span>
+            </div>
+
+            <!-- CTAs -->
+            <div class="td-cta-row">
+              <button class="btn btn-primary td-btn-primary" onclick="openCA('leak1')">Assign before 3 PM</button>
+              <button class="btn btn-secondary td-btn-secondary" onclick="openEvDrawer('leak1')">Show the math</button>
+              <button class="ask-why-btn" onclick="askPanelQ('Why is this today\'s top priority?')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Ask SKC why</button>
+            </div>
+          </div>
+
+          <!-- Right: value -->
+          <div class="td-card-right">
+            <div class="td-value-label">Estimated Open Exposure</div>
+            <div class="td-value-main">$370<span class="td-value-period">/wk</span></div>
+            <div class="td-value-basis">$185/service · 2 services/week</div>
+            <div class="td-value-roi">Not counted in ROI yet</div>
+          </div>
+
+        </div><!-- /td-card-body -->
+
+        <!-- Compact proof strip: pattern + confidence only -->
+        <div class="td-proof-strip">
+          <div class="td-proof-item">
+            <span class="td-proof-label">Pattern</span>
+            <span class="td-proof-val">6 of 6 comparable services</span>
+          </div>
+          <div class="td-proof-div"></div>
+          <div class="td-proof-item">
+            <span class="td-proof-label">Confidence</span>
+            <span class="td-proof-val"><span data-skc="conf-labor">78%</span></span>
+          </div>
+          <div class="td-proof-div"></div>
+          <div class="td-proof-item td-proof-warn">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            <span>7shifts stale · verification limited</span>
+          </div>
+        </div>
+
+      </div><!-- /td-card -->
+
+    </div><!-- /td-first-fold -->
+
+    <!-- ══ POST-ACTION STATES ════════════════════════════════════════ -->
+    <!-- State: Not Assigned (pre-assign hint) -->
+    <div id="home-pre-assign-hint" class="today-state-panel today-state-pre">
+      <strong>No actions assigned yet.</strong> Assign this action before tonight's service to start the monitoring window.
+    </div>
+
+    <!-- State: Assigned -->
+    <div id="home-action-state" class="today-state-panel today-state-assigned" style="display:none">
+      <div class="today-state-eyebrow">Action Assigned</div>
+      <div class="today-state-headline" id="home-state-headline">Today's priority is assigned. Sarah owns this.</div>
+      <div class="today-state-body" id="home-state-body">Due before 3 PM · SKC will monitor tonight's dinner service · Next checkpoint: 8:30 PM</div>
+      <div class="today-state-ctas">
+        <button class="btn btn-primary btn-sm" onclick="showScreen('actions',null,'Actions')">View execution workflow</button>
+        <button class="btn btn-secondary btn-sm" onclick="switchTab('recovery','guardrails');showScreen('leaks',null,'Profit Recovery')">Show guardrails</button>
+        <span class="today-state-badge today-badge-blue">Assigned</span>
+        <span class="today-state-badge today-badge-amber">Not counted yet</span>
+      </div>
+    </div>
+
+    <!-- State: Monitoring -->
+    <div id="home-monitoring-state" class="today-state-panel today-state-monitoring" style="display:none">
+      <div class="today-state-eyebrow">Monitoring · Dinner service in progress</div>
+      <div class="today-state-headline">Dinner service complete. Waiting for Toast + labor sync.</div>
+      <div class="today-state-body">Guardrails under review — RPLH, table turns, avg check, and ticket time checked against thresholds.</div>
+      <div class="today-state-ctas">
+        <span class="today-state-badge today-badge-blue">Monitoring</span>
+        <span class="today-state-badge today-badge-amber">Active Recovery · not counted yet</span>
+      </div>
+    </div>
+
+    <!-- State: Verified -->
+    <div id="home-verified-state" class="today-state-panel today-state-verified" style="display:none">
+      <div class="today-state-eyebrow">Verified Savings</div>
+      <div class="today-state-headline">This action counted as Verified Savings after guardrails passed.</div>
+      <div class="today-state-body">All counter-metrics held across the monitoring window.</div>
+      <div class="today-state-ctas">
+        <button class="btn btn-primary btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">View verified proof</button>
+        <span class="today-state-badge today-badge-green">Verified</span>
+        <span class="today-state-badge today-badge-green">Counts toward ROI</span>
+      </div>
+    </div>
+
+    <!-- State: Rejected -->
+    <div id="home-rejected-state" class="today-state-panel today-state-rejected" style="display:none">
+      <div class="today-state-eyebrow">Guardrail Failed · Not Counted</div>
+      <div class="today-state-headline">RPLH improved, but dining duration exceeded guardrail. Not counted in ROI.</div>
+      <div class="today-state-body">SKC does not count this as a win unless all counter-metrics stay within guardrail thresholds.</div>
+      <div class="today-state-ctas">
+        <button class="btn btn-secondary btn-sm" onclick="showScreen('leaks',null,'Profit Recovery')">Review in Profit Recovery</button>
+        <span class="today-state-badge today-badge-red">Rejected</span>
+        <span class="today-state-badge today-badge-red">$0 counted</span>
+      </div>
+    </div>
+
+    <!-- State: Blocked -->
+    <div id="home-blocked-state" class="today-state-panel today-state-blocked" style="display:none">
+      <div class="today-state-eyebrow">Verification Blocked</div>
+      <div class="today-state-headline">ROI verification blocked until 7shifts refreshes.</div>
+      <div class="today-state-body">Action can proceed with GM approval. Verification and ROI counting resume when labor data syncs.</div>
+      <div class="today-state-ctas">
+        <button class="btn btn-secondary btn-sm" onclick="showScreen('settings',null,'Data Quality')">Reconnect 7shifts</button>
+        <span class="today-state-badge today-badge-amber">Blocked</span>
+        <span class="today-state-badge today-badge-amber">Verification limited</span>
+      </div>
+    </div>
+
+    <!-- Demo controls — QA mode only, never shown to client -->
+    <div class="today-qa-controls" id="home-state-demo-controls" data-qa-only="true">
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('home-action-state').style.display='block';document.getElementById('home-monitoring-state').style.display='none'">Demo: Assigned</button>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('home-monitoring-state').style.display='block';document.getElementById('home-action-state').style.display='none'">Demo: Monitoring</button>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('home-verified-state').style.display='block';document.getElementById('home-action-state').style.display='none'">Demo: Verified</button>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('home-rejected-state').style.display='block'">Demo: Rejected</button>
+      <button class="btn btn-ghost btn-sm" onclick="['home-action-state','home-monitoring-state','home-verified-state','home-rejected-state','home-blocked-state'].forEach(id=>document.getElementById(id).style.display='none')">Reset</button>
+    </div>
+
+    <!-- ══ SECOND FOLD ═══════════════════════════════════════════════ -->
+    <div class="td-second-fold">
+
+      <!-- KPI strip: exactly 3 cards -->
+      <div class="td-kpi-strip">
+        <div class="td-kpi-card td-kpi-green" onclick="showScreen('scorecard',null,'ROI Proof')">
+          <div class="td-kpi-label">Verified Savings</div>
+          <div class="td-kpi-val td-kpi-green-val">$97<span class="td-kpi-period">/wk equiv.</span></div>
+          <div class="td-kpi-note td-kpi-green-note">Counts toward ROI</div>
+        </div>
+        <div class="td-kpi-card" onclick="showScreen('actions',null,'Actions')">
+          <div class="td-kpi-label">Active Recovery</div>
+          <div class="td-kpi-val td-kpi-blue-val">$189<span class="td-kpi-period">/wk</span></div>
+          <div class="td-kpi-note">Monitoring · not counted yet</div>
+        </div>
+        <div class="td-kpi-card" onclick="showScreen('settings',null,'Data Quality')">
+          <div class="td-kpi-label">Data Confidence</div>
+          <div class="td-kpi-val td-kpi-amber-val" data-skc="conf-labor">78%</div>
+          <div class="td-kpi-note">Action allowed · verification limited</div>
+        </div>
+      </div><!-- /td-kpi-strip -->
+
+      <!-- Last verified win -->
+      <div class="td-win" onclick="switchTab('roi','verified');showScreen('scorecard',null,'ROI Proof')">
+        <div class="td-win-check">✓</div>
+        <div class="td-win-body">
+          <div class="td-win-label">Last verified win</div>
+          <div class="td-win-headline">Risotto removal recovered $97/wk equiv. after a 4-week monitoring window.</div>
+          <div class="td-win-sub">Counted only after guardrails held and the monitoring window closed.</div>
+        </div>
+        <div class="td-win-cta">View verified proof →</div>
+      </div>
+
+    </div><!-- /td-second-fold -->
+
+    <!-- ══ THIRD FOLD ════════════════════════════════════════════════ -->
+    <div class="td-third-fold">
+
+      <!-- Today's operating loop -->
+      <div class="td-loop">
+        <div class="td-loop-title" style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap">
+          <span>Today's operating loop</span>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="showScreen('operating-system',null,'Operating System')" style="font-size:11px">See full retention loop →</button>
+        </div>
+        <div class="td-loop-steps">
+          <div class="td-loop-step">
+            <div class="td-loop-num">1</div>
+            <div class="td-loop-step-label">Detect</div>
+            <div class="td-loop-step-desc">Pattern repeated across comparable services.</div>
+          </div>
+          <div class="td-loop-arrow">→</div>
+          <div class="td-loop-step">
+            <div class="td-loop-num">2</div>
+            <div class="td-loop-step-label">Assign</div>
+            <div class="td-loop-step-desc">Owner and deadline set before service.</div>
+          </div>
+          <div class="td-loop-arrow">→</div>
+          <div class="td-loop-step">
+            <div class="td-loop-num">3</div>
+            <div class="td-loop-step-label">Monitor</div>
+            <div class="td-loop-step-desc">Guardrails watched during and after service.</div>
+          </div>
+          <div class="td-loop-arrow">→</div>
+          <div class="td-loop-step">
+            <div class="td-loop-num">4</div>
+            <div class="td-loop-step-label">Verify</div>
+            <div class="td-loop-step-desc">Only guardrail-safe recovery counts.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ask SKC row -->
+      <div class="td-ask">
+        <div class="td-ask-label">Ask SKC</div>
+        <div class="td-ask-inner">
+          <div class="td-ask-input" onclick="toggleAskPanel()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;color:var(--t3)"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="td-ask-placeholder">Ask about evidence, calculations, guardrails, or what to tell the team →</span>
+          </div>
+          <div class="td-ask-chips">
+            <div class="td-ask-chip" onclick="askPanelQ('Why is this the top priority?')">Why is this the top priority?</div>
+            <div class="td-ask-chip" onclick="askPanelQ('Show me the calculation.')">Show me the calculation.</div>
+            <div class="td-ask-chip" onclick="askPanelQ('What should I tell Sarah?')">What should I tell Sarah?</div>
+            <div class="td-ask-chip" onclick="askPanelQ('When does this count as verified ROI?')">When does this count as verified ROI?</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /td-third-fold -->
+
+
+
+  </div>
