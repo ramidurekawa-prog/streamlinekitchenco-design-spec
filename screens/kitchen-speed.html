@@ -1,0 +1,392 @@
+  <div class="screen" id="screen-throughput">
+
+    <!-- ── PAGE HEADER ──────────────────────────────────── -->
+    <div class="page-header" style="padding-top:24px">
+      <div class="page-header-left">
+        <div class="page-header-title">Kitchen</div>
+        <div class="page-header-sub">Ticket time signal from KDS · aggregate data only · station-level root cause requires on-site observation</div>
+      </div>
+      <div class="page-header-right">
+        <button class="btn btn-primary" onclick="openCA('leak3')">Schedule service observation</button>
+        <button class="btn btn-ghost btn-sm" onclick="showScreen('leaks',null,'Profit Recovery')">← Profit Recovery</button>
+      </div>
+    </div>
+
+    <!-- ── DATA QUALITY WARNING ──────────────────────────── -->
+    <div class="dq-banner warn" style="margin-bottom:16px">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;color:var(--amber)"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <strong>KDS partial / degraded</strong> · Last sync: 6m ago · Aggregate ticket time available · Station-level root cause unavailable · Confidence 64% · ROI verification conditional
+      <button class="btn btn-ghost btn-sm" style="margin-left:auto;font-size:11px" onclick="showScreen('settings',null,'Data Quality')">Fix KDS connection →</button>
+    </div>
+
+    <!-- ── ACTION MEMO ───────────────────────────────────── -->
+    <div style="background:var(--card);border:1px solid var(--border);border-left:4px solid var(--amber);border-radius:var(--r-lg);padding:18px 20px;margin-bottom:20px">
+      <div style="font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin-bottom:12px;display:flex;align-items:center;gap:6px">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);flex-shrink:0"></span>
+        Recommended Throughput Action · Schedule for Friday 10:30 AM
+      </div>
+      <div style="font-size:18px;font-weight:700;color:var(--t1);line-height:1.25;font-family:var(--display);margin-bottom:10px">Schedule a 15-minute kitchen line observation for Friday lunch at Berkeley.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;font-size:12px">
+        <div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:4px">Do not change yet</div>
+          <div style="color:var(--t2);line-height:1.5">Staffing template<br>Menu availability<br>Station assignments<br>(confirm root cause first)</div>
+        </div>
+        <div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:4px">During service — watch</div>
+          <div style="color:var(--t2);line-height:1.5">Grill 12:15–1:00 PM<br>Expo delays<br>First ticket over 14 min<br>Dining duration rise</div>
+        </div>
+        <div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:4px">Capture after service</div>
+          <div style="color:var(--t2);line-height:1.5">Was it grill, expo, or pickup?<br>Manager note in SKC<br>Any guardrail changes<br>Compare to baseline</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--t3);margin-bottom:10px;padding-top:10px;border-top:1px solid var(--border)">
+        <span>Owner: <strong style="color:var(--t2)">Jamie L.</strong></span>
+        <span style="color:var(--border-s)">·</span>
+        <span>System: <strong style="color:var(--t2)">Manager notes in SKC · 5 min</strong></span>
+        <span style="color:var(--border-s)">·</span>
+        <span>Due: <strong style="color:var(--amber)">Friday 10:30 AM · Berkeley</strong></span>
+        <span style="color:var(--border-s)">·</span>
+        <span>Next checkpoint: <strong style="color:var(--t2)">2:30 PM Friday post-lunch</strong></span>
+      </div>
+
+      <!-- Confidence interpretation -->
+      <div style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--amber);background:var(--amber-d);border:1px solid var(--amber-b);border-radius:var(--r);padding:5px 10px;margin-bottom:14px">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span style="font-family:var(--mono);font-weight:600">64%</span> confidence
+        <span style="color:var(--t3)">·</span>
+        <span style="color:var(--t3)">76% base −12 pts partial KDS</span>
+        <span style="color:var(--t3)">·</span>
+        <span>Action allowed · observation only · automated root cause blocked until station-level KDS connects · ROI verification conditional</span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary" style="font-size:13px;padding:9px 20px" onclick="openCA('leak3')">Assign line review</button>
+        <button class="btn btn-secondary" onclick="openEvDrawer('leak3')">Show ticket-time evidence</button>
+        <button class="btn btn-ghost btn-sm" onclick="showScreen('settings',null,'Data Quality')">Reconnect KDS</button>
+<button class="ask-why-btn" onclick="askPanelQ('Why is ticket time rising at Berkeley on Friday lunch?')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Ask SKC why</button>
+      </div>
+    </div>
+
+    <!-- ── SECTION 1: SUMMARY METRICS ───────────────────── -->
+    <div class="si-metrics mb-24">
+      <div class="si-metric si-metric-alert" style="border-top-color:var(--amber)">
+        <div class="si-metric-label">Ticket time · Fri lunch · Berkeley</div>
+        <div class="si-metric-val" style="color:var(--amber)" data-skc="ticket-time">14.2<span class="si-metric-unit"> min</span></div>
+        <div class="si-metric-note">vs 11.8 min baseline · +2.4 min · <span class="output-chip ot-det" title="DET = Deterministic — measured directly from your data" style="margin-left:2px">DET · partial</span></div>
+      </div>
+      <div class="si-metric">
+        <div class="si-metric-label">Table turn time</div>
+        <div class="si-metric-val" style="color:var(--amber)" data-skc="table-turns">54<span class="si-metric-unit"> min</span></div>
+        <div class="si-metric-note">vs 51 min baseline · +3 min · guardrail ≤ 52 min <span class="output-chip ot-det" title="DET = Deterministic — measured directly from your data">DET</span></div>
+      </div>
+      <div class="si-metric">
+        <div class="si-metric-label">Cover count · Fri lunch</div>
+        <div class="si-metric-val" style="color:var(--t2)">97<span class="si-metric-unit"> covers</span></div>
+        <div class="si-metric-note">vs 96 baseline · stable · volume is not the cause <span class="output-chip ot-det" title="DET = Deterministic — measured directly from your data">DET</span></div>
+      </div>
+      <div class="si-metric si-metric-alert" style="border-top-color:var(--blue)">
+        <div class="si-metric-label">Weekly exposure</div>
+        <div class="si-metric-val" style="color:var(--blue)" data-skc="ticket-chain-weekly">$356<span class="si-metric-unit">/wk</span></div>
+        <div class="si-metric-note">$384/Friday service · 1 affected service/wk · <span style="color:var(--t3)" data-skc="ticket-opp">$1,540/mo run-rate</span></div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 2: BOTTLENECK TABLE ───────────────────── -->
+    <div class="section-shell mb-24">
+      <div class="section-shell-hd">
+        <div class="section-shell-title">Bottleneck Analysis · Friday Lunch · Berkeley</div>
+        <div class="section-shell-note"><span class="src-tag"><span class="src-dot amber"></span>KDS partial/degraded · 6m ago · Direct aggregate data · station-level data missing</span> <span class="src-tag live"><span class="src-dot green"></span>Toast POS · 4m</span></div>
+      </div>
+      <div class="cc-queue-table">
+        <table class="cct">
+          <thead>
+            <tr>
+              <th>Bottleneck</th>
+              <th>Location</th>
+              <th>Daypart</th>
+              <th>Current</th>
+              <th>Baseline</th>
+              <th>Variance</th>
+              <th>Per-service impact</th>
+              <th>Weekly exposure</th>
+              <th>Confidence</th>
+              <th>Next action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="cct-row cct-priority">
+              <td>
+                <div class="cct-issue">Kitchen line <span class="badge amber" style="font-size:9px">Most likely</span></div>
+                <div class="cct-issue-sub">Inferred from ticket time pattern · station unknown</div>
+              </td>
+              <td><span class="cct-loc">Berkeley</span></td>
+              <td class="cct-daypart">Fri lunch</td>
+              <td class="mono" style="color:var(--amber)">14.2 min</td>
+              <td class="mono">11.8 min</td>
+              <td class="mono" style="color:var(--amber)">+2.4 min</td>
+              <td class="cct-money cct-blue">$384/service</td>
+              <td class="cct-money cct-blue">$356/wk<div class="cct-muted">$1,540/mo run-rate</div></td>
+              <td><span class="output-chip ot-est" title="EST = Estimated — calculated from available data with stated confidence">EST · 64%</span></td>
+              <td><button class="btn btn-primary btn-sm" onclick="openCA('leak3')">Schedule review</button></td>
+            </tr>
+            <tr class="cct-row">
+              <td>
+                <div class="cct-issue">Expo station</div>
+                <div class="cct-issue-sub">Possible — ticket hand-off timing stacks with grill</div>
+              </td>
+              <td><span class="cct-loc">Berkeley</span></td>
+              <td class="cct-daypart">Fri lunch</td>
+              <td class="mono" style="color:var(--t3)">No station data</td>
+              <td class="mono" style="color:var(--t3)">—</td>
+              <td class="mono" style="color:var(--t3)">Unknown</td>
+              <td class="cct-money cct-muted">Unconfirmed</td>
+              <td class="cct-money cct-muted">Unknown</td>
+              <td><span class="output-chip ot-est" title="EST = Estimated — calculated from available data with stated confidence">EST · 40%</span></td>
+              <td style="font-size:11px;color:var(--t3)">Confirm on-site</td>
+            </tr>
+            <tr class="cct-row">
+              <td>
+                <div class="cct-issue">Table turns</div>
+                <div class="cct-issue-sub">Turn time elevated — downstream effect of ticket delay</div>
+              </td>
+              <td><span class="cct-loc">Berkeley</span></td>
+              <td class="cct-daypart">Fri lunch</td>
+              <td class="mono" style="color:var(--amber)">54 min</td>
+              <td class="mono">51 min</td>
+              <td class="mono" style="color:var(--amber)">+3 min</td>
+              <td class="cct-money cct-muted">Embedded in $384</td>
+              <td class="cct-money cct-muted">Embedded</td>
+              <td><span class="output-chip ot-det" title="DET = Deterministic — measured directly from your data">DET · 96%</span></td>
+              <td style="font-size:11px;color:var(--t3)">Resolves when ticket time fixed</td>
+            </tr>
+            <tr class="cct-row" style="opacity:.55">
+              <td>
+                <div class="cct-issue">Other locations</div>
+                <div class="cct-issue-sub">No similar pattern detected at Oakland, Walnut Creek, San Jose</div>
+              </td>
+              <td><span class="cct-loc">All others</span></td>
+              <td class="cct-daypart">All dayparts</td>
+              <td class="mono text-green">≤ 12.4 min</td>
+              <td class="mono">11.8 min</td>
+              <td class="mono text-green">Within range</td>
+              <td class="cct-money" style="color:var(--t3)">—</td>
+              <td class="cct-money" style="color:var(--t3)">—</td>
+              <td><span class="output-chip ot-det" title="DET = Deterministic — measured directly from your data">DET · 96%</span></td>
+              <td style="font-size:11px;color:var(--green)">No action needed</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="cct-footer">
+          <span class="cct-footer-note">KDS partial — aggregate ticket time confirmed · station-level root cause requires on-site observation. Reconnect KDS for per-station data.</span>
+          <button class="btn btn-ghost btn-sm" onclick="openEvDrawer('leak3')">Evidence drawer →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 3: SERVICE FLOW TIMELINE ──────────────── -->
+    <div class="section-shell mb-24">
+      <div class="section-shell-hd">
+        <div class="section-shell-title">Service Flow · Friday Lunch · Berkeley · Where SKC Suspects Delay</div>
+        <div class="section-shell-note">Order → Kitchen → Expo → Table · SKC suspects delay in kitchen (observation required) · <span class="src-tag"><span class="src-dot amber"></span>KDS partial/degraded · 6m ago</span></div>
+      </div>
+      <div class="sft-timeline">
+
+        <div class="sft-step sft-pass">
+          <div class="sft-step-marker"></div>
+          <div class="sft-step-body">
+            <div class="sft-step-label">Host seating</div>
+            <div class="sft-step-time">0:00 – 1:30 min</div>
+            <div class="sft-step-note">No flag detected · covers stable</div>
+          </div>
+        </div>
+
+        <div class="sft-step sft-pass">
+          <div class="sft-step-marker"></div>
+          <div class="sft-step-body">
+            <div class="sft-step-label">Order taken</div>
+            <div class="sft-step-time">~2:00 min</div>
+            <div class="sft-step-note">Avg check stable · upsells healthy</div>
+          </div>
+        </div>
+
+        <div class="sft-step sft-flag">
+          <div class="sft-step-marker sft-marker-flag"></div>
+          <div class="sft-step-body">
+            <div class="sft-step-label">Kitchen → ticket close <span class="badge amber" style="font-size:9px;vertical-align:middle">Observation required</span></div>
+            <div class="sft-step-time sft-flag-time">14.2 min current · 11.8 min baseline · <strong>+2.4 min excess</strong></div>
+            <div class="sft-step-note" style="color:var(--amber)">Biggest variance here. SKC cannot confirm root cause with partial KDS data. Observe grill station 12:15–1:00 PM, log expo delays, note first ticket over 14 min. Every excess minute compresses ~1.8 table turns.</div>
+          </div>
+          <div class="sft-step-impact">
+            <div class="sft-impact-label">Per excess minute</div>
+            <div class="sft-impact-val">~$160 revenue at risk</div>
+          </div>
+        </div>
+
+        <div class="sft-step sft-watch">
+          <div class="sft-step-marker sft-marker-watch"></div>
+          <div class="sft-step-body">
+            <div class="sft-step-label">Expo / runner delivery <span class="badge amber" style="font-size:9px;vertical-align:middle">Watch</span></div>
+            <div class="sft-step-time">~16:00 min from seat (current) · ~13:30 min at baseline</div>
+            <div class="sft-step-note">Downstream of ticket time — if kitchen fires late, expo stacks. Possible second friction point if grill and sauté items handoff simultaneously.</div>
+          </div>
+        </div>
+
+        <div class="sft-step sft-pass">
+          <div class="sft-step-marker"></div>
+          <div class="sft-step-body">
+            <div class="sft-step-label">Guest dining</div>
+            <div class="sft-step-time">~25–35 min</div>
+            <div class="sft-step-note">No signal — complaints at 0/wk · avg check holding</div>
+          </div>
+        </div>
+
+        <div class="sft-step sft-watch">
+          <div class="sft-step-marker sft-marker-watch"></div>
+          <div class="sft-step-body">
+            <div class="sft-step-label">Payment + table reset <span class="badge amber" style="font-size:9px;vertical-align:middle">Watch</span></div>
+            <div class="sft-step-time">Table turns 54 min current · 51 min baseline · +3 min</div>
+            <div class="sft-step-note">Elevated turn time is a downstream symptom of ticket delay — expect this to normalize when kitchen bottleneck is resolved.</div>
+          </div>
+        </div>
+
+      </div>
+      <div style="font-size:11.5px;color:var(--t3);margin-top:10px;padding:8px 0">Service flow timing estimated from KDS aggregate data + Toast POS table turn records. Per-step timings are illustrative until full KDS station data is restored. The kitchen fire step is the confirmed variance point — all others are inferred.</div>
+    </div>
+
+    <!-- ── SECTION 4: RECOMMENDED ACTIONS ────────────────── -->
+    <div class="section-shell mb-24">
+      <div class="section-shell-hd">
+        <div class="section-shell-title">Recommended Actions</div>
+        <div class="section-shell-note">Ranked by confidence · $356/wk exposure not counted in ROI until monitoring confirms</div>
+      </div>
+      <div class="responsive-table mb-12">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Action</th>
+              <th>Owner</th>
+              <th>Due</th>
+              <th>Per-service impact</th>
+              <th>Weekly exposure</th>
+              <th>Verification rule</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:rgba(59,130,246,.03)">
+              <td class="cct-rank">1</td>
+              <td>
+                <div style="font-weight:600;color:var(--t1)">15-min kitchen line review before Friday lunch</div>
+                <div class="cct-issue-sub">Walk each station · find handoff friction · implement one fix before service</div>
+              </td>
+              <td class="cct-owner">Jamie L.</td>
+              <td class="cct-mono" style="color:var(--blue)">Before Fri service · 10:30 AM</td>
+              <td class="cct-money cct-blue">$384/service</td>
+              <td class="cct-money cct-blue">$356/wk<div class="cct-muted">$1,540/mo run-rate</div></td>
+              <td style="font-size:11.5px;color:var(--t3)">Ticket time ≤ 12 min for 3 consecutive Friday lunches · all guardrails passing</td>
+              <td><button class="btn btn-primary btn-sm" onclick="openCA('leak3')">Assign before service</button></td>
+            </tr>
+            <tr>
+              <td class="cct-rank">2</td>
+              <td>
+                <div style="font-weight:500;color:var(--t1)">Reconnect KDS for station-level data</div>
+                <div class="cct-issue-sub">Restores confidence from 64% → 80%+ · enables station-specific diagnosis</div>
+              </td>
+              <td class="cct-owner">Ops / IT</td>
+              <td class="cct-mono" style="color:var(--t3)">Before next Friday</td>
+              <td class="cct-money cct-muted">+16% confidence</td>
+              <td class="cct-money cct-muted">Risk reduction</td>
+              <td style="font-size:11.5px;color:var(--t3)">Full KDS data enables verified ROI eligibility</td>
+              <td><button class="btn btn-ghost btn-sm" onclick="showScreen('settings',null,'Data Quality')">Fix source →</button></td>
+            </tr>
+            <tr>
+              <td class="cct-rank">3</td>
+              <td>
+                <div style="font-weight:500;color:var(--t1)">Test adjusted prep timing for Fri lunch protein</div>
+                <div class="cct-issue-sub">If grill is the bottleneck — 5 min earlier fire on high-volume proteins</div>
+              </td>
+              <td class="cct-owner">Head Chef · Berkeley</td>
+              <td class="cct-mono" style="color:var(--t3)">After diagnosis</td>
+              <td class="cct-money cct-muted">TBD post-review</td>
+              <td class="cct-money cct-muted">TBD</td>
+              <td style="font-size:11.5px;color:var(--t3)">Dependent on step 1 findings</td>
+<button class="ask-why-btn" onclick="askPanelQ('What prep changes would reduce Friday lunch ticket time?')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Ask SKC why</button>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sft-playbook">
+        <details>
+          <summary class="sft-playbook-summary">View 15-min line review playbook</summary>
+          <ol class="sft-playbook-steps">
+            <li>Arrive at Berkeley 30 min before Friday lunch (typically 10:30 AM)</li>
+            <li>Walk each kitchen station — check mise en place and prep completeness</li>
+            <li>Identify handoff friction between expo, grill, and sauté positions</li>
+            <li>Implement one targeted process change before service starts</li>
+            <li>Watch KDS ticket times during service — target ≤ 12 min</li>
+            <li>Log findings in SKC → Throughput for baseline comparison</li>
+            <li>Repeat for 3 consecutive Fridays to confirm fix holds</li>
+          </ol>
+        </details>
+      </div>
+    </div>
+
+    <!-- ── SECTION 5: GUARDRAILS ─────────────────────────── -->
+    <div class="section-shell mb-24">
+      <div class="section-shell-hd">
+        <div class="section-shell-title">Verification Guardrails</div>
+        <div class="section-shell-note">Throughput fixes must not harm these metrics · any failure blocks verified ROI</div>
+      </div>
+      <div class="rlc-guardrail-row" style="gap:10px;flex-wrap:wrap">
+        <div class="rlc-gr-item watch">
+          <span class="rlc-gr-name">Ticket time (target)</span>
+          <span class="rlc-gr-val" style="color:var(--amber)" data-skc="ticket-time">14.2 min</span>
+          <span class="rlc-gr-limit">≤ 12 min · 3 Fridays</span>
+          <span class="cg-status fail" style="font-size:10px">Above target</span>
+        </div>
+        <div class="rlc-gr-item watch">
+          <span class="rlc-gr-name">Table turns</span>
+          <span class="rlc-gr-val" style="color:var(--amber)" data-skc="table-turns">54 min</span>
+          <span class="rlc-gr-limit">≤ 52 min</span>
+          <span class="cg-status fail" style="font-size:10px">Above threshold</span>
+        </div>
+        <div class="rlc-gr-item pass">
+          <span class="rlc-gr-name">Remake rate</span>
+          <span class="rlc-gr-val">1.2%</span>
+          <span class="rlc-gr-limit">≤ 3%</span>
+          <span class="cg-status pass" style="font-size:10px">Passing</span>
+        </div>
+        <div class="rlc-gr-item pass">
+          <span class="rlc-gr-name">Guest complaints</span>
+          <span class="rlc-gr-val" data-skc="complaints">0 / wk</span>
+          <span class="rlc-gr-limit">≤ 2 / wk</span>
+          <span class="cg-status pass" style="font-size:10px">Passing</span>
+        </div>
+        <div class="rlc-gr-item pass">
+          <span class="rlc-gr-name">Average check</span>
+          <span class="rlc-gr-val text-green" data-skc="avg-check">$53.10</span>
+          <span class="rlc-gr-limit">≥ $50.00</span>
+          <span class="cg-status pass" style="font-size:10px">Passing</span>
+        </div>
+        <div class="rlc-gr-item pass">
+          <span class="rlc-gr-name">Cover count</span>
+          <span class="rlc-gr-val">97 / service</span>
+          <span class="rlc-gr-limit">87–107 (±10%)</span>
+          <span class="cg-status pass" style="font-size:10px">Passing</span>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--t3);margin-top:12px;line-height:1.6;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 16px">
+        Verification rule: Ticket time must reach <strong>≤ 12 min</strong> for <strong>3 consecutive Friday lunch services</strong> at Berkeley with all 6 guardrails passing. If remake rate exceeds 3% or complaints rise, the action is blocked — the fix introduced a food quality tradeoff. The $356/wk exposure is not counted in ROI until monitoring closes clean.
+      </div>
+    </div>
+
+    <!-- ── FOOTER NAVIGATION ─────────────────────────────── -->
+    <div style="display:flex;align-items:center;gap:8px;padding:16px 0;border-top:1px solid var(--border)">
+      <button class="btn btn-ghost btn-sm" onclick="showScreen('leaks',null,'Profit Recovery')">← Profit Recovery</button>
+      <button class="btn btn-ghost btn-sm" onclick="openEvDrawer('leak3')">Full Evidence Drawer</button>
+<button class="ask-why-btn" onclick="askPanelQ('Why is ticket time rising at Berkeley on Friday lunch?')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Ask SKC why</button>
+    </div>
+
+  </div>
