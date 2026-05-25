@@ -1,0 +1,726 @@
+  <div class="screen" id="screen-scorecard">
+
+    <!-- Engine hooks — do not move or rename -->
+    <div id="dq-proof-note" style="display:none;padding:16px 0 0"></div>
+    <div id="dq-proof-accounting" style="display:none;padding:0 0 0"></div>
+    <div id="dq-ve-eligibility" style="margin:0 0 8px"></div>
+
+    <!-- ══ PAGE HEADER ════════════════════════════════════════ -->
+    <div class="rp-page-header">
+      <div class="rp-page-header-left">
+        <div class="page-header-title">ROI Proof</div>
+        <div class="page-header-sub">Last 30 days · Owner-ready verified value · Guardrail-safe monitored recovery only</div>
+      </div>
+      <div class="rp-page-header-right">
+        <span class="skc-aud-badge skc-aud-owner" title="ROI Proof is the owner-facing verified value surface">Owner view</span>
+        <button class="btn btn-primary" onclick="openOwnerReport()">Export Owner Report</button>
+        <button class="btn btn-secondary btn-sm" onclick="showDemoToast('Owner summary copied to clipboard','blue')">Copy Summary</button>
+      </div>
+    </div>
+
+    <!-- ── (v26 · Fix 11) Pilot verification expectations ─────
+         Visible when account_phase === 'pilot'. Hidden in paying state.
+         Toggled by body.skc-phase-pilot / body.skc-phase-paying. -->
+    <div id="rp-pilot-expectations" class="rp-pilot-card" style="margin-bottom:22px">
+      <div class="rp-pilot-head">
+        <div>
+          <div class="rp-pilot-eyebrow">Pilot · 30-day window</div>
+          <div class="rp-pilot-title" id="rp-pilot-title">Pilot verification expectations · Day 15 of 30</div>
+        </div>
+        <span class="os-chip os-chip-amber" id="rp-pilot-phase-chip">Pilot</span>
+      </div>
+      <div class="rp-pilot-body">
+        <p class="rp-pilot-doctrine"><strong>Standard monitoring windows are 2–4 weeks. The pilot is 30 days.</strong> At most one verification window can close inside a pilot — usually zero.</p>
+        <div class="rp-pilot-grid">
+          <div class="rp-pilot-cell">
+            <div class="rp-pilot-cell-label">Expected verified lines</div>
+            <div class="rp-pilot-cell-val">1 typical · 2 best case · 0 if DQ blocked</div>
+          </div>
+          <div class="rp-pilot-cell">
+            <div class="rp-pilot-cell-label">Active Recovery visibility</div>
+            <div class="rp-pilot-cell-val">Visible — not counted as ROI</div>
+          </div>
+          <div class="rp-pilot-cell">
+            <div class="rp-pilot-cell-label">Open Exposure visibility</div>
+            <div class="rp-pilot-cell-val">Visible — not counted as ROI</div>
+          </div>
+          <div class="rp-pilot-cell">
+            <div class="rp-pilot-cell-label">Verification standard</div>
+            <div class="rp-pilot-cell-val">Same as paying customers · monitoring window must close clean</div>
+          </div>
+        </div>
+        <div class="rp-pilot-explainer">
+          <strong>If zero verifications occur during the pilot,</strong> the renewal decision should be based on (1) the quality of leak detection you observed, (2) the action recommendations you would have implemented, and (3) the trust calibration of the platform — not on counted ROI. We will not retroactively bend the verification rule to manufacture a counted line for the renewal conversation.
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ MONTHLY VERIFIED VALUE CYCLE (this month's wins) ═══ -->
+    <!-- Compact view; full module lives on Operating System. -->
+    <div class="os-card os-mvv" style="margin:0 0 22px;border-left:4px solid var(--green)">
+      <div class="os-section-h">
+        <div>
+          <div class="os-section-title">This Month's Verified Wins</div>
+          <div class="os-section-sub">Every reporting cycle needs counted value, blocked value, or a clear reason verification is still pending.</div>
+        </div>
+        <span class="os-chip os-chip-gray">Reporting cycle · May 1–31</span>
+      </div>
+
+      <div class="os-mvv-cycle">
+        <div class="os-mvv-cycle-step">Active Recovery</div>
+        <span class="os-mvv-arrow">→</span>
+        <div class="os-mvv-cycle-step os-mvv-active">Guardrail Monitoring</div>
+        <span class="os-mvv-arrow">→</span>
+        <div class="os-mvv-cycle-step">Verified Savings</div>
+      </div>
+
+      <div class="os-mvv-grid">
+        <div class="os-mvv-cell">
+          <div class="os-mvv-cell-label">Verified this cycle</div>
+          <div class="os-mvv-cell-val" style="color:var(--green)">$420<span style="font-size:11px;color:var(--t3);font-weight:400;letter-spacing:0">/mo</span></div>
+          <div class="os-mvv-cell-sub">Run-rate equivalent · 1 counted line</div>
+        </div>
+        <div class="os-mvv-cell">
+          <div class="os-mvv-cell-label">Pending verification</div>
+          <div class="os-mvv-cell-val" style="color:var(--blue)">3</div>
+          <div class="os-mvv-cell-sub">Active Recovery in monitoring window</div>
+        </div>
+        <div class="os-mvv-cell">
+          <div class="os-mvv-cell-label">Blocked</div>
+          <div class="os-mvv-cell-val" style="color:var(--red)">1</div>
+          <div class="os-mvv-cell-sub">Payroll/accounting confirmation missing</div>
+        </div>
+        <div class="os-mvv-cell">
+          <div class="os-mvv-cell-label">Cycle health</div>
+          <div class="os-mvv-cell-val" style="color:var(--green);font-size:15px">On cadence</div>
+          <div class="os-mvv-cell-sub">Verified line added this cycle</div>
+        </div>
+      </div>
+
+      <div class="os-mvv-status" style="margin-bottom:12px">
+        <span class="os-mvv-status-dot"></span>
+        <span><strong>On cadence:</strong> SKC adds a verified line every reporting cycle when actions pass monitoring and guardrails. If nothing verifies, the owner sees exactly what is pending or blocked.</span>
+      </div>
+
+      <div class="os-vq">
+        <div class="os-vq-h">Verification Queue</div>
+        <div class="os-vq-list">
+          <div class="os-vq-row os-vq-monitoring">
+            <div>
+              <div class="os-vq-title">Labor adjustment · Oakland Tuesday Lunch</div>
+              <div class="os-vq-meta">Monitoring closes in 6 days · Avg check guardrail stable · 7shifts confidence-reduced</div>
+            </div>
+            <span class="os-vq-val">$370/wk EST</span>
+            <span class="os-vq-status os-chip-blue">Active Recovery</span>
+          </div>
+          <div class="os-vq-row os-vq-monitoring">
+            <div>
+              <div class="os-vq-title">Table-turn playbook · Oakland Friday Dinner</div>
+              <div class="os-vq-meta">Monitoring window open · Guest sentiment stable</div>
+            </div>
+            <span class="os-vq-val">~$680/wk EST</span>
+            <span class="os-vq-status os-chip-blue">Active Recovery</span>
+          </div>
+          <div class="os-vq-row os-vq-ready">
+            <div>
+              <div class="os-vq-title">Menu mix cleanup · Berkeley</div>
+              <div class="os-vq-meta">Monitoring window closed · All guardrails passed</div>
+            </div>
+            <span class="os-vq-val">$210/wk</span>
+            <span class="os-vq-status os-chip-green">Ready to Verify</span>
+          </div>
+          <div class="os-vq-row os-vq-blocked">
+            <div>
+              <div class="os-vq-title">Prep waste reduction · Walnut Creek</div>
+              <div class="os-vq-meta">COGS upload missing · Cannot enter monitoring</div>
+            </div>
+            <span class="os-vq-val">$185/wk EST</span>
+            <span class="os-vq-status os-chip-red">Blocked</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="os-mvv-doctrine">Only guardrail-safe monitored recovery enters Verified Savings. Active Recovery, Open Exposure, Blocked Value, and Rejected value never count toward ROI.</div>
+
+      <div class="os-mod-ctas" style="margin-top:14px">
+        <button class="btn btn-secondary btn-sm" onclick="showScreen('operating-system',null,'Operating System')">Open full retention loop →</button>
+      </div>
+    </div>
+
+    <!-- ══ HERO PROOF CARD ════════════════════════════════════ -->
+    <div class="rp-hero">
+      <div class="rp-hero-left">
+        <div class="rp-hero-eyebrow">Verified Savings · Last 30 days</div>
+        <div class="rp-hero-headline">SKC verified $97/wk in savings this period.</div>
+        <div class="rp-hero-sub">Only guardrail-safe monitored recovery counts toward ROI.</div>
+        <div class="rp-hero-doctrine">Active Recovery, Open Exposure, Blocked Verification, and Rejected value are not counted as ROI.</div>
+
+        <div class="rp-value-block">
+          <div class="rp-value-label">Weekly Verified Savings</div>
+          <div class="rp-value-main">$97<span class="rp-value-period">/wk</span></div>
+          <div class="rp-value-equiv">
+            <span class="rp-equiv-val" data-skc="verified-savings">$420/mo</span> run-rate equiv.
+            <span class="rp-equiv-sep">·</span>
+            <span class="rp-equiv-val">$5.0k/yr</span> run-rate equiv.
+          </div>
+          <div class="rp-value-context">Context only — not counted as separate savings</div>
+          <div class="rp-value-badge"><span class="rp-badge-counts">✓ Counts toward ROI</span><span class="rp-badge-conf">91% confidence</span></div>
+        </div>
+
+        <div class="rp-coverage-strip">
+          <div class="rp-coverage-indicator"></div>
+          <span class="rp-coverage-text">SKC is covering <strong>1.2×</strong> the monthly subscription with verified run-rate equivalent savings.</span>
+          <span class="rp-coverage-note">Subscription: $349/mo · Verified run-rate: $420/mo</span>
+        </div>
+      </div>
+
+      <div class="rp-hero-right">
+        <!-- Subscription vs verified mini chart -->
+        <div class="rp-coverage-chart">
+          <div class="rp-cov-chart-label">Verified vs Subscription</div>
+          <div class="rp-cov-bars">
+            <div class="rp-cov-bar-group">
+              <div class="rp-cov-bar-track">
+                <div class="rp-cov-bar-fill rp-cov-verified" style="height:100%"></div>
+              </div>
+              <div class="rp-cov-bar-val rp-cov-green">$420/mo</div>
+              <div class="rp-cov-bar-name">Verified run-rate</div>
+            </div>
+            <div class="rp-cov-bar-group">
+              <div class="rp-cov-bar-track">
+                <div class="rp-cov-bar-fill rp-cov-sub" style="height:83%"></div>
+              </div>
+              <div class="rp-cov-bar-val rp-cov-neutral">$349/mo</div>
+              <div class="rp-cov-bar-name">Subscription</div>
+            </div>
+          </div>
+          <div class="rp-cov-chart-caption">Coverage: 1.2× · Payback status: covered</div>
+        </div>
+
+        <!-- Value bucket breakdown -->
+        <div class="rp-bucket-legend">
+          <div class="rp-bucket-label">Value separation</div>
+          <div class="rp-bucket-row rp-bucket-verified"><span class="rp-bucket-dot rp-dot-green"></span><span class="rp-bucket-name">Verified Savings</span><span class="rp-bucket-val">$97/wk</span><span class="rp-bucket-status">Counts toward ROI</span></div>
+          <div class="rp-bucket-row"><span class="rp-bucket-dot rp-dot-blue"></span><span class="rp-bucket-name">Active Recovery</span><span class="rp-bucket-val">$189/wk</span><span class="rp-bucket-status rp-status-no">Not counted yet</span></div>
+          <div class="rp-bucket-row"><span class="rp-bucket-dot rp-dot-amber"></span><span class="rp-bucket-name">Blocked Verification</span><span class="rp-bucket-val">$519/wk</span><span class="rp-bucket-status rp-status-no">Not counted</span></div>
+          <div class="rp-bucket-row"><span class="rp-bucket-dot rp-dot-red"></span><span class="rp-bucket-name">Rejected / Not Counted</span><span class="rp-bucket-val">$220/wk</span><span class="rp-bucket-status rp-status-no">Not counted</span></div>
+          <div class="rp-bucket-row"><span class="rp-bucket-dot rp-dot-gray"></span><span class="rp-bucket-name">Open Exposure</span><span class="rp-bucket-val">$1,243/wk</span><span class="rp-bucket-status rp-status-no">Not assigned</span></div>
+        </div>
+      </div>
+    </div><!-- /rp-hero -->
+
+    <!-- ══ FILTER BAR ════════════════════════════════════════ -->
+    <div class="rp-filter-bar">
+      <div class="rp-filters">
+        <select class="rp-filter-select" onchange="showDemoToast('Period: '+this.value,'blue')">
+          <option>Last 30 days</option>
+          <option>Last 7 days</option>
+          <option>This quarter</option>
+          <option>Custom</option>
+        </select>
+        <select class="rp-filter-select" onchange="showDemoToast('Location: '+this.value,'blue')">
+          <option>All Locations</option>
+          <option>Oakland</option>
+          <option>Berkeley</option>
+          <option>Walnut Creek</option>
+        </select>
+        <select class="rp-filter-select" onchange="showDemoToast('Category: '+this.value,'blue')">
+          <option>All Categories</option>
+          <option>Labor</option>
+          <option>Menu</option>
+          <option>Throughput</option>
+          <option>Data / Verification</option>
+        </select>
+        <select class="rp-filter-select" onchange="showDemoToast('Status: '+this.value,'blue')">
+          <option>All Statuses</option>
+          <option>Verified</option>
+          <option>Active Recovery</option>
+          <option>Open Exposure</option>
+          <option>Blocked Verification</option>
+          <option>Rejected / Not Counted</option>
+        </select>
+      </div>
+      <div class="rp-filter-note">Last updated 4 minutes ago · Toast POS live · 7shifts stale 18h</div>
+    </div>
+
+    <!-- ══ FIVE SUMMARY CARDS ════════════════════════════════ -->
+    <div class="rp-summary-strip">
+      <div class="rp-sum-card rp-sum-verified" onclick="switchTab('roi','verified')">
+        <div class="rp-sum-eyebrow">Verified Savings</div>
+        <div class="rp-sum-val rp-sum-green">$97<span class="rp-sum-period">/wk</span></div>
+        <div class="rp-sum-sub">$420/mo run-rate equiv. · $5.0k/yr</div>
+        <div class="rp-sum-footer rp-footer-green">Counts toward ROI · 91% confidence</div>
+      </div>
+      <div class="rp-sum-card" onclick="switchTab('roi','summary')">
+        <div class="rp-sum-eyebrow">Subscription Coverage</div>
+        <div class="rp-sum-val rp-sum-green">1.2×</div>
+        <div class="rp-sum-sub">$349/mo subscription covered by verified run-rate</div>
+        <div class="rp-sum-footer rp-footer-neutral">Owner payback signal</div>
+      </div>
+      <div class="rp-sum-card" onclick="switchTab('roi','active')">
+        <div class="rp-sum-eyebrow">Active Recovery</div>
+        <div class="rp-sum-val rp-sum-blue">$189<span class="rp-sum-period">/wk</span></div>
+        <div class="rp-sum-sub">In monitoring · not counted yet</div>
+        <div class="rp-sum-footer rp-footer-blue">2 actions being monitored</div>
+      </div>
+      <div class="rp-sum-card" onclick="switchTab('roi','blocked')">
+        <div class="rp-sum-eyebrow">Blocked Verification</div>
+        <div class="rp-sum-val rp-sum-amber">$519<span class="rp-sum-period">/wk</span></div>
+        <div class="rp-sum-sub">Value cannot be verified yet</div>
+        <div class="rp-sum-footer rp-footer-amber">Recipe cost stale · margin blocked</div>
+      </div>
+      <div class="rp-sum-card">
+        <div class="rp-sum-eyebrow">Rejected / Not Counted</div>
+        <div class="rp-sum-val rp-sum-gray">$220<span class="rp-sum-period">/wk</span></div>
+        <div class="rp-sum-sub">Guardrails failed · not counted</div>
+        <div class="rp-sum-footer rp-footer-gray">Proves SKC is not padding ROI</div>
+      </div>
+    </div>
+
+    <!-- ══ TABS (secondary navigation) ════════════════════════ -->
+    <div class="skc-tab-bar" style="margin-bottom:0">
+      <div class="skc-tabs" data-tabs="roi">
+        <button class="skc-tab active" data-key="summary"  onclick="switchTab('roi','summary')">Owner Summary</button>
+        <button class="skc-tab"        data-key="verified" onclick="switchTab('roi','verified')">Verified Wins</button>
+        <button class="skc-tab"        data-key="active"   onclick="switchTab('roi','active')">Active Recovery</button>
+        <button class="skc-tab"        data-key="blocked"  onclick="switchTab('roi','blocked')">Blocked / Rejected</button>
+        <button class="skc-tab"        data-key="timeline" onclick="switchTab('roi','timeline')">Timeline</button>
+        <button class="skc-tab"        data-key="weekly"   onclick="switchTab('roi','weekly')">Owner Report</button>
+      </div>
+    </div>
+
+    <!-- ══ TAB: OWNER SUMMARY ════════════════════════════════ -->
+    <div class="skc-panel active" data-tab="roi-summary">
+
+      <!-- Engine render target -->
+      <div id="roi-summary-rendered">
+        <div class="rp-doctrine-block">
+          <div class="rp-doctrine-text">SKC separates estimated weekly exposure from verified recovery. Only verified recovery counts toward ROI.</div>
+          <button class="btn btn-ghost btn-sm" onclick="openDrawer('value-defs')">How values are calculated →</button>
+        </div>
+      </div>
+
+      <!-- ── FLAGSHIP VERIFIED WIN ─────────────────────────── -->
+      <div class="rp-section rp-section-verified">
+        <div class="rp-section-hd">
+          <div class="rp-section-title rp-title-green">✓ Verified Savings · Counts toward ROI</div>
+          <div class="rp-section-note"><span class="output-chip ot-ver" title="VER = Verified — monitoring window closed, all guardrails passed">VER · 91%</span> · Operational savings only · accounting not connected</div>
+        </div>
+
+        <!-- Flagship win -->
+        <div class="rp-win-card">
+          <div class="rp-win-top">
+            <div class="rp-win-left">
+              <div class="rp-win-cat-row">
+                <span class="rp-win-cat rp-win-cat-labor">Labor</span>
+                <span class="rp-win-loc">Oakland · Tuesday Dinner</span>
+                <span class="rp-win-status">Verified · Monitoring closed</span>
+              </div>
+              <div class="rp-win-title">Oakland labor adjustment verified $97/wk.</div>
+              <div class="rp-win-sub">Excess FOH hours reduced while all service guardrails held for 5 comparable services.</div>
+
+              <div class="rp-win-changed">
+                <div class="rp-win-changed-label">What changed</div>
+                <div class="rp-win-changed-val">Removed one 5 PM–10 PM FOH server after demand normalized. RPLH improved from $31.40/hr to $38.10/hr.</div>
+              </div>
+
+              <div class="rp-win-guardrails">
+                <div class="rp-win-gr-label">Guardrails passed (all 5 required)</div>
+                <div class="rp-win-gr-list">
+                  <span class="rp-win-gr-chip">✓ Dining duration held</span>
+                  <span class="rp-win-gr-chip">✓ Ticket time held</span>
+                  <span class="rp-win-gr-chip">✓ Average check held</span>
+                  <span class="rp-win-gr-chip">✓ No complaint increase</span>
+                  <span class="rp-win-gr-chip">✓ Manager override not triggered</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="rp-win-right">
+              <div class="rp-win-value-label">Verified Savings</div>
+              <div class="rp-win-value">$97<span class="rp-win-value-period">/wk</span></div>
+              <div class="rp-win-equiv" data-skc="verified-savings">$420/mo</div>
+              <div class="rp-win-equiv-note">run-rate equivalent · context only</div>
+              <div class="rp-win-roi-badge">Counts toward ROI</div>
+              <div class="rp-win-conf">91% confidence</div>
+              <div class="rp-win-ctas">
+                <button class="btn btn-primary btn-sm" onclick="switchTab('roi','verified')">Show Proof</button>
+                <button class="btn btn-secondary btn-sm" onclick="openOwnerReport()">Export Report</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Compact verified wins list -->
+        <div class="rp-wins-list">
+          <div class="rp-wins-list-row" onclick="switchTab('roi','verified')">
+            <span class="rp-wl-cat rp-wl-labor">Labor</span>
+            <span class="rp-wl-title">Oakland labor adjustment</span>
+            <span class="rp-wl-val rp-wl-green">$97/wk verified</span>
+            <span class="rp-wl-status">Guardrails passed · counted</span>
+            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();switchTab('roi','verified')">Show Proof →</button>
+          </div>
+          <div class="rp-wins-list-row">
+            <span class="rp-wl-cat rp-wl-throughput">Throughput</span>
+            <span class="rp-wl-title">Berkeley lunch observation</span>
+            <span class="rp-wl-val rp-wl-blue">Operational win</span>
+            <span class="rp-wl-status">Ticket time improved · not financial ROI</span>
+            <button class="btn btn-ghost btn-sm" onclick="showDemoToast('Operational win — not counted as financial ROI','blue')">View →</button>
+          </div>
+          <div class="rp-wins-list-row">
+            <span class="rp-wl-cat rp-wl-menu">Menu</span>
+            <span class="rp-wl-title">Walnut Creek menu adjustment</span>
+            <span class="rp-wl-val rp-wl-amber">Margin confirmation pending</span>
+            <span class="rp-wl-status">Recipe cost stale · not counted yet</span>
+            <button class="btn btn-ghost btn-sm" onclick="showDemoToast('Pending recipe cost refresh — not counted as ROI','blue')">View →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ACTIVE RECOVERY ──────────────────────────────── -->
+      <div class="rp-section rp-section-active">
+        <div class="rp-section-hd">
+          <div class="rp-section-title rp-title-blue">◎ Active Recovery · In Monitoring · Not Counted Yet</div>
+          <div class="rp-section-note">Values under test — none count until monitoring window closes clean</div>
+        </div>
+
+        <div class="rp-monitoring-card">
+          <div class="rp-mon-left">
+            <div class="rp-mon-cat-row">
+              <span class="rp-win-cat rp-win-cat-labor">Labor</span>
+              <span class="rp-win-loc">Walnut Creek · Bar shifts</span>
+            </div>
+            <div class="rp-mon-title">Bar staffing reduction · Walnut Creek</div>
+            <div class="rp-mon-meta">Devon K. · Started Apr 28 · Monitoring Wk 3 of 4</div>
+
+            <!-- Progress stepper -->
+            <div class="rp-mon-stepper">
+              <div class="rp-mon-step rp-mon-done">Assigned</div>
+              <div class="rp-mon-arrow">→</div>
+              <div class="rp-mon-step rp-mon-done">Implemented</div>
+              <div class="rp-mon-arrow">→</div>
+              <div class="rp-mon-step rp-mon-active">Monitoring</div>
+              <div class="rp-mon-arrow">→</div>
+              <div class="rp-mon-step">Eligible</div>
+              <div class="rp-mon-arrow">→</div>
+              <div class="rp-mon-step">Verified</div>
+            </div>
+
+            <div class="rp-mon-progress">
+              <div class="rp-mon-progress-track">
+                <div class="rp-mon-progress-fill" style="width:75%"></div>
+              </div>
+              <span class="rp-mon-progress-label">3 of 4 services complete</span>
+            </div>
+
+            <div class="rp-mon-guardrails">
+              <span class="rp-mon-gr-chip rp-mon-gr-pass">RPLH ✓</span>
+              <span class="rp-mon-gr-chip rp-mon-gr-pass">Avg check ✓</span>
+              <span class="rp-mon-gr-chip rp-mon-gr-pass">Complaints ✓</span>
+            </div>
+            <div class="rp-mon-why">Not counted yet: monitoring window incomplete. Counts only after all 4 comparable services complete with guardrails passing.</div>
+          </div>
+          <div class="rp-mon-right">
+            <div class="rp-mon-value-label">Active Recovery</div>
+            <div class="rp-mon-value">$189<span class="rp-mon-value-period">/wk</span></div>
+            <div class="rp-mon-roi-note">Not counted in ROI until May 24</div>
+            <button class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="showScreen('actions',null,'Actions')">View Monitoring</button>
+          </div>
+        </div>
+
+        <!-- Active Recovery items rendered in Active Recovery tab -->
+        <div class="rp-active-doctrine">Active Recovery ≠ Verified Savings. These actions are in progress but the monitoring window has not closed. None of this value counts toward ROI yet.</div>
+      </div>
+
+      <!-- ── BLOCKED VERIFICATION ─────────────────────────── -->
+      <div class="rp-section rp-section-blocked">
+        <div class="rp-section-hd">
+          <div class="rp-section-title rp-title-amber">⊘ Blocked Verification · Value May Exist · Cannot Verify Yet</div>
+          <div class="rp-section-note">Source or approval missing — none count until unblocked</div>
+        </div>
+
+        <div class="rp-blocked-list">
+          <div class="rp-blocked-item">
+            <div class="rp-blocked-main">
+              <div class="rp-blocked-cat-row">
+                <span class="rp-win-cat rp-win-cat-menu">Menu</span>
+                <span class="rp-win-loc">All Locations</span>
+              </div>
+              <div class="rp-blocked-title">Salmon margin recovery · $519/wk blocked</div>
+              <div class="rp-blocked-reason">Recipe cost stale 18d — margin verification blocked. Owner approval allowed. Action can proceed but margin ROI cannot be counted.</div>
+              <div class="rp-blocked-required">Required to verify: refresh recipe cost / COGS source</div>
+            </div>
+            <div class="rp-blocked-right">
+              <div class="rp-blocked-value">$519<span style="font-size:13px">/wk</span></div>
+              <div class="rp-blocked-note">Not counted · blocked</div>
+              <button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="showDemoToast('Navigate to Data Quality to reconnect recipe cost source','blue')">Fix source</button>
+            </div>
+          </div>
+          <div class="rp-blocked-item rp-blocked-partial">
+            <div class="rp-blocked-main">
+              <div class="rp-blocked-cat-row">
+                <span class="rp-win-cat rp-win-cat-throughput">Throughput</span>
+                <span class="rp-win-loc">Berkeley · Kitchen</span>
+              </div>
+              <div class="rp-blocked-title">Kitchen throughput · station automation blocked</div>
+              <div class="rp-blocked-reason">KDS partial data. Observation action allowed. Station-specific automation blocked until KDS station data connects.</div>
+              <div class="rp-blocked-required">Required to verify: connect KDS station-level data</div>
+            </div>
+            <div class="rp-blocked-right">
+              <div class="rp-blocked-value" style="color:var(--t3)">—</div>
+              <div class="rp-blocked-note">Conditional · partial</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- detailed blocked content rendered in Blocked tab →  switchTab('roi','blocked') -->
+      </div>
+
+      <!-- ── REJECTED / NOT COUNTED ───────────────────────── -->
+      <div class="rp-section rp-section-rejected">
+        <div class="rp-section-hd">
+          <div class="rp-section-title rp-title-red">✕ Rejected / Not Counted · SKC Refused to Count</div>
+          <div class="rp-section-note">SKC attempted verification — these values did not qualify. This section proves SKC does not pad ROI.</div>
+        </div>
+
+        <div class="rp-rejected-list">
+          <div class="rp-rejected-item">
+            <div class="rp-rejected-header">
+              <span class="rp-rejected-title-text">FOH server reduction · Oakland · March</span>
+              <span class="rp-rejected-badge">Rejected · $0 counted</span>
+            </div>
+            <div class="rp-rejected-value-row">
+              <span class="rp-rejected-estimated">$220/wk estimated</span>
+              <span class="rp-rejected-verified">$0 verified</span>
+            </div>
+            <div class="rp-rejected-reason">RPLH improved but dining duration exceeded guardrail. Table turns stretched past threshold on service 3.</div>
+            <div class="rp-rejected-learned">SKC learned: do not cut FOH coverage unless kitchen/expo support is confirmed stable. Reverse rule now applied.</div>
+          </div>
+          <div class="rp-rejected-item">
+            <div class="rp-rejected-header">
+              <span class="rp-rejected-title-text">Weekend cover lift · Berkeley · February</span>
+              <span class="rp-rejected-badge">Rejected · $0 counted</span>
+            </div>
+            <div class="rp-rejected-value-row">
+              <span class="rp-rejected-estimated">$140/wk estimated</span>
+              <span class="rp-rejected-verified">$0 verified</span>
+            </div>
+            <div class="rp-rejected-reason">Sales lift could not be separated from local event traffic. Attribution rule failed — event weeks must be excluded from baseline.</div>
+            <div class="rp-rejected-learned">SKC learned: exclude verified event weeks from comparable service pool before applying cover-based recovery claims.</div>
+          </div>
+        </div>
+        <div class="rp-rejected-footer">Rejected values are never counted in ROI. This is intentional — SKC is built to not overcount.</div>
+      </div>
+
+      <!-- ── BEFORE / AFTER PROOF TABLE ──────────────────── -->
+      <div class="rp-section">
+        <div class="rp-section-hd">
+          <div class="rp-section-title">Before / After · Verified Metrics · V001</div>
+          <div class="rp-section-note"><span class="src-tag live"><span class="src-dot green"></span>Toast POS · post-monitoring · DET</span> <span class="output-chip ot-ver" title="VER = Verified" style="font-size:9px">VER · 91%</span></div>
+        </div>
+        <div class="responsive-table">
+          <table>
+            <thead>
+              <tr><th>Metric</th><th>Before</th><th>After</th><th>Delta</th><th>Source</th><th>Verification</th></tr>
+            </thead>
+            <tbody>
+              <tr style="background:rgba(16,185,129,.03)"><td style="font-weight:600;color:var(--t1)">Food cost %</td><td class="mono">28.4%</td><td class="mono text-green">27.2%</td><td class="mono text-green">−1.2 pts</td><td><span class="src-tag" style="font-size:10px"><span class="src-dot green"></span>Toast POS · DET</span></td><td><span class="badge green" style="font-size:10px">PASS</span></td></tr>
+              <tr><td style="font-weight:500;color:var(--t1)">Cover count / week</td><td class="mono">94 avg</td><td class="mono">91 avg</td><td class="mono text-green">−3% · within ±10% guardrail</td><td><span class="src-tag" style="font-size:10px"><span class="src-dot green"></span>Toast POS · DET</span></td><td><span class="badge green" style="font-size:10px">PASS</span></td></tr>
+              <tr><td style="font-weight:500;color:var(--t1)">Average check</td><td class="mono">$52.40</td><td class="mono text-green" data-skc="avg-check">$53.10</td><td class="mono text-green">+$0.70 · above $50 threshold</td><td><span class="src-tag" style="font-size:10px"><span class="src-dot green"></span>Toast POS · DET</span></td><td><span class="badge green" style="font-size:10px">PASS</span></td></tr>
+              <tr><td style="font-weight:500;color:var(--t1)">Item refunds / week</td><td class="mono">0/wk</td><td class="mono text-green">0/wk</td><td class="mono text-green">No change</td><td><span class="src-tag" style="font-size:10px"><span class="src-dot green"></span>Toast POS · DET</span></td><td><span class="badge green" style="font-size:10px">PASS</span></td></tr>
+              <tr><td style="font-weight:500;color:var(--t1)">Guest complaints / week</td><td class="mono" data-skc="complaints">0/wk</td><td class="mono text-green">0/wk</td><td class="mono text-green">No change</td><td><span class="src-tag" style="font-size:10px"><span class="src-dot green"></span>Toast POS · DET</span></td><td><span class="badge green" style="font-size:10px">PASS</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="font-size:11.5px;color:var(--t3);margin-top:8px">All 5 counter-metrics passed across the full monitoring window. Accounting not connected — verified as operational savings only.</div>
+      </div>
+
+      <!-- ── GUARDRAIL STATUS ─────────────────────────────── -->
+      <div class="rp-section">
+        <div class="rp-section-hd">
+          <div class="rp-section-title">Guardrail Results · Current State</div>
+          <div class="rp-section-note">All guardrails must pass for any action to count toward verified ROI</div>
+        </div>
+        <div class="rlc-guardrail-row" style="gap:10px;flex-wrap:wrap">
+          <div class="rlc-gr-item pass"><span class="rlc-gr-name">Avg check</span><span class="rlc-gr-val text-green" data-skc="avg-check">$53.10</span><span class="rlc-gr-limit">≥ $50.00</span><span class="cg-status pass" style="font-size:10px">Passing</span></div>
+          <div class="rlc-gr-item watch"><span class="rlc-gr-name">Table turns</span><span class="rlc-gr-val" style="color:var(--amber)" data-skc="table-turns">48 min</span><span class="rlc-gr-limit">≤ 52 min</span><span class="cg-status watch" style="font-size:10px">Watch · 4 min</span></div>
+          <div class="rlc-gr-item pass"><span class="rlc-gr-name">Ticket time</span><span class="rlc-gr-val" data-skc="ticket-time">14.2 min</span><span class="rlc-gr-limit">≤ 16 min</span><span class="cg-status pass" style="font-size:10px">Passing</span></div>
+          <div class="rlc-gr-item pass"><span class="rlc-gr-name">Complaints</span><span class="rlc-gr-val" data-skc="complaints">0/wk</span><span class="rlc-gr-limit">≤ 2/wk</span><span class="cg-status pass" style="font-size:10px">Passing</span></div>
+          <div class="rlc-gr-item pass"><span class="rlc-gr-name">RPLH · non-flagged</span><span class="rlc-gr-val" style="color:var(--green)">$39.10/hr</span><span class="rlc-gr-limit">≥ $36.50</span><span class="cg-status pass" style="font-size:10px">Passing</span></div>
+          <div class="rlc-gr-item pass"><span class="rlc-gr-name">Google rating</span><span class="rlc-gr-val" style="color:var(--green)">4.6 ★</span><span class="rlc-gr-limit">≥ 4.3 ★</span><span class="cg-status pass" style="font-size:10px">Passing</span></div>
+        </div>
+        <div style="font-size:11.5px;color:var(--amber);margin-top:10px">Table turns at 48 min — 4 min from the 52-min guardrail. Continue monitoring closely.</div>
+      </div>
+
+      <!-- ── OPEN EXPOSURE (lower, supporting) ─────────────── -->
+      <div class="rp-section rp-section-open">
+        <div class="rp-section-hd">
+          <div class="rp-section-title rp-title-muted">◷ Open Exposure · Not Assigned or Verified · Lower-Priority Context</div>
+          <div class="rp-section-note">$1,243/wk identified across 3 opportunities · none of this counts in ROI</div>
+        </div>
+        <div class="cc-queue-table">
+          <table class="cct">
+            <thead><tr><th>Opportunity</th><th>Weekly exposure</th><th>Why not verified</th><th>Path to verification</th><th></th></tr></thead>
+            <tbody>
+              <tr class="cct-row"><td><div class="cct-issue">Tuesday–Wednesday labor overstaffing</div><div class="cct-issue-sub">Oakland + Berkeley · $185/service · 2 svc/wk per location</div></td><td class="cct-money cct-red">$370/wk<div class="cct-muted">not assigned</div></td><td style="font-size:11.5px;color:var(--t3)">No action created. 7shifts stale reduces confidence to 78%.</td><td style="font-size:11.5px;color:var(--t2)">Assign → implement → 2-week monitoring → RPLH ≥ $36.50</td><td><button class="btn btn-primary btn-sm" onclick="openCA('leak1')">Assign Action</button></td></tr>
+              <tr class="cct-row"><td><div class="cct-issue">Grilled Salmon below margin threshold</div><div class="cct-issue-sub">All locations · $5.52/plate · 94 covers/wk</div></td><td class="cct-money cct-amber">$519/wk<div class="cct-muted">blocked</div></td><td style="font-size:11.5px;color:var(--t3)">Owner approval required. Recipe cost stale 18d.</td><td style="font-size:11.5px;color:var(--t2)">Owner approval → reprice → 3-week monitoring → CM ≥ 45%</td><td><button class="btn btn-secondary btn-sm" onclick="switchTab('execution','approvals');showScreen('actions',null,'Actions')">Get Approval</button></td></tr>
+              <tr class="cct-row"><td><div class="cct-issue">Friday lunch ticket time spike · Berkeley</div><div class="cct-issue-sub">Berkeley · $384/Friday service · 1 service/wk</div></td><td class="cct-money" style="color:var(--blue)">$354/wk<div class="cct-muted">KDS partial</div></td><td style="font-size:11.5px;color:var(--t3)">KDS partial. Root cause unconfirmed.</td><td style="font-size:11.5px;color:var(--t2)">Line review → process fix → 3-week monitoring → ticket time ≤ 12 min</td><td><button class="btn btn-ghost btn-sm" onclick="openCA('leak3')">Assign Action</button></td></tr>
+            </tbody>
+          </table>
+          <div class="cct-footer">
+            <span class="cct-footer-note">$1,243/wk total open exposure · none counts in ROI without action + monitoring</span>
+            <button class="btn btn-ghost btn-sm" onclick="showScreen('leaks',null,'Profit Recovery')">Profit Recovery →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EXPORT CTA ──────────────────────────────────── -->
+      <div class="rp-export-ctas">
+        <div class="rp-export-title">Owner Report</div>
+        <div class="rp-export-row">
+          <button class="btn btn-primary" onclick="openOwnerReport()">Export Owner Report</button>
+          <button class="btn btn-secondary" onclick="showDemoToast('Generating owner proof PDF — check your downloads in a few seconds','blue')">Generate PDF</button>
+          <button class="btn btn-ghost" onclick="showDemoToast('Owner summary copied to clipboard','blue')">Copy Summary</button>
+          <button class="btn btn-ghost" onclick="showDemoToast('Scheduling monthly business review','blue')">Schedule MBR</button>
+        </div>
+        <div class="renewal-box" style="margin-top:16px">
+          <div class="renewal-text">SKC has confirmed <strong><span data-skc="verified-savings">$420/mo</span> run-rate equivalent</strong> in verified operational savings this period. Subscription covered 1.2×. <span style="color:var(--t3)">Full margin confirmation unavailable — accounting not connected.</span></div>
+          <button class="btn btn-secondary" style="flex-shrink:0" onclick="openOwnerReport()">Owner Proof →</button>
+        </div>
+      </div>
+
+    </div><!-- /roi-summary panel -->
+
+    <!-- ══ TAB: VERIFIED WINS ════════════════════════════════ -->
+    <div class="skc-panel" data-tab="roi-verified">
+      <div id="roi-verified-rendered">
+        <!-- Populated by applyVerification() on load -->
+      </div>
+
+      <!-- Show Proof drawer trigger + audit trail -->
+      <div class="rp-section rp-section-verified" style="margin-top:0">
+        <div class="rp-section-hd">
+          <div class="rp-section-title rp-title-green">✓ V001 · Oakland Labor Adjustment · Verified</div>
+          <div class="rp-section-note">Full proof with audit trail · formula · source data · before/after</div>
+        </div>
+        <div class="rp-proof-drawer-card">
+          <div class="rp-pdc-header">
+            <div class="rp-pdc-title">Verified Savings Proof · V001</div>
+            <span class="output-chip ot-ver" title="VER = Verified — monitoring window closed, all guardrails passed">VER · 91%</span>
+          </div>
+          <div class="rp-pdc-body">
+            <div class="rp-pdc-row"><span class="rp-pdc-key">Summary</span><span class="rp-pdc-val">Oakland Tuesday dinner labor adjustment verified $97/wk in savings after 5-service monitoring window.</span></div>
+            <div class="rp-pdc-row"><span class="rp-pdc-key">Formula</span><span class="rp-pdc-val mono">Verified excess hours removed × fully loaded labor cost = Verified Savings</span></div>
+            <div class="rp-pdc-row"><span class="rp-pdc-key">Calculation</span><span class="rp-pdc-val mono">2.8 verified excess hrs/wk × $34.60 fully loaded = $96.88/wk → $97/wk</span></div>
+            <div class="rp-pdc-row"><span class="rp-pdc-key">Before RPLH</span><span class="rp-pdc-val mono">$31.40/hr</span></div>
+            <div class="rp-pdc-row"><span class="rp-pdc-key">After RPLH</span><span class="rp-pdc-val mono rp-pdc-green">$38.10/hr · within normal range</span></div>
+            <div class="rp-pdc-row"><span class="rp-pdc-key">Confidence</span><span class="rp-pdc-val">91% · Direct labor + POS data + completed monitoring. Slight variance from service-to-service scheduling.</span></div>
+            <div class="rp-pdc-row"><span class="rp-pdc-key">Verification rule</span><span class="rp-pdc-val">RPLH ≥ $36.50 for 5 comparable Tuesday dinner services with all counter-metrics within guardrail thresholds.</span></div>
+            <div class="rp-pdc-row"><span class="rp-pdc-key">Accounting note</span><span class="rp-pdc-val" style="color:var(--amber)">Operational savings confirmed. Full margin confirmation unavailable — accounting not connected.</span></div>
+          </div>
+
+          <!-- Audit trail -->
+          <div class="rp-audit-trail">
+            <div class="rp-audit-title">Audit trail</div>
+            <div class="rp-audit-rows">
+              <div class="rp-audit-row"><span class="rp-audit-dot rp-audit-blue"></span><span class="rp-audit-event">Action assigned · Sarah C. as owner</span><span class="rp-audit-time">Apr 21</span></div>
+              <div class="rp-audit-row"><span class="rp-audit-dot rp-audit-blue"></span><span class="rp-audit-event">GM approval confirmed</span><span class="rp-audit-time">Apr 21</span></div>
+              <div class="rp-audit-row"><span class="rp-audit-dot rp-audit-blue"></span><span class="rp-audit-event">Schedule changed in 7shifts · 1 server removed Tue dinner</span><span class="rp-audit-time">Apr 22</span></div>
+              <div class="rp-audit-row"><span class="rp-audit-dot rp-audit-blue"></span><span class="rp-audit-event">Monitoring window started</span><span class="rp-audit-time">Apr 23</span></div>
+              <div class="rp-audit-row"><span class="rp-audit-dot rp-audit-green"></span><span class="rp-audit-event">Services 1–3 passed · all guardrails within threshold</span><span class="rp-audit-time">Apr 30</span></div>
+              <div class="rp-audit-row"><span class="rp-audit-dot rp-audit-green"></span><span class="rp-audit-event">Services 4–5 passed · RPLH $38.10/hr average</span><span class="rp-audit-time">May 7</span></div>
+              <div class="rp-audit-row rp-audit-verified"><span class="rp-audit-dot rp-audit-green"></span><span class="rp-audit-event"><strong>Verified Savings posted · $97/wk · Counts toward ROI</strong></span><span class="rp-audit-time">May 8</span></div>
+            </div>
+          </div>
+
+          <div class="rp-pdc-ctas">
+            <button class="btn btn-primary btn-sm" onclick="openOwnerReport()">Export Proof</button>
+            <button class="btn btn-secondary btn-sm" onclick="showScreen('actions',null,'Actions')">Open Related Action</button>
+            <button class="btn btn-ghost btn-sm" onclick="showScreen('leaks',null,'Profit Recovery')">Profit Recovery Source</button>
+            <button class="ask-why-btn" onclick="askPanelQ('Why did this count as verified savings?')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Ask SKC why</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- /roi-verified -->
+
+    <!-- ══ TAB: ACTIVE RECOVERY ══════════════════════════════ -->
+    <div class="skc-panel" data-tab="roi-active">
+      <div class="rp-section rp-section-active" style="margin-top:0">
+        <div class="rp-section-hd">
+          <div class="rp-section-title rp-title-blue">◎ Active Recovery · Monitoring in Progress</div>
+          <div class="rp-section-note">Actions assigned and in monitoring window — not counted in ROI until window closes clean</div>
+        </div>
+        <div id="roi-active-rendered"></div>
+        <div class="rp-active-doctrine" style="margin-top:12px">Active Recovery ≠ Verified Savings. Monitoring window incomplete — none of this value counts toward ROI yet.</div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: BLOCKED / REJECTED ══════════════════════════ -->
+    <div class="skc-panel" data-tab="roi-blocked">
+      <div id="roi-blocked-content">
+        <div class="rp-section rp-section-blocked" style="margin-top:0">
+          <div class="rp-section-hd">
+            <div class="rp-section-title rp-title-amber">Counter-Metric Doctrine · Blocked Verification</div>
+          </div>
+          <div class="card" style="padding:18px 22px;border-left:3px solid var(--amber);margin-bottom:16px">
+            <div style="font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:8px">Every SKC recommendation must have registered counter-metrics monitored throughout the verification window.</div>
+            <div style="font-size:13px;color:var(--t2);line-height:1.7">A verified win is blocked if any counter-metric degrades beyond its threshold. Thresholds are non-negotiable — they cannot be overridden by business pressure or presentation logic.</div>
+          </div>
+          <div id="roi-blocked-counter-metrics"></div>
+        </div>
+        <div id="roi-active-list" style="margin-top:16px"></div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: TIMELINE ════════════════════════════════════ -->
+    <div class="skc-panel" data-tab="roi-timeline">
+      <div class="section-hd mb-12"><span class="section-title">Recovery Timeline</span></div>
+      <div class="rp-section">
+        <div class="rp-section-hd"><div class="rp-section-title">Full verified and rejected history</div></div>
+        <div style="font-size:13px;color:var(--t2);padding:20px 0">Timeline renders on tab activation. Full audit trail with verification, rejection, and monitoring events.</div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: OWNER REPORT ════════════════════════════════ -->
+    <div class="skc-panel" data-tab="roi-weekly">
+      <div class="rp-section" style="margin-top:0">
+        <div class="sh accent-blue" style="margin-bottom:20px">
+          <div class="sh-left">
+            <div class="sh-eyebrow"><span class="sh-eyebrow-label">Owner Report · May 11–17</span><span class="output-chip ot-ver" style="font-size:9px">VER · 91%</span></div>
+            <div class="sh-insight">This period, SKC confirmed <strong>~$97/wk</strong> in verified recovery ($420/mo run-rate equiv.). 1.2× subscription coverage.</div>
+            <div class="sh-sub">2 items in Active Recovery. 1 blocked (recipe cost). 2 rejected (guardrails failed). Accounting not connected — operational savings only.</div>
+            <div class="sh-src"><span class="src-tag live"><span class="src-dot green"></span>Toast POS · 7shifts · 4m</span></div>
+          </div>
+          <div class="sh-right"><div class="sh-stat"><div class="sh-stat-val text-green" data-skc="roi-current">1.4×</div><div class="sh-stat-label">Verified ROI</div></div></div>
+        </div>
+
+        <div class="scorecard-hero mb-20">
+          <div class="sc-hero-card" style="border-color:var(--green-b)"><div class="sc-hero-label">Verified savings</div><div class="sc-hero-val text-green">$97/wk</div><div class="sc-hero-note">Counts toward ROI</div></div>
+          <div class="sc-hero-card" style="border-color:var(--blue-b)"><div class="sc-hero-label">Active recovery</div><div class="sc-hero-val" style="color:var(--blue)">$189/wk</div><div class="sc-hero-note">Not counted yet</div></div>
+          <div class="sc-hero-card" style="border-color:var(--amber-b)"><div class="sc-hero-label">Blocked verification</div><div class="sc-hero-val" style="color:var(--amber)">$519/wk</div><div class="sc-hero-note">Source stale</div></div>
+          <div class="sc-hero-card" style="border-color:var(--red-b)"><div class="sc-hero-label">Rejected / Not counted</div><div class="sc-hero-val" style="color:var(--t3)">$220/wk</div><div class="sc-hero-note">Guardrails failed</div></div>
+        </div>
+
+        <div class="rp-export-row" style="margin-top:16px">
+          <button class="btn btn-primary" onclick="openOwnerReport()">Export Owner Report</button>
+          <button class="btn btn-secondary" onclick="showDemoToast('Generating owner proof PDF','blue')">Generate PDF</button>
+          <button class="btn btn-ghost" onclick="showDemoToast('Report sent to owner','blue')">Send to Owner</button>
+        </div>
+        <div class="renewal-box" style="margin-top:16px">
+          <div class="renewal-text">SKC has confirmed <strong><span data-skc="verified-savings">$420/mo</span> run-rate equivalent</strong> in verified operational savings. Subscription covered 1.2×. <span style="color:var(--t3)">Accounting not connected.</span></div>
+          <button class="btn btn-primary" style="flex-shrink:0" onclick="openOwnerReport()">Owner Proof →</button>
+        </div>
+      </div>
+    </div><!-- /weekly -->
+
+    <!-- Hidden tabs preserved for JS routing -->
+    <div class="skc-panel" data-tab="roi-reports" style="display:none">
+      <div id="roi-reports-stub"></div>
+    </div>
+    <div class="skc-panel" data-tab="roi-daily" style="display:none">
+      <div id="drHero"><div id="drHeroStatus"></div><div id="drHeroStatusText"></div><div id="drHeroProgress"><div class="dr-hp-track"><div class="dr-hp-fill" id="drHpFill"></div></div></div><div id="drHeroInsight"></div></div>
+      <div id="drTimeline" style="display:none"><div class="dr-timeline-label"></div><div id="drTimelineItems"></div></div>
+      <div id="drCards"></div>
+    </div>
+
+  </div><!-- /screen-scorecard -->
