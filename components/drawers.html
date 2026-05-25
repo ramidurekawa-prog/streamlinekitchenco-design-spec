@@ -1,0 +1,668 @@
+<!-- ════════════════════════════════════════════════════════════════
+     SKC drawers, modals, and overlays
+     Concatenated from source lines 7553-8028 + 8092-8277
+     ════════════════════════════════════════════════════════════════ -->
+<!-- ─── ASSIGN RECOVERY ACTION MODAL ───────────────────────── -->
+
+<!-- ─── SIMULATE FIX MODAL ──────────────────────────────── -->
+<div id="simulateOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:210;align-items:center;justify-content:center">
+  <div class="sim-modal">
+    <div class="sim-modal-header">
+      <div>
+        <div class="sim-modal-eyebrow">Simulate Fix · Modeled Scenarios</div>
+        <div class="sim-modal-title">Oakland Tuesday dinner labor recovery</div>
+      </div>
+      <button class="ev-close" onclick="closeSimulateDrawer()">×</button>
+    </div>
+    <div class="sim-modal-body">
+      <div class="sim-doctrine">These are modeled scenarios, not verified savings. No simulated value counts toward ROI.</div>
+      <div class="sim-scenarios">
+        <div class="sim-scenario sim-conservative">
+          <div class="sim-scenario-label">Conservative</div>
+          <div class="sim-scenario-value">$185/wk</div>
+          <div class="sim-scenario-desc">Remove 1 server on Tuesday only. RPLH improves slightly.</div>
+          <div class="sim-scenario-risk">Guardrail risk: Low/moderate · 7shifts stale limits verification</div>
+        </div>
+        <div class="sim-scenario sim-expected sim-scenario-highlight">
+          <div class="sim-scenario-label">Expected <span class="sim-recommended">recommended</span></div>
+          <div class="sim-scenario-value">$370/wk</div>
+          <div class="sim-scenario-desc">Remove 1 server both Tuesday and Wednesday. RPLH returns near baseline range.</div>
+          <div class="sim-scenario-risk">Guardrail risk: Moderate · Confidence: 78%</div>
+        </div>
+        <div class="sim-scenario sim-aggressive">
+          <div class="sim-scenario-label">Aggressive</div>
+          <div class="sim-scenario-value">$520/wk</div>
+          <div class="sim-scenario-desc">Stronger labor cut + schedule template update across both locations.</div>
+          <div class="sim-scenario-risk">Guardrail risk: Higher · Not recommended without full monitoring first</div>
+        </div>
+      </div>
+      <div class="sim-footer-note">All values are modeled estimates. Run-rate Equivalent — context only. None count as Verified Savings until monitoring confirms guardrails held.</div>
+    </div>
+    <div class="sim-modal-footer">
+      <button class="btn btn-ghost" onclick="closeSimulateDrawer()">Close</button>
+      <button class="btn btn-primary" onclick="closeSimulateDrawer();openCA('leak1')">Assign Recovery Action</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── LABOR EFFICIENCY DRAWERS ──────────────────────────── -->
+<div id="leStaffingPlanOverlay" class="le-drawer-overlay" onclick="closeLeDrawer('staffing')"></div>
+<div id="leStaffingPlanDrawer" class="le-drawer" role="dialog" aria-label="Review Staffing Plan">
+  <div class="le-drawer-header">
+    <div>
+      <div class="le-drawer-eyebrow">Review Staffing Plan</div>
+      <div class="le-drawer-title">Oakland Tuesday Lunch · This Week</div>
+    </div>
+    <button class="ev-close" onclick="closeLeDrawer('staffing')">×</button>
+  </div>
+  <div class="le-drawer-body">
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Recommendation</div>
+      <div class="le-drawer-rec">Remove or shift one FOH slot from 11 AM–2 PM.</div>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Affected shift</div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Location</span><span class="le-drawer-row-val">Oakland</span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Daypart</span><span class="le-drawer-row-val">Tuesday Lunch · 11 AM–2 PM</span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Period</span><span class="le-drawer-row-val">This week (recurring 4 of 6 weeks)</span></div>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Role / slot logic</div>
+      <p class="le-drawer-text">Role data is partial. SKC recommends a generic <strong>FOH slot</strong> unless Toast role data confirms Server. SKC will not fabricate a role name when role configuration is missing.</p>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">What not to change</div>
+      <div class="le-drawer-list">
+        <div class="le-drawer-list-item">Do not reduce host coverage</div>
+        <div class="le-drawer-list-item">Do not reduce kitchen line coverage</div>
+        <div class="le-drawer-list-item">Do not reduce expo coverage</div>
+        <div class="le-drawer-list-item">Do not reduce manager coverage</div>
+      </div>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Guardrails</div>
+      <div class="le-guard-chips">
+        <span class="le-guard-chip">Ticket time</span>
+        <span class="le-guard-chip">Dining duration</span>
+        <span class="le-guard-chip">Average check</span>
+        <span class="le-guard-chip">Guest complaints</span>
+        <span class="le-guard-chip">Table turns</span>
+        <span class="le-guard-chip">Manager override</span>
+        <span class="le-guard-chip">Overtime displacement</span>
+      </div>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">OT &amp; call-in caveats</div>
+      <div class="le-drawer-caveat">
+        <strong>Review before changing posted schedules:</strong> California daily overtime (over 8 hrs/day) and minimum call-in pay rules apply. Check minimum call-in pay before cutting scheduled coverage.
+      </div>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Wage caveat</div>
+      <div class="le-drawer-caveat">
+        <strong>Est. wage rate used:</strong> dollar estimate uses configured default wage rate because exact payroll wage is partially missing. Connect payroll for deterministic dollar values.
+      </div>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Expected impact</div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Excess hours reduced</span><span class="le-drawer-row-val le-mono">2.8 hrs / week</span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Estimated labor cost reduction</span><span class="le-drawer-row-val le-mono le-text-amber">~$97 / week</span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Expected RPLH</span><span class="le-drawer-row-val le-mono">$36.50–$38.10 / hr (return to baseline range)</span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Verification rule</span><span class="le-drawer-row-val">2 comparable Tuesday lunches with all guardrails passing</span></div>
+    </div>
+
+  </div>
+  <div class="le-drawer-footer">
+    <button class="btn btn-ghost btn-sm" onclick="closeLeDrawer('staffing')">Close</button>
+    <button class="btn btn-secondary btn-sm" onclick="closeLeDrawer('staffing');openLaborEvidence('le-oakland-tue-lunch')">Show Evidence</button>
+    <button class="btn btn-secondary btn-sm" onclick="closeLeDrawer('staffing');showScreen('actions',null,'Actions')">Open Actions</button>
+    <button class="btn btn-primary btn-sm" onclick="leCreateAction('Oakland Tuesday lunch');closeLeDrawer('staffing')">Create Action</button>
+  </div>
+</div>
+
+<!-- ─── LABOR EVIDENCE DRAWER ─────────────────────────────── -->
+<div id="leEvidenceOverlay" class="le-drawer-overlay" onclick="closeLeDrawer('evidence')"></div>
+<div id="leEvidenceDrawer" class="le-drawer" role="dialog" aria-label="Labor Recommendation Evidence">
+  <div class="le-drawer-header">
+    <div>
+      <div class="le-drawer-eyebrow">Labor Recommendation Evidence</div>
+      <div class="le-drawer-title">Oakland Tuesday Lunch · This Week</div>
+    </div>
+    <button class="ev-close" onclick="closeLeDrawer('evidence')">×</button>
+  </div>
+  <div class="le-ev-summary-strip">
+    <div class="le-ev-sum-cell">
+      <div class="le-ev-sum-label">Excess Hours</div>
+      <div class="le-ev-sum-val le-text-amber">2.8 <span style="font-size:12px">hrs</span></div>
+      <div class="le-ev-sum-tag le-tag-est">EST · medium conf.</div>
+    </div>
+    <div class="le-ev-sum-div"></div>
+    <div class="le-ev-sum-cell">
+      <div class="le-ev-sum-label">Est. Overspend</div>
+      <div class="le-ev-sum-val le-text-amber">~$97<span style="font-size:12px">/wk</span></div>
+      <div class="le-ev-sum-tag le-tag-est">EST · wage rate used</div>
+    </div>
+    <div class="le-ev-sum-div"></div>
+    <div class="le-ev-sum-cell">
+      <div class="le-ev-sum-label">Confidence</div>
+      <div class="le-ev-sum-val le-text-amber">78%</div>
+      <div class="le-ev-sum-tag">partial wages/roles</div>
+    </div>
+  </div>
+  <div class="le-drawer-body">
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Source data</div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Clock-in / clock-out</span><span class="le-drawer-row-val">Toast Labor · <span class="le-text-green">Required · connected</span></span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Net revenue by hour</span><span class="le-drawer-row-val">Toast POS · <span class="le-text-green">Required · connected</span></span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Historical labor + revenue</span><span class="le-drawer-row-val">SKC metric store · <span class="le-text-green">Required · 8 weeks available</span></span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Labor wage rates</span><span class="le-drawer-row-val">Toast Payroll · <span class="le-text-amber">Optional · partially connected</span></span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Employee role / position</span><span class="le-drawer-row-val">Toast Labor config · <span class="le-text-amber">Optional · partial</span></span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Planned schedule</span><span class="le-drawer-row-val">Toast Scheduling API · <span style="color:var(--t3)">Optional · not connected</span></span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">RPLH &amp; labor cost % targets</span><span class="le-drawer-row-val">SKC operator config · <span class="le-text-green">Configured</span></span></div>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Baseline construction</div>
+      <p class="le-drawer-text"><strong>Comparable period:</strong> same day-of-week + same daypart + same location</p>
+      <p class="le-drawer-text"><strong>Window:</strong> rolling 8-week window</p>
+      <p class="le-drawer-text"><strong>Recency weighting:</strong> last 4 weeks 60% · weeks 5–8 40%</p>
+      <p class="le-drawer-text"><strong>Outlier exclusion:</strong> shifts where revenue &gt; 2 standard deviations from mean are excluded</p>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Formulas</div>
+      <div class="le-formula-list">
+        <div class="le-formula-row"><span class="le-formula-name">RPLH</span>net_revenue_in_window / total_labor_hours_in_window <span class="le-tag-det" style="font-size:9px;padding:1px 5px">DET</span></div>
+        <div class="le-formula-row"><span class="le-formula-name">Productivity Score</span>(RPLH_current / RPLH_baseline) × 100 <span class="le-tag-det" style="font-size:9px;padding:1px 5px">DET</span></div>
+        <div class="le-formula-row"><span class="le-formula-name">Overstaffing Est.</span>MAX(0, actual_hours − (net_revenue / target_RPLH)) <span class="le-tag-est" style="font-size:9px;padding:1px 5px">EST</span></div>
+        <div class="le-formula-row"><span class="le-formula-name">Est. Labor Cost Reduction</span>excess_hours × estimated_fully_loaded_wage <span class="le-tag-est" style="font-size:9px;padding:1px 5px">EST</span></div>
+        <div class="le-formula-row"><span class="le-formula-name">Labor Variance $</span>(RPLH_baseline − RPLH_current) × actual_hours <span style="font-size:9px;color:var(--t3)">(diagnostic)</span></div>
+        <div class="le-formula-row"><span class="le-formula-name">Labor Cost %</span>total_wages / net_revenue × 100</div>
+      </div>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Output type labels</div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">RPLH per shift / hour</span><span class="le-drawer-row-val"><span class="le-text-green">Deterministic · high confidence · direct data</span></span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Productivity Score</span><span class="le-drawer-row-val"><span class="le-text-green">Deterministic · high confidence · RPLH ratio</span></span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Labor Variance $</span><span class="le-drawer-row-val"><span class="le-text-amber">Estimated</span> if wage rate estimated · deterministic if exact wages</span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Overstaffing hours / dollars</span><span class="le-drawer-row-val"><span class="le-text-amber">Estimated · medium confidence</span> · relies on target RPLH assumption</span></div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Recommendation narrative</span><span class="le-drawer-row-val"><span style="color:var(--t3)">LLM narrative only</span> · cannot alter calculations</span></div>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Confidence</div>
+      <div class="le-drawer-row"><span class="le-drawer-row-key">Score</span><span class="le-drawer-row-val le-mono le-text-amber"><strong>78%</strong></span></div>
+      <p class="le-drawer-text" style="margin-top:8px"><strong>Reason:</strong> Direct Toast POS + Toast Labor data available. Confidence reduced because wage rate is estimated and role data is partial.</p>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Wage assumptions</div>
+      <div class="le-drawer-caveat">
+        Exact wage data partially missing. Default configured wage used for dollar estimates. All dollar values are labeled <strong>Est. wage rate used</strong>.
+      </div>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Role caveats</div>
+      <div class="le-drawer-caveat">
+        Role data partial. Recommendation uses <strong>generic FOH slot</strong> unless Toast role data confirms Server. SKC will not fabricate role names.
+      </div>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Overtime handling</div>
+      <p class="le-drawer-text">Regular + overtime hours are summed for labor hours. California daily overtime over 8 hrs/day is flagged separately. FLSA overtime over 40 hrs/week is noted in this evidence drawer. Scheduling changes should be reviewed against call-in pay and OT rules.</p>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Guardrails (must hold for verification)</div>
+      <div class="le-guard-chips">
+        <span class="le-guard-chip">Ticket time</span>
+        <span class="le-guard-chip">Dining duration</span>
+        <span class="le-guard-chip">Average check</span>
+        <span class="le-guard-chip">Guest complaints</span>
+        <span class="le-guard-chip">Table turns</span>
+        <span class="le-guard-chip">Manager override</span>
+        <span class="le-guard-chip">Overtime displacement</span>
+      </div>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">Action eligibility</div>
+      <p class="le-drawer-text">Ready to Create Action when:</p>
+      <div class="le-drawer-list">
+        <div class="le-drawer-list-item">Clock data is complete</div>
+        <div class="le-drawer-list-item">Revenue data is complete</div>
+        <div class="le-drawer-list-item">Recommendation does not violate guardrails</div>
+        <div class="le-drawer-list-item">Manager reviews wage / role caveats</div>
+        <div class="le-drawer-list-item">Scheduling / call-in rules are checked</div>
+      </div>
+    </div>
+
+    <div class="le-drawer-section">
+      <div class="le-drawer-section-title">LLM rules &amp; restrictions</div>
+      <div class="le-drawer-caveat">
+        <strong>LLM cannot:</strong> invent labor hours, override confidence, remove estimated labels, fabricate role names, or compute financial truth. Recommendation text is narrative only.
+      </div>
+    </div>
+
+  </div>
+  <div class="le-drawer-footer">
+    <button class="btn btn-ghost btn-sm" onclick="closeLeDrawer('evidence')">Close</button>
+    <button class="btn btn-secondary btn-sm" onclick="closeLeDrawer('evidence');openStaffingPlan('le-oakland-tue-lunch')">Review Staffing Plan</button>
+    <button class="btn btn-primary btn-sm" onclick="leCreateAction('Oakland Tuesday lunch');closeLeDrawer('evidence')">Create Action</button>
+  </div>
+</div>
+
+
+<div id="caOverlay" data-demo-id="demo-target-assign-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:210;align-items:center;justify-content:center">
+  <div class="ca-modal-inner">
+    <div class="ca-modal-header">
+      <div>
+        <div class="ca-modal-eyebrow">Assign Recovery Action</div>
+        <div class="ca-modal-title" id="caModalTitle">New Recovery Action</div>
+      </div>
+      <button class="ev-close" onclick="closeCA()">×</button>
+    </div>
+    <div class="ca-modal-body">
+      <div id="caImpactStrip" class="ca-modal-info-strip">
+        <div class="ca-modal-info-strip-label">Expected weekly value</div>
+        <div class="ca-modal-info-strip-body">Loading…</div>
+      </div>
+      <div class="ca-modal-guardrails">
+        <div class="ca-modal-field-label">Guardrails that will be monitored</div>
+        <div class="ca-modal-gr-list">
+          <span class="ac-gr-item ac-gr-watch">Dining duration</span>
+          <span class="ac-gr-item">Ticket time</span>
+          <span class="ac-gr-item">Average check</span>
+          <span class="ac-gr-item">Guest complaints</span>
+        </div>
+      </div>
+      <div>
+        <div class="ca-modal-field-label">Assign owner</div>
+        <select id="caOwner" class="ca-modal-select">
+          <option>Sarah C. — GM Oakland</option>
+          <option>Marcus R. — GM Berkeley</option>
+          <option>Jamie L. — GM Walnut Creek</option>
+          <option>Devon K. — GM Rosewood</option>
+        </select>
+      </div>
+      <div>
+        <div class="ca-modal-field-label">Due date</div>
+        <select id="caDue" class="ca-modal-select">
+          <option>Today before 3 PM</option>
+          <option>Tomorrow</option>
+          <option>This Friday</option>
+          <option>Next Tuesday</option>
+        </select>
+      </div>
+      <div class="ca-modal-info-strip">
+        <div class="ca-modal-info-strip-label">Data &amp; approval</div>
+        <div class="ca-modal-info-strip-body">7shifts stale 18h · GM approval required · ROI verification limited until labor data refreshes</div>
+      </div>
+      <div class="ca-modal-guardrails">
+        <div class="ca-modal-field-label">Verification rule</div>
+        <div id="caVerify" style="font-size:12px;color:var(--t2);line-height:1.6;margin-top:4px">RPLH ≥ $36.50 for 2 comparable Tuesday dinner services with all guardrails passing.</div>
+      </div>
+      <div class="ca-modal-guardrails">
+        <div class="ca-modal-field-label">ROI status</div>
+        <div style="font-size:12.5px;color:var(--amber);font-weight:600;margin-top:4px">Not counted in ROI yet</div>
+        <div style="font-size:11.5px;color:var(--t3);margin-top:2px">Active Recovery begins when marked implemented. Verified Savings begin only after monitoring window closes with all guardrails passing.</div>
+      </div>
+      <div>
+        <div class="ca-modal-field-label">Manager note (optional)</div>
+        <textarea id="caNotes" class="ca-modal-textarea" placeholder="Add context for the owner…"></textarea>
+      </div>
+    </div>
+    <div class="ca-modal-footer">
+      <button class="btn btn-ghost" onclick="closeCA()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitCA()">Assign Recovery Action</button>
+    </div>
+  </div>
+</div>
+<!-- ─── DEMO QA PANEL ─────────────────────────────────────── -->
+<div id="qaPanel" style="display:none;position:fixed;top:48px;right:12px;z-index:600;background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:0 8px 32px rgba(0,0,0,.35);width:280px;font-family:var(--sans)">
+  <div style="padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+    <span style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3)">Demo QA · Ctrl+Shift+D</span>
+    <button onclick="toggleQA()" style="background:none;border:none;cursor:pointer;color:var(--t3);font-size:14px;padding:0;line-height:1">×</button>
+  </div>
+  <div style="padding:10px 14px;display:flex;flex-direction:column;gap:4px;max-height:70vh;overflow-y:auto">
+
+    <!-- Navigation group -->
+    <div style="font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin:4px 0 2px">Navigation</div>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('dashboard')">Jump → Today</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('leaks')">Jump → Profit Recovery</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('actions')">Jump → Actions</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('scorecard')">Jump → Proof</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('timeline')">Jump → Execution Timeline</button>
+
+    <!-- Drawers/Modals group -->
+    <div style="font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin:8px 0 2px">Drawers &amp; Modals</div>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('evidence')">Open Evidence Drawer — leak1</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('createaction')">Open Assign Recovery Action</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('ownerreport')">Open Owner Proof</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('datahealth')">Jump → Data Quality</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('askskc')">Open Ask SKC — Why did this trigger?</button>
+
+    <!-- State group -->
+    <div style="font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin:8px 0 2px">Simulate State</div>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('actioncreated')">State: Action assigned</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('monitoring')">State: Monitoring started</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%;color:var(--green)" onclick="qa('guardpass')">State: Guardrails passed → Verified</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%;color:var(--red)" onclick="qa('guardfail')">State: Guardrail failed → Rejected</button>
+
+    <!-- Demo group -->
+    <div style="font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin:8px 0 2px">Demo</div>
+    <button class="btn btn-secondary btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('tour')">▶ Start Client Demo (12 steps)</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%;color:var(--amber)" onclick="qa('reset')">↺ Reset — back to Today</button>
+
+    <!-- ─── (v23) Trust layer ────────────────────────── -->
+    <div style="font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin:8px 0 2px">Onboarding (Fix 1)</div>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('tr-ob-day-0')">State: Day 0 (cold start)</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('tr-ob-day-7')">State: Day 7 (mid baseline)</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('tr-ob-day-14')">State: Day 14+ (baseline complete)</button>
+
+    <div style="font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin:8px 0 2px">First-action walkthrough (Fix 2)</div>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('tr-walk-reset')">Reset: first-action walkthrough</button>
+
+    <div style="font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin:8px 0 2px">Data Quality state (Fix 4)</div>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%;color:var(--green)" onclick="qa('tr-dq-healthy')">DQ: All healthy</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%;color:var(--red)" onclick="qa('tr-dq-toast')">DQ: Toast down</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%;color:var(--amber)" onclick="qa('tr-dq-shifts')">DQ: 7shifts stale</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%;color:var(--amber)" onclick="qa('tr-dq-recipe')">DQ: Recipe cost stale</button>
+
+    <div style="font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin:8px 0 2px">Rejections (Fix 3)</div>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('tr-rej-reset')">Reset: rejections</button>
+
+    <!-- ─── (v26 · Fix 8) Role toggle ────────────────────────── -->
+    <div style="font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin:8px 0 2px">Viewer role (v26 · Fix 8)</div>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%;color:var(--blue)" onclick="qa('v26-role-gm')">Role: GM view</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%;color:var(--green)" onclick="qa('v26-role-owner')">Role: Owner view</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('v26-role-both')">Role: Both (default)</button>
+
+    <!-- ─── (v26 · Fix 10) DQ dirty toggle ────────────────────── -->
+    <div style="font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin:8px 0 2px">DQ dirty data (v26 · Fix 10)</div>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%;color:var(--amber)" onclick="qa('v26-dq-dirty')">DQ: Dirty data</button>
+
+    <!-- ─── (v26 · Fix 11) Pilot phase toggle ─────────────────── -->
+    <div style="font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin:8px 0 2px">Account phase (v26 · Fix 11)</div>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('v26-pilot-0')">State: Pilot · Day 0</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('v26-pilot-15')">State: Pilot · Day 15</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%" onclick="qa('v26-pilot-30')">State: Pilot · Day 30 (end)</button>
+    <button class="btn btn-ghost btn-sm" style="justify-content:flex-start;width:100%;color:var(--green)" onclick="qa('v26-paying')">State: Paying customer</button>
+
+  </div>
+</div>
+
+<!-- ─── DEMO TOUR OVERLAY ─────────────────────────────────── -->
+<div id="tourOverlay" style="display:none;position:fixed;inset:0;z-index:700;pointer-events:none">
+  <!-- Dark mask with hole cut via box-shadow — glow added via filter -->
+  <div id="tourMask" style="position:absolute;border-radius:8px;pointer-events:none;transition:left .32s,top .32s,width .32s,height .32s cubic-bezier(.4,0,.2,1)"></div>
+  <!-- Caption card -->
+  <div id="tourCard" style="position:fixed;background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px 18px;width:min(344px,calc(100vw - 24px));box-shadow:0 12px 40px rgba(0,0,0,.45);pointer-events:all;transition:left .3s,top .3s cubic-bezier(.4,0,.2,1)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <span id="tourStep" style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3)">Step 1 of 12</span>
+      <button onclick="tourExit()" style="background:none;border:none;cursor:pointer;color:var(--t3);font-size:18px;line-height:1;padding:0 2px">×</button>
+    </div>
+    <div id="tourTitle" style="font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:5px"></div>
+    <div id="tourCaption" style="font-size:12px;color:var(--t2);line-height:1.65;margin-bottom:12px"></div>
+    <div id="tourDots" style="display:flex;gap:5px;margin-bottom:14px"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" id="tourBack" onclick="tourStep(-1)">← Back</button>
+      <button class="btn btn-primary btn-sm" id="tourNext" onclick="tourStep(1)" style="flex:1;justify-content:center">Next →</button>
+      <button class="btn btn-ghost btn-sm" onclick="tourExit()" style="color:var(--t3)">Exit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── OWNER REPORT MODAL ────────────────────────────────── -->
+<div id="orOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:210;align-items:center;justify-content:center">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);width:520px;max-width:96vw;max-height:88vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.4)">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:3px">Weekly Owner Report · May 11–17</div>
+        <div style="font-size:14px;font-weight:600;color:var(--t1)">Rosewood Group — SKC Weekly Summary</div>
+      </div>
+      <button class="ev-close" onclick="document.getElementById('orOverlay').style.display='none'">×</button>
+    </div>
+    <div style="padding:18px 20px;display:flex;flex-direction:column;gap:14px;font-size:12.5px;color:var(--t2);line-height:1.7">
+      <div style="background:var(--green-d);border:1px solid var(--green-b);border-radius:var(--r-md);padding:11px 14px">
+        <strong style="color:var(--green)">Verified this period:</strong> ~$97/wk equivalent · <span data-skc="verified-savings-mo">$420/mo</span> run-rate (counted in ROI) — Risotto removal · all locations (A000). Bar staffing reduction (A005, Walnut Creek) is in monitoring Week 3/4 at <span data-skc="approaching-verified">$820/mo</span> active recovery — on track to verify next week.
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:6px">Open Recovery Pipeline</div>
+        <div class="ac-meta">
+          <div class="ac-row"><span class="ac-row-l">Labor overstaffing</span><span style="font-family:var(--mono);color:var(--red)" data-skc="labor-both">$3,200/mo</span></div>
+          <div class="ac-row"><span class="ac-row-l">Salmon reprice</span><span style="font-family:var(--mono);color:var(--amber)" data-skc="salmon-opp">$2,100/mo</span></div>
+          <div class="ac-row"><span class="ac-row-l">Ticket time · Berkeley</span><span style="font-family:var(--mono);color:var(--amber)" data-skc="ticket-opp">$1,540/mo</span></div>
+          <div class="ac-row" style="border-top:1px solid var(--border);padding-top:6px;margin-top:4px"><span class="ac-row-l"><strong>Total open</strong></span><span style="font-family:var(--mono);font-weight:600;color:var(--t1)" data-skc="total-open">$6,840/mo</span></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:6px">Top 3 Actions for Next Week</div>
+        <div class="step-list">
+          <div class="step-item"><div class="step-num">1</div><div class="step-text">Remove Oakland Tue dinner server shift — 7shifts — Owner: Sarah C. — Due: Monday</div></div>
+          <div class="step-item"><div class="step-num">2</div><div class="step-text">Reprice Grilled Salmon $24→$27 — Toast Menu — Owner: Marcus R. — Due: Wednesday</div></div>
+          <div class="step-item"><div class="step-num">3</div><div class="step-text">Berkeley Fri lunch line review — On-site — Owner: Jamie L. — Due: Friday before service</div></div>
+        </div>
+      </div>
+      <div style="background:var(--amber-d);border:1px solid var(--amber-b);border-radius:var(--r-md);padding:10px 14px;font-size:11.5px">
+        ⚠ Data issues: 7shifts token stale (18h). Labor confidence is Medium. Reconnect before Monday sync to restore full accuracy.
+      </div>
+      <div style="font-size:11px;color:var(--t3)">Generated by SKC · May 17, 2026 · All figures are Estimated until verified by post-action monitoring.</div>
+    </div>
+    <div style="padding:12px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="document.getElementById('orOverlay').style.display='none'">Close</button>
+      <button class="btn btn-secondary" onclick="showDemoToast('Report copied to clipboard','green');document.getElementById('orOverlay').style.display='none'">Copy Report</button>
+      <button class="btn btn-primary" onclick="showDemoToast('Report sent to owner emails','green');document.getElementById('orOverlay').style.display='none'">Send Owner Proofs</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── DRAWER OVERLAY ───────────────────────────────────── -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-hd">
+    <span class="drawer-title" id="drawerTitle">Evidence Panel</span>
+    <button class="drawer-close" onclick="closeDrawer()">×</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</div>
+
+<!-- ── (post ask-panel) evidence + menu evidence drawers ── -->
+<!-- ─── EVIDENCE DRAWER ───────────────────────────────── -->
+<div class="ev-overlay" id="evOverlay" onclick="closeEvDrawer()"></div>
+<div class="ev-drawer" id="evDrawer">
+  <!-- Header -->
+  <div class="ev-hd">
+    <div class="ev-hd-left">
+      <div class="ev-eyebrow">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        Why am I seeing this?
+      </div>
+      <div class="ev-title" id="evDrawerTitle">Evidence · Recommended Action</div>
+    </div>
+    <button class="ev-close" onclick="closeEvDrawer()">×</button>
+  </div>
+  <!-- Summary strip -->
+  <div class="ev-summary-strip" id="evSummaryStrip"></div>
+  <!-- Scrollable body -->
+  <div class="ev-body" id="evDrawerBody"></div>
+</div>
+
+<!-- ─── (v27) MENU OPTIMIZATION FULL EVIDENCE DRAWER ──── -->
+<div class="menu-ev-drawer-overlay" id="menuEvDrawerOverlay" onclick="closeMenuEvidenceDrawer()"></div>
+<div class="menu-ev-drawer" id="menuEvDrawer" role="dialog" aria-modal="true" aria-labelledby="menuEvDrawerTitle">
+  <div class="menu-ev-drawer-hd">
+    <div>
+      <div class="menu-ev-drawer-eyebrow">Menu Optimization Evidence</div>
+      <div class="menu-ev-drawer-title" id="menuEvDrawerTitle">Oakland · Dinner · Last 28 Days</div>
+      <div class="menu-ev-drawer-sub">Full trace · sources · classification · verification rules</div>
+    </div>
+    <button class="menu-ev-drawer-close" onclick="closeMenuEvidenceDrawer()" aria-label="Close">×</button>
+  </div>
+  <div class="menu-ev-drawer-body">
+
+    <div class="menu-ev-drawer-sec">
+      <div class="menu-ev-drawer-sec-h">Summary</div>
+      <div class="menu-ev-drawer-summary">
+        <div>Weighted Avg CM<strong>$8.42</strong></div>
+        <div>Baseline (8wk)<strong>$9.13</strong></div>
+        <div>Mix shift<strong>−$0.71 / item</strong></div>
+        <div>Items sold<strong>2,004</strong></div>
+        <div>Estimated exposure<strong>~$1,420 / mo</strong></div>
+        <div>Confidence<strong>Medium</strong></div>
+      </div>
+      <p style="font-size:11px;color:var(--amber);font-style:italic;margin:0">Output: ESTIMATED · Verification: BLOCKED by stale recipe costs.</p>
+    </div>
+
+    <div class="menu-ev-drawer-sec">
+      <div class="menu-ev-drawer-sec-h">A. Source data</div>
+      <ul>
+        <li>Toast POS item sales — <strong>connected</strong></li>
+        <li>Toast POS item price at time of sale — <strong>connected</strong></li>
+        <li>Recipe cost file — <strong style="color:var(--amber)">stale 18 days</strong></li>
+        <li>COGS / inventory integration — <strong style="color:var(--red)">not connected</strong></li>
+        <li>Menu item mapping — <strong>connected</strong></li>
+        <li>8-week baseline engine — <strong>connected</strong></li>
+        <li>Data Quality — <strong style="color:var(--amber)">watch</strong></li>
+      </ul>
+    </div>
+
+    <div class="menu-ev-drawer-sec">
+      <div class="menu-ev-drawer-sec-h">B. Formula trace</div>
+      <div class="menu-ev-mono" style="background:var(--surface);padding:10px 12px;border-radius:var(--r);color:var(--t2);line-height:1.9">
+        <strong style="color:var(--t1)">Contribution Margin per item</strong><br>
+        CM = unit_price_at_sale − food_cost_per_unit<br><br>
+        <strong style="color:var(--t1)">Total CM</strong><br>
+        Total CM = CM per item × units sold<br><br>
+        <strong style="color:var(--t1)">Weighted Avg CM</strong><br>
+        Weighted Avg CM = SUM(CM × units) ÷ SUM(units)<br><br>
+        <strong style="color:var(--t1)">Mix Shift</strong><br>
+        Mix Shift = current weighted avg CM − 8-week baseline weighted avg CM<br><br>
+        <strong style="color:var(--t1)">Estimated Exposure</strong><br>
+        ABS(mix shift) × total items sold<br><br>
+        <strong style="color:var(--amber)">Numeric trace</strong><br>
+        $8.42 − $9.13 = −$0.71/item<br>
+        2,004 items × $0.71 = $1,422.84<br>
+        Displayed as <strong style="color:var(--amber)">~$1,420/mo [ESTIMATED]</strong>
+      </div>
+    </div>
+
+    <div class="menu-ev-drawer-sec">
+      <div class="menu-ev-drawer-sec-h">B2. Weighted CM Reconciliation</div>
+      <p>Displayed matrix shows top 9 dinner items. 273 other mapped dinner items are included in weighted average CM.</p>
+      <div class="menu-ev-mono" style="background:var(--surface);padding:10px 12px;border-radius:var(--r);color:var(--t2);line-height:1.9">
+        <strong style="color:var(--t1)">Target total CM</strong><br>
+        2,004 × $8.42 = $16,873.68<br><br>
+        <strong style="color:var(--t1)">Top 9 visible CM</strong><br>
+        ≈ $14,545.40 (sum of itemized Total CM in table)<br><br>
+        <strong style="color:var(--t1)">Other mapped dinner items</strong><br>
+        $16,873.68 − $14,545.40 = $2,328.28 over 273 units<br>
+        CM/item ≈ $2,328.28 ÷ 273 ≈ $8.53<br><br>
+        <strong style="color:var(--amber)">Conclusion</strong><br>
+        This reconciles the visible item table to the 2,004-item weighted average of $8.42.
+      </div>
+    </div>
+
+    <div class="menu-ev-drawer-sec">
+      <div class="menu-ev-drawer-sec-h">C. Classification logic</div>
+      <p>Menu engineering · 2×2 classification:</p>
+      <ul>
+        <li>Popularity threshold = <strong>8.0%</strong></li>
+        <li>CM threshold = <strong>$8.75</strong> (set above weighted avg $8.42 so above-average alone is not sufficient for Star classification)</li>
+        <li><strong>Star</strong> = high popularity + high CM</li>
+        <li><strong>Plowhorse</strong> = high popularity + low CM</li>
+        <li><strong>Puzzle</strong> = low popularity + high CM</li>
+        <li><strong>Dog</strong> = low popularity + low CM</li>
+      </ul>
+      <p><strong>Current distribution (top 9 dinner items):</strong></p>
+      <ul>
+        <li>Stars: <strong>2</strong> — Spicy Vodka Pasta, Espresso Martini</li>
+        <li>Plowhorses: <strong>3</strong> — Crispy Chicken Sandwich, Burger, Truffle Fries (Watch)</li>
+        <li>Puzzles: <strong>2</strong> — Mushroom Risotto, Burrata Toast</li>
+        <li>Dogs: <strong>2</strong> — Beet Salad, Kids Pasta</li>
+      </ul>
+      <p style="font-style:italic;color:var(--t3)">Truffle Fries is classified <strong>Plowhorse · Watch</strong> (near-threshold Plowhorse) — its CM ($7.60) sits below the $8.75 threshold and its popularity (15.8%) is above 8.0%. Operationally lower risk than Crispy/Burger because fries may drive attachment/guest satisfaction, but strict threshold logic still applies.</p>
+      <p style="font-style:italic;color:var(--t3)"><strong>Plowhorse share of dinner volume:</strong> Primary Plowhorses (Crispy + Burger) = 613 / 2,004 = <strong>30.6%</strong>. Including Truffle Fries Watch = 930 / 2,004 = <strong>46.4%</strong>.</p>
+    </div>
+
+    <div class="menu-ev-drawer-sec">
+      <div class="menu-ev-drawer-sec-h">D. Food cost precedence</div>
+      <p>SKC resolves food cost using this order:</p>
+      <ol style="padding-left:20px;margin:4px 0">
+        <li style="font-size:12px;color:var(--t2);line-height:1.6">Inventory integration actual (real-time COGS)</li>
+        <li style="font-size:12px;color:var(--t2);line-height:1.6">Manual SKC recipe config</li>
+        <li style="font-size:12px;color:var(--t2);line-height:1.6">Category default percentage (heuristic, labeled)</li>
+        <li style="font-size:12px;color:var(--t2);line-height:1.6">Suppressed / unavailable</li>
+      </ol>
+      <p style="color:var(--amber);font-style:italic">Current demo: recipe cost file is stale 18d, so CM is shown ESTIMATED and verification is blocked.</p>
+    </div>
+
+    <div class="menu-ev-drawer-sec">
+      <div class="menu-ev-drawer-sec-h">E. Item detail · Crispy Chicken Sandwich</div>
+      <ul>
+        <li>Price at sale: <strong>$18.00</strong></li>
+        <li>Food cost: <strong>$12.20</strong></li>
+        <li>CM: <strong>$5.80</strong></li>
+        <li>Units sold (28d): <strong>373</strong></li>
+        <li>Total CM: <strong>$2,163.40</strong></li>
+        <li>Popularity: <strong>18.6%</strong></li>
+        <li>Classification: <strong style="color:var(--amber)">Plowhorse</strong></li>
+        <li>Recommendation: <strong>Review price or portion cost</strong></li>
+      </ul>
+    </div>
+
+    <div class="menu-ev-drawer-sec">
+      <div class="menu-ev-drawer-sec-h">F. Data quality rules</div>
+      <ul>
+        <li>Missing food cost → category default only if configured · label [HEURISTIC]</li>
+        <li>Stale food cost → reduce confidence and block verified savings</li>
+        <li>Items with fewer than 5 units sold → insufficient data, excluded</li>
+        <li>LTO / seasonal items under 6 weeks → excluded from long-run baseline, not classified as Dog</li>
+        <li>Price change &gt;10% mid-period → split pre/post analysis</li>
+        <li>Negative CM → validation prompt and exclude from weighted avg until operator review</li>
+        <li>Always use price at time of sale for historical analysis</li>
+      </ul>
+    </div>
+
+    <div class="menu-ev-drawer-sec">
+      <div class="menu-ev-drawer-sec-h">G. Output type labels</div>
+      <ul>
+        <li><strong>CM/item</strong>: deterministic if actual food cost current · estimated if recipe cost stale · heuristic if category default</li>
+        <li><strong>Classification</strong>: deterministic from thresholds · confidence inherits cost-data quality</li>
+        <li><strong>Mix shift</strong>: estimated</li>
+        <li><strong>Exposure</strong>: estimated · not verified</li>
+        <li><strong>Simulation</strong>: simulated · not verified</li>
+        <li><strong>Verified Savings</strong>: only after monitoring + guardrails pass + recipe costs fresh</li>
+      </ul>
+    </div>
+
+    <div class="menu-ev-drawer-sec">
+      <div class="menu-ev-drawer-sec-h">H. LLM restrictions</div>
+      <p>LLM provides narrative only. It cannot:</p>
+      <ul>
+        <li>Compute CM</li>
+        <li>Change item classification</li>
+        <li>Invent food costs</li>
+        <li>Remove estimated labels</li>
+        <li>Call simulated value verified</li>
+        <li>Call active recovery saved</li>
+        <li>Override Data Quality blockers</li>
+        <li>Recommend owner approval without disclosing stale cost data</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+

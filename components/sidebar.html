@@ -1,0 +1,174 @@
+
+  <!-- Brand -->
+  <div class="sb-brand">
+    <div class="sb-brand-mark">SK</div>
+    <div class="sb-brand-text">
+      <div class="sb-brand-name">SKC</div>
+      <div class="sb-brand-sub">Rosewood Group</div>
+    </div>
+  </div>
+
+  <!-- Location selector -->
+  <div class="sb-loc-wrap">
+    <div class="sb-loc-btn">
+      <svg class="sb-loc-ico" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <select class="sb-loc-sel" onchange="this.blur()">
+        <option>All Locations</option>
+        <option>Oakland</option>
+        <option>Berkeley</option>
+        <option>Walnut Creek</option>
+        <option>San Jose</option>
+      </select>
+      <span class="sb-loc-caret">⌄</span>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <div class="sb-nav-scroll">
+
+    <!-- ── OPERATE ─────────────────────────────────── -->
+    <div class="sb-group">
+      <div class="sb-group-label">Operate</div>
+
+      <div class="nav-item active" onclick="showScreen('home',this,'Today')">
+        <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Today
+      </div>
+
+
+      <!-- ── (v28) ACTIONS — expandable parent + 7 children ── -->
+      <div class="nav-item nav-parent" id="navActionsParent" role="button" tabindex="0"
+           aria-expanded="false" aria-controls="navActionsChildren"
+           onclick="navActionsParentClick(event)" onkeydown="navActionsParentKeydown(event)">
+        <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Actions
+        <span class="ni-badge red">2</span>
+        <svg class="ni-caret" id="navActionsCaret" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" onclick="toggleActionsNav(event)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleActionsNav(event)}" role="button" tabindex="0" aria-label="Toggle Actions children" style="cursor:pointer;padding:6px;margin:-6px"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="nav-children" id="navActionsChildren">
+        <div class="nav-child" data-sub="overview"  role="button" tabindex="0" onclick="navActionsChildClick('overview', this)"  onkeydown="navActionsChildKeydown(event,'overview')"  aria-label="Actions Overview">Overview</div>
+        <div class="nav-child" data-sub="pending"   role="button" tabindex="0" onclick="navActionsChildClick('pending', this)"   onkeydown="navActionsChildKeydown(event,'pending')"   aria-label="Pending Decisions">Pending Decisions</div>
+        <div class="nav-child" data-sub="active"    role="button" tabindex="0" onclick="navActionsChildClick('active', this)"    onkeydown="navActionsChildKeydown(event,'active')"    aria-label="Active Recovery">Active Recovery</div>
+        <div class="nav-child" data-sub="ready"     role="button" tabindex="0" onclick="navActionsChildClick('ready', this)"     onkeydown="navActionsChildKeydown(event,'ready')"     aria-label="Ready to Verify">Ready to Verify</div>
+        <div class="nav-child" data-sub="blocked"   role="button" tabindex="0" onclick="navActionsChildClick('blocked', this)"   onkeydown="navActionsChildKeydown(event,'blocked')"   aria-label="Blocked Actions">Blocked</div>
+        <div class="nav-child" data-sub="history"   role="button" tabindex="0" onclick="navActionsChildClick('history', this)"   onkeydown="navActionsChildKeydown(event,'history')"   aria-label="Action History">History</div>
+        <div class="nav-child" data-sub="evidence"  role="button" tabindex="0" onclick="navActionsChildClick('evidence', this)"  onkeydown="navActionsChildKeydown(event,'evidence')"  aria-label="Action Evidence">Evidence</div>
+      </div>
+    </div>
+
+    <!-- ── DIAGNOSE ────────────────────────────────── -->
+    <div class="sb-group">
+      <div class="sb-group-label">Diagnose</div>
+
+      <div class="nav-item" onclick="showScreen('leaks',this,'Profit Recovery')">
+        <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        Profit Recovery
+        <span class="ni-badge red">4</span>
+      </div>
+
+      <!-- ── (v27) MENU OPTIMIZATION — expandable parent + 7 children ── -->
+      <div class="nav-item nav-parent" id="navMenuParent" role="button" tabindex="0"
+           aria-expanded="true" aria-controls="navMenuChildren"
+           onclick="navMenuParentClick(event)" onkeydown="navMenuParentKeydown(event)">
+        <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h12"/></svg>
+        Menu Optimization
+        <svg class="ni-caret" id="navMenuCaret" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" onclick="toggleMenuNav(event)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleMenuNav(event)}" role="button" tabindex="0" aria-label="Toggle Menu Optimization children" style="cursor:pointer;padding:6px;margin:-6px"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="nav-children" id="navMenuChildren">
+        <div class="nav-child" data-sub="overview"    role="button" tabindex="0" onclick="navMenuChildClick('overview', this)"    onkeydown="navMenuChildKeydown(event,'overview')"    aria-label="Menu Optimization Overview">Overview</div>
+        <div class="nav-child" data-sub="matrix"      role="button" tabindex="0" onclick="navMenuChildClick('matrix', this)"      onkeydown="navMenuChildKeydown(event,'matrix')"      aria-label="Menu Matrix">Matrix</div>
+        <div class="nav-child" data-sub="mix"         role="button" tabindex="0" onclick="navMenuChildClick('mix', this)"         onkeydown="navMenuChildKeydown(event,'mix')"         aria-label="Menu Mix Shift">Mix Shift</div>
+        <div class="nav-child" data-sub="items"       role="button" tabindex="0" onclick="navMenuChildClick('items', this)"       onkeydown="navMenuChildKeydown(event,'items')"       aria-label="Menu Item Economics">Item Economics</div>
+        <div class="nav-child" data-sub="actions"     role="button" tabindex="0" onclick="navMenuChildClick('actions', this)"     onkeydown="navMenuChildKeydown(event,'actions')"     aria-label="Menu Actions">Actions</div>
+        <div class="nav-child" data-sub="simulations" role="button" tabindex="0" onclick="navMenuChildClick('simulations', this)" onkeydown="navMenuChildKeydown(event,'simulations')" aria-label="Menu Simulations">Simulations</div>
+        <div class="nav-child" data-sub="evidence"    role="button" tabindex="0" onclick="navMenuChildClick('evidence', this)"    onkeydown="navMenuChildKeydown(event,'evidence')"    aria-label="Menu Evidence">Evidence</div>
+      </div>
+
+      <!-- ── (v28b) LABOR EFFICIENCY — expandable parent + 5 children ── -->
+      <div class="nav-item nav-parent" id="navLaborParent" role="button" tabindex="0"
+           aria-expanded="false" aria-controls="navLaborChildren"
+           onclick="navLaborParentClick(event)" onkeydown="navLaborParentKeydown(event)">
+        <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Labor Efficiency
+        <span class="ni-badge" style="margin-left:auto;font-size:9px;padding:1px 5px;border-radius:9px;background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b)">5</span>
+        <svg class="ni-caret" id="navLaborCaret" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" onclick="toggleLaborNav(event)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleLaborNav(event)}" role="button" tabindex="0" aria-label="Toggle Labor Efficiency children" style="cursor:pointer;padding:6px;margin:-6px"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="nav-children" id="navLaborChildren">
+        <div class="nav-child" data-sub="overview"  role="button" tabindex="0" onclick="navLaborChildClick('overview', this)"  onkeydown="navLaborChildKeydown(event,'overview')"  aria-label="Labor Overview">Overview</div>
+        <div class="nav-child" data-sub="heatmap"   role="button" tabindex="0" onclick="navLaborChildClick('heatmap', this)"   onkeydown="navLaborChildKeydown(event,'heatmap')"   aria-label="Labor Heatmap">Heatmap</div>
+        <div class="nav-child" data-sub="staffing"  role="button" tabindex="0" onclick="navLaborChildClick('staffing', this)"  onkeydown="navLaborChildKeydown(event,'staffing')"  aria-label="Staffing Plan">Staffing Plan</div>
+        <div class="nav-child" data-sub="benchmarks" role="button" tabindex="0" onclick="navLaborChildClick('benchmarks', this)" onkeydown="navLaborChildKeydown(event,'benchmarks')" aria-label="Labor Benchmarks">Benchmarks</div>
+        <div class="nav-child" data-sub="coaching" role="button" tabindex="0" onclick="navLaborChildClick('coaching', this)" onkeydown="navLaborChildKeydown(event,'coaching')" aria-label="Server Coaching">Server Coaching</div>
+        <div class="nav-child" data-sub="evidence"  role="button" tabindex="0" onclick="navLaborChildClick('evidence', this)"  onkeydown="navLaborChildKeydown(event,'evidence')"  aria-label="Labor Evidence">Evidence</div>
+      </div>
+
+      <!-- ── (v28c) TABLE TURNS — expandable parent + 5 children ── -->
+      <div class="nav-item nav-parent" id="navTtParent" role="button" tabindex="0"
+           aria-expanded="false" aria-controls="navTtChildren"
+           onclick="navTtParentClick(event)" onkeydown="navTtParentKeydown(event)">
+        <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14.5"/><path d="M3.5 9.5 L6 12 L3.5 14.5"/></svg>
+        Table Turns
+        <span class="ni-badge" style="margin-left:auto;font-size:9px;padding:1px 5px;border-radius:9px;background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b)">3</span>
+        <svg class="ni-caret" id="navTtCaret" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" onclick="toggleTtNav(event)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleTtNav(event)}" role="button" tabindex="0" aria-label="Toggle Table Turns children" style="cursor:pointer;padding:6px;margin:-6px"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="nav-children" id="navTtChildren">
+        <div class="nav-child" data-sub="overview"   role="button" tabindex="0" onclick="navTtChildClick('overview', this)"   onkeydown="navTtChildKeydown(event,'overview')"   aria-label="Table Turns Overview">Overview</div>
+        <div class="nav-child" data-sub="stages"     role="button" tabindex="0" onclick="navTtChildClick('stages', this)"     onkeydown="navTtChildKeydown(event,'stages')"     aria-label="Stage Flow">Stage Flow</div>
+        <div class="nav-child" data-sub="lostcovers" role="button" tabindex="0" onclick="navTtChildClick('lostcovers', this)" onkeydown="navTtChildKeydown(event,'lostcovers')" aria-label="Lost Covers">Lost Covers</div>
+        <div class="nav-child" data-sub="playbooks"  role="button" tabindex="0" onclick="navTtChildClick('playbooks', this)"  onkeydown="navTtChildKeydown(event,'playbooks')"  aria-label="Playbooks">Playbooks</div>
+        <div class="nav-child" data-sub="evidence"   role="button" tabindex="0" onclick="navTtChildClick('evidence', this)"   onkeydown="navTtChildKeydown(event,'evidence')"   aria-label="Table Turns Evidence">Evidence</div>
+      </div>
+
+    </div>
+
+    <!-- ── PROVE ───────────────────────────────────── -->
+    <div class="sb-group">
+      <div class="sb-group-label">Prove</div>
+
+      <div class="nav-item" onclick="showScreen('scorecard',this,'ROI Proof')">
+        <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        ROI Proof
+      </div>
+
+      <div class="nav-item" onclick="showScreen('operating-system',this,'Operating System')">
+        <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18"/><path d="M3 12h18"/><path d="M12 3v18"/></svg>
+        Operating System
+      </div>
+
+      <div class="nav-item" onclick="showScreen('reports',this,'Reports')">
+        <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Reports
+      </div>
+    </div>
+
+    <!-- ── SYSTEM ──────────────────────────────────── -->
+    <div class="sb-group">
+      <div class="sb-group-label">System</div>
+
+      <div class="nav-item" onclick="showScreen('settings',this,'Data Quality')">
+        <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        Data Quality
+        <span class="ni-badge" style="margin-left:auto;font-size:9px;padding:1px 5px;border-radius:9px;background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b)">!</span>
+      </div>
+
+      <div class="nav-item" onclick="showScreen('config',this,'Settings')">
+        <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </div>
+
+
+
+  </div>
+
+  <!-- Bottom: user -->
+  <div class="sb-bottom">
+    <div class="sb-user">
+      <div class="op-ava">SC</div>
+      <div class="op-info">
+        <div class="op-name">Sarah Chen</div>
+        <div class="op-role">General Manager</div>
+      </div>
+    </div>
+  </div>
+
+</div>
