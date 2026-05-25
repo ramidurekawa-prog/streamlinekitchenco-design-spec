@@ -34,12 +34,10 @@
     </div>
   </div>
 
-  <!-- Shared scripts -->
-  <script src="shared/data.js"></script>
-  <script src="shared/core.js"></script>
-  <script src="shared/controllers.js"></script>
-  <script src="shared/server-coaching.js"></script>
-  <script src="shared/tooltips.js"></script>
+  <!-- Loader is the sole entry point. It fetches components + screens,
+       then dynamically injects data/core/controllers/server-coaching/tooltips
+       in order so they run against a fully populated DOM. See shared/loader.js
+       for the init-timing rationale. -->
   <script src="shared/loader.js"></script>
 </body>
 </html>
