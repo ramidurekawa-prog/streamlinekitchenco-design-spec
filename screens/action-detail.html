@@ -1,0 +1,142 @@
+  <div class="screen" id="screen-action-detail">
+
+    <div class="ac-detail-header">
+      <button class="btn btn-ghost btn-sm" onclick="showScreen('actions',null,'Actions')">← Back to Actions</button>
+      <div class="ac-detail-header-right">
+        <button class="btn btn-secondary btn-sm" onclick="openEvDrawer('leak1')">Show the math</button>
+        <button class="btn btn-primary btn-sm" onclick="openCA('leak1')">Assign Recovery Action</button>
+      </div>
+    </div>
+
+    <div class="ac-detail-body">
+
+      <!-- Left: main detail -->
+      <div class="ac-detail-main">
+
+        <div class="ac-detail-eyebrow">Labor · A006 · Oakland</div>
+        <h2 class="ac-detail-title">Remove one 5–10 PM FOH server from Oakland Tuesday dinner.</h2>
+        <div class="ac-detail-sub">RPLH is below the normal range for 6 of the last 6 comparable Tuesday dinners. Pattern is structural, not anomalous.</div>
+
+        <!-- State rail -->
+        <div class="ac-detail-rail">
+          <div class="ac-detail-rail-step ac-detail-rail-done">Surfaced</div>
+          <div class="ac-detail-rail-arrow">→</div>
+          <div class="ac-detail-rail-step ac-detail-rail-active">Assigned</div>
+          <div class="ac-detail-rail-arrow">→</div>
+          <div class="ac-detail-rail-step">Implemented</div>
+          <div class="ac-detail-rail-arrow">→</div>
+          <div class="ac-detail-rail-step">Monitoring</div>
+          <div class="ac-detail-rail-arrow">→</div>
+          <div class="ac-detail-rail-step">Verified / Rejected</div>
+        </div>
+
+        <!-- Playbook -->
+        <div class="ac-detail-section">
+          <div class="ac-detail-section-title">Labor staffing adjustment playbook</div>
+          <div class="ac-detail-steps">
+            <div class="ac-detail-step"><div class="ac-detail-step-num">1</div><div>Remove one 5–10 PM FOH server from Oakland Tuesday dinner schedule.</div></div>
+            <div class="ac-detail-step"><div class="ac-detail-step-num">2</div><div>Do <strong>not</strong> cut host coverage. Dining duration guardrail must hold.</div></div>
+            <div class="ac-detail-step"><div class="ac-detail-step-num">3</div><div>Do <strong>not</strong> cut manager coverage. Keep Sarah on floor for first two Tuesdays.</div></div>
+            <div class="ac-detail-step"><div class="ac-detail-step-num">4</div><div>Brief Sarah on guardrails before service. Watch dining duration and ticket time.</div></div>
+            <div class="ac-detail-step"><div class="ac-detail-step-num">5</div><div>Mark implemented in SKC after schedule change is confirmed in 7shifts.</div></div>
+            <div class="ac-detail-step ac-detail-step-reverse"><div class="ac-detail-step-num ac-detail-step-num-red">⚠</div><div>Reverse rule: if dining duration exceeds 52 min on either Tuesday, revert and escalate.</div></div>
+          </div>
+        </div>
+
+        <!-- Guardrails -->
+        <div class="ac-detail-section">
+          <div class="ac-detail-section-title">Guardrails · all must pass for verification</div>
+          <div class="ac-detail-guardrails">
+            <div class="ac-detail-gr-row">
+              <span class="ac-detail-gr-name">Dining duration</span>
+              <span class="ac-detail-gr-val">48 min</span>
+              <span class="ac-detail-gr-limit">≤ 52 min</span>
+              <span class="ac-detail-gr-status ac-detail-gr-watch">Watch · 4 min margin</span>
+            </div>
+            <div class="ac-detail-gr-row">
+              <span class="ac-detail-gr-name">Ticket time</span>
+              <span class="ac-detail-gr-val" data-skc="ticket-time">14.2 min</span>
+              <span class="ac-detail-gr-limit">≤ 16 min</span>
+              <span class="ac-detail-gr-status ac-detail-gr-pass">Passing</span>
+            </div>
+            <div class="ac-detail-gr-row">
+              <span class="ac-detail-gr-name">Average check</span>
+              <span class="ac-detail-gr-val" data-skc="avg-check">$53.10</span>
+              <span class="ac-detail-gr-limit">≥ $50.00</span>
+              <span class="ac-detail-gr-status ac-detail-gr-pass">Passing</span>
+            </div>
+            <div class="ac-detail-gr-row">
+              <span class="ac-detail-gr-name">Guest complaints</span>
+              <span class="ac-detail-gr-val" data-skc="complaints">0/wk</span>
+              <span class="ac-detail-gr-limit">≤ 2/wk</span>
+              <span class="ac-detail-gr-status ac-detail-gr-pass">Passing</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Monitoring window -->
+        <div class="ac-detail-section">
+          <div class="ac-detail-section-title">Monitoring window</div>
+          <div class="ac-detail-monitoring">
+            <div class="ac-detail-mon-row"><span>Status</span><strong>Not started — implement to begin</strong></div>
+            <div class="ac-detail-mon-row"><span>Window</span><strong>2 comparable Tuesday dinner services</strong></div>
+            <div class="ac-detail-mon-row"><span>Next checkpoint</span><strong>8:30 PM after tonight's dinner service</strong></div>
+            <div class="ac-detail-mon-row"><span>Measurement</span><strong>RPLH ≥ $36.50 for both services</strong></div>
+          </div>
+        </div>
+
+        <!-- Audit trail -->
+        <div class="ac-detail-section">
+          <div class="ac-detail-section-title">Audit trail</div>
+          <div class="ac-detail-audit">
+            <div class="ac-detail-audit-row"><span class="ac-detail-audit-dot ac-detail-audit-amber"></span><span>SKC detected RPLH anomaly — 6 consecutive Tue dinners</span><span class="ac-detail-audit-time">May 13</span></div>
+            <div class="ac-detail-audit-row"><span class="ac-detail-audit-dot ac-detail-audit-blue"></span><span>Recommendation surfaced · A006 created</span><span class="ac-detail-audit-time">May 14</span></div>
+            <div class="ac-detail-audit-row"><span class="ac-detail-audit-dot ac-detail-audit-blue"></span><span>Assigned to Sarah C. · Due before 3 PM today</span><span class="ac-detail-audit-time">May 19</span></div>
+            <div class="ac-detail-audit-row ac-detail-audit-pending"><span class="ac-detail-audit-dot"></span><span class="ac-detail-audit-future">Implementation · monitoring · verification pending</span><span class="ac-detail-audit-time">—</span></div>
+          </div>
+        </div>
+
+      </div><!-- /ac-detail-main -->
+
+      <!-- Right: sidebar -->
+      <div class="ac-detail-sidebar">
+
+        <div class="ac-detail-sb-card">
+          <div class="ac-detail-sb-label">Expected weekly value</div>
+          <div class="ac-detail-sb-value">$370<span class="ac-detail-sb-period">/wk</span></div>
+          <div class="ac-detail-sb-basis">$185/service · 2 services/week</div>
+          <div class="ac-detail-sb-roi">Not counted in ROI yet</div>
+        </div>
+
+        <div class="ac-detail-sb-card">
+          <div class="ac-detail-sb-label">Owner &amp; due</div>
+          <div class="ac-detail-sb-line"><strong>Sarah C.</strong> — GM Oakland</div>
+          <div class="ac-detail-sb-line ac-detail-sb-due">Before 3 PM today</div>
+          <div class="ac-detail-sb-line">GM approval required</div>
+        </div>
+
+        <div class="ac-detail-sb-card">
+          <div class="ac-detail-sb-label">ROI eligibility</div>
+          <div class="ac-detail-sb-roi-state ac-detail-sb-roi-limited">Verification limited</div>
+          <div class="ac-detail-sb-note">7shifts stale 18h. Action allowed with GM approval. ROI verification resumes when labor data syncs.</div>
+        </div>
+
+        <div class="ac-detail-sb-card">
+          <div class="ac-detail-sb-label">Source health</div>
+          <div class="ac-detail-src-row"><span class="ac-detail-src-dot ac-detail-src-green"></span><span>Toast POS · live</span></div>
+          <div class="ac-detail-src-row"><span class="ac-detail-src-dot ac-detail-src-amber"></span><span>7shifts · stale 18h</span></div>
+          <div class="ac-detail-src-row"><span class="ac-detail-src-dot ac-detail-src-green"></span><span>Google Reviews · 1h ago</span></div>
+          <button class="btn btn-secondary btn-sm" style="margin-top:10px;width:100%" onclick="showScreen('settings',null,'Data Quality')">Fix data sources</button>
+        </div>
+
+        <div class="ac-detail-sb-actions">
+          <button class="btn btn-primary" style="width:100%" onclick="openCA('leak1')">Assign Recovery Action</button>
+          <button class="btn btn-secondary" style="width:100%" onclick="openEvDrawer('leak1')">Show the math</button>
+          <button class="btn btn-ghost" style="width:100%" onclick="showScreen('scorecard',null,'ROI Proof')">View ROI Proof</button>
+        </div>
+
+      </div><!-- /ac-detail-sidebar -->
+
+    </div><!-- /ac-detail-body -->
+
+  </div><!-- /screen-action-detail -->
