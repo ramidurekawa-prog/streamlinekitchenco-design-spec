@@ -1,0 +1,161 @@
+  <div class="screen" id="screen-recovery-detail">
+
+    <div class="rd-header">
+      <button class="btn btn-ghost btn-sm" onclick="showScreen('leaks',null,'Profit Recovery')">← Profit Recovery</button>
+      <div class="rd-header-right">
+        <button class="btn btn-ghost btn-sm" onclick="openSimulateDrawer('leak1')">Simulate Fix</button>
+        <button class="btn btn-secondary btn-sm" onclick="openEvDrawer('leak1')">Show the Math</button>
+        <button class="btn btn-primary btn-sm" onclick="openCA('leak1')">Assign Highest-Value Action</button>
+      </div>
+    </div>
+
+    <div class="rd-body">
+      <div class="rd-main">
+
+        <div class="rd-eyebrow">Labor Recovery · A006 · Oakland · Trigger Active</div>
+        <h2 class="rd-title">Oakland Tuesday dinner labor recovery</h2>
+        <div class="rd-subtitle">RPLH is below expected range across 6 of the last 6 comparable Tuesday dinner services. Pattern is structural, not anomalous.</div>
+
+        <!-- Value + confidence bar -->
+        <div class="rd-value-row">
+          <div class="rd-value-block">
+            <div class="rd-value-label">Estimated Open Exposure</div>
+            <div class="rd-value-main">$370<span class="rd-value-period">/wk</span></div>
+            <div class="rd-value-basis">$185/service · 2 services/week · not counted in ROI yet</div>
+          </div>
+          <div class="rd-conf-block">
+            <div class="rd-conf-label">Confidence</div>
+            <div class="rd-conf-val">78%</div>
+            <div class="rd-conf-note">85% base −7 pts stale 7shifts</div>
+          </div>
+          <div class="rd-priority-block">
+            <div class="rd-priority-label">Priority score</div>
+            <div class="rd-priority-val">87<span style="font-size:14px;color:var(--t3)">/100</span></div>
+          </div>
+        </div>
+
+        <!-- Why triggered -->
+        <div class="rd-section">
+          <div class="rd-section-title">Why this triggered</div>
+          <div class="rd-trigger-grid">
+            <div class="rd-trigger-row"><span class="rd-tr-key">Metric</span><span class="rd-tr-val">RPLH (Revenue per Labor Hour)</span></div>
+            <div class="rd-trigger-row"><span class="rd-tr-key">Baseline</span><span class="rd-tr-val">8 comparable Tuesday dinner services</span></div>
+            <div class="rd-trigger-row"><span class="rd-tr-key">Normal range</span><span class="rd-tr-val rd-tr-green">$35.80–$40.60/hr</span></div>
+            <div class="rd-trigger-row"><span class="rd-tr-key">Current</span><span class="rd-tr-val rd-tr-red" data-skc="rplh-current">$31.40/hr</span></div>
+            <div class="rd-trigger-row"><span class="rd-tr-key">Pattern</span><span class="rd-tr-val">6 of 6 comparable Tuesday dinners below range</span></div>
+            <div class="rd-trigger-row"><span class="rd-tr-key">Sample size</span><span class="rd-tr-val rd-tr-green">8 services · passed minimum (≥4)</span></div>
+            <div class="rd-trigger-row"><span class="rd-tr-key">Anomalies excluded</span><span class="rd-tr-val">2 holiday/event weeks excluded</span></div>
+            <div class="rd-trigger-row"><span class="rd-tr-key">Trigger rule</span><span class="rd-tr-val">Labor Recovery triggers after 3+ comparable services fall below daypart normal range</span></div>
+            <div class="rd-trigger-row"><span class="rd-tr-key">Severity</span><span class="rd-tr-val rd-tr-amber">High</span></div>
+            <div class="rd-trigger-row rd-tr-formula"><span class="rd-tr-key">Formula</span><span class="rd-tr-val">RPLH = Net Revenue ÷ Labor Hours · SKC KPI Registry v0.3</span></div>
+          </div>
+        </div>
+
+        <!-- Confidence math -->
+        <div class="rd-section">
+          <div class="rd-section-title">Confidence math</div>
+          <div class="rd-conf-math">
+            <div class="rd-cm-row"><span>Base confidence</span><span class="rd-cm-val">85%</span></div>
+            <div class="rd-cm-row rd-cm-deduct"><span>7shifts stale 18h</span><span class="rd-cm-val rd-tr-red">−7 pts</span></div>
+            <div class="rd-cm-row rd-cm-result"><span>Final confidence</span><span class="rd-cm-val rd-tr-amber">78%</span></div>
+          </div>
+        </div>
+
+        <!-- Priority score math -->
+        <div class="rd-section">
+          <div class="rd-section-title">Priority score math (87/100)</div>
+          <div class="rd-score-grid">
+            <div class="rd-score-row"><span class="rd-score-key">Weekly value (highest)</span><span class="rd-score-pts">+30</span></div>
+            <div class="rd-score-row"><span class="rd-score-key">Severity: High</span><span class="rd-score-pts">+20</span></div>
+            <div class="rd-score-row"><span class="rd-score-key">Pattern: 6/6 services</span><span class="rd-score-pts">+18</span></div>
+            <div class="rd-score-row"><span class="rd-score-key">Action simplicity: direct schedule change</span><span class="rd-score-pts">+15</span></div>
+            <div class="rd-score-row"><span class="rd-score-key">Due-time urgency: today before 3 PM</span><span class="rd-score-pts">+10</span></div>
+            <div class="rd-score-row rd-score-deduct"><span class="rd-score-key">7shifts stale · confidence penalty</span><span class="rd-score-pts rd-tr-red">−4</span></div>
+            <div class="rd-score-row rd-score-deduct"><span class="rd-score-key">Table turn time at Watch</span><span class="rd-score-pts rd-tr-amber">−2</span></div>
+            <div class="rd-score-row rd-score-total"><span class="rd-score-key">Final score</span><span class="rd-score-pts" style="color:var(--t1)">87/100</span></div>
+          </div>
+        </div>
+
+        <!-- Recommended action -->
+        <div class="rd-section">
+          <div class="rd-section-title">Recommended action</div>
+          <div class="rd-action-block">Remove one 5–10 PM FOH server from Oakland Tuesday dinner.</div>
+          <div class="rd-action-steps">
+            <div class="rd-action-step"><span class="rd-step-num">1</span>7shifts → Oakland → Tuesday Dinner → remove one 5–10 PM server shift</div>
+            <div class="rd-action-step"><span class="rd-step-num">2</span>Do not cut host coverage or manager coverage</div>
+            <div class="rd-action-step"><span class="rd-step-num">3</span>Brief Sarah: watch dining duration and ticket time</div>
+            <div class="rd-action-step"><span class="rd-step-num">4</span>Mark implemented in SKC after 7shifts confirms the change</div>
+            <div class="rd-action-step rd-step-reverse"><span class="rd-step-num rd-step-num-warn">⚠</span>Reverse rule: if dining duration &gt; 52 min on either Tuesday, revert and escalate</div>
+          </div>
+        </div>
+
+        <!-- Verification rule -->
+        <div class="rd-section">
+          <div class="rd-section-title">Verification rule</div>
+          <div class="rd-verify-rule">RPLH ≥ $36.50 for <strong>2 consecutive Tuesday dinners</strong> with all 4 counter-metric guardrails passing. Action can be assigned. Verification limited until 7shifts refreshes.</div>
+        </div>
+
+        <!-- Ask SKC chips -->
+        <div class="rd-ask-chips">
+          <div class="rd-ask-label">Ask SKC about this recovery</div>
+          <div class="rd-ask-chip-row">
+            <div class="td-ask-chip" onclick="askPanelQ('Why did this trigger?')">Why did this trigger?</div>
+            <div class="td-ask-chip" onclick="askPanelQ('Show me the calculation.')">Show me the calculation.</div>
+            <div class="td-ask-chip" onclick="askPanelQ('What should we fix first?')">What should we fix first?</div>
+            <div class="td-ask-chip" onclick="askPanelQ('What could go wrong?')">What could go wrong?</div>
+            <div class="td-ask-chip" onclick="askPanelQ('What data is stale?')">What data is stale?</div>
+            <div class="td-ask-chip" onclick="askPanelQ('When does this count as ROI?')">When does this count as ROI?</div>
+          </div>
+        </div>
+
+      </div><!-- /rd-main -->
+
+      <!-- Right sidebar -->
+      <div class="rd-sidebar">
+
+        <div class="rd-sb-card">
+          <div class="rd-sb-label">Guardrails</div>
+          <div class="rd-sb-gr-list">
+            <div class="rd-sb-gr-row"><span class="rd-sb-gr-watch">◎</span>Dining duration ≤ 52 min</div>
+            <div class="rd-sb-gr-row"><span class="rd-sb-gr-pass">✓</span>Ticket time ≤ 16 min</div>
+            <div class="rd-sb-gr-row"><span class="rd-sb-gr-pass">✓</span>Average check ≥ $50.00</div>
+            <div class="rd-sb-gr-row"><span class="rd-sb-gr-pass">✓</span>Guest complaints ≤ 2/wk</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:10px" onclick="showScreen('leaks',null,'Profit Recovery');switchTab('recovery','guardrails')">View guardrail detail →</button>
+        </div>
+
+        <div class="rd-sb-card">
+          <div class="rd-sb-label">Source health</div>
+          <div class="rd-src-row"><span class="rd-src-dot rd-src-green"></span>Toast POS · live</div>
+          <div class="rd-src-row"><span class="rd-src-dot rd-src-amber"></span>7shifts · stale 18h</div>
+          <div class="rd-src-row"><span class="rd-src-dot rd-src-green"></span>Google Reviews · 1h ago</div>
+          <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:10px" onclick="showScreen('settings',null,'Data Quality')">Fix data sources</button>
+        </div>
+
+        <div class="rd-sb-card">
+          <div class="rd-sb-label">Operational memory</div>
+          <div class="rd-sb-memory">Last time this type of adjustment was tried, RPLH improved but ticket time worsened. SKC adjustment: do not cut kitchen support — only adjust FOH server coverage.</div>
+        </div>
+
+        <div class="rd-sb-card">
+          <div class="rd-sb-label">Similar opportunities</div>
+          <div class="rd-sb-similar-row"><span class="rd-sb-sim-loc">Berkeley · Tue Dinner</span><span class="rd-sb-sim-val">$210/wk · Medium</span></div>
+          <div class="rd-sb-similar-note">Similar RPLH drift detected. Lower value — act Oakland first.</div>
+        </div>
+
+        <div class="rd-sb-card">
+          <div class="rd-sb-label">Recovery history</div>
+          <div class="rd-sb-history-row"><span class="rd-sb-hist-date">Mar 12</span><span class="rd-sb-hist-note">Similar labor adjustment improved RPLH but ticket time failed guardrail. Not counted in ROI.</span></div>
+        </div>
+
+        <div class="rd-sb-actions">
+          <button class="btn btn-primary" style="width:100%" onclick="openCA('leak1')">Assign Highest-Value Action</button>
+          <button class="btn btn-secondary" style="width:100%" onclick="openEvDrawer('leak1')">Show the Math</button>
+          <button class="btn btn-ghost" style="width:100%" onclick="openSimulateDrawer('leak1')">Simulate Fix</button>
+        </div>
+
+      </div><!-- /rd-sidebar -->
+
+    </div><!-- /rd-body -->
+
+  </div><!-- /screen-recovery-detail -->
