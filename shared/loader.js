@@ -30,10 +30,14 @@
     ['components/drawers.html',   'layout-drawers',   'replace'],
   ];
 
+  // 13 screens — note that screen-config (the "Settings/workspace" page)
+  // is genuinely nested inside screen-settings (the "Data Quality" page)
+  // in the source HTML, so it ships as part of screens/settings.html and
+  // doesn't get its own fragment.
   const SCREENS = [
     'today', 'profit-recovery', 'actions', 'action-detail',
     'recovery-detail', 'labor-efficiency', 'roi-proof', 'reports',
-    'operating-system', 'settings', 'config', 'menu-optimization',
+    'operating-system', 'settings', 'menu-optimization',
     'kitchen-speed', 'table-turns',
   ];
 
