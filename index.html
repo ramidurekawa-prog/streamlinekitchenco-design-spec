@@ -1,25 +1,40 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>SKC Demo — Refactor in Progress</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SKC — Streamline Kitchen Co.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared/styles.css">
 </head>
 <body>
-  <div id="app">
-    <div id="layout-sidebar"></div>
-    <div id="layout-main">
-      <div id="layout-topbar"></div>
-      <div id="screen-container">
-        <p style="padding:24px;font-family:system-ui">Refactor in progress. See <code>skc-design-transition.md</code>.</p>
+
+  <!-- Overlays, drawers, modals, ask panel — fetched by loader -->
+  <div id="layout-drawers"></div>
+  <div id="layout-ask-panel"></div>
+
+  <!-- Sidebar — fetched by loader into the original #sidebar wrapper -->
+  <div id="sidebar"></div>
+
+  <!-- Main shell -->
+  <div id="shell">
+    <div id="topbar"></div>
+
+    <!-- Doctrine bar (always present; hidden by default; toggled by demo controls) -->
+    <div class="da-doctrine-bar" id="daBar" style="display:none">
+      <span class="da-doctrine-text"><strong>SKC turns Toast data into verified profit recovery.</strong> · Only <strong>Verified Savings</strong> count toward ROI · Active Recovery and Open Exposure are not counted until post-action monitoring confirms.</span>
+      <button class="btn btn-ghost" style="font-size:10px;padding:1px 8px;flex-shrink:0" onclick="openDrawer('value-defs')">How values are classified →</button>
+    </div>
+
+    <div id="content">
+      <div class="content-inner" id="screen-container">
+        <!-- Screens fetched/appended here by loader.js -->
       </div>
     </div>
-    <div id="layout-drawers"></div>
-    <div id="layout-ask-panel"></div>
   </div>
 
-  <div id="skc-tip" role="tooltip"></div>
-
+  <!-- Shared scripts -->
   <script src="shared/data.js"></script>
   <script src="shared/core.js"></script>
   <script src="shared/controllers.js"></script>
