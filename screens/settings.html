@@ -1,0 +1,604 @@
+  <div class="screen" id="screen-settings">
+
+    <!-- ── PAGE HEADER ──────────────────────────────────── -->
+    <div class="page-header" style="padding-top:24px">
+      <div class="page-header-left">
+        <div class="page-header-title">Data Quality</div>
+        <div class="page-header-sub">Source freshness, missing inputs, and confidence impact across SKC recommended actions.</div>
+      </div>
+      <div class="page-header-right">
+        <span class="skc-aud-badge skc-aud-gm" title="Data Quality ops happen day-to-day by the GM">GM view</span>
+        <button class="btn btn-primary" onclick="dqFix('shifts')">Reconnect 7shifts first →</button>
+      </div>
+    </div>
+
+    <!-- ══ VERIFICATION BLOCKERS · embed from Operating System ══ -->
+    <div class="os-embed-card" style="border-left-color:var(--amber)">
+      <div class="os-embed-card-body">
+        <div class="os-embed-card-eyebrow" style="color:var(--amber)">Verification blockers · affects renewal cadence</div>
+        <div class="os-embed-card-title">Data quality doesn't just affect accuracy. It affects whether SKC can create counted ROI lines.</div>
+        <div class="os-embed-card-sub">Payroll stale → labor savings cannot verify exact dollar value · Accounting missing → margin confirmation blocked · KDS degraded → table-turn stage precision reduced · COGS upload missing → prep waste detector unavailable</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-secondary btn-sm" onclick="showScreen('operating-system',null,'Operating System')">See verification queue</button>
+      </div>
+    </div>
+
+    <!-- ── TABS ──────────────────────────────────────────── -->
+    <div class="skc-tab-bar mb-20">
+      <div class="skc-tabs" data-tabs="dq">
+        <button class="skc-tab active" data-key="overview"      onclick="switchTab('dq','overview')">Overview</button>
+        <button class="skc-tab"        data-key="integrations"  onclick="switchTab('dq','integrations')">Integrations</button>
+        <button class="skc-tab"        data-key="affected"      onclick="switchTab('dq','affected')">Affected Metrics</button>
+        <button class="skc-tab"        data-key="blocked"       onclick="switchTab('dq','blocked')">Blocked Actions</button>
+        <button class="skc-tab"        data-key="history"       onclick="switchTab('dq','history')">Sync History</button>
+        <button class="skc-tab"        data-key="hygiene"       onclick="switchTab('dq','hygiene')">Data Hygiene <span style="font-size:8.5px;background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b);padding:1px 5px;border-radius:99px;margin-left:5px;font-weight:700">Q3</span></button>
+      </div>
+    </div>
+
+    <div class="skc-panel active" data-tab="dq-overview">
+
+    <!-- (Fix 4) SKC Trust DQ failure cards — toggleable via QA -->
+    <div id="skc-tr-dq-failure-cards" class="skc-tr-dqfail-stack"></div>
+
+    <!-- ── GLOBAL FRESHNESS STRIP ───────────────────────── -->
+    <div class="dq-global-strip mb-20">
+      <div class="dq-gs-label">Source freshness</div>
+      <div class="dq-gs-sources">
+        <span class="dq-gs-src dq-gs-live"><span class="src-dot green"></span>Toast POS · 4m ago</span>
+        <span class="dq-gs-sep">·</span>
+        <span class="dq-gs-src dq-gs-stale" onclick="dqFix('shifts')" style="cursor:pointer"><span class="src-dot amber"></span>7shifts · stale 18h · <u>fix →</u></span>
+        <span class="dq-gs-sep">·</span>
+        <span class="dq-gs-src dq-gs-warn"><span class="src-dot amber"></span>KDS · partial</span>
+        <span class="dq-gs-sep">·</span>
+        <span class="dq-gs-src dq-gs-stale"><span class="src-dot amber"></span>Recipe Cost · stale 18d</span>
+        <span class="dq-gs-sep">·</span>
+        <span class="dq-gs-src dq-gs-live"><span class="src-dot green"></span>Google Reviews · 1h ago</span>
+        <span class="dq-gs-sep">·</span>
+        <span class="dq-gs-src dq-gs-missing"><span class="src-dot red"></span>Accounting · not connected</span>
+      </div>
+      <div class="dq-gs-note">Stale sources reduce confidence in recommended actions. Fix sources to restore full accuracy and verified win eligibility.</div>
+    </div>
+
+    <!-- ── COMPLETENESS BAR ──────────────────────────────── -->
+    <div class="dq-completeness-bar mb-20">
+      <div class="dq-comp-header">
+        <span class="dq-comp-label">Platform data completeness</span>
+        <span class="dq-comp-val" data-dq-completeness>78% complete</span>
+      </div>
+      <div class="dq-comp-track">
+        <div class="dq-comp-fill" style="width:78%"></div>
+      </div>
+      <div class="dq-comp-note">2 quick fixes restore 85%+ completeness — reconnect 7shifts (5 min) and update recipe costs. KDS and Accounting are longer-term upgrades.</div>
+    </div>
+
+    <!-- ── SECTION 1: SOURCE HEALTH CARDS ───────────────── -->
+    <div class="section-shell mb-24">
+      <div class="section-shell-hd">
+        <div class="section-shell-title">Source Health</div>
+        <div class="section-shell-note">Fix stale or missing sources to restore full confidence</div>
+      </div>
+      <div class="dq-cards-grid">
+
+        <!-- Toast POS — Live -->
+        <div class="dq-src-card dq-src-live">
+          <div class="dq-src-header">
+            <div class="dq-src-dot" style="background:var(--green)"></div>
+            <div class="dq-src-name">Toast POS</div>
+            <span class="dq-src-status dq-src-status-healthy" id="dq-src-status-toast">Live</span>
+          </div>
+          <div class="dq-src-sync">Last synced: <span id="dq-src-sync-toast">4m ago</span></div>
+          <div class="dq-src-desc">Revenue, covers, avg check, ticket times, RPLH, table turns. Primary data source — all revenue metrics are Direct (DET).</div>
+          <div class="dq-src-affects">Affects: RPLH · avg check · covers · ticket time · table turns · all revenue calculations</div>
+          <div class="dq-src-footer">
+            <span id="dq-src-chip-toast"><span class="output-chip ot-det" title="DET = Deterministic — measured directly from your data">DET · Direct</span></span>
+            <button class="btn btn-ghost btn-sm" onclick="showDemoToast('Toast POS is live — no action needed','green')">View Connection</button>
+          </div>
+        </div>
+
+        <!-- 7shifts — Stale -->
+        <div class="dq-src-card dq-src-stale" id="dq7shifts" data-demo-id="demo-target-7shifts">
+          <div class="dq-src-header">
+            <div class="dq-src-dot" style="background:var(--amber)"></div>
+            <div class="dq-src-name">7shifts · Labor Scheduling</div>
+            <span class="dq-src-status dq-src-status-stale" id="dq-src-status-shifts">Stale 18h</span>
+          </div>
+          <div class="dq-src-sync">Last synced: <span id="dq-src-sync-shifts">18h ago</span></div>
+          <div class="dq-src-desc">Scheduled labor hours, shift assignments. Stale token — reduces labor confidence from 85% → 78%.</div>
+          <div class="dq-src-warn">⚠ Labor recommended actions show reduced confidence. Verified win eligibility requires fresh data.</div>
+          <div class="dq-src-affects">Affects: labor cost % · RPLH calculation · Labor · action confidence</div>
+          <div class="dq-src-footer">
+            <span id="dq-src-chip-shifts"><span class="output-chip ot-est" title="EST = Estimated — calculated from available data with stated confidence">EST · Stale</span></span>
+            <button class="btn btn-primary btn-sm" onclick="dqFix('shifts')">Reconnect 7shifts →</button>
+          </div>
+          <div style="font-size:11px;color:var(--amber);margin-top:3px">→ Re-authenticate 7shifts: Settings → Integrations → 7shifts → Reconnect</div>
+        </div>
+
+        <!-- KDS — Partial -->
+        <div class="dq-src-card dq-src-partial">
+          <div class="dq-src-header">
+            <div class="dq-src-dot" style="background:var(--amber)"></div>
+            <div class="dq-src-name">KDS</div>
+            <span class="dq-src-status dq-src-status-degraded" id="dq-src-status-kds">Partial</span>
+          </div>
+          <div class="dq-src-sync">Last synced: <span id="dq-src-sync-kds">6m ago</span></div>
+          <div class="dq-src-desc">Ticket timestamps — aggregate only, no per-station breakdown. Limits throughput root-cause diagnosis.</div>
+          <div class="dq-src-affects">Affects: ticket time confidence (64%) · Throughput · no station-level data</div>
+          <div class="dq-src-footer">
+            <span id="dq-src-chip-kds"><span class="output-chip ot-est" title="EST = Estimated — calculated from available data with stated confidence">EST · Partial</span></span>
+            <button class="btn btn-ghost btn-sm" onclick="showDemoToast('KDS station-level integration requires upgraded plan','blue')">Upgrade Integration</button>
+          </div>
+        </div>
+
+        <!-- Recipe Cost — Stale -->
+        <div class="dq-src-card dq-src-stale">
+          <div class="dq-src-header">
+            <div class="dq-src-dot" style="background:var(--amber)"></div>
+            <div class="dq-src-name">Menu / Recipe Cost</div>
+            <span class="dq-src-status dq-src-status-stale" id="dq-src-status-menu">Stale 18d</span>
+          </div>
+          <div class="dq-src-sync">Last synced: <span id="dq-src-sync-menu">18d ago</span></div>
+          <div class="dq-src-desc">Ingredient costs, contribution margin. Manual file — 18 days since last update. Salmon CM may have shifted since January supply chain event.</div>
+          <div class="dq-src-affects">Affects: CM % · Menu · Salmon reprice confidence · COGS accuracy</div>
+          <div class="dq-src-footer">
+            <span id="dq-src-chip-menu"><span class="output-chip ot-est" title="EST = Estimated — calculated from available data with stated confidence">EST · Manual</span></span>
+            <button class="btn btn-primary btn-sm" onclick="showDemoToast('Upload recipe cost file to update COGS data','blue')">Update Recipe Cost</button>
+          </div>
+          <div style="font-size:11px;color:var(--amber);margin-top:3px">→ Update recipe costs: Menu → Edit item → Update food cost %</div>
+        </div>
+
+        <!-- Google Reviews — Live -->
+        <div class="dq-src-card dq-src-live">
+          <div class="dq-src-header">
+            <div class="dq-src-dot" style="background:var(--green)"></div>
+            <div class="dq-src-name">Google Reviews</div>
+            <span class="dq-src-status dq-src-status-healthy" id="dq-src-status-reviews">Live</span>
+          </div>
+          <div class="dq-src-sync">Last synced: <span id="dq-src-sync-reviews">1h ago</span></div>
+          <div class="dq-src-desc">Ratings and complaint signals. Used as a guardrail for service quality — not for dollar calculations.</div>
+          <div class="dq-src-affects">Affects: complaint guardrail monitoring · review score guardrail only</div>
+          <div class="dq-src-footer">
+            <span id="dq-src-chip-reviews"><span class="output-chip ot-det" title="DET = Deterministic — measured directly from your data">DET · Live</span></span>
+            <button class="btn btn-ghost btn-sm" onclick="showDemoToast('Google Reviews connected and monitoring','green')">View Status</button>
+          </div>
+        </div>
+
+        <!-- Accounting — Missing -->
+        <div class="dq-src-card dq-src-missing">
+          <div class="dq-src-header">
+            <div class="dq-src-dot" style="background:var(--red)"></div>
+            <div class="dq-src-name">Accounting</div>
+            <span class="dq-src-status dq-src-status-blocked" id="dq-src-status-accounting">Not connected</span>
+          </div>
+          <div class="dq-src-sync">Last synced: <span id="dq-src-sync-accounting">Never</span></div>
+          <div class="dq-src-desc">Prime cost, net margin. Not connected — full COGS audit unavailable. Does not block current recovery actions but limits net margin accuracy.</div>
+          <div class="dq-src-affects">Affects: prime cost % · net margin · does not block current recovery actions</div>
+          <div class="dq-src-footer">
+            <span id="dq-src-chip-accounting"><span class="output-chip ot-unavail">Unavailable</span></span>
+            <button class="btn btn-primary btn-sm" onclick="showDemoToast('Connecting accounting system — contact support for setup','blue')">Connect Accounting</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECTION 2: FEATURE IMPACT TABLE ──────────────── -->
+    <div class="section-shell mb-24">
+      <div class="section-shell-hd">
+        <div class="section-shell-title">Feature Impact by Source</div>
+        <div class="section-shell-note">Which pages are affected by current data quality issues</div>
+      </div>
+      <div class="responsive-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Required sources</th>
+              <th>Current status</th>
+              <th>Confidence impact</th>
+              <th>Missing / stale input</th>
+              <th>Action needed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600;color:var(--t1)">Dashboard</td>
+              <td style="font-size:12px;color:var(--t3)">Toast POS · 7shifts</td>
+              <td><span class="badge amber" style="font-size:10px">Degraded</span></td>
+              <td class="mono" style="color:var(--amber)">78% (labor)</td>
+              <td style="font-size:12px;color:var(--amber)">7shifts stale 18h</td>
+              <td style="font-size:12px"><button class="btn btn-ghost btn-sm" onclick="dqFix('shifts')">Reconnect 7shifts</button></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--t1)">Profit Recovery</td>
+              <td style="font-size:12px;color:var(--t3)">Toast · 7shifts · Recipe Cost</td>
+              <td><span class="badge amber" style="font-size:10px">Degraded</span></td>
+              <td class="mono" style="color:var(--amber)">64–78%</td>
+              <td style="font-size:12px;color:var(--amber)">7shifts stale · Recipe Cost stale 18d</td>
+              <td style="font-size:12px">Fix 7shifts + update COGS</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--t1)">Labor</td>
+              <td style="font-size:12px;color:var(--t3)">Toast POS · 7shifts</td>
+              <td><span class="badge amber" style="font-size:10px">Degraded</span></td>
+              <td class="mono" style="color:var(--amber)">78%</td>
+              <td style="font-size:12px;color:var(--amber)">7shifts stale 18h — wage/hours estimated</td>
+              <td style="font-size:12px"><button class="btn btn-ghost btn-sm" onclick="dqFix('shifts')">Reconnect 7shifts</button></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--t1)">Menu</td>
+              <td style="font-size:12px;color:var(--t3)">Toast POS · Recipe Cost</td>
+              <td><span class="badge amber" style="font-size:10px">Degraded</span></td>
+              <td class="mono" style="color:var(--amber)">71%</td>
+              <td style="font-size:12px;color:var(--amber)">Recipe Cost stale 18d — CM figures estimated</td>
+              <td style="font-size:12px"><button class="btn btn-ghost btn-sm" onclick="showDemoToast('Upload recipe cost file to update COGS','blue')">Update COGS</button></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--t1)">Throughput</td>
+              <td style="font-size:12px;color:var(--t3)">Toast POS · KDS</td>
+              <td><span class="badge amber" style="font-size:10px">Partial</span></td>
+              <td class="mono" style="color:var(--amber)">64%</td>
+              <td style="font-size:12px;color:var(--amber)">KDS partial — no station-level data</td>
+              <td style="font-size:12px">Upgrade KDS integration</td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--t1)">Proof</td>
+              <td style="font-size:12px;color:var(--t3)">Toast · 7shifts · Accounting</td>
+              <td><span class="badge amber" style="font-size:10px">Partial</span></td>
+              <td class="mono" style="color:var(--amber)">Operational only</td>
+              <td style="font-size:12px;color:var(--red)">Accounting not connected — net margin unavailable</td>
+              <td style="font-size:12px"><button class="btn btn-ghost btn-sm" onclick="showDemoToast('Contact support to connect accounting system','blue')">Connect Accounting</button></td>
+            </tr>
+            <tr>
+              <td style="font-weight:600;color:var(--t1)">Ask SKC</td>
+              <td style="font-size:12px;color:var(--t3)">All sources</td>
+              <td><span class="badge amber" style="font-size:10px">Degraded</span></td>
+              <td class="mono" style="color:var(--amber)">64–78%</td>
+              <td style="font-size:12px;color:var(--amber)">Labor + COGS answers use reduced confidence</td>
+              <td style="font-size:12px">Fix 7shifts + COGS for full confidence</td>
+            </tr>
+            <tr style="background:rgba(16,185,129,.02)">
+              <td style="font-weight:600;color:var(--green)">Home · Dashboard</td>
+              <td style="font-size:12px;color:var(--t3)">Toast POS</td>
+              <td><span class="badge green" style="font-size:10px">Live</span></td>
+              <td class="mono text-green">Full · DET</td>
+              <td style="font-size:12px;color:var(--green)">No issues</td>
+              <td style="font-size:12px;color:var(--green)">No action needed</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── SECTION 3: ISSUE QUEUE ────────────────────────── -->
+    <div class="section-shell mb-24">
+      <div class="section-shell-hd">
+        <div class="section-shell-title">Issue Queue</div>
+        <div class="section-shell-note">Ranked by severity and confidence impact</div>
+      </div>
+      <div class="cc-queue-table">
+        <table class="cct">
+          <thead>
+            <tr>
+              <th>Severity</th>
+              <th>Issue</th>
+              <th>Affected pages</th>
+              <th>Owner</th>
+              <th>Fix action</th>
+              <th>Due</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="cct-row">
+              <td><span class="badge amber" style="font-size:10px">Medium</span></td>
+              <td>
+                <div class="cct-issue">7shifts token stale · labor scheduling sync broken</div>
+                <div class="cct-issue-sub">Labor confidence 78% (was 85%) · verified win eligibility at risk</div>
+              </td>
+              <td style="font-size:11.5px;color:var(--t3)">Dashboard · Labor · Profit Recovery · Ask SKC</td>
+              <td class="cct-owner">Ops / GM</td>
+              <td style="font-size:11.5px;color:var(--t2)">Re-authenticate 7shifts OAuth token in integrations</td>
+              <td style="color:var(--amber);font-size:12px">Before next action</td>
+              <td><button class="btn btn-primary btn-sm" onclick="dqFix('shifts')">Fix now →</button></td>
+            </tr>
+            <tr class="cct-row">
+              <td><span class="badge amber" style="font-size:10px">Medium</span></td>
+              <td>
+                <div class="cct-issue">Recipe cost file stale · COGS 18 days out of date</div>
+                <div class="cct-issue-sub">Menu confidence 71% · Salmon reprice confidence reduced</div>
+              </td>
+              <td style="font-size:11.5px;color:var(--t3)">Menu · Profit Recovery · Ask SKC</td>
+              <td class="cct-owner">Marcus R.</td>
+              <td style="font-size:11.5px;color:var(--t2)">Upload updated recipe cost CSV · verify Salmon item cost post-Jan</td>
+              <td style="color:var(--amber);font-size:12px">Before reprice action</td>
+              <td><button class="btn btn-secondary btn-sm" onclick="showDemoToast('Upload updated recipe cost file to restore COGS confidence','blue')">Upload COGS →</button></td>
+            </tr>
+            <tr class="cct-row">
+              <td><span class="badge amber" style="font-size:10px">Low</span></td>
+              <td>
+                <div class="cct-issue">KDS partial · no per-station breakdown</div>
+                <div class="cct-issue-sub">Throughput confidence 64% · root cause must be confirmed on-site</div>
+              </td>
+              <td style="font-size:11.5px;color:var(--t3)">Throughput · Ask SKC (throughput answers)</td>
+              <td class="cct-owner">Ops / IT</td>
+              <td style="font-size:11.5px;color:var(--t2)">Upgrade to KDS station-level integration or use on-site observation</td>
+              <td style="color:var(--t3);font-size:12px">Before Fri service</td>
+              <td><button class="btn btn-ghost btn-sm" onclick="showDemoToast('KDS station-level integration requires upgraded plan','blue')">Upgrade →</button></td>
+            </tr>
+            <tr class="cct-row">
+              <td><span class="badge red" style="font-size:10px">Blocking</span></td>
+              <td>
+                <div class="cct-issue">Accounting not connected · net margin unavailable</div>
+                <div class="cct-issue-sub">Proof shows operational savings only · no prime cost or P&amp;L verification</div>
+              </td>
+              <td style="font-size:11.5px;color:var(--t3)">Proof · Reports</td>
+              <td class="cct-owner">Owner</td>
+              <td style="font-size:11.5px;color:var(--t2)">Contact SKC support to connect accounting system (QuickBooks / Xero)</td>
+              <td style="color:var(--t3);font-size:12px">When ready</td>
+              <td><button class="btn btn-ghost btn-sm" onclick="showDemoToast('Contact support to connect accounting integration','blue')">Connect →</button></td>
+            </tr>
+            <tr class="cct-row" style="opacity:.5">
+              <td><span class="badge gray" style="font-size:10px">None</span></td>
+              <td>
+                <div class="cct-issue">Missing item-level food cost for non-flagged items</div>
+                <div class="cct-issue-sub">Non-salmon items use estimated COGS · directional only · not surfaced as actions</div>
+              </td>
+              <td style="font-size:11.5px;color:var(--t3)">Menu (non-priority items only)</td>
+              <td class="cct-owner">Marcus R.</td>
+              <td style="font-size:11.5px;color:var(--t2)">Include all item costs in next recipe cost upload</td>
+              <td style="color:var(--t3);font-size:12px">Low priority</td>
+              <td style="font-size:11px;color:var(--t3)">Next upload</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── SECTION 4: HOW STALE DATA AFFECTS CONFIDENCE ─── -->
+    <div class="section-shell mb-24">
+      <div class="section-shell-hd">
+        <div class="section-shell-title">Confidence Impact Rules</div>
+        <div class="section-shell-note">How each source's status changes recommended action confidence</div>
+      </div>
+      <div class="responsive-table">
+        <table>
+          <thead>
+            <tr><th>Source</th><th>Status</th><th>Metrics affected</th><th>Confidence impact</th><th>Action rule</th></tr>
+          </thead>
+          <tbody>
+            <tr style="background:rgba(16,185,129,.02)">
+              <td style="font-weight:500">Toast POS</td>
+              <td><span class="badge green" style="font-size:10px">Live</span></td>
+              <td style="font-size:12px;color:var(--t2)">RPLH · covers · avg check · ticket time · table turns</td>
+              <td class="mono text-green">Full · DET</td>
+              <td style="color:var(--green);font-size:12px">Actions allowed · no restrictions</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">7shifts</td>
+              <td><span class="badge amber" style="font-size:10px">Stale 18h</span></td>
+              <td style="font-size:12px;color:var(--t2)">Labor hours · labor % · wage estimates</td>
+              <td class="mono" style="color:var(--amber)">−7 pts → 78%</td>
+              <td style="font-size:12px;color:var(--amber)">Labor actions require GM approval · reduced verified win eligibility</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">Recipe Cost</td>
+              <td><span class="badge amber" style="font-size:10px">Stale 18d</span></td>
+              <td style="font-size:12px;color:var(--t2)">Contribution margin % · food cost · Salmon CM</td>
+              <td class="mono" style="color:var(--amber)">−10 pts → 71%</td>
+              <td style="font-size:12px">Menu actions allowed · EST label shown · verify COGS before approval</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">KDS</td>
+              <td><span class="badge amber" style="font-size:10px">Partial</span></td>
+              <td style="font-size:12px;color:var(--t2)">Ticket time · no per-station breakdown</td>
+              <td class="mono" style="color:var(--amber)">−16 pts → 64%</td>
+              <td style="font-size:12px">Throughput actions allowed · root cause requires on-site observation</td>
+            </tr>
+            <tr style="background:rgba(16,185,129,.02)">
+              <td style="font-weight:500">Google Reviews</td>
+              <td><span class="badge green" style="font-size:10px">Live</span></td>
+              <td style="font-size:12px;color:var(--t2)">Complaint guardrail · service quality signal</td>
+              <td class="mono text-green">Full · DET</td>
+              <td style="color:var(--green);font-size:12px">Guardrail monitoring active · no restrictions</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500">Accounting</td>
+              <td><span class="badge red" style="font-size:10px">Missing</span></td>
+              <td style="font-size:12px;color:var(--t2)">Prime cost % · net margin · P&L verification</td>
+              <td class="mono text-red">Not calculated</td>
+              <td style="font-size:12px">ROI shown as operational savings only · accounting confirmation unavailable</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════
+       SCREEN: APP SETTINGS (Configuration)
+  ═══════════════════════════════════════════════════════ -->
+  <div class="screen" id="screen-config">
+    <div class="page-header" style="padding-top:24px">
+      <div class="page-header-left">
+        <div class="page-header-title">Settings</div>
+        <div class="page-header-sub">Workspace configuration, team access, alert thresholds, and billing.</div>
+      </div>
+    </div>
+    <div class="skc-tab-bar mb-20">
+      <div class="skc-tabs" data-tabs="config">
+        <button class="skc-tab active" data-key="workspace"    onclick="switchTab('config','workspace')">Workspace</button>
+        <button class="skc-tab"        data-key="locations"   onclick="switchTab('config','locations')">Locations</button>
+        <button class="skc-tab"        data-key="team"        onclick="switchTab('config','team')">Team</button>
+        <button class="skc-tab"        data-key="integrations" onclick="switchTab('config','integrations')">Integrations</button>
+        <button class="skc-tab"        data-key="alerts"      onclick="switchTab('config','alerts')">Alerts</button>
+        <button class="skc-tab"        data-key="billing"     onclick="switchTab('config','billing')">Billing</button>
+      </div>
+    </div>
+    <div class="skc-panel active" data-tab="config-workspace">
+      <div class="grid-2 mb-20" style="gap:16px;max-width:760px">
+        <div class="card" style="padding:20px 22px">
+          <div style="font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:12px">Workspace</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--t2)">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span>Group name</span><strong style="color:var(--t1)">Rosewood Group</strong></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span>Locations</span><strong style="color:var(--t1)">4 active</strong></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span>Plan</span><strong style="color:var(--t1)">Standard</strong></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span>POS</span><strong style="color:var(--t1)">Toast POS</strong></div>
+          </div>
+          <div style="margin-top:14px"><button class="btn btn-secondary btn-sm" onclick="showDemoToast('Opening workspace settings…','blue')">Edit workspace →</button></div>
+        </div>
+        <div class="card" style="padding:20px 22px">
+          <div style="font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:12px">Alert Thresholds</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--t2)">
+            <div style="display:flex;justify-content:space-between"><span>Labor cost %</span><strong style="color:var(--t1)">≥ 32%</strong></div>
+            <div style="display:flex;justify-content:space-between"><span>RPLH gap alert</span><strong style="color:var(--t1)">&gt; $5.00/hr</strong></div>
+            <div style="display:flex;justify-content:space-between"><span>Ticket time alert</span><strong style="color:var(--t1)">&gt; 15 min</strong></div>
+            <div style="display:flex;justify-content:space-between"><span>CM drop alert</span><strong style="color:var(--t1)">&gt; 5 pts</strong></div>
+          </div>
+          <div style="margin-top:14px"><button class="btn btn-secondary btn-sm" onclick="showDemoToast('Opening alert settings…','blue')">Edit thresholds →</button></div>
+        </div>
+        <div class="card" style="padding:20px 22px">
+          <div style="font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:12px">Team Access</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:13px">
+            <div style="display:flex;align-items:center;gap:8px"><div class="op-ava" style="width:28px;height:28px;font-size:11px">SC</div><div><div style="font-size:13px;color:var(--t1)">Sarah Chen</div><div style="font-size:11px;color:var(--t3)">GM · All locations</div></div></div>
+            <div style="display:flex;align-items:center;gap:8px"><div class="op-ava" style="width:28px;height:28px;font-size:11px">MR</div><div><div style="font-size:13px;color:var(--t1)">Marcus R.</div><div style="font-size:11px;color:var(--t3)">Owner · Read + approve</div></div></div>
+            <div style="display:flex;align-items:center;gap:8px"><div class="op-ava" style="width:28px;height:28px;font-size:11px">DK</div><div><div style="font-size:13px;color:var(--t1)">Devon K.</div><div style="font-size:11px;color:var(--t3)">Bar manager · Walnut Creek</div></div></div>
+          </div>
+          <div style="margin-top:14px"><button class="btn btn-secondary btn-sm" onclick="showDemoToast('Opening team settings…','blue')">Manage team →</button></div>
+        </div>
+        <div class="card" style="padding:20px 22px;border-top:2px solid var(--green)">
+          <div style="font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:4px">Billing</div>
+          <div style="font-size:28px;font-weight:700;font-family:var(--mono);color:var(--t1);margin-bottom:4px">$399<span style="font-size:13px;font-weight:400;color:var(--t3)">/mo</span></div>
+          <div style="font-size:12px;color:var(--t3);margin-bottom:12px">Standard plan · 4 locations</div>
+          <div style="font-size:13px;color:var(--t2)">Current verified ROI: <strong style="color:var(--green)" data-skc="roi-current">1.4×</strong></div>
+          <div style="margin-top:14px"><button class="btn btn-secondary btn-sm" onclick="showDemoToast('Opening billing settings…','blue')">Billing details →</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="skc-panel" data-tab="config-locations"><div style="padding:32px 0;color:var(--t3);font-size:13px">Oakland · Berkeley · Walnut Creek · San Jose — <button class="btn btn-ghost btn-sm" style="display:inline" onclick="showDemoToast('Location management in full product','blue')">Manage →</button></div></div>
+    <div class="skc-panel" data-tab="config-team"><div style="padding:32px 0;color:var(--t3);font-size:13px">3 team members — <button class="btn btn-ghost btn-sm" style="display:inline" onclick="showDemoToast('Team management in full product','blue')">Manage →</button></div></div>
+    <div class="skc-panel" data-tab="config-integrations"><div style="padding:32px 0;color:var(--t3);font-size:13px">Manage integrations in <button class="btn btn-ghost btn-sm" style="display:inline" onclick="showScreen('settings',null,'Data Quality')">Data Quality →</button></div></div>
+    <div class="skc-panel" data-tab="config-alerts"><div style="padding:32px 0;color:var(--t3);font-size:13px">Alert thresholds configuration — <button class="btn btn-ghost btn-sm" style="display:inline" onclick="showDemoToast('Alerts in full product','blue')">Configure →</button></div></div>
+    <div class="skc-panel" data-tab="config-billing"><div style="padding:32px 0;color:var(--t3);font-size:13px">Standard plan · $399/mo · 4 locations — <button class="btn btn-ghost btn-sm" style="display:inline" onclick="showDemoToast('Billing portal in full product','blue')">Billing portal →</button></div></div>
+
+    </div><!-- /dq-overview panel -->
+
+    <!-- ══ TAB: INTEGRATIONS ══════════════════════════════ -->
+    <div class="skc-panel" data-tab="dq-integrations">
+      <div class="page-tab-helper mb-16" style="padding-top:8px">All connected data sources and their current authentication state.</div>
+      <div style="font-size:13px;color:var(--t2);padding:24px 0">Integration source cards — see Overview tab for status detail. Reconnect from source cards.</div>
+    </div>
+
+    <!-- ══ TAB: AFFECTED METRICS ══════════════════════════ -->
+    <div class="skc-panel" data-tab="dq-affected">
+      <div class="page-tab-helper mb-16" style="padding-top:8px">Which metrics and features are degraded by current data quality issues.</div>
+      <div style="font-size:13px;color:var(--t2);padding:24px 0">Confidence reductions, affected recommendations, and blocked verifications by source.</div>
+    </div>
+
+    <!-- ══ TAB: BLOCKED ACTIONS ════════════════════════════ -->
+    <div class="skc-panel" data-tab="dq-blocked">
+      <div class="page-tab-helper mb-16" style="padding-top:8px">Actions that cannot proceed or verify due to stale or missing data.</div>
+      <div style="background:var(--surface);border:1px solid var(--amber-b);border-radius:var(--r-lg);padding:14px 18px;margin-bottom:12px">
+        <div style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:4px">1 verification blocked</div>
+        <div style="font-size:12.5px;color:var(--t2)">Labor verification (A006) — 7shifts stale 18h. Reconnect 7shifts to unblock.</div>
+        <button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="dqFix('shifts')">Reconnect 7shifts →</button>
+      </div>
+    </div>
+
+    <!-- ══ TAB: SYNC HISTORY ════════════════════════════════ -->
+    <div class="skc-panel" data-tab="dq-history">
+      <div class="page-tab-helper mb-16" style="padding-top:8px">Recent sync events, connection errors, and data freshness log.</div>
+      <div style="display:flex;flex-direction:column;gap:8px;max-width:600px">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);font-size:12.5px"><span style="color:var(--t1)">Toast POS</span><span style="color:var(--green)">✓ Synced 4m ago</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--card);border:1px solid var(--amber-b);border-radius:var(--r);font-size:12.5px"><span style="color:var(--t1)">7shifts</span><span style="color:var(--amber)">⚠ Last sync 18h ago — token expired</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);font-size:12.5px"><span style="color:var(--t1)">Google Reviews</span><span style="color:var(--green)">✓ Synced 1h ago</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--card);border:1px solid var(--amber-b);border-radius:var(--r);font-size:12.5px"><span style="color:var(--t1)">Recipe Costs</span><span style="color:var(--amber)">⚠ Manual file — last upload 18d ago</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--card);border:1px solid var(--red-b);border-radius:var(--r);font-size:12.5px"><span style="color:var(--t1)">Accounting</span><span style="color:var(--red)">✕ Not connected</span></div>
+      </div>
+    </div>
+
+    <!-- ── (v26 · Fix 10) Data Hygiene tab ─────────────────── -->
+    <div class="skc-panel" data-tab="dq-hygiene">
+      <div class="page-tab-helper mb-16" style="padding-top:8px">Anomalies in <strong>connected</strong> data sources. "Connected" does not mean "clean" — these are the categories SKC flags and excludes from baselines until reviewed.</div>
+
+      <!-- Q3 disclosure -->
+      <div style="padding:12px 14px;background:var(--amber-d);border:1px solid var(--amber-b);border-left:3px solid var(--amber);border-radius:var(--r-md);font-size:12px;color:var(--t2);line-height:1.55;margin-bottom:16px">
+        <strong style="color:var(--amber)">Roadmap · Q3 capability.</strong> Data hygiene review ships in Q3 as a weekly workflow. This view shows the categories SKC will flag, the counts you'd typically see, and the operator action required. The "Review" buttons below are demo-only — there is no review flow yet.
+      </div>
+
+      <!-- Anomaly summary -->
+      <div class="dq-completeness-bar mb-20" style="padding:14px 16px">
+        <div class="dq-comp-header">
+          <span class="dq-comp-label">Flagged checks · last 7 days</span>
+          <span class="dq-comp-val" style="color:var(--amber)">14% of dine-in volume</span>
+        </div>
+        <div class="dq-comp-track">
+          <div class="dq-comp-fill" style="width:14%;background:var(--amber)"></div>
+        </div>
+        <div class="dq-comp-note">Above 10%, SKC reduces detection confidence proportionally. Above 20%, monitoring windows are paused for affected detection categories.</div>
+      </div>
+
+      <!-- Anomaly category table -->
+      <div class="section-shell mb-16">
+        <div class="section-shell-hd">
+          <div class="section-shell-title">Anomaly categories</div>
+          <div class="section-shell-note">Static demo data · Q3 review workflow not yet wired</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr;gap:8px">
+
+          <div style="display:grid;grid-template-columns:1.4fr 80px 110px 110px 100px;gap:12px;padding:9px 14px;background:var(--surface);border-bottom:1px solid var(--border);font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);border-radius:var(--r-md) var(--r-md) 0 0">
+            <span>Category</span><span>Count</span><span>Last seen</span><span>Affects</span><span>Action</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.4fr 80px 110px 110px 100px;gap:12px;align-items:center;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);font-size:11.5px;line-height:1.5">
+            <span style="color:var(--t1)"><strong>Open checks &gt; 4 hours</strong><br><span style="font-size:10.5px;color:var(--t3)">Likely server forgot to close out; inflates dining duration baselines.</span></span>
+            <span style="font-family:var(--mono);color:var(--amber)">23</span>
+            <span style="color:var(--t3)">Yesterday 11:48 PM</span>
+            <span style="color:var(--t3)">Throughput · Table Turns</span>
+            <button class="btn btn-ghost btn-sm" onclick="showDemoToast('Review flow ships Q3 · demo only','amber')">Review</button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.4fr 80px 110px 110px 100px;gap:12px;align-items:center;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);font-size:11.5px;line-height:1.5">
+            <span style="color:var(--t1)"><strong>$0 totals on dine-in checks</strong><br><span style="font-size:10.5px;color:var(--t3)">Likely test or comp-100% checks; corrupts avg check + RPLH if included.</span></span>
+            <span style="font-family:var(--mono);color:var(--amber)">8</span>
+            <span style="color:var(--t3)">Today 6:12 AM</span>
+            <span style="color:var(--t3)">Labor · Menu</span>
+            <button class="btn btn-ghost btn-sm" onclick="showDemoToast('Review flow ships Q3 · demo only','amber')">Review</button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.4fr 80px 110px 110px 100px;gap:12px;align-items:center;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);font-size:11.5px;line-height:1.5">
+            <span style="color:var(--t1)"><strong>Missing guest_count</strong><br><span style="font-size:10.5px;color:var(--t3)">Forces SKC to estimate cover count; reduces confidence on cover-based detectors.</span></span>
+            <span style="font-family:var(--mono);color:var(--amber)">41</span>
+            <span style="color:var(--t3)">Today 1:35 PM</span>
+            <span style="color:var(--t3)">All categories</span>
+            <button class="btn btn-ghost btn-sm" onclick="showDemoToast('Review flow ships Q3 · demo only','amber')">Review</button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.4fr 80px 110px 110px 100px;gap:12px;align-items:center;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);font-size:11.5px;line-height:1.5">
+            <span style="color:var(--t1)"><strong>dining_option mismatched</strong><br><span style="font-size:10.5px;color:var(--t3)">Dine-in marked as takeout or vice versa; throws off daypart attribution.</span></span>
+            <span style="font-family:var(--mono);color:var(--amber)">17</span>
+            <span style="color:var(--t3)">Yesterday 7:42 PM</span>
+            <span style="color:var(--t3)">Menu · Throughput</span>
+            <button class="btn btn-ghost btn-sm" onclick="showDemoToast('Review flow ships Q3 · demo only','amber')">Review</button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.4fr 80px 110px 110px 100px;gap:12px;align-items:center;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);font-size:11.5px;line-height:1.5">
+            <span style="color:var(--t1)"><strong>Voids treated as comps</strong><br><span style="font-size:10.5px;color:var(--t3)">Operator workflow drift; inflates comp count and depresses void-pattern detection.</span></span>
+            <span style="font-family:var(--mono);color:var(--amber)">12</span>
+            <span style="color:var(--t3)">Today 10:04 AM</span>
+            <span style="color:var(--t3)">Comp Policy (Q3 detector)</span>
+            <button class="btn btn-ghost btn-sm" onclick="showDemoToast('Review flow ships Q3 · demo only','amber')">Review</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Auto-exclusion behavior -->
+      <div style="padding:14px 16px;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:var(--r-md);font-size:12px;color:var(--t2);line-height:1.6">
+        <strong style="color:var(--t1)">Auto-exclusion behavior (live today):</strong> SKC removes flagged checks from baselines, detection windows, and verification calculations until they are reviewed. This is why "connected" is not the same as "clean." A restaurant that imports Toast cleanly but has 14% flagged checks will see reduced detection accuracy <em>even though every source is green</em>.
+      </div>
+    </div>
+
+  </div>
