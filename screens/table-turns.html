@@ -1,0 +1,966 @@
+<div class="screen" id="screen-table-turns">
+
+  <!-- ══ (v28c) Subpage: OVERVIEW · NEW compact 5-second view ══ -->
+  <div class="tt-subpage active" id="tt-subpage-overview">
+    <div class="tt-sp-shell">
+      <div class="tt-sp-header">
+        <div class="tt-sp-hdr-left">
+          <div class="tt-sp-hdr-title">Table Turns · Overview</div>
+          <div class="tt-sp-hdr-sub">5-second turn opportunity summary. Revenue values are <strong style="color:var(--amber)">[ESTIMATED]</strong>, never guaranteed. Lost covers floored. DINE_IN only · TAKE_OUT and DELIVERY excluded.</div>
+        </div>
+        <div class="tt-sp-hdr-right">
+          <span class="tt-mode-chip" id="ttModeChipOv">KDS MODE</span>
+          <button class="btn btn-secondary btn-sm" onclick="showTtSubpage('stages')">Open Stage Flow</button>
+          <button class="btn btn-ghost btn-sm" onclick="showTtSubpage('evidence')">Open Evidence</button>
+        </div>
+      </div>
+      <div class="tt-sp-body">
+        <div class="tt-sp-strip">
+          <div class="tt-sp-strip-cell"><div class="tt-sp-strip-k">Avg dining duration</div><div class="tt-sp-strip-v">94 min</div><div class="tt-sp-strip-sub" style="color:var(--amber)">+18 min vs target</div></div>
+          <div class="tt-sp-strip-cell is-warn"><div class="tt-sp-strip-k">Duration overage</div><div class="tt-sp-strip-v">18 min</div><div class="tt-sp-strip-sub">Vs 76-min target</div></div>
+          <div class="tt-sp-strip-cell is-warn"><div class="tt-sp-strip-k">Est. lost covers</div><div class="tt-sp-strip-v">9</div><div class="tt-sp-strip-sub">/wk · floored</div></div>
+          <div class="tt-sp-strip-cell is-warn"><div class="tt-sp-strip-k">Revenue opportunity</div><div class="tt-sp-strip-v">~$680</div><div class="tt-sp-strip-sub" style="color:var(--amber)">/wk [ESTIMATED]</div></div>
+          <div class="tt-sp-strip-cell is-good"><div class="tt-sp-strip-k">Guardrails</div><div class="tt-sp-strip-v">3/3</div><div class="tt-sp-strip-sub">Holding</div></div>
+        </div>
+
+        <div class="tt-ov-grid">
+          <!-- LEFT · Hero opportunity -->
+          <div class="tt-ov-panel">
+            <div class="tt-ov-panel-h"><span>Top opportunity</span><span class="tt-mode-chip">KDS</span></div>
+            <div class="tt-ov-body">
+              <div class="tt-ov-hero">
+                <span class="tt-ov-hero-cat">Table Turns · Oakland · Fri Dinner</span>
+                <div class="tt-ov-hero-title">Friday dinner is averaging 94 minutes — 18 min over the 76-min target</div>
+                <div class="tt-ov-hero-sub">Stage decomposition shows overage concentrated in <strong>Dessert/Check</strong> (avg 22 min vs 12 target). Same-daypart baseline confirms this is pattern, not noise — 4-week trend stable.</div>
+                <div class="tt-ov-hero-val">
+                  <span class="tt-ov-hero-val-n">~$680</span>
+                  <span class="tt-ov-hero-val-k">/wk [ESTIMATED]</span>
+                </div>
+                <div style="font-size:10.5px;color:var(--t3);line-height:1.6;font-family:var(--mono)">
+                  Math: 9 lost covers × ~$76 avg check = ~$680/wk<br>
+                  Monthly run-rate: $680 × 4.33 = ~$2,944/mo<br>
+                  Lost covers floored to integer, never rounded up.
+                </div>
+                <div class="tt-ov-hero-cta">
+                  <button class="btn btn-primary btn-sm" onclick="showTtSubpage('playbooks')">Review Playbook</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showTtSubpage('lostcovers')">See the Math</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CENTER · Mini stage flow preview -->
+          <div class="tt-ov-panel">
+            <div class="tt-ov-panel-h">Stage flow · Fri dinner</div>
+            <div class="tt-ov-body">
+              <div class="tt-mini-stage">
+                <div class="tt-mini-stage-seg"><span class="lbl">Seat→Order</span>10m</div>
+                <div class="tt-mini-stage-seg"><span class="lbl">Order→Food</span>22m</div>
+                <div class="tt-mini-stage-seg"><span class="lbl">Food→Dessert</span>40m</div>
+                <div class="tt-mini-stage-seg is-over"><span class="lbl">Dessert→Check</span>22m</div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;font-size:10.5px;color:var(--t3)">
+                <div style="padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px">
+                  <div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:3px">Actual</div>
+                  <div style="font-size:14px;color:var(--amber);font-family:var(--mono);font-weight:700">94 min</div>
+                </div>
+                <div style="padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px">
+                  <div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:3px">Target</div>
+                  <div style="font-size:14px;color:var(--t1);font-family:var(--mono);font-weight:700">76 min</div>
+                </div>
+              </div>
+              <div class="tt-mini-foot">
+                Overage concentrated in Dessert→Check stage. Click <strong style="color:var(--t1)">Open Stage Flow</strong> for full decomposition + same-daypart baseline.
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT · Recommended playbook + monitoring -->
+          <div class="tt-ov-panel">
+            <div class="tt-ov-panel-h">Playbook · monitoring</div>
+            <div class="tt-ov-body">
+              <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:4px;padding:11px 13px;margin-bottom:8px">
+                <div style="font-size:11.5px;color:var(--t1);font-weight:600;line-height:1.4">FOH check-back cadence · Dessert lead at 60 min</div>
+                <div style="font-size:10.5px;color:var(--t3);margin-top:4px;line-height:1.5">Server presents dessert menu proactively at 60-min mark, not waiting for guest cue. Targets Dessert→Check stage overrun.</div>
+                <div style="margin-top:8px;display:flex;gap:6px">
+                  <button class="btn btn-primary btn-sm" onclick="showTtSubpage('playbooks')">Turn into Action</button>
+                </div>
+              </div>
+              <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:4px;padding:11px 13px;margin-bottom:14px">
+                <div style="font-size:11.5px;color:var(--t1);font-weight:600;line-height:1.4">Active monitoring · 1 turn recovery</div>
+                <div style="font-size:10.5px;color:var(--t3);margin-top:4px;line-height:1.5;font-family:var(--mono)">Oakland Fri dinner · 19/28 days · 3/3 guardrails OK</div>
+                <div style="margin-top:8px;display:flex;gap:6px">
+                  <button class="btn btn-secondary btn-sm" onclick="showScreen('actions',null,'Active Recovery');setTimeout(()=>showActionsSubpage('active'),30)">Open in Actions</button>
+                </div>
+              </div>
+              <div style="padding:10px 12px;background:var(--blue-d);border:1px solid var(--blue-b);border-radius:6px;font-size:10.5px;color:var(--t2);line-height:1.55">
+                <strong style="color:var(--blue);font-size:10px;letter-spacing:.05em;text-transform:uppercase">Doctrine</strong><br>
+                Table Turns <strong>diagnoses</strong> the duration overage. Once you turn it into an action, the lifecycle lives in <strong>Actions</strong>. Faster turns are <strong>not counted</strong> as recovery if avg check or sentiment worsens.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ (v28c) Subpage: STAGE FLOW · wraps existing Table Turns content ══ -->
+  <div class="tt-subpage" id="tt-subpage-stages">
+
+  <!-- ── Page header ─────────────────────────────────────── -->
+  <div class="page-header" style="padding-top:24px">
+    <div class="page-header-left">
+      <div class="page-header-title">Table Turn Optimization</div>
+      <div class="page-header-sub">Find missed covers caused by dining-duration overruns and turn them into safe, playbooked actions.</div>
+    </div>
+    <div class="page-header-right">
+      <button class="btn btn-primary" onclick="ttOpenPlaybook()">Review Turn Playbook</button>
+      <button class="btn btn-secondary btn-sm" onclick="ttOpenEvidence()">Show Evidence</button>
+    </div>
+  </div>
+
+  <!-- ── Filter bar ──────────────────────────────────────── -->
+  <div class="tt-filterbar">
+    <select aria-label="Location" onchange="showDemoToast('Location: '+this.value,'blue')">
+      <option>Oakland</option>
+      <option>All locations</option>
+      <option>Berkeley</option>
+      <option>Walnut Creek</option>
+    </select>
+    <select aria-label="Daypart" onchange="showDemoToast('Daypart: '+this.value,'blue')">
+      <option>Dinner focus</option>
+      <option>All dayparts</option>
+      <option>Lunch</option>
+      <option>Dinner</option>
+      <option>Late Night</option>
+    </select>
+    <select aria-label="Period" onchange="showDemoToast('Period: '+this.value,'blue')">
+      <option>This Week</option>
+      <option>Last 7 Days</option>
+      <option>Last 30 Days</option>
+      <option>Custom…</option>
+    </select>
+    <div class="tt-fb-sep"></div>
+    <span class="tt-chip tt-chip-kds">KDS Mode available</span>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--t3)">
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block" aria-hidden="true"></span>
+      Toast POS · Toast KDS connected
+    </div>
+  </div>
+
+  <!-- KDS-vs-Proxy contextual note (audit fix #9) -->
+  <div class="tt-mode-note">
+    <strong>KDS is connected for Oakland dinner.</strong> Wednesday lunch is shown in <strong>Proxy Mode</strong> because stage-level KDS timestamps are unavailable for that service period. Mode is per-service-period, not per-account.
+  </div>
+
+  <!-- ── Doctrine line ───────────────────────────────────── -->
+  <div class="tt-doctrine">
+    <strong>Doctrine:</strong> Revenue opportunity is estimated. Recovered value only counts after guardrails hold during monitoring.
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       HERO — drives off ttState.dp (default fri-dinner)
+       ══════════════════════════════════════════════════════ -->
+  <div class="tt-card tt-hero">
+    <div class="tt-hero-grid">
+
+      <!-- LEFT -->
+      <div>
+        <div class="tt-eyebrow" id="ttHeroEyebrow">Top table-turn opportunity · Oakland · Friday Dinner</div>
+        <h2 class="tt-hero-title" id="ttHeroTitle">Friday dinner may be creating ~$680/week in recoverable revenue opportunity.</h2>
+        <div class="tt-hero-sub" id="ttHeroSub">Dining duration is running 11 minutes above baseline during the highest-demand dinner window. Recovery only counts after guardrails on average check and guest sentiment hold during the monitoring window.</div>
+
+        <div class="tt-hero-metrics">
+          <div class="tt-hero-metric">
+            <div class="tt-label-key">Current duration</div>
+            <div class="tt-hero-metric-val" id="ttHeroCurrent">74 min</div>
+            <div class="tt-hero-metric-sub">avg this week</div>
+          </div>
+          <div class="tt-hero-metric">
+            <div class="tt-label-key">Baseline</div>
+            <div class="tt-hero-metric-val" id="ttHeroBaseline">63 min</div>
+            <div class="tt-hero-metric-sub">8-week rolling</div>
+          </div>
+          <div class="tt-hero-metric">
+            <div class="tt-label-key">Overage</div>
+            <div class="tt-hero-metric-val" id="ttHeroOverage" style="color:var(--amber)">+11 min</div>
+            <div class="tt-hero-metric-sub" id="ttHeroOveragePct">17.5% above</div>
+          </div>
+          <div class="tt-hero-metric">
+            <div class="tt-label-key">Est. missed covers</div>
+            <div class="tt-hero-metric-val" id="ttHeroCovers">9 / wk</div>
+            <div class="tt-hero-metric-sub">seat-based · floored</div>
+          </div>
+        </div>
+
+        <div class="tt-hero-rec">
+          <div class="tt-hero-rec-key">Recommended playbook</div>
+          <div class="tt-hero-rec-body" id="ttHeroRecBody">Deploy handheld closeout + check-drop script from 7–9 PM on Friday dinner.</div>
+          <div class="tt-hero-rec-why" id="ttHeroRecWhy">Payment closeout is <strong style="color:var(--t1)">+6.5 minutes above baseline</strong> and accounts for the largest recoverable stage delay.</div>
+        </div>
+
+        <div class="tt-hero-ctas">
+          <button class="btn btn-primary" id="ttHeroPrimaryCta" onclick="ttHeroPrimaryAction()">Review Turn Playbook</button>
+          <button class="btn btn-secondary btn-sm" onclick="ttCreateAction()" id="ttHeroSecondaryCta">Create Action</button>
+          <button class="btn btn-ghost btn-sm" onclick="ttOpenEvidence()">Show Evidence</button>
+        </div>
+
+        <div class="tt-hero-note">Revenue opportunity is estimated from lost-cover logic and average check. It is <strong style="color:var(--t2)">not guaranteed recoverable revenue</strong>.</div>
+      </div>
+
+      <!-- RIGHT — value card -->
+      <div class="tt-hero-value">
+        <div class="tt-hero-value-eyebrow">Revenue opportunity</div>
+        <div class="tt-hero-value-big" id="ttHeroValue">~$680</div>
+        <div class="tt-hero-value-unit">/ week</div>
+        <div class="tt-hero-value-chip">
+          <span class="tt-chip tt-chip-est" style="white-space:normal;text-align:left;line-height:1.35;display:inline-flex;max-width:100%">EST · not guaranteed<br>recoverable revenue</span>
+        </div>
+        <div class="tt-hero-value-conf">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Pattern confidence</span><strong id="ttHeroPatternConf" style="color:var(--green)">High</strong></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Revenue estimate</span><strong id="ttHeroRevConf" style="color:var(--amber)">Medium</strong></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Recency</span><strong id="ttHeroRecency">Recurring · 3 of 4</strong></div>
+          <div style="display:flex;justify-content:space-between"><span>Mode</span><strong id="ttHeroMode" style="color:var(--blue)">KDS</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Summary strip ───────────────────────────────────── -->
+  <div class="tt-summary">
+    <div class="tt-summary-cell">
+      <div class="tt-label-key">Avg Dining Duration</div>
+      <div class="tt-summary-val" id="ttSumDur">74 min</div>
+      <div class="tt-summary-sub" id="ttSumDurSub">+11 vs 63 min baseline</div>
+      <div><span class="tt-chip tt-chip-det">Deterministic</span></div>
+    </div>
+    <div class="tt-summary-cell">
+      <div class="tt-label-key">Revenue Opportunity</div>
+      <div class="tt-summary-val" id="ttSumRev">~$680 / wk</div>
+      <div class="tt-summary-sub">EST · not guaranteed</div>
+      <div><span class="tt-chip tt-chip-est">Estimated</span></div>
+    </div>
+    <div class="tt-summary-cell">
+      <div class="tt-label-key">Est. Lost Covers</div>
+      <div class="tt-summary-val" id="ttSumCovers">9 / wk</div>
+      <div class="tt-summary-sub">Floored conservative estimate</div>
+      <div><span class="tt-chip tt-chip-est">Estimated</span></div>
+    </div>
+    <div class="tt-summary-cell">
+      <div class="tt-label-key">Stage Bottleneck</div>
+      <div class="tt-summary-val" id="ttSumBottle" style="color:var(--red)">Payment</div>
+      <div class="tt-summary-sub" id="ttSumBottleSub">+6.5 min vs baseline</div>
+      <div id="ttSumBottleChip"><span class="tt-chip tt-chip-kds">KDS</span></div>
+    </div>
+    <div class="tt-summary-cell">
+      <div class="tt-label-key">Guardrail Status</div>
+      <div class="tt-summary-val" style="color:var(--green)">Stable</div>
+      <div class="tt-summary-sub">Avg check + sentiment holding</div>
+      <div><span class="tt-chip tt-chip-mon">Monitoring</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       MAIN BODY — two columns
+       ══════════════════════════════════════════════════════ -->
+  <div class="tt-body">
+
+    <!-- ─────────────── LEFT COLUMN ─────────────── -->
+    <div class="tt-col">
+
+      <!-- Stage flow / Proxy bar container (mode-switched) -->
+      <div class="tt-card tt-stage-wrap">
+        <div class="tt-section-h">
+          <div>
+            <div class="tt-section-title" id="ttStageSectionTitle">Service flow · KDS stage decomposition</div>
+            <div class="tt-section-sub" id="ttStageSectionSub">Where the 11-minute overage is hiding · Oakland Friday Dinner</div>
+          </div>
+          <span class="tt-chip" id="ttStageSectionChip"><span class="tt-chip tt-chip-kds">Precise stage timing from KDS</span></span>
+        </div>
+
+        <!-- KDS MODE PANEL (visible when KDS) -->
+        <div class="tt-mode-kds tt-active" id="ttModeKds">
+
+          <div class="tt-stage-totals">
+            <div class="tt-stage-total">Current total <strong id="ttKdsCurrentTotal">74.0 min</strong> <span class="tt-delta" id="ttKdsDeltaLabel">+11.0 vs baseline</span></div>
+            <div class="tt-stage-total">Baseline <strong style="color:var(--t2)" id="ttKdsBaselineTotal">63.0 min</strong></div>
+          </div>
+
+          <div class="tt-stage-bars">
+
+            <div>
+              <div class="tt-stage-rowlabel"><span>Current</span><span class="tt-rowtot" id="ttKdsCurrentSum">7.5 + 19.0 + 25.0 + 22.5 = 74.0 min</span></div>
+              <div class="tt-stage-track-scroll">
+                <div class="tt-stage-bar" id="ttKdsCurrentBar">
+                  <!-- segments populated by JS -->
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="tt-stage-rowlabel" style="color:var(--t3)"><span>Baseline (ghost)</span><span class="tt-rowtot" id="ttKdsBaselineSum">6.0 + 17.5 + 23.5 + 16.0 = 63.0 min</span></div>
+              <div class="tt-stage-track-scroll">
+                <div class="tt-stage-bar tt-ghost" id="ttKdsBaselineBar" style="width: 85.14%">
+                  <!-- segments populated by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tt-stage-legend">
+            <div class="tt-stage-legend-item"><span class="tt-stage-legend-dot" style="background:#4b5563"></span>Seat→order</div>
+            <div class="tt-stage-legend-item"><span class="tt-stage-legend-dot" style="background:#3b82f6"></span>Order→food</div>
+            <div class="tt-stage-legend-item"><span class="tt-stage-legend-dot" style="background:#0ea5e9"></span>Food→check</div>
+            <div class="tt-stage-legend-item"><span class="tt-stage-legend-dot" style="background:#f59e0b"></span>Payment</div>
+            <div class="tt-stage-legend-item"><span class="tt-stage-legend-dot" style="background:#ef4444"></span>Largest overage</div>
+            <div class="tt-stage-legend-item"><span class="tt-stage-legend-dot" style="background:var(--border)"></span>Baseline</div>
+          </div>
+
+          <!-- Stage detail card — Payment selected by default (audit fix #5) -->
+          <div class="tt-stage-detail" id="ttStageDetail">
+            <div class="tt-stage-detail-title" id="ttStageDetailTitle"></div>
+            <div class="tt-stage-detail-grid" id="ttStageDetailGrid"></div>
+            <div class="tt-stage-detail-row" id="ttStageDetailSource"></div>
+            <div class="tt-stage-detail-row" id="ttStageDetailRec"></div>
+          </div>
+
+          <div class="tt-stage-caption" id="ttStageCaption">Stage timing uses POS check + Toast KDS timestamps. Payment closeout is the largest recoverable delay in this service period. Tap any segment for source data, output type, and recommendation.</div>
+        </div>
+
+        <!-- PROXY MODE PANEL (visible when Proxy) -->
+        <div class="tt-mode-proxy" id="ttModeProxy">
+          <p class="tt-proxy-headline" id="ttProxyHeadline">Wednesday lunch may be creating <strong>~$115/week</strong> in recoverable revenue opportunity. <span class="tt-chip tt-chip-est" style="margin-left:4px">EST — not guaranteed</span></p>
+
+          <div class="tt-proxy-bar-wrap">
+            <div class="tt-proxy-bar-row">
+              <span class="tt-pb-label">Current</span>
+              <span class="tt-pb-track"><span class="tt-pb-fill" id="ttProxyCurrentFill" style="width:100%"></span></span>
+              <span class="tt-pb-num" id="ttProxyCurrentNum">58 min</span>
+            </div>
+            <div class="tt-proxy-bar-row tt-pb-base">
+              <span class="tt-pb-label">Baseline</span>
+              <span class="tt-pb-track"><span class="tt-pb-fill" id="ttProxyBaselineFill" style="width:89.66%"></span></span>
+              <span class="tt-pb-num" id="ttProxyBaselineNum">52 min</span>
+            </div>
+            <div class="tt-proxy-bar-row">
+              <span class="tt-pb-label">Overage</span>
+              <span style="flex:1;font-size:11.5px;color:var(--amber);font-weight:600" id="ttProxyOverageText">+6 min · service-speed proxy only · no stage breakdown</span>
+            </div>
+          </div>
+
+          <p class="tt-proof-foot">Proxy Mode uses POS check open/close timestamps minus an estimated 8 min non-kitchen time. Useful for early diagnosis but <strong style="color:var(--t2)">not precise kitchen or stage timing</strong>. Stage decomposition is suppressed until KDS timestamps are available for this service period.</p>
+
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-secondary btn-sm" onclick="showScreen('settings',null,'Data Quality')">Connect KDS for stage breakdown →</button>
+            <span class="tt-chip tt-chip-proxy">Proxy</span>
+            <span class="tt-chip tt-chip-heur">Heuristic</span>
+          </div>
+        </div>
+
+      </div><!-- /tt-stage-wrap -->
+
+      <!-- Lost-cover proof -->
+      <div class="tt-card tt-proof">
+        <div class="tt-section-h">
+          <div>
+            <div class="tt-section-title">Estimated lost covers</div>
+            <div class="tt-section-sub" id="ttProofSub">Seat-based capacity model · floored conservatively</div>
+          </div>
+          <span class="tt-chip tt-chip-est">EST — not guaranteed recoverable revenue</span>
+        </div>
+
+        <p class="tt-proof-main" id="ttProofMain">Est. <strong>9 covers</strong> may have been missed this week — about <strong>~$680</strong> in recoverable revenue opportunity if duration returned to baseline and incremental seats actually filled.</p>
+
+        <div class="tt-formula" id="ttProofFormula">
+          <div class="tt-formula-grid">
+            <span class="tt-fg-key">Current duration</span><span class="tt-fg-val">74 min</span>
+            <span class="tt-fg-key">Baseline duration</span><span class="tt-fg-val">63 min</span>
+            <span class="tt-fg-key">Duration overage</span><span class="tt-fg-val" style="color:var(--amber)">+11 min</span>
+            <span class="tt-fg-key">Seats × fill factor</span><span class="tt-fg-val">38 × 0.56</span>
+            <span class="tt-fg-key">Method</span><span class="tt-fg-val" style="font-family:var(--sans)">seat-based capacity model</span>
+            <span class="tt-fg-key">Floored lost covers</span><span class="tt-fg-val tt-f-eq">9 / wk</span>
+            <span class="tt-fg-key">× avg check</span><span class="tt-fg-val">× $75.50</span>
+            <span class="tt-fg-key" style="border-top:1px solid var(--border);padding-top:6px">Revenue opportunity</span>
+            <span class="tt-fg-val tt-f-eq" style="border-top:1px solid var(--border);padding-top:6px;color:var(--amber)">~$680 / wk</span>
+          </div>
+        </div>
+
+        <p class="tt-proof-note">Seats already represent cover capacity, so avg party size is <strong>not</strong> multiplied into this seat-based model. The <code style="font-family:var(--mono);color:var(--t1)">effective fill factor</code> reflects the share of theoretical added capacity expected to convert into actual guest covers during observed demand.</p>
+
+        <p class="tt-proof-foot">Lost covers are floored, never rounded up. Revenue opportunity inherits the lost-cover confidence and is always labeled estimated. <button type="button" class="tt-q-cta" onclick="ttOpenEvidence()" style="display:inline">See full model inputs →</button></p>
+      </div>
+
+      <!-- Daypart cards -->
+      <div>
+        <div class="tt-section-h">
+          <div>
+            <div class="tt-section-title">Daypart opportunities</div>
+            <div class="tt-section-sub">Tap a daypart to update the proof panel above</div>
+          </div>
+        </div>
+
+        <div class="tt-daypart-row" role="tablist" aria-label="Daypart selection">
+          <button type="button" class="tt-dp-card tt-dp-active" id="ttDpFri" role="tab" aria-selected="true" aria-controls="ttModeKds" onclick="ttSetDaypart('fri-dinner')">
+            <div class="tt-dp-head">
+              <div class="tt-dp-name">Friday Dinner</div>
+              <span class="tt-chip tt-chip-kds">KDS</span>
+            </div>
+            <div class="tt-dp-opp">~$680<span style="font-size:11px;color:var(--t3);font-weight:400"> / wk</span></div>
+            <div><span class="tt-chip tt-chip-est">EST · not guaranteed</span></div>
+            <div class="tt-dp-row"><span>Duration overage</span><strong>+11 min</strong></div>
+            <div class="tt-dp-row"><span>Est. missed covers</span><strong>9 / wk</strong></div>
+            <div class="tt-dp-row"><span>Bottleneck</span><strong style="color:var(--red)">Payment</strong></div>
+            <div class="tt-dp-foot">
+              <span class="tt-dp-status">Recurring · 3 of 4</span>
+              <span style="font-size:10.5px;color:var(--green);font-weight:700">Ready for Playbook</span>
+            </div>
+          </button>
+
+          <button type="button" class="tt-dp-card" id="ttDpSat" role="tab" aria-selected="false" aria-controls="ttModeKds" onclick="ttSetDaypart('sat-dinner')">
+            <div class="tt-dp-head">
+              <div class="tt-dp-name">Saturday Dinner</div>
+              <span class="tt-chip tt-chip-kds">KDS</span>
+            </div>
+            <div class="tt-dp-opp">~$420<span style="font-size:11px;color:var(--t3);font-weight:400"> / wk</span></div>
+            <div><span class="tt-chip tt-chip-est">EST · not guaranteed</span></div>
+            <div class="tt-dp-row"><span>Duration overage</span><strong>+8 min</strong></div>
+            <div class="tt-dp-row"><span>Est. missed covers</span><strong>6 / wk</strong></div>
+            <div class="tt-dp-row"><span>Bottleneck</span><strong style="color:var(--amber)">Food→check</strong></div>
+            <div class="tt-dp-foot">
+              <span class="tt-dp-status">Regressing</span>
+              <span style="font-size:10.5px;color:var(--amber);font-weight:700">Needs Review</span>
+            </div>
+          </button>
+
+          <button type="button" class="tt-dp-card" id="ttDpWed" role="tab" aria-selected="false" aria-controls="ttModeProxy" onclick="ttSetDaypart('wed-lunch')">
+            <div class="tt-dp-head">
+              <div class="tt-dp-name">Wednesday Lunch</div>
+              <span class="tt-chip tt-chip-proxy">Proxy</span>
+            </div>
+            <div class="tt-dp-opp">~$115<span style="font-size:11px;color:var(--t3);font-weight:400"> / wk</span></div>
+            <div><span class="tt-chip tt-chip-est">EST · proxy</span> <span class="tt-chip tt-chip-heur" style="margin-left:4px">Heuristic</span></div>
+            <div class="tt-dp-row"><span>Duration overage</span><strong>+6 min</strong></div>
+            <div class="tt-dp-row"><span>Est. missed covers</span><strong>2 / wk</strong></div>
+            <div class="tt-dp-row"><span>Mode</span><strong>Stage unknown</strong></div>
+            <div class="tt-dp-foot">
+              <span class="tt-dp-status">New</span>
+              <span style="font-size:10.5px;color:var(--t3);font-weight:700">Needs KDS</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+    </div>
+    <!-- ── /LEFT ── -->
+
+    <!-- ─────────────── RIGHT COLUMN ─────────────── -->
+    <div class="tt-col">
+
+      <!-- Playbook card -->
+      <div class="tt-card tt-playbook">
+        <div class="tt-eyebrow" style="margin-bottom:6px">Recommended playbook</div>
+        <div class="tt-playbook-title" id="ttPbTitle">Friday dinner closeout playbook</div>
+        <div class="tt-playbook-body" id="ttPbBody">Deploy handheld closeout + check-drop script from 7–9 PM on Friday dinner.</div>
+        <div class="tt-section-sub" id="ttPbWhy">Payment closeout is adding +6.5 min versus baseline and accounts for the largest share of the +11 min dining-duration overage.</div>
+
+        <div class="tt-playbook-meta">
+          <strong>Owner</strong><span id="ttPbOwner">Floor Manager</span>
+          <strong>Timing</strong><span id="ttPbTiming">Friday dinner · 7–9 PM</span>
+          <strong>Expected</strong><span id="ttPbExpected">~$680/wk EST · not guaranteed</span>
+          <strong>Pattern</strong><span id="ttPbPattern" style="color:var(--green)">High confidence (3 of 4)</span>
+          <strong>Revenue est.</strong><span style="color:var(--amber)">Medium confidence</span>
+        </div>
+
+        <div class="tt-playbook-ctas">
+          <button class="btn btn-primary" id="ttPbPrimaryCta" onclick="ttHeroPrimaryAction()">Review Turn Playbook</button>
+          <button class="btn btn-secondary btn-sm" onclick="ttCreateAction()" id="ttPbSecondaryCta">Create Action</button>
+          <button class="btn btn-ghost btn-sm" onclick="showScreen('actions',null,'Actions')">Open Actions →</button>
+        </div>
+
+        <div class="tt-playbook-foot">This playbook should not rush guests. Recovery only counts if average check and sentiment hold during monitoring.</div>
+      </div>
+
+      <!-- Guardrail strip -->
+      <div class="tt-card tt-guard">
+        <div class="tt-section-h">
+          <div>
+            <div class="tt-guard-title">Counter-metric guardrails</div>
+            <div class="tt-guard-sub">Why these matter: a faster table is not a win if the guest spends less, feels rushed, or doesn't return.</div>
+          </div>
+        </div>
+
+        <div class="tt-guard-list">
+          <div class="tt-guard-row tt-gr-stable">
+            <div style="flex:1">
+              <div class="tt-guard-name">Avg Check <span style="font-weight:400;color:var(--t3);font-size:10.5px">· rolling 7-day</span></div>
+              <span class="tt-guard-val">$75.40 (this wk) vs $75.50 (8-wk avg)</span>
+              <span class="tt-guard-rule">Guardrail: must not drop &gt; 5%</span>
+            </div>
+            <span class="tt-guard-status" style="background:var(--green-d);color:var(--green)">Stable</span>
+          </div>
+
+          <div class="tt-guard-row tt-gr-stable">
+            <div style="flex:1">
+              <div class="tt-guard-name">Guest Sentiment</div>
+              <span class="tt-guard-val">No rushed-service spike in reviews</span>
+              <span class="tt-guard-rule">Guardrail: review sentiment must not worsen</span>
+            </div>
+            <span class="tt-guard-status" style="background:var(--green-d);color:var(--green)">Stable</span>
+          </div>
+
+          <div class="tt-guard-row tt-gr-stable">
+            <div style="flex:1">
+              <div class="tt-guard-name">Server Avg Check</div>
+              <span class="tt-guard-val">No server-level rushing signal</span>
+              <span class="tt-guard-rule">Guardrail: individual server avg check must hold</span>
+            </div>
+            <span class="tt-guard-status" style="background:var(--green-d);color:var(--green)">Stable</span>
+          </div>
+
+          <div class="tt-guard-row tt-gr-pending">
+            <div style="flex:1">
+              <div class="tt-guard-name">Recovered Covers</div>
+              <span class="tt-guard-val">Not started — create action to begin monitoring</span>
+              <span class="tt-guard-rule">Guardrail: counts only if guardrails hold after deployment</span>
+            </div>
+            <span class="tt-guard-status" style="background:rgba(161,161,170,.1);color:var(--t2)">Pending</span>
+          </div>
+        </div>
+
+        <div class="tt-guard-foot">Faster turns are not counted as recovery if average check or guest sentiment worsens. Counter-metric logic is locked at the platform level — LLM narrative cannot override.</div>
+      </div>
+
+      <!-- Recovery Monitoring -->
+      <div class="tt-card tt-mon">
+        <div class="tt-section-h">
+          <div>
+            <div class="tt-section-title">Recovery Monitoring</div>
+            <div class="tt-section-sub">Active recovery, not verified savings</div>
+          </div>
+          <span class="tt-chip tt-chip-pending">Not started</span>
+        </div>
+
+        <div class="tt-mon-grid">
+          <span class="tt-mg-k">Expected covers / wk</span><span class="tt-mg-v">9</span>
+          <span class="tt-mg-k">Actual recovered</span><span class="tt-mg-v" style="color:var(--t3)">— pending action</span>
+          <span class="tt-mg-k">Avg check guardrail</span><span class="tt-mg-v" style="color:var(--green)">Stable</span>
+          <span class="tt-mg-k">Guest sentiment</span><span class="tt-mg-v" style="color:var(--green)">Stable</span>
+          <span class="tt-mg-k">Server avg check</span><span class="tt-mg-v" style="color:var(--green)">Stable</span>
+          <span class="tt-mg-k">Monitoring window</span><span class="tt-mg-v">30 days</span>
+        </div>
+
+        <p class="tt-section-sub" style="margin-top:8px">Recovered covers move to ROI Proof only after the monitoring window passes and counter-metrics hold. Estimated opportunity is never treated as verified savings.</p>
+
+        <div class="tt-mon-links">
+          <button class="btn btn-ghost btn-sm" onclick="showScreen('actions',null,'Actions')">Open Actions</button>
+          <button class="btn btn-ghost btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">Open ROI Proof</button>
+        </div>
+      </div>
+
+      <!-- Recommendation queue -->
+      <div class="tt-card tt-queue">
+        <div class="tt-section-h">
+          <div>
+            <div class="tt-section-title">Table Turns queue</div>
+            <div class="tt-section-sub">Ranked by estimated weekly opportunity</div>
+          </div>
+        </div>
+
+        <div class="tt-queue-list">
+          <div class="tt-queue-item">
+            <div class="tt-q-head">
+              <span class="tt-q-title">Friday dinner closeout playbook</span>
+              <span class="tt-chip tt-chip-stable">Ready</span>
+            </div>
+            <div class="tt-q-meta">~$680/wk EST · not guaranteed · 9 covers/wk · Medium confidence · KDS</div>
+            <button type="button" class="tt-q-cta" onclick="ttOpenPlaybook()">Review Turn Playbook →</button>
+          </div>
+
+          <div class="tt-queue-item">
+            <div class="tt-q-head">
+              <span class="tt-q-title">Saturday dinner service pacing review</span>
+              <span class="tt-chip tt-chip-mon">Needs Review</span>
+            </div>
+            <div class="tt-q-meta">~$420/wk EST · not guaranteed · 6 covers/wk · food→check delay · KDS</div>
+            <button type="button" class="tt-q-cta" onclick="ttSetDaypart('sat-dinner');document.getElementById('ttDpSat').focus()">View proof →</button>
+          </div>
+
+          <div class="tt-queue-item">
+            <div class="tt-q-head">
+              <span class="tt-q-title">Wednesday lunch proxy opportunity</span>
+              <span class="tt-chip tt-chip-proxy">Needs KDS</span>
+            </div>
+            <div class="tt-q-meta">~$115/wk EST · proxy · heuristic · 2 covers/wk · Needs KDS</div>
+            <button type="button" class="tt-q-cta" onclick="ttSetDaypart('wed-lunch');document.getElementById('ttDpWed').focus()">View proof →</button>
+          </div>
+
+          <div class="tt-queue-item">
+            <div class="tt-q-head">
+              <span class="tt-q-title">Seating capacity configuration</span>
+              <span class="tt-chip tt-chip-heur">Needs Seating</span>
+            </div>
+            <div class="tt-q-meta">Improves lost-cover precision · 3 locations missing config</div>
+            <button type="button" class="tt-q-cta" onclick="showScreen('config',null,'Settings')">Add seating capacity →</button>
+          </div>
+
+          <div class="tt-queue-item" style="opacity:.82">
+            <div class="tt-q-head">
+              <span class="tt-q-title">Saturday dinner closeout trial <span style="font-weight:400;color:var(--t3);font-size:10.5px">· monitoring example</span></span>
+              <span class="tt-chip tt-chip-mon">Monitoring</span>
+            </div>
+            <div class="tt-q-meta">30-day monitoring window · recovered covers not counted until guardrails close</div>
+            <button type="button" class="tt-q-cta" onclick="showScreen('actions',null,'Actions')">Open Actions →</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- ── /RIGHT ── -->
+
+  </div>
+  <!-- ── /tt-body ── -->
+
+  <!-- ── Cross-page integration links (audit fix #3) ────── -->
+  <div class="tt-crosslinks">
+    <button type="button" class="tt-cl-card" onclick="showScreen('leaks',null,'Profit Recovery')">
+      <div class="tt-cl-title">Profit Recovery →</div>
+      <div class="tt-cl-body">Profit Recovery ranks the opportunity. Table Turns proves the dining-duration and lost-cover math. The Friday dinner table-turn opportunity is listed there as throughput exposure.</div>
+    </button>
+    <button type="button" class="tt-cl-card" onclick="showScreen('throughput',null,'Kitchen Speed')">
+      <div class="tt-cl-title">Kitchen Speed →</div>
+      <div class="tt-cl-body">Table Turns owns total dining duration and FOH closeout actions. Kitchen Speed owns ticket-time and order-to-food bottlenecks. If the bottleneck shifts to Order→food, route there before creating a FOH action.</div>
+    </button>
+  </div>
+
+  <!-- ── Data states accordion (audit fix #7) ─────────── -->
+  <details class="tt-datastates">
+    <summary>
+      <div>
+        <span class="tt-ds-title">Data states</span>
+        <span class="tt-ds-sub">How Table Turns handles incomplete integrations</span>
+      </div>
+      <svg class="tt-ds-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </summary>
+    <div class="tt-datastates-body">
+      <div class="tt-ds-row"><strong>No POS check data</strong>Connect Toast POS check open/close timestamps to analyze dining duration.</div>
+      <div class="tt-ds-row"><strong>No baseline yet</strong>SKC needs ≥10 comparable dine-in checks per daypart; 8 weeks preferred for stronger confidence.</div>
+      <div class="tt-ds-row"><strong>No KDS for service period</strong>Proxy Mode active. SKC estimates from check timestamps; connect KDS for stage breakdown.</div>
+      <div class="tt-ds-row"><strong>No seating capacity</strong>Falls back to heuristic lost-cover estimate. Add seating capacity for capacity-adjusted precision.</div>
+      <div class="tt-ds-row"><strong>No slow-turn periods</strong>Table turns within baseline. No daypart crossed recommendation thresholds.</div>
+      <div class="tt-ds-row"><strong>Outlier warning</strong>More than 5% of checks exceeded 180 min — likely forgotten open checks. Review before trusting estimates.</div>
+      <div class="tt-ds-row"><strong>Missing avg check</strong>Dining-duration analysis is available, but revenue opportunity can't be estimated until avg check is connected.</div>
+    </div>
+  </details>
+
+  <!-- ── Footer nav ─────────────────────────────────────── -->
+  <div style="display:flex;align-items:center;gap:8px;padding:18px 0;border-top:1px solid var(--border);margin-top:18px">
+    <button class="btn btn-ghost btn-sm" onclick="showScreen('leaks',null,'Profit Recovery')">← Profit Recovery</button>
+    <button class="btn btn-ghost btn-sm" onclick="ttOpenEvidence()">Full Evidence Drawer</button>
+    <button class="ask-why-btn" onclick="askPanelQ('Why is Friday dinner turning slower than baseline at Oakland?')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Ask SKC why</button>
+  </div>
+
+  </div><!-- /tt-subpage-stages (legacy content wrapper) -->
+
+  <!-- ══ (v28c) Subpage: LOST COVERS ═══════════════════════════ -->
+  <div class="tt-subpage" id="tt-subpage-lostcovers">
+    <div class="tt-sp-shell">
+      <div class="tt-sp-header">
+        <div class="tt-sp-hdr-left">
+          <div class="tt-sp-hdr-title">Lost Cover Model</div>
+          <div class="tt-sp-hdr-sub">Capacity-based estimation of covers lost to duration overage. Floored to integer, never rounded up. Revenue is <strong style="color:var(--amber)">[ESTIMATED]</strong>, not guaranteed.</div>
+        </div>
+        <div class="tt-sp-hdr-right">
+          <span class="tt-mode-chip">KDS MODE</span>
+          <button class="btn btn-secondary btn-sm" onclick="showTtSubpage('playbooks')">Review Playbook</button>
+          <button class="btn btn-ghost btn-sm" onclick="showTtSubpage('evidence')">Open Evidence</button>
+        </div>
+      </div>
+      <div class="tt-sp-body">
+        <div class="tt-sp-strip">
+          <div class="tt-sp-strip-cell"><div class="tt-sp-strip-k">Seat capacity</div><div class="tt-sp-strip-v">42</div><div class="tt-sp-strip-sub">Oakland dining room</div></div>
+          <div class="tt-sp-strip-cell"><div class="tt-sp-strip-k">Service hours</div><div class="tt-sp-strip-v">4.0 h</div><div class="tt-sp-strip-sub">5–9 PM dinner</div></div>
+          <div class="tt-sp-strip-cell is-warn"><div class="tt-sp-strip-k">Avg duration</div><div class="tt-sp-strip-v">94 m</div><div class="tt-sp-strip-sub" style="color:var(--amber)">+18m vs target</div></div>
+          <div class="tt-sp-strip-cell is-warn"><div class="tt-sp-strip-k">Est. lost covers</div><div class="tt-sp-strip-v">9</div><div class="tt-sp-strip-sub">/wk · floored</div></div>
+          <div class="tt-sp-strip-cell is-warn"><div class="tt-sp-strip-k">Revenue / wk</div><div class="tt-sp-strip-v">~$680</div><div class="tt-sp-strip-sub" style="color:var(--amber)">[ESTIMATED]</div></div>
+        </div>
+
+        <div class="tt-lc-grid">
+          <!-- LEFT · Formula trace -->
+          <div class="tt-lc-panel">
+            <div class="tt-lc-panel-h">Formula trace</div>
+            <div class="tt-lc-body">
+              <div class="tt-lc-formula">
+                <div><span class="k">Theoretical turns</span> <strong>(4 hrs × 60 min) ÷ 76 min target</strong> = 3.16 turns/seat</div>
+                <div><span class="k">Actual turns</span> <strong>(4 hrs × 60 min) ÷ 94 min actual</strong> = 2.55 turns/seat</div>
+                <div><span class="k">Turn deficit</span> <strong>3.16 − 2.55</strong> = 0.61 turns/seat</div>
+                <div><span class="k">Theoretical lost covers</span> <strong>0.61 × 42 seats</strong> = 25 covers/service</div>
+                <div><span class="k">Realization haircut</span> <strong>× 36%</strong> (East Bay full-service casual)</div>
+                <div><span class="k">Lost covers/service</span> <strong>floor(25 × 0.36)</strong> = 9</div>
+                <div><span class="k">Avg check</span> <strong>$76</strong> (Fri dinner trailing 4-week)</div>
+                <div><span class="k">Revenue / service</span> <strong>9 × $76</strong> = $684</div>
+                <div><span class="k">Weekly</span> <strong>~$680</strong> (1 Fri service / week · floored)</div>
+                <div><span class="k">Monthly run-rate</span> <strong>$680 × 4.33</strong> = ~$2,944/mo</div>
+              </div>
+              <div class="tt-lc-floor-row">
+                <span>Floor rule: lost covers <strong>floor()</strong>, never <strong>ceil()</strong>. Realization haircut applied before flooring.</span>
+              </div>
+              <div style="margin-top:14px;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:4px;font-size:10.5px;color:var(--t3);line-height:1.55">
+                <strong style="color:var(--t2)">Why 36% realization?</strong> Not every theoretical seat-turn converts to an actual cover. Walk-ins peak in specific windows; not all of the "freed time" lands in a peak window. Realization haircut is operator-configurable; 36% reflects East Bay full-service casual benchmark for Friday dinner.
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT · Capacity + assumptions + exclusions -->
+          <div class="tt-lc-panel">
+            <div class="tt-lc-panel-h">Inputs &amp; exclusions</div>
+            <div class="tt-lc-body">
+              <div class="tt-lc-side-card">
+                <div class="tt-lc-side-h">Capacity inputs</div>
+                <div class="tt-lc-side-row"><span>Seat capacity</span><strong>42</strong></div>
+                <div class="tt-lc-side-row"><span>Service window</span><strong>5–9 PM</strong></div>
+                <div class="tt-lc-side-row"><span>Service hours</span><strong>4.0 h</strong></div>
+                <div class="tt-lc-side-row"><span>Target duration</span><strong>76 min</strong></div>
+                <div class="tt-lc-side-row"><span>Realization haircut</span><strong>36%</strong></div>
+              </div>
+              <div class="tt-lc-side-card">
+                <div class="tt-lc-side-h">Check + period</div>
+                <div class="tt-lc-side-row"><span>Avg check (Fri dinner)</span><strong>$76</strong></div>
+                <div class="tt-lc-side-row"><span>Baseline window</span><strong>4 wk</strong></div>
+                <div class="tt-lc-side-row"><span>Sample services</span><strong>4</strong></div>
+                <div class="tt-lc-side-row"><span>Confidence</span><strong>74%</strong></div>
+              </div>
+              <div class="tt-lc-side-card">
+                <div class="tt-lc-side-h" style="color:var(--red)">Exclusions enforced</div>
+                <div style="font-size:10.5px;color:var(--t2);line-height:1.6">
+                  <strong style="color:var(--red)">DINE_IN only.</strong> TAKE_OUT, DELIVERY excluded from duration math.<br>
+                  <strong style="color:var(--red)">Voided checks excluded.</strong><br>
+                  <strong style="color:var(--red)">Still-open checks excluded</strong> from closed-period analysis.<br>
+                  <strong style="color:var(--red)">Comped services excluded</strong> from avg-check baseline.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ (v28c) Subpage: PLAYBOOKS ═══════════════════════════ -->
+  <div class="tt-subpage" id="tt-subpage-playbooks">
+    <div class="tt-sp-shell">
+      <div class="tt-sp-header">
+        <div class="tt-sp-hdr-left">
+          <div class="tt-sp-hdr-title">Turn Playbooks</div>
+          <div class="tt-sp-hdr-sub">Recommended FOH/table-turn actions, scoped to specific stages. Each playbook is <strong style="color:var(--amber)">[ESTIMATED]</strong> until turned into an action and verified. Faster turns are <strong>not counted</strong> if avg check or sentiment drops.</div>
+        </div>
+        <div class="tt-sp-hdr-right">
+          <button class="btn btn-secondary btn-sm" onclick="showTtSubpage('lostcovers')">See the Math</button>
+          <button class="btn btn-ghost btn-sm" onclick="showTtSubpage('evidence')">Open Evidence</button>
+        </div>
+      </div>
+      <div class="tt-sp-body">
+        <div class="tt-sp-strip">
+          <div class="tt-sp-strip-cell is-warn"><div class="tt-sp-strip-k">Pending playbooks</div><div class="tt-sp-strip-v">3</div><div class="tt-sp-strip-sub">For Fri dinner</div></div>
+          <div class="tt-sp-strip-cell"><div class="tt-sp-strip-k">Combined / wk</div><div class="tt-sp-strip-v">~$680</div><div class="tt-sp-strip-sub" style="color:var(--amber)">[ESTIMATED]</div></div>
+          <div class="tt-sp-strip-cell"><div class="tt-sp-strip-k">Monthly run-rate</div><div class="tt-sp-strip-v">~$2,944</div><div class="tt-sp-strip-sub" style="color:var(--amber)">/mo projection</div></div>
+          <div class="tt-sp-strip-cell is-good"><div class="tt-sp-strip-k">Guardrails enforced</div><div class="tt-sp-strip-v">2/2</div><div class="tt-sp-strip-sub">Check + sentiment</div></div>
+          <div class="tt-sp-strip-cell"><div class="tt-sp-strip-k">Avg confidence</div><div class="tt-sp-strip-v">72%</div><div class="tt-sp-strip-sub">Range 64–78%</div></div>
+        </div>
+
+        <div class="tt-pb-grid">
+          <!-- LEFT · Playbook list -->
+          <div class="tt-pb-panel">
+            <div class="tt-pb-panel-h">
+              <span>Recommended playbooks (3)</span>
+              <span style="font-size:10px;font-weight:400;color:var(--t3);text-transform:none;letter-spacing:0">Sorted by stage impact</span>
+            </div>
+            <div class="tt-pb-list">
+              <div class="tt-pb-item">
+                <div class="tt-pb-item-h">
+                  <div>
+                    <div class="tt-pb-item-t">FOH check-back cadence · Dessert lead at 60 min</div>
+                    <div class="tt-pb-item-sub">Server presents dessert menu proactively at 60-min mark · targets Dessert→Check overrun</div>
+                  </div>
+                  <div>
+                    <div class="tt-pb-item-val">$420/wk</div>
+                    <div class="tt-pb-item-tag">[ESTIMATED]</div>
+                  </div>
+                </div>
+                <div class="tt-pb-item-stages">
+                  <span>Stage: Dessert→Check</span>
+                  <span>Target: −10 min</span>
+                  <span>Conf: 78%</span>
+                </div>
+                <div class="tt-pb-item-cta">
+                  <button class="btn btn-primary btn-sm" onclick="ttOpenPlaybook()">Turn into Action</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showTtSubpage('lostcovers')">Math</button>
+                </div>
+              </div>
+
+              <div class="tt-pb-item" style="border-left-color:var(--amber)">
+                <div class="tt-pb-item-h">
+                  <div>
+                    <div class="tt-pb-item-t">Pre-bus and pre-set during entrée service</div>
+                    <div class="tt-pb-item-sub">FOH busses non-entrée plates during entrée course · pre-sets dessert ware · saves 4–6 min on transition</div>
+                  </div>
+                  <div>
+                    <div class="tt-pb-item-val">$148/wk</div>
+                    <div class="tt-pb-item-tag">[ESTIMATED]</div>
+                  </div>
+                </div>
+                <div class="tt-pb-item-stages">
+                  <span>Stage: Food→Dessert</span>
+                  <span>Target: −5 min</span>
+                  <span>Conf: 74%</span>
+                </div>
+                <div class="tt-pb-item-cta">
+                  <button class="btn btn-primary btn-sm" onclick="showDemoToast('Playbook draft created · pending approval','blue')">Turn into Action</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showTtSubpage('lostcovers')">Math</button>
+                </div>
+              </div>
+
+              <div class="tt-pb-item" style="border-left-color:var(--amber)">
+                <div class="tt-pb-item-h">
+                  <div>
+                    <div class="tt-pb-item-t">QR-code check delivery · Fri dinner only</div>
+                    <div class="tt-pb-item-sub">Optional QR-code on table for self-close · saves 3–4 min on payment processing · opt-in for guest</div>
+                  </div>
+                  <div>
+                    <div class="tt-pb-item-val">$44/wk</div>
+                    <div class="tt-pb-item-tag">[ESTIMATED]</div>
+                  </div>
+                </div>
+                <div class="tt-pb-item-stages">
+                  <span>Stage: Check→Departure</span>
+                  <span>Target: −3 min</span>
+                  <span>Conf: 64%</span>
+                </div>
+                <div class="tt-pb-item-cta">
+                  <button class="btn btn-primary btn-sm" onclick="showDemoToast('Playbook draft created · pending approval','blue')">Turn into Action</button>
+                  <button class="btn btn-secondary btn-sm" onclick="showTtSubpage('lostcovers')">Math</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT · Plan totals + guardrails -->
+          <div style="display:flex;flex-direction:column;gap:10px;min-height:0;overflow:auto">
+            <div class="tt-pb-side-card">
+              <div class="tt-pb-side-h">Combined plan totals</div>
+              <div class="tt-pb-side-row"><span>Pending playbooks</span><strong>3</strong></div>
+              <div class="tt-pb-side-row"><span>Target duration cut</span><strong>−18 min</strong></div>
+              <div class="tt-pb-side-row"><span>Combined / wk</span><strong style="color:var(--amber);font-family:var(--mono)">~$680</strong></div>
+              <div class="tt-pb-side-row"><span>Monthly run-rate</span><strong style="color:var(--amber);font-family:var(--mono)">~$2,944</strong></div>
+              <div class="tt-pb-side-row"><span>Verified savings</span><strong style="color:var(--t3);font-family:var(--mono)">$0</strong></div>
+            </div>
+            <div class="tt-pb-side-card">
+              <div class="tt-pb-side-h">Guardrails (enforced on verify)</div>
+              <div class="tt-pb-side-row"><span>Avg check</span><strong style="color:var(--green)">Must not drop</strong></div>
+              <div class="tt-pb-side-row"><span>Guest sentiment</span><strong style="color:var(--green)">Must not worsen</strong></div>
+              <div class="tt-pb-side-row"><span>Complaints / 100 covers</span><strong style="color:var(--green)">Must not rise</strong></div>
+              <div class="tt-pb-side-row"><span>Manager override</span><strong>Allowed</strong></div>
+              <div style="font-size:10px;color:var(--t3);margin-top:6px;line-height:1.5;font-style:italic">Faster turns are not counted as recovery if avg check or sentiment degrades. Rushed service that lowers per-check spend is net-negative.</div>
+            </div>
+            <div class="tt-pb-side-card">
+              <div class="tt-pb-side-h">Mode</div>
+              <div style="font-size:11px;color:var(--t2);line-height:1.55">
+                <span class="tt-mode-chip">KDS MODE</span><br>
+                Stage decomposition active. Stage targets visible per playbook.<br><br>
+                In <span class="tt-mode-chip is-proxy">PROXY MODE</span>, stage-level math is suppressed and playbook outputs labeled [PROXY] / [HEURISTIC].
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ (v28c) Subpage: EVIDENCE ════════════════════════════ -->
+  <div class="tt-subpage" id="tt-subpage-evidence">
+    <div class="tt-sp-shell">
+      <div class="tt-sp-header">
+        <div class="tt-sp-hdr-left">
+          <div class="tt-sp-hdr-title">Table Turn Evidence</div>
+          <div class="tt-sp-hdr-sub">Formulas, filters, exclusions, mode definitions (KDS vs Proxy), and LLM restrictions. This page defines how table-turn opportunities are detected and what blocks verification.</div>
+        </div>
+        <div class="tt-sp-hdr-right">
+          <button class="btn btn-secondary btn-sm" onclick="ttOpenEvidence()">Full Evidence Drawer</button>
+          <button class="btn btn-ghost btn-sm" onclick="showScreen('settings',null,'Data Quality')">Data Quality</button>
+        </div>
+      </div>
+      <div class="tt-sp-body">
+        <div class="tt-ev-grid">
+          <div class="tt-ev-card">
+            <div class="tt-ev-h">Formula trace</div>
+            <div class="tt-ev-body">
+              <span class="mono">Theoretical turns = svc hrs × 60 ÷ target</span>
+              <span class="mono">Actual turns = svc hrs × 60 ÷ actual</span>
+              <span class="mono">Turn deficit = theoretical − actual</span>
+              <span class="mono">Lost covers = floor(deficit × seats × haircut)</span>
+              <span class="mono">Revenue / svc = lost covers × avg check</span>
+              <span class="mono">Monthly = weekly × 4.33</span>
+              <p style="margin:8px 0 0;font-size:10.5px;color:var(--t3);font-style:italic">Lost covers always <strong style="color:var(--t1)">floored</strong>, never rounded up. Realization haircut applied <strong style="color:var(--t1)">before</strong> flooring.</p>
+            </div>
+          </div>
+
+          <div class="tt-ev-card">
+            <div class="tt-ev-h">Filters &amp; exclusions</div>
+            <div class="tt-ev-body">
+              <div class="tt-ev-rule is-exclusion"><strong>DINE_IN only.</strong> TAKE_OUT and DELIVERY do not have meaningful dining duration and are excluded entirely.</div>
+              <div class="tt-ev-rule is-exclusion"><strong>Voided checks excluded.</strong> Voids don't represent real cover throughput.</div>
+              <div class="tt-ev-rule is-exclusion"><strong>Still-open checks excluded</strong> from closed-period analysis. Open-check duration is meaningless until the check closes.</div>
+              <div class="tt-ev-rule is-exclusion"><strong>Comped services excluded</strong> from avg-check baseline. Comps distort revenue/cover.</div>
+              <p style="margin:8px 0 0;font-size:10.5px;color:var(--t3);font-style:italic">All exclusions are <strong style="color:var(--t1)">enforced before</strong> duration math runs. Filter state is visible in the legacy Stage Flow filter bar.</p>
+            </div>
+          </div>
+
+          <div class="tt-ev-card">
+            <div class="tt-ev-h">KDS vs Proxy mode</div>
+            <div class="tt-ev-body">
+              <div class="tt-ev-rule"><strong><span class="tt-mode-chip">KDS MODE</span> · default.</strong> Kitchen Display System provides stage timing (Seat→Order, Order→Food, Food→Dessert, Dessert→Check). Stage decomposition active.</div>
+              <div class="tt-ev-rule is-proxy"><strong><span class="tt-mode-chip is-proxy">PROXY MODE</span> · KDS data missing.</strong> Total duration only (seat → close), no stage decomposition. Outputs labeled <strong style="color:var(--amber)">[PROXY]</strong> / <strong style="color:var(--amber)">[HEURISTIC]</strong>.</div>
+              <p style="margin:8px 0 0;font-size:10.5px;color:var(--t3);font-style:italic">Proxy mode is a data quality state, not a separate destination. Mode auto-switches based on KDS feed availability.</p>
+            </div>
+          </div>
+
+          <div class="tt-ev-card">
+            <div class="tt-ev-h">Guardrails (verification-side)</div>
+            <div class="tt-ev-body">
+              <div class="tt-ev-rule"><strong>Avg check</strong> must not drop during monitoring window. Per-cover spend tracked per service.</div>
+              <div class="tt-ev-rule"><strong>Guest sentiment</strong> must not worsen. Tracked via review platforms + complaint patterns.</div>
+              <div class="tt-ev-rule"><strong>Complaints / 100 covers</strong> must not rise. Front-line rushing signal.</div>
+              <div class="tt-ev-rule"><strong>Manager override</strong> allowed at any point. Pauses monitoring window.</div>
+              <p style="margin:8px 0 0;font-size:10.5px;color:var(--t3);font-style:italic">Faster turns are <strong>not counted</strong> as verified recovery if check or sentiment degrades — even if covers/service improved.</p>
+            </div>
+          </div>
+
+          <div class="tt-ev-card">
+            <div class="tt-ev-h">Confidence rules</div>
+            <div class="tt-ev-body">
+              <div class="tt-ev-row"><span>Floor for detection</span><strong>60%</strong></div>
+              <div class="tt-ev-row"><span>Floor for action</span><strong>70%</strong></div>
+              <div class="tt-ev-row"><span>Floor for verification</span><strong>80%</strong></div>
+              <div class="tt-ev-row"><span>Proxy mode penalty</span><strong>−15 pts</strong></div>
+              <div class="tt-ev-row"><span>KDS partial penalty</span><strong>−8 pts</strong></div>
+              <div class="tt-ev-row"><span>Sample &lt; 4 services</span><strong>No detection</strong></div>
+              <p style="margin:8px 0 0;font-size:10.5px;color:var(--t3);font-style:italic">Confidence reflects KDS feed health, sample size, and pattern strength. Proxy mode is workable but capped.</p>
+            </div>
+          </div>
+
+          <div class="tt-ev-card">
+            <div class="tt-ev-h">LLM restrictions</div>
+            <div class="tt-ev-body">
+              <p style="margin:0 0 8px">Claude (Sonnet) generates stage-level analysis and natural-language summaries, but is <strong>not permitted</strong> to:</p>
+              <div class="tt-ev-rule"><strong>—</strong> Override realization haircut or seat capacity.</div>
+              <div class="tt-ev-rule"><strong>—</strong> Round lost covers up. Floor rule is hard.</div>
+              <div class="tt-ev-rule"><strong>—</strong> Call estimated revenue "saved" or "recovered" in any output.</div>
+              <div class="tt-ev-rule"><strong>—</strong> Suppress Proxy/Heuristic labels when KDS data is unavailable.</div>
+              <p style="margin:8px 0 0;font-size:10.5px;color:var(--t3);font-style:italic">LLM outputs are decision-support only. Final authority is the operator.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
