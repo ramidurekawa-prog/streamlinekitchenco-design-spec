@@ -1,0 +1,563 @@
+  <div class="screen" id="screen-leaks">
+
+    <!-- DQ banner — populated by applyDataQualityToUI() -->
+    <div class="dq-banner" id="dq-recovery-banner" style="display:none"></div>
+
+    <!-- ══ PAGE HEADER ════════════════════════════════════════ -->
+    <div class="pr-page-header">
+      <div class="pr-page-header-left">
+        <div class="page-header-title">Profit Recovery</div>
+        <div class="page-header-sub">Recovery opportunities ranked by value, confidence, and verification readiness.</div>
+        <div class="pr-doctrine">Only Verified Savings count toward ROI. Open opportunities and Active Recovery are not counted until monitoring confirms guardrails held.</div>
+      </div>
+      <div class="pr-page-header-right">
+        <span class="skc-aud-badge skc-aud-both" title="Profit Recovery is used by both GM (assign) and Owner (review)">Both</span>
+        <button class="btn btn-primary" onclick="openCA('leak1')">Assign Highest-Value Action</button>
+        <button class="btn btn-secondary btn-sm" onclick="openEvDrawer('leak1')">Show the Math</button>
+      </div>
+    </div>
+
+    <!-- ══ HERO: HIGHEST-VALUE OPPORTUNITY ═══════════════════ -->
+    <div class="pr-hero" id="demo-target-trigger-logic">
+
+      <div class="pr-hero-top-bar">
+        <div class="pr-hero-eyebrow">
+          <span class="pr-hero-pulse"></span>
+          <span class="pr-hero-eyebrow-label">Highest-value recovery opportunity</span>
+        </div>
+        <div class="pr-hero-headline">SKC found 3 portfolio opportunities · $1,243/wk · plus menu and table-turn exposure listed below.</div>
+      </div>
+
+      <div class="pr-hero-grid">
+
+        <!-- Left: opportunity detail -->
+        <div class="pr-hero-left">
+
+          <div class="pr-hero-cat-row">
+            <span class="pr-cat-badge pr-cat-labor">Labor</span>
+            <span class="pr-hero-loc">Oakland · Tuesday Lunch</span>
+            <span class="pr-hero-priority" title="Priority score: 87/100 — see Show the Math">Ranked #1 · High priority</span>
+          </div>
+
+          <div class="pr-hero-title">Oakland Tuesday dinner labor recovery</div>
+          <div class="pr-hero-subtitle">RPLH is below expected range across repeated comparable services.</div>
+
+          <!-- Why this triggered — compact, top card only -->
+          <div class="pr-why-triggered">
+            <div class="pr-why-label">Why this triggered</div>
+            <div class="pr-why-grid">
+              <div class="pr-why-item">
+                <span class="pr-why-key">Current</span>
+                <span class="pr-why-val pr-why-red" data-skc="rplh-current">$31.40/hr RPLH</span>
+              </div>
+              <div class="pr-why-item">
+                <span class="pr-why-key">Pattern</span>
+                <span class="pr-why-val">6 of 6 comparable services</span>
+              </div>
+              <div class="pr-why-item">
+                <span class="pr-why-key">Sample</span>
+                <span class="pr-why-val pr-why-green">8 services · passed</span>
+              </div>
+              <div class="pr-why-item">
+                <span class="pr-why-key">Severity</span>
+                <span class="pr-why-val pr-why-amber">High</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Operating guidance — top card only -->
+          <div class="pr-guidance">
+            <div class="pr-guidance-row">
+              <span class="pr-guidance-icon pr-guidance-do">↗</span>
+              <span class="pr-guidance-label">What to do</span>
+              <span class="pr-guidance-val">Remove one 5–10 PM FOH server.</span>
+            </div>
+            <div class="pr-guidance-row">
+              <span class="pr-guidance-icon pr-guidance-dont">✕</span>
+              <span class="pr-guidance-label">Do not change</span>
+              <span class="pr-guidance-val">Host coverage, manager coverage, or kitchen staffing.</span>
+            </div>
+            <div class="pr-guidance-row">
+              <span class="pr-guidance-icon pr-guidance-watch">◎</span>
+              <span class="pr-guidance-label">What to watch</span>
+              <span class="pr-guidance-val">Dining duration, ticket time, avg check, complaints.</span>
+            </div>
+          </div>
+
+          <!-- Recurring leak detection -->
+          <div class="pr-recurring">
+            <span class="pr-recurring-label">Recurring pattern:</span>
+            Tuesday dinner labor drift has appeared 4 times in 8 weeks.
+            <span class="pr-recurring-cause">Likely cause: schedule template not reset after demand normalized.</span>
+          </div>
+
+          <!-- Guardrail summary -->
+          <div class="pr-guardrail-summary">
+            <span class="pr-gr-sum-label">Guardrails watched:</span>
+            <span class="pr-gr-chip pr-gr-watch">Dining duration</span>
+            <span class="pr-gr-chip pr-gr-pass">Ticket time</span>
+            <span class="pr-gr-chip pr-gr-pass">Avg check</span>
+            <span class="pr-gr-chip pr-gr-more" onclick="openEvDrawer('leak1')" title="+ Complaints, Labor hrs, Table turns">+3 more</span>
+          </div>
+
+          <!-- Data caveat -->
+          <div class="pr-caveat">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            7shifts stale 18h · GM approval required · ROI verification limited
+          </div>
+
+          <!-- CTAs -->
+          <div class="pr-hero-ctas">
+            <button class="btn btn-primary" id="dq-action-create-btn" onclick="openCA('leak1')">Assign Highest-Value Action</button>
+            <button class="btn btn-secondary" onclick="openEvDrawer('leak1')">Show the Math</button>
+            <button class="btn btn-ghost btn-sm" onclick="showDemoToast('Simulation: $185–$520/wk modeled · not counted as ROI','blue')">Simulate Fix</button>
+            <button class="btn btn-ghost btn-sm" onclick="showScreen('labor-efficiency',null,'Labor Efficiency')">Labor math →</button>
+            <button class="ask-why-btn" onclick="askPanelQ('Why did the Oakland Tuesday dinner labor recovery trigger?')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Ask SKC why</button>
+          </div>
+
+        </div><!-- /pr-hero-left -->
+
+        <!-- Right: value + confidence + cross-location -->
+        <div class="pr-hero-right">
+
+          <div class="pr-hero-value-block">
+            <div class="pr-hero-value-label">Estimated Open Exposure</div>
+            <div class="pr-hero-value">$370<span class="pr-hero-value-period">/wk</span></div>
+            <div class="pr-hero-value-basis">$185/service · 2 services/week</div>
+            <div class="pr-hero-roi-note">Not counted in ROI yet</div>
+          </div>
+
+          <div class="pr-hero-conf-block">
+            <div class="pr-hero-conf-label">Confidence</div>
+            <div class="pr-conf-track"><div class="pr-conf-fill" id="dq-lc1-conf-fill" style="width:78%"></div></div>
+            <div class="pr-hero-conf-val"><span id="dq-lc1-conf-val" data-skc="conf-labor">78%</span> <span class="pr-hero-conf-note">85% base −7 pts stale 7shifts</span></div>
+          </div>
+
+          <!-- Cross-location comparison -->
+          <div class="pr-cross-location">
+            <div class="pr-cross-label">Cross-location</div>
+            <div class="pr-cross-rows">
+              <div class="pr-cross-row pr-cross-active">
+                <span class="pr-cross-loc">Oakland · Tue Dinner</span>
+                <span class="pr-cross-val pr-val-amber">$370/wk</span>
+                <span class="pr-cross-sev pr-sev-high">High · 87</span>
+              </div>
+              <div class="pr-cross-row">
+                <span class="pr-cross-loc">Berkeley · Tue Dinner</span>
+                <span class="pr-cross-val pr-cross-val-dim">$210/wk</span>
+                <span class="pr-cross-sev pr-sev-med">Medium · 72</span>
+              </div>
+              <div class="pr-cross-row pr-cross-stable">
+                <span class="pr-cross-loc">Walnut Creek · Tue</span>
+                <span class="pr-cross-val pr-cross-val-muted">No trigger</span>
+                <span class="pr-cross-sev pr-cross-sev-muted">Stable</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trigger status chip -->
+          <div class="pr-trigger-status">
+            <span class="pr-trigger-chip">Trigger Active</span>
+            <span class="pr-trigger-detail">6/6 services · pattern confirmed</span>
+          </div>
+
+        </div><!-- /pr-hero-right -->
+
+      </div><!-- /pr-hero-grid -->
+
+    </div><!-- /pr-hero -->
+
+    <!-- ══ SUMMARY METRICS ════════════════════════════════════ -->
+    <div class="ss="pr-summary-strip">
+      <div class="pr-sum-card">
+        <div class="pr-sum-label">Estimated Open Exposure</div>
+        <div class="pr-sum-val pr-sum-amber">$1,243<span class="pr-sum-period">/wk</span></div>
+        <div class="pr-sum-note">3 open opportunities</div>
+      </div>
+      <div class="pr-sum-div"></div>
+      <div class="pr-sum-card pr-sum-clickable" onclick="showScreen('actions',null,'Actions')">
+        <div class="pr-sum-label">Active Recovery</div>
+        <div class="pr-sum-val pr-sum-blue">$189<span class="pr-sum-period">/wk</span></div>
+        <div class="pr-sum-note">In monitoring · not counted yet</div>
+      </div>
+      <div class="pr-sum-div"></div>
+      <div class="pr-sum-card pr-sum-clickable" onclick="showScreen('scorecard',null,'ROI Proof')">
+        <div class="pr-sum-label">Verified Savings</div>
+        <div class="pr-sum-val pr-sum-green">$97<span class="pr-sum-period">/wk equiv.</span></div>
+        <div class="pr-sum-note">Counts toward ROI</div>
+      </div>
+      <div class="pr-sum-div"></div>
+      <div class="pr-sum-card">
+        <div class="pr-sum-label">Data Confidence</div>
+        <div class="pr-sum-val pr-sum-amber" data-skc="conf-labor">78%</div>
+        <div class="pr-sum-note">Ranking confidence · source caveats apply</div>
+      </div>
+      <div class="pr-sum-div"></div>
+      <div class="pr-sum-card">
+        <div class="pr-sum-label">Opportunities Detected</div>
+        <div class="pr-sum-val pr-sum-default">4</div>
+        <div class="pr-sum-note">Labor, menu, kitchen speed, table turns</div>
+      </div>
+    </div><!-- /pr-summary-strip -->
+
+    <!-- ══ FILTERS ════════════════════════════════════════════ -->
+    <div class="pr-filter-bar">
+      <div class="pr-filters">
+        <select class="pr-filter-select" onchange="showDemoToast('Filter: '+this.value,'blue')">
+          <option>All Locations</option>
+          <option>Oakland</option>
+          <option>Berkeley</option>
+          <option>Walnut Creek</option>
+        </select>
+        <select class="pr-filter-select" onchange="showDemoToast('Category: '+this.value,'blue')">
+          <option>All Categories</option>
+          <option>Labor</option>
+          <option>Menu</option>
+          <option>Throughput</option>
+          <option>Data Quality</option>
+        </select>
+        <select class="pr-filter-select" onchange="showDemoToast('Status: '+this.value,'blue')">
+          <option>Active statuses</option>
+          <option>Trigger Active</option>
+          <option>Watch</option>
+          <option>Assigned</option>
+          <option>Active Recovery</option>
+          <option>Verification Blocked</option>
+          <option>Verified</option>
+          <option>Rejected / Not Counted</option>
+          <option>Needs More Data</option>
+        </select>
+        <select class="pr-filter-select" onchange="showDemoToast('Confidence: '+this.value,'blue')">
+          <option>All Confidence</option>
+          <option>High (≥80%)</option>
+          <option>Medium (65–79%)</option>
+          <option>Limited (50–64%)</option>
+          <option>Low (&lt;50%)</option>
+        </select>
+        <select class="pr-filter-select" onchange="showDemoToast('Verification: '+this.value,'blue')">
+          <option>All Readiness</option>
+          <option>Ready</option>
+          <option>Limited</option>
+          <option>Blocked</option>
+          <option>Needs More Data</option>
+        </select>
+      </div>
+      <div class="pr-filter-right">
+        <span class="pr-filter-count">4 opportunities</span>
+        <button class="btn btn-ghost btn-sm" onclick="openEvDrawer('leak1')">Evidence →</button>
+      </div>
+    </div>
+
+    <!-- ══ RANKED LIST ════════════════════════════════════════ -->
+    <div class="pr-ranked-list" id="pr-main-list">
+
+      <!-- ── (v27) Opportunity: Menu suite — Mix exposure ── -->
+      <div class="pr-opp-card" onclick="showScreen('menu',null,'Menu Optimization');showMenuSubpage('overview')" role="button" tabindex="0" aria-label="Open Menu Optimization suite · estimated exposure">
+        <div class="pr-opp-rank">M</div>
+        <div class="pr-opp-main">
+          <div class="pr-opp-cat-row">
+            <span class="pr-cat-badge pr-cat-menu">Menu Profitability</span>
+            <span class="pr-opp-loc">Oakland · Dinner · Last 28 Days</span>
+          </div>
+          <div class="pr-opp-title">Oakland dinner menu mix exposure</div>
+          <div class="pr-opp-action">Weighted avg CM is $0.71/item below the 8-week baseline. 2,004 items × $0.71 = ~$1,420/mo.</div>
+          <div class="pr-opp-caveat">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            Recipe costs stale 18d · verification blocked · estimated only
+          </div>
+        </div>
+        <div class="pr-opp-metrics">
+          <div class="pr-opp-value">
+            <div class="pr-opp-value-main">~$1,420<span class="pr-opp-value-period">/mo</span></div>
+            <div class="pr-opp-roi-note">EST · not counted yet</div>
+          </div>
+          <div class="pr-opp-conf-col">
+            <div class="pr-opp-conf pr-conf-amber">62%</div>
+            <div class="pr-opp-pattern">9 items · 8wk baseline</div>
+          </div>
+          <div class="pr-opp-score" title="Priority score">76<span class="pr-opp-score-denom">/100</span></div>
+        </div>
+        <div class="pr-opp-actions">
+          <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();showScreen('menu',null,'Menu Optimization');showMenuSubpage('overview')">Open Menu Optimization</button>
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();showScreen('menu',null,'Menu Optimization');showMenuSubpage('evidence')">Open Evidence</button>
+        </div>
+      </div>
+
+      <!-- ── Opportunity 2: Menu ──────────────────────────── -->
+      <div class="pr-opp-card" onclick="openEvDrawer('leak2')">
+        <div class="pr-opp-rank">2</div>
+        <div class="pr-opp-main">
+          <div class="pr-opp-cat-row">
+            <span class="pr-cat-badge pr-cat-menu">Menu</span>
+            <span class="pr-opp-loc">All Locations · Dinner menu</span>
+          </div>
+          <div class="pr-opp-title">Salmon margin recovery</div>
+          <div class="pr-opp-action">Approve salmon reprice $24 → $27</div>
+          <div class="pr-opp-caveat">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            Recipe cost stale 18d · margin verification blocked
+          </div>
+        </div>
+        <div class="pr-opp-metrics">
+          <div class="pr-opp-value">
+            <div class="pr-opp-value-main">$519<span class="pr-opp-value-period">/wk</span></div>
+            <div class="pr-opp-roi-note">EST · not counted yet</div>
+          </div>
+          <div class="pr-opp-conf-col">
+            <div class="pr-opp-conf pr-conf-amber" id="dq-lc2-conf-val">64%</div>
+            <div class="pr-opp-pattern">12 comparable weeks</div>
+          </div>
+          <div class="pr-opp-score" title="Priority score">74<span class="pr-opp-score-denom">/100</span></div>
+        </div>
+        <div class="pr-opp-actions">
+          <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openCA('leak2')">Assign Recovery Action</button>
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openEvDrawer('leak2')">Show the Math</button>
+        </div>
+      </div>
+
+      <!-- ── Opportunity 3: Throughput ────────────────────── -->
+      <div class="pr-opp-card" onclick="openEvDrawer('leak3')">
+        <div class="pr-opp-rank">3</div>
+        <div class="pr-opp-main">
+          <div class="pr-opp-cat-row">
+            <span class="pr-cat-badge pr-cat-throughput">Throughput</span>
+            <span class="pr-opp-loc">Berkeley · Friday Lunch</span>
+          </div>
+          <div class="pr-opp-title">Friday lunch ticket-time recovery <span style="font-weight:400;color:var(--t3);font-size:11px;margin-left:6px">· Kitchen Speed</span></div>
+          <div class="pr-opp-action">Schedule 15-min kitchen line observation before Friday service</div>
+          <div class="pr-opp-caveat">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            KDS partial · observation required before automation possible
+          </div>
+        </div>
+        <div class="pr-opp-metrics">
+          <div class="pr-opp-value">
+            <div class="pr-opp-value-main pr-val-blue">$354<span class="pr-opp-value-period">/wk</span></div>
+            <div class="pr-opp-roi-note">EST · not counted yet</div>
+          </div>
+          <div class="pr-opp-conf-col">
+            <div class="pr-opp-conf pr-conf-gray" id="dq-lc3-conf-val">64%</div>
+            <div class="pr-opp-pattern">5 of 8 services</div>
+          </div>
+          <div class="pr-opp-score" title="Priority score">69<span class="pr-opp-score-denom">/100</span></div>
+        </div>
+        <div class="pr-opp-actions">
+          <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openCA('leak3')">Assign Recovery Action</button>
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openEvDrawer('leak3')">Show the Math</button>
+        </div>
+      </div>
+
+      <!-- ── Opportunity 4: Throughput / Table Turns (Oakland Friday Dinner) ──────────── -->
+      <div class="pr-opp-card" onclick="showScreen('table-turns',null,'Table Turns')">
+        <div class="pr-opp-rank">4</div>
+        <div class="pr-opp-main">
+          <div class="pr-opp-cat-row">
+            <span class="pr-cat-badge pr-cat-throughput">Throughput</span>
+            <span class="pr-opp-loc">Oakland · Friday Dinner</span>
+          </div>
+          <div class="pr-opp-title">Friday dinner table-turn opportunity <span style="font-weight:400;color:var(--t3);font-size:11px;margin-left:6px">· Table Turns</span></div>
+          <div class="pr-opp-action">Dining duration is +11 min above baseline; payment closeout is the largest stage delay.</div>
+          <div class="pr-opp-caveat">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            Throughput exposure · estimated · not verified until monitoring closes
+          </div>
+        </div>
+        <div class="pr-opp-metrics">
+          <div class="pr-opp-value">
+            <div class="pr-opp-value-main pr-val-blue">~$680<span class="pr-opp-value-period">/wk</span></div>
+            <div class="pr-opp-roi-note">EST · not guaranteed</div>
+          </div>
+          <div class="pr-opp-conf-col">
+            <div class="pr-opp-conf pr-conf-gray">Med</div>
+            <div class="pr-opp-pattern">3 of 4 services</div>
+          </div>
+          <div class="pr-opp-score" title="Priority score">74<span class="pr-opp-score-denom">/100</span></div>
+        </div>
+        <div class="pr-opp-actions">
+          <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();showScreen('table-turns',null,'Table Turns')">Open Table Turns</button>
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();showScreen('table-turns',null,'Table Turns');setTimeout(function(){if(typeof ttOpenEvidence==='function')ttOpenEvidence()},120)">Show the Math</button>
+        </div>
+      </div>
+
+      <!-- View all / empty state -->
+      <div class="pr-list-footer">
+        <span class="pr-list-footer-note">4 active opportunities · ranked by value, severity, pattern, confidence, and action readiness</span>
+        <button class="btn btn-ghost btn-sm" onclick="showDemoToast('All opportunities visible — 4 active across 4 categories','blue')">View all →</button>
+      </div>
+
+    </div><!-- /pr-ranked-list -->
+
+    <!-- ══ DEEP TABS (hidden behind label) ═══════════════════ -->
+    <!-- These tabs are preserved for Evidence, Guardrails,
+         Verification, and History depth — accessible via
+         "Show the Math" and evidence drawer links, not primary nav -->
+    <div class="pr-deep-section">
+      <div class="pr-deep-label">Deep analysis</div>
+      <div class="skc-tab-bar" style="margin-bottom:0">
+        <div class="skc-tabs" data-tabs="recovery">
+          <button class="skc-tab active" data-key="overview"     onclick="switchTab('recovery','overview')" style="display:none">All</button>
+          <button class="skc-tab"        data-key="evidence"     onclick="switchTab('recovery','evidence')">Evidence &amp; Charts</button>
+          <button class="skc-tab"        data-key="guardrails"   onclick="switchTab('recovery','guardrails')">Guardrails</button>
+          <button class="skc-tab"        data-key="verification" onclick="switchTab('recovery','verification')">Verification</button>
+          <button class="skc-tab"        data-key="history"      onclick="switchTab('recovery','history')">History</button>
+          <button class="skc-tab"        data-key="labor"        onclick="switchTab('recovery','labor')" style="display:none">Labor</button>
+          <button class="skc-tab"        data-key="menu"         onclick="switchTab('recovery','menu')" style="display:none">Menu</button>
+          <button class="skc-tab"        data-key="kitchen"      onclick="switchTab('recovery','kitchen')" style="display:none">Kitchen</button>
+        </div>
+      </div>
+
+      <!-- ══ Panels: preserved from previous version ════════ -->
+      <div class="skc-panel active" data-tab="recovery-overview" style="display:none"></div>
+
+      <!-- ══ TAB: EVIDENCE & CHARTS ═══════════════════════ -->
+      <div class="skc-panel" data-tab="recovery-evidence">
+        <div class="pr-evidence-header">
+          <div style="font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:4px">Evidence &amp; Charts — Oakland Labor Recovery</div>
+          <div style="font-size:12px;color:var(--t2);line-height:1.6">Six weeks of RPLH data showing the structural drift, scheduled vs. needed hours, and counter-metric guardrail status.</div>
+          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+            <span class="src-tag live"><span class="src-dot green"></span>Toast POS · 4m · DET</span>
+            <span class="src-tag"><span class="src-dot amber"></span>7shifts · stale 18h · reduces confidence 85%→78%</span>
+            <span class="da-badge estimated">EST · 78%</span>
+            <button class="btn btn-ghost btn-sm" style="font-size:11px" onclick="showScreen('settings',null,'Data Quality')">Fix data sources →</button>
+          </div>
+        </div>
+        <div class="vep-wrap mb-16">
+          <div class="vep-body" id="vepBody" style="display:flex;flex-direction:column;gap:20px">
+            <div>
+              <div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);margin-bottom:10px">Priority &amp; Confidence</div>
+              <div class="vep-row-2">
+                <div class="vep-chart-wrap">
+                  <div class="vep-chart-hd"><div class="vep-chart-title">Weekly Exposure by Recovery Priority</div><span class="badge gray">DET</span></div>
+                  <div class="vep-chart-sub">All three opportunities ranked by weekly exposure · not ROI until monitoring confirms</div>
+                  <div id="vepBarChart"><div style="height:120px;display:flex;align-items:center;justify-content:center;color:var(--t3)">Chart renders on tab activation</div></div>
+                  <div class="vep-chart-footer"><span class="src-tag">SKC model · 4m</span><span class="da-badge estimated">EST · 78%</span></div>
+                  <div style="font-size:11.5px;color:var(--t3);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">Labor $370/wk · Menu $519/wk · Throughput $354/wk · all Estimated Open Exposure</div>
+                </div>
+                <div class="vep-chart-wrap">
+                  <div class="vep-chart-hd"><div class="vep-chart-title">Confidence vs Weekly Value Matrix</div><span class="badge gray">EST</span></div>
+                  <div class="vep-chart-sub">Higher confidence + higher value = act first · bubble size = weekly exposure</div>
+                  <svg id="vepMatrix" viewBox="0 0 280 160" width="100%" style="overflow:visible"></svg>
+                  <div class="vep-chart-footer"><span class="src-tag">Labor 78% · Menu 64% · Throughput 64%</span></div>
+                  <div style="font-size:11.5px;color:var(--t3);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">Confidence × weekly value = recommended action sequence</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);margin-bottom:10px">Labor Recovery — RPLH Trend</div>
+              <div class="vep-row-2">
+                <div class="vep-chart-wrap">
+                  <div class="vep-chart-hd"><div class="vep-chart-title">RPLH Trend — Tue Dinner · 8 Weeks</div><span class="badge gray">DET</span></div>
+                  <div class="vep-chart-sub">Revenue per Labor Hour vs 8-week baseline · Oakland · 6 consecutive weeks below normal range</div>
+                  <svg id="vepLine" viewBox="0 0 300 100" width="100%" style="overflow:visible"></svg>
+                  <div class="vep-chart-footer"><span class="src-tag live"><span class="src-dot green"></span>Toast POS · 4m</span><span class="src-tag"><span class="src-dot amber"></span>7shifts · stale 18h</span></div>
+                  <div style="font-size:11.5px;color:var(--t3);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">Normal range: $35.80–$40.60/hr · Current: $31.40/hr · 6 of 8 services below</div>
+                </div>
+                <div class="vep-chart-wrap">
+                  <div class="vep-chart-hd"><div class="vep-chart-title">Scheduled vs Needed — Tue Dinner by Hour</div><span class="badge gray">EST</span></div>
+                  <div class="vep-chart-sub">Red = excess hours · Green = demand-justified · 6 hrs excess across the full shift window</div>
+                  <svg id="vepBaseline" viewBox="0 0 300 100" width="100%" style="overflow:visible"></svg>
+                  <div class="vep-chart-footer"><span class="src-tag"><span class="src-dot amber"></span>7shifts · stale 18h · directional only</span></div>
+                  <div style="font-size:11.5px;color:var(--t3);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">5 excess server hours net (6 scheduled, 5 net after manager buffer) × $37 fully loaded = $185/service</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);margin-bottom:10px">Guardrails</div>
+              <div class="vep-chart-wrap">
+                <div class="vep-chart-hd"><div class="vep-chart-title">Counter-Metric Guardrail Status · Labor Recovery</div><span class="badge gray">LIVE</span></div>
+                <div class="vep-chart-sub">3 of 4 guardrails passing · Table Turn Time at Watch (4 min from threshold) · SKC will not count this as Verified Savings until all pass</div>
+                <div id="vepGuardrails" class="vep-guardrail-grid"></div>
+                <div class="vep-chart-footer"><span class="src-tag live"><span class="src-dot green"></span>Toast POS + KDS + Reviews · 4m</span></div>
+                <div style="font-size:11.5px;color:var(--t3);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">All 4 must pass for verification. One watch-state guardrail blocks counting.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:14px 0;border-top:1px solid var(--border);flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="openCA('leak1')">Assign Highest-Value Action</button>
+          <button class="btn btn-secondary" onclick="switchTab('recovery','guardrails')">View guardrails</button>
+          <button class="btn btn-ghost btn-sm" onclick="switchTab('recovery','verification')">Verification rules</button>
+          <button class="ask-why-btn" onclick="askPanelQ('How confident is SKC in the RPLH calculation?')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Ask SKC</button>
+        </div>
+      </div><!-- /evidence -->
+
+      <!-- ══ TAB: GUARDRAILS ════════════════════════════════ -->
+      <div class="skc-panel" data-tab="recovery-guardrails">
+        <div class="section-hd mb-16"><span class="section-title">Counter-Metric Guardrails · Labor Recovery</span></div>
+        <div class="verify-box mb-16"><div class="verify-text"><strong>What we're improving:</strong> RPLH at Oakland Tuesday dinner.<br><strong>What must not degrade:</strong> Dining duration, ticket time, average check, and guest complaints.</div></div>
+        <div class="card mb-16" style="padding:0;overflow:hidden">
+          <div class="cg-primary" style="padding:12px 20px"><span class="cg-primary-label">Improving</span><span class="cg-primary-metric">RPLH</span><span class="cg-primary-range">↑ from $31.40 toward $36.50+/hr</span></div>
+          <table class="cg-table" id="demo-target-guardrails">
+            <thead><tr><th>Counter-Metric</th><th>Why watched</th><th>Current</th><th>Threshold</th><th>Status</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td class="cg-metric-name">Kitchen ticket time</td><td>Fewer servers may slow table turns</td><td class="cg-cur" data-skc="ticket-time">14.2 min</td><td class="cg-thr">≤ 16.0 min</td><td><span class="cg-status pass">Passing</span></td><td class="cg-note">2 min headroom</td></tr>
+              <tr><td class="cg-metric-name">Average check value</td><td>Service gap could reduce upsells</td><td class="cg-cur" data-skc="avg-check">$53.10</td><td class="cg-thr">≥ $50.00</td><td><span class="cg-status pass">Passing</span></td><td class="cg-note">$3.10 margin</td></tr>
+              <tr><td class="cg-metric-name">Table turn time</td><td>One fewer server could slow clearing</td><td class="cg-cur" data-skc="table-turns">48 min</td><td class="cg-thr">≤ 52 min</td><td><span class="cg-status watch">Watch</span></td><td class="cg-note">4 min margin — monitor closely</td></tr>
+              <tr><td class="cg-metric-name">Guest complaints</td><td>Service quality drop shows in reviews</td><td class="cg-cur">0 / wk</td><td class="cg-thr">≤ 2 / wk</td><td><span class="cg-status pass">Passing</span></td><td class="cg-note"></td></tr>
+            </tbody>
+          </table>
+          <div class="cg-verify-row" style="padding:12px 20px"><span class="cg-verify-icon">🔒</span><div class="cg-verify-text">All 4 guardrails must pass for 2 consecutive Tuesday dinners before this counts as Verified Savings.</div></div>
+        </div>
+        <div class="cg-verdict monitoring" id="verdict-1">
+          <div class="cg-verdict-left"><span class="cg-verdict-icon" id="verdict-icon-1">⏳</span><div><div class="cg-verdict-title" id="verdict-title-1">Active Recovery · not counted yet</div><div class="cg-verdict-body" id="verdict-body-1">Table Turn Time at Watch. Monitoring window has not started. Action must be implemented first.</div></div></div>
+          <span class="cg-roi-tag pending" id="verdict-roi-1">ROI: Pending</span>
+        </div>
+      </div><!-- /guardrails -->
+
+      <!-- ══ TAB: VERIFICATION ══════════════════════════════ -->
+      <div class="skc-panel" data-tab="recovery-verification">
+        <div id="vePageBanner" class="ve-page-banner ve-page-banner-amber" style="margin-bottom:16px">
+          <span class="ve-banner-icon">◉</span>
+          <span class="ve-banner-text">Monitoring required — Table Turn Time is at Watch. Verified win pending.</span>
+          <span class="ve-banner-rule">Watch state requires monitoring window</span>
+        </div>
+        <div class="section-hd mb-12"><span class="section-title">Verification Rules</span></div>
+        <div class="verify-box mb-16"><div class="verify-text"><strong>Target:</strong> RPLH ≥ $36.50 for 2 consecutive Tuesday dinners with all 4 counter-metric guardrails passing.<br><strong>Attribution:</strong> At least 5 server hours removed from Tuesday dinner shift. No manager override. No catering event in window.</div></div>
+        <div class="section-hd mb-12"><span class="section-title">Blocked Value Logic</span></div>
+        <div class="card mb-16" style="padding:16px 20px">
+          <div class="ac-meta">
+            <div class="ac-row"><span class="ac-row-l">Status</span><span id="recoveryVerifStatus"><span class="badge amber">Verification limited</span></span></div>
+            <div class="ac-row"><span class="ac-row-l">Condition</span><span style="font-size:12px;color:var(--t2)">Table Turn Time at Watch (48 min · threshold 52 min). Must hold through monitoring window.</span></div>
+            <div class="ac-row"><span class="ac-row-l">Blocked value</span><span class="mono" style="color:var(--red)">$0 counted until verified</span></div>
+            <div class="ac-row"><span class="ac-row-l">Path to verified</span><span style="font-size:12px;color:var(--t2)">Implement action → monitor 2 Tue dinners → all guardrails pass → counts as Verified Savings.</span></div>
+          </div>
+        </div>
+        <div class="section-hd mb-12"><span class="section-title">Verification Simulator</span></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;padding:12px 16px;background:var(--hover);border:1px solid var(--border);border-radius:var(--r-lg)">
+          <button class="btn btn-secondary btn-sm" onclick="simPass()">✓ Simulate All Passing</button>
+          <button class="btn btn-ghost btn-sm" style="border-color:var(--red-b);color:var(--red)" onclick="simDegrade()">⚠ Simulate Guardrail Degrade</button>
+          <button class="btn btn-ghost btn-sm" onclick="simReset()">↺ Reset to Live State</button>
+        </div>
+      </div><!-- /verification -->
+
+      <!-- ══ TAB: HISTORY ════════════════════════════════════ -->
+      <div class="skc-panel" data-tab="recovery-history">
+        <div class="section-hd mb-12"><span class="section-title">Recovery Pipeline</span></div>
+        <div class="vep-chart-wrap mb-16">
+          <div class="vep-chart-hd"><div class="vep-chart-title">Recovery Status Funnel</div><span class="badge gray">Pipeline</span></div>
+          <div class="vep-funnel-wrap"><svg id="vepFunnelHistory" viewBox="0 0 340 200" width="100%" style="overflow:visible"></svg></div>
+          <div class="vep-chart-footer"><span class="src-tag">SKC pipeline · 4m</span></div>
+        </div>
+        <div class="section-hd mb-12"><span class="section-title">All Opportunities</span></div>
+        <div class="card mb-16" style="padding:0;overflow:hidden">
+          <table class="sc-table" style="width:100%">
+            <thead><tr><th>Opportunity</th><th>Category</th><th>Location</th><th>Status</th><th>Weekly exposure</th><th>Verified</th><th></th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--t1);font-weight:500">Menu cleanup · Risotto removed</td><td><span class="badge gray">Menu</span></td><td>All locations</td><td><span class="badge green">Verified ✓</span></td><td class="mono">$97/wk equiv.</td><td class="mono" style="color:var(--green)" data-skc="verified-savings-mo">$420/mo</td><td><button class="btn btn-ghost btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">ROI Proof</button></td></tr>
+              <tr><td style="color:var(--t1);font-weight:500">Bar staffing reduction</td><td><span class="badge gray">Labor</span></td><td>Walnut Creek</td><td><span class="badge blue">Monitoring Wk 3/4</span></td><td class="mono">$189/wk</td><td class="mono" style="color:var(--t3)">Pending</td><td><button class="btn btn-ghost btn-sm" onclick="showScreen('actions',null,'Actions')">Actions</button></td></tr>
+              <tr><td style="color:var(--t1);font-weight:500" data-tr="title">Oakland Tue dinner staffing</td><td><span class="badge gray">Labor</span></td><td>Oakland</td><td><span class="badge amber">Assigned · Due 3 PM</span></td><td class="mono">$370/wk</td><td class="mono" style="color:var(--t3)">Not started</td><td><button class="btn btn-ghost btn-sm" onclick="showScreen('actions',null,'Actions')">Actions</button></td></tr>
+              <tr><td style="color:var(--t1);font-weight:500">Salmon reprice $24→$27</td><td><span class="badge gray">Menu</span></td><td>All locations</td><td><span class="badge red">Blocked · Approval</span></td><td class="mono">$519/wk</td><td class="mono" style="color:var(--t3)">Blocked</td><td><button class="btn btn-ghost btn-sm" onclick="showScreen('actions',null,'Actions')">Actions</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="renewal-box"><div class="renewal-text">SKC has <strong>confirmed <span data-skc="verified-savings">$420/mo</span> run-rate equivalent</strong> in verified operational savings since install. <span style="color:var(--t3)">Full margin confirmation unavailable — accounting not connected.</span></div><button class="btn btn-secondary btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">View ROI Proof →</button></div>
+      </div><!-- /history -->
+
+      <!-- Hidden tabs — preserved for internal routing -->
+      <div class="skc-panel" data-tab="recovery-labor" style="display:none"></div>
+      <div class="skc-panel" data-tab="recovery-menu" style="display:none"></div>
+      <div class="skc-panel" data-tab="recovery-kitchen" style="display:none"></div>
+
+    </div><!-- /pr-deep-section -->
+
+  </div><!-- /screen-leaks -->
