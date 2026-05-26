@@ -1,0 +1,42 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Node (in case any tooling gets added later)
+node_modules/
+.npm
+.yarn/
+.pnp.*
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Local server / build artifacts
+.cache/
+dist/
+build/
+*.pid
+
+# Python (in case `python3 -m http.server` leaves anything)
+__pycache__/
+*.py[cod]
+
+# Claude Code local settings (keep shared config, ignore local overrides)
+.claude/settings.local.json
