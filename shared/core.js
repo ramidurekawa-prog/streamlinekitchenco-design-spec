@@ -9672,9 +9672,26 @@ function populateHeatmap() {
     LE_HEATMAP_DATA[day].forEach((score, hourIdx) => {
       const cell = document.createElement('div');
       cell.className = 'le-heatmap-cell ' + leClassForScore(score);
-      cell.textContent = score === null ? '—' : score;
+
+      // Compute RPLH for the cell: prefer measured rev/hrs, else baseline × score/100
+      let rplh = null;
+      if (score !== null) {
+        const cd = LE_CELL_DATA[day + ':' + hourIdx];
+        if (cd && cd.rev !== null && cd.hrs && cd.hrs > 0) {
+          rplh = cd.rev / cd.hrs;
+        } else {
+          const base = (cd && cd.base) || LE_BASELINES[LE_HOURS[hourIdx]];
+          if (base) rplh = base * score / 100;
+        }
+      }
+
+      cell.innerHTML = score === null
+        ? '<span class="le-hc-score">—</span>'
+        : '<span class="le-hc-score">' + score + '</span>'
+          + (rplh ? '<span class="le-hc-rplh">$' + rplh.toFixed(0) + '</span>' : '');
+
       cell.title = day + ' · ' + LE_HOUR_LABELS[hourIdx] + ' · '
-        + (score === null ? 'N/A (no revenue)' : 'Score ' + score);
+        + (score === null ? 'N/A (no revenue)' : 'Score ' + score + (rplh ? ' · $' + rplh.toFixed(2) + '/hr' : ''));
       cell.setAttribute('data-day', day);
       cell.setAttribute('data-hour', LE_HOURS[hourIdx]);
       cell.setAttribute('data-score', score === null ? '' : score);
@@ -9687,6 +9704,26 @@ function populateHeatmap() {
   grid.dataset.populated = '1';
 }
 
+function leCloseHeatmapDetail() {
+  const panel = document.getElementById('le-heatmap-detail');
+  if (panel) {
+    panel.classList.remove('le-heatmap-detail-open');
+    panel.style.display = 'none';
+  }
+  document.querySelectorAll('.le-heatmap-cell-selected')
+    .forEach(el => el.classList.remove('le-heatmap-cell-selected'));
+}
+
+// 6-week recurring-pattern fixture data, keyed by Day:hourIdx.
+// Currently populated for Tue lunch hours — the canonical recurring shift.
+// Values are weekly productivity scores ending in the current week.
+const LE_RECURRING_PATTERNS = {
+  'Tue:1': [85, 79, 84, 81, 78, 78], // 11 AM
+  'Tue:2': [88, 79, 86, 82, 81, 78], // 12 PM
+  'Tue:3': [89, 85, 88, 86, 84, 87], // 1 PM (less consistent pattern)
+  'Tue:4': [82, 78, 80, 79, 77, 76], // 2 PM (most severe)
+};
+
 function leShowHeatmapDetail(day, hourIdx, score) {
   const panel = document.getElementById('le-heatmap-detail');
   const titleEl = document.getElementById('le-hmd-title');
@@ -9698,20 +9735,58 @@ function leShowHeatmapDetail(day, hourIdx, score) {
   const cellKey = day + ':' + hourIdx;
   const cell = LE_CELL_DATA[cellKey] || null;
 
+  // Selected-cell state: clear any prior, mark the clicked cell.
+  document.querySelectorAll('.le-heatmap-cell-selected')
+    .forEach(el => el.classList.remove('le-heatmap-cell-selected'));
+  const clickedCell = document.querySelector(
+    '.le-heatmap-cell[data-day="' + day + '"][data-hour="' + LE_HOURS[hourIdx] + '"]'
+  );
+  if (clickedCell) clickedCell.classList.add('le-heatmap-cell-selected');
+
   titleEl.textContent = day + ' · ' + hourLabel;
+
+  const cellId = 'le-cell-' + day.toLowerCase() + '-' + hourIdx;
+  const actionLabel = day + ' ' + hourLabel;
+
+  // Build a 6-week recurring-pattern sparkline if this cell has one on file.
+  const pattern = LE_RECURRING_PATTERNS[cellKey];
+  let sparklineHtml = '';
+  if (pattern) {
+    const belowCount = pattern.filter(s => s < 85).length;
+    let bars = '';
+    pattern.forEach((s, i) => {
+      const cls = s >= 85 ? 'le-hm-green' : s >= 70 ? 'le-hm-amber' : 'le-hm-red';
+      const isCurrent = i === pattern.length - 1;
+      const wkLabel = isCurrent ? 'This wk' : (pattern.length - i - 1) + ' wks ago';
+      bars +=
+        '<div class="le-hmd-spark-bar ' + cls + (isCurrent ? ' le-hmd-spark-current' : '') + '"' +
+        ' style="height:' + s + '%"' +
+        ' title="' + wkLabel + ' · ' + s + '"></div>';
+    });
+    sparklineHtml =
+      '<div class="le-hmd-sparkline-row">' +
+        '<span class="le-hmd-spark-label">6-week pattern · ' + day + ' ' + hourLabel + '</span>' +
+        '<div class="le-hmd-sparkline">' + bars + '</div>' +
+        '<span class="le-hmd-spark-cap">Below baseline ' + belowCount + ' of last 6 wks · this week highlighted</span>' +
+      '</div>';
+  }
 
   if (score === null || (cell && cell.rev === null)) {
     gridEl.innerHTML =
-      '<div class="le-hmd-row"><span class="le-hmd-key">Status</span><span class="le-hmd-val">N/A · no revenue or excluded</span></div>' +
-      '<div class="le-hmd-row"><span class="le-hmd-key">Why excluded</span><span class="le-hmd-val">Pre/post-close or zero-revenue hour. RPLH denominator excludes this window.</span></div>' +
-      '<div class="le-hmd-row"><span class="le-hmd-key">Labor cost</span><span class="le-hmd-val">Included in total shift cost only</span></div>' +
-      '<div class="le-hmd-row"><span class="le-hmd-key">RPLH</span><span class="le-hmd-val">N/A — never divide by zero</span></div>';
+      '<div class="le-hmd-status"><span class="le-hmd-status-pill le-hmd-status-na">N/A · Excluded</span></div>' +
+      '<div class="le-hmd-rec-hero le-hmd-rec-hero-neutral">' +
+        '<div class="le-hmd-rec-label">Why excluded</div>' +
+        '<div class="le-hmd-rec-text">Pre/post-close or zero-revenue hour. RPLH denominator excludes this window — labor cost is counted only in total shift cost.</div>' +
+      '</div>' +
+      '<div class="le-hmd-source">Source: Toast POS + Toast Labor + SKC baseline engine</div>' +
+      '<div class="le-hmd-ctas">' +
+        '<button class="btn btn-ghost btn-sm" onclick="openLaborEvidence(\'' + cellId + '\')">Show Evidence</button>' +
+      '</div>';
   } else {
     const rev = cell ? cell.rev : null;
     const hrs = cell ? cell.hrs : null;
     const base = cell ? cell.base : baseline;
     const currRplh = (rev !== null && hrs !== null && hrs > 0) ? (rev / hrs).toFixed(2) : (base ? (base * score / 100).toFixed(2) : '—');
-    const score_disp = score;
     const excessHrs = (hrs !== null && rev !== null && base)
       ? Math.max(0, hrs - rev / base).toFixed(1)
       : (score < 100 && hrs ? (hrs * (1 - score/100)).toFixed(1) : '0.0');
@@ -9719,24 +9794,43 @@ function leShowHeatmapDetail(day, hourIdx, score) {
     const rec = isTueLunch
       ? 'Remove or shift one FOH slot from 11 AM–2 PM'
       : (score < 70 ? 'Investigate root cause this hour' : score < 85 ? 'Monitor closely — under baseline' : 'No action required — within baseline');
-    const statusText = score >= 85 ? 'On baseline · healthy' : score >= 70 ? 'Below baseline · watch' : 'Below baseline · severe';
+    const statusText = score >= 85 ? 'On baseline · Healthy' : score >= 70 ? 'Below baseline · Watch' : 'Below baseline · Severe';
+    const statusClass = score >= 85 ? 'le-hmd-status-healthy' : score >= 70 ? 'le-hmd-status-watch' : 'le-hmd-status-severe';
 
     gridEl.innerHTML =
-      '<div class="le-hmd-row"><span class="le-hmd-key">Day</span><span class="le-hmd-val">' + day + '</span></div>' +
-      '<div class="le-hmd-row"><span class="le-hmd-key">Hour</span><span class="le-hmd-val">' + hourLabel + '</span></div>' +
-      '<div class="le-hmd-row"><span class="le-hmd-key">Revenue</span><span class="le-hmd-val">' + (rev !== null ? '$' + rev : '—') + '</span></div>' +
-      '<div class="le-hmd-row"><span class="le-hmd-key">Labor hours</span><span class="le-hmd-val">' + (hrs !== null ? hrs + ' hrs' : '—') + '</span></div>' +
-      '<div class="le-hmd-row"><span class="le-hmd-key">Current RPLH</span><span class="le-hmd-val">$' + currRplh + '/hr <span style="font-size:10px;color:var(--t3)">(DET)</span></span></div>' +
-      '<div class="le-hmd-row"><span class="le-hmd-key">Baseline RPLH</span><span class="le-hmd-val">$' + (base ? base.toFixed(2) : '—') + '/hr</span></div>' +
-      '<div class="le-hmd-row"><span class="le-hmd-key">Productivity score</span><span class="le-hmd-val">' + score_disp + ' <span style="font-size:10px;color:var(--t3)">(DET)</span></span></div>' +
-      '<div class="le-hmd-row"><span class="le-hmd-key">Excess hours</span><span class="le-hmd-val">' + excessHrs + ' hrs <span style="font-size:10px;color:var(--amber)">(EST)</span></span></div>' +
-      '<div class="le-hmd-row"><span class="le-hmd-key">Status</span><span class="le-hmd-val">' + statusText + '</span></div>' +
-      '<div class="le-hmd-row"><span class="le-hmd-key">Recommendation</span><span class="le-hmd-val">' + rec + '</span></div>' +
-      '<div class="le-hmd-row" style="font-size:10px;color:var(--t3);border:none;margin-top:4px"><span>Source: Toast POS + Toast Labor + SKC baseline engine</span></div>';
+      // Severity pill — first thing the reader sees
+      '<div class="le-hmd-status"><span class="le-hmd-status-pill ' + statusClass + '">' + statusText + '</span></div>' +
+      // Recommendation hero — answers "what do I do" without scrolling
+      '<div class="le-hmd-rec-hero">' +
+        '<div class="le-hmd-rec-label">Recommendation</div>' +
+        '<div class="le-hmd-rec-text">' + rec + '</div>' +
+      '</div>' +
+      // Dense 2-column data grid for the short numeric pairs
+      '<div class="le-hmd-compact">' +
+        '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Revenue</div><div class="le-hmd-cell-val">' + (rev !== null ? '$' + rev : '—') + '</div></div>' +
+        '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Labor hours</div><div class="le-hmd-cell-val">' + (hrs !== null ? hrs + ' hrs' : '—') + '</div></div>' +
+        '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Current RPLH</div><div class="le-hmd-cell-val">$' + currRplh + '/hr <span class="le-hmd-tag-det">DET</span></div></div>' +
+        '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Baseline</div><div class="le-hmd-cell-val">$' + (base ? base.toFixed(2) : '—') + '/hr</div></div>' +
+        '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Score</div><div class="le-hmd-cell-val">' + score + ' <span class="le-hmd-tag-det">DET</span></div></div>' +
+        '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Excess hrs</div><div class="le-hmd-cell-val">' + excessHrs + ' hrs <span class="le-hmd-tag-est">EST</span></div></div>' +
+      '</div>' +
+      sparklineHtml +
+      '<div class="le-hmd-source">Source: Toast POS + Toast Labor + SKC baseline engine</div>' +
+      '<div class="le-hmd-ctas">' +
+        (score < 85
+          ? '<button class="btn btn-primary btn-sm" onclick="leCreateAction(\'' + actionLabel.replace(/'/g, "\\'") + '\')">Create Action</button>'
+          : '') +
+        '<button class="btn btn-secondary btn-sm" onclick="openStaffingPlan(\'' + cellId + '\')">Review Staffing Plan</button>' +
+        '<button class="btn btn-ghost btn-sm" onclick="openLaborEvidence(\'' + cellId + '\')">Show Evidence</button>' +
+      '</div>';
   }
 
+  // Restart the slide-in animation each time a new cell is clicked.
+  panel.classList.remove('le-heatmap-detail-open');
   panel.style.display = 'block';
-  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  // Force reflow so the animation re-triggers.
+  void panel.offsetWidth;
+  panel.classList.add('le-heatmap-detail-open');
 }
 
 // Populate heatmap when Labor Efficiency screen activates

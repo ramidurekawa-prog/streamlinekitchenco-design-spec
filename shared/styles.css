@@ -6813,6 +6813,17 @@ body.skc-phase-paying .rp-pilot-card{display:none}
 .le-pr-link-val{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--t1);margin-bottom:3px}
 .le-pr-link-cta{font-size:11px;color:var(--blue);font-weight:600}
 
+/* ── Focal-shift eyebrow (scopes the summary strip) ───────── */
+.le-summary-focal{
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+  margin:0 0 8px;padding:6px 12px;
+  background:var(--amber-d);border:1px solid var(--amber-b);
+  border-radius:var(--r-md);
+}
+.le-focal-eyebrow{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--amber)}
+.le-focal-shift{font-size:13px;font-weight:700;color:var(--t1);font-family:var(--mono)}
+.le-focal-sev{font-size:11px;color:var(--t3);margin-left:auto}
+
 /* ── Summary strip ────────────────────────────────────────── */
 .le-summary-strip{
   display:grid;grid-template-columns:repeat(5, 1fr) auto;
@@ -6861,7 +6872,7 @@ body.skc-phase-paying .rp-pilot-card{display:none}
 .le-chart-title{font-size:12.5px;font-weight:700;color:var(--t1)}
 .le-chart-tag{font-size:9px;font-weight:700;color:var(--green);background:var(--green-d);border:1px solid var(--green-b);padding:1px 6px;border-radius:3px}
 .le-chart-sub{font-size:11px;color:var(--t3);margin-bottom:8px;line-height:1.4}
-.le-trend-svg{display:block;width:100%;height:90px;margin:6px 0}
+.le-trend-svg{display:block;width:100%;height:auto;max-height:220px;margin:8px 0}
 .le-chart-caption{font-size:10.5px;color:var(--t3);line-height:1.5;margin-top:6px;font-style:italic}
 .le-chart-src{font-size:10px;color:var(--t3);margin-top:4px;font-family:var(--mono)}
 
@@ -6906,13 +6917,47 @@ body.skc-phase-paying .rp-pilot-card{display:none}
   padding:6px 8px;display:flex;align-items:center;
 }
 .le-heatmap-cell{
-  height:30px;border-radius:3px;
+  height:38px;border-radius:3px;
   cursor:pointer;transition:opacity .15s, transform .15s;
   border:1px solid transparent;
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;font-family:var(--mono);font-weight:700;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  font-family:var(--mono);font-weight:700;line-height:1;
 }
+.le-hc-score{font-size:11px;font-weight:700}
+.le-hc-rplh{font-size:8.5px;font-weight:500;opacity:.72}
 .le-heatmap-cell:hover{opacity:.85;transform:scale(1.08);z-index:2;position:relative;border-color:var(--t1)}
+
+/* "Now" cursor — outlines the cell that represents the demo's current hour.
+   Adjust data-day / data-hour to move the cursor. */
+.le-heatmap-cell[data-day="Wed"][data-hour="11A"]{
+  outline:2px solid var(--blue);outline-offset:-2px;
+  position:relative;z-index:1;
+}
+
+/* Focal-shift outline — ties the "Focal shift this week" eyebrow to the
+   heatmap cells it actually describes (Oakland Tue Lunch · 11A–2P). */
+.le-heatmap-cell[data-day="Tue"][data-hour="11A"],
+.le-heatmap-cell[data-day="Tue"][data-hour="12P"],
+.le-heatmap-cell[data-day="Tue"][data-hour="1P"],
+.le-heatmap-cell[data-day="Tue"][data-hour="2P"]{
+  outline:1.5px dashed var(--amber);outline-offset:-2px;
+  position:relative;z-index:1;
+}
+.le-now-pill{
+  display:inline-block;margin-left:10px;
+  font-size:10px;font-weight:700;letter-spacing:.04em;
+  color:var(--blue);background:var(--blue-d);border:1px solid var(--blue-b);
+  padding:2px 8px;border-radius:10px;font-family:var(--mono);vertical-align:middle;
+}
+
+/* Recurring-pattern chip in the heatmap section header */
+.le-pattern-chip{
+  display:inline-flex;align-items:center;gap:6px;margin-top:6px;
+  font-size:11px;font-weight:600;color:var(--amber);
+  background:var(--amber-d);border:1px solid var(--amber-b);
+  padding:3px 10px;border-radius:10px;
+}
+.le-pattern-chip-dot{width:6px;height:6px;border-radius:50%;background:var(--amber)}
 .le-hm-green{background:rgba(16,185,129,.18);color:var(--green)}
 .le-hm-amber{background:rgba(245,158,11,.18);color:var(--amber)}
 .le-hm-red{background:rgba(239,68,68,.22);color:var(--red)}
@@ -6930,12 +6975,115 @@ body.skc-phase-paying .rp-pilot-card{display:none}
   background:var(--surface);border:1px solid var(--border);
   border-radius:var(--r-md);padding:14px 16px;
 }
+
+/* Right-rail layout — heatmap stays visible while the detail panel opens
+   beside it instead of pushing it out of view. */
+.le-heatmap-flex{display:flex;gap:14px;align-items:flex-start}
+.le-heatmap-main{flex:1;min-width:0}
+.le-heatmap-flex .le-heatmap-detail{
+  width:320px;flex-shrink:0;margin-top:0;
+  position:sticky;top:12px;max-height:78vh;overflow-y:auto;
+}
+@media (max-width: 1000px){
+  .le-heatmap-flex{flex-direction:column}
+  .le-heatmap-flex .le-heatmap-detail{
+    width:100%;position:static;max-height:none;margin-top:12px;
+  }
+}
 .le-hmd-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .le-hmd-title{font-size:13px;font-weight:700;color:var(--t1)}
-.le-hmd-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}
-.le-hmd-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;border-bottom:1px solid var(--border)}
-.le-hmd-key{color:var(--t3)}
-.le-hmd-val{font-family:var(--mono);color:var(--t2);font-weight:600}
+.le-hmd-grid{display:flex;flex-direction:column;gap:10px}
+
+/* Status pill — sits at the top of the panel so severity is the first read. */
+.le-hmd-status{display:flex;align-items:center}
+.le-hmd-status-pill{
+  font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  padding:3px 10px;border-radius:10px;font-family:var(--mono);
+}
+.le-hmd-status-healthy{color:var(--green);background:var(--green-d);border:1px solid var(--green-b)}
+.le-hmd-status-watch{color:var(--amber);background:var(--amber-d);border:1px solid var(--amber-b)}
+.le-hmd-status-severe{color:var(--red);background:var(--red-d);border:1px solid var(--red-b)}
+.le-hmd-status-na{color:var(--t3);background:var(--surface);border:1px solid var(--border)}
+
+/* Recommendation hero — visible immediately without scrolling. */
+.le-hmd-rec-hero{
+  background:var(--blue-d);border:1px solid var(--blue-b);
+  border-radius:var(--r-md);padding:10px 12px;
+}
+.le-hmd-rec-hero-neutral{background:var(--surface);border-color:var(--border)}
+.le-hmd-rec-label{
+  font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--blue);margin-bottom:4px;
+}
+.le-hmd-rec-hero-neutral .le-hmd-rec-label{color:var(--t3)}
+.le-hmd-rec-text{
+  font-size:13px;font-weight:600;color:var(--t1);line-height:1.4;
+}
+
+/* Compact 2-column grid for short numeric pairs. */
+.le-hmd-compact{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px}
+.le-hmd-cell{display:flex;flex-direction:column;gap:2px;min-width:0}
+.le-hmd-cell-key{
+  font-size:9.5px;font-weight:600;color:var(--t3);
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.le-hmd-cell-val{
+  font-size:12px;font-family:var(--mono);font-weight:600;color:var(--t1);
+  display:flex;align-items:center;gap:5px;flex-wrap:wrap;
+}
+.le-hmd-tag-det,.le-hmd-tag-est{
+  font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;
+  font-family:var(--mono);
+}
+.le-hmd-tag-det{color:var(--green);background:var(--green-d);border:1px solid var(--green-b)}
+.le-hmd-tag-est{color:var(--amber);background:var(--amber-d);border:1px solid var(--amber-b)}
+
+/* Source line — small mono, separated from the data. */
+.le-hmd-source{
+  font-size:10px;color:var(--t3);font-family:var(--mono);
+  padding-top:8px;border-top:1px solid var(--border);
+}
+.le-hmd-ctas{display:flex;gap:8px;flex-wrap:wrap}
+
+/* Selected-cell ring — ties the open detail panel back to its source cell.
+   Uses box-shadow (not outline) so it co-exists with the Now/Focal outlines. */
+.le-heatmap-cell-selected{
+  box-shadow:0 0 0 2.5px var(--t1);
+  z-index:3;position:relative;
+}
+
+/* Slide-in animation when a cell is clicked. */
+@keyframes le-hmd-slide-in {
+  from { opacity:0; transform:translateX(14px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+.le-heatmap-detail-open{animation:le-hmd-slide-in .22s ease-out}
+
+/* 6-week recurring-pattern sparkline inside the detail panel. */
+.le-hmd-sparkline-row{
+  display:flex;flex-direction:column;gap:4px;
+}
+.le-hmd-spark-label{font-size:11px;font-weight:600;color:var(--t2)}
+.le-hmd-sparkline{
+  display:flex;align-items:flex-end;gap:3px;
+  height:52px;padding:2px 0;
+}
+.le-hmd-spark-bar{
+  flex:1;min-width:0;border-radius:2px 2px 0 0;
+  opacity:.85;transition:opacity .15s, transform .15s;
+}
+/* Override the translucent heatmap-cell palette with solid colors —
+   small bars need the full saturation to read at a glance. */
+.le-hmd-spark-bar.le-hm-green{background:var(--green)}
+.le-hmd-spark-bar.le-hm-amber{background:var(--amber)}
+.le-hmd-spark-bar.le-hm-red{background:var(--red)}
+.le-hmd-spark-bar.le-hm-gray{background:var(--t3);opacity:.4}
+.le-hmd-spark-bar:hover{opacity:1;transform:translateY(-1px)}
+.le-hmd-spark-current{
+  opacity:1;
+  box-shadow:inset 0 0 0 1.5px var(--t1),0 1px 4px rgba(0,0,0,.18);
+}
+.le-hmd-spark-cap{font-size:10px;color:var(--t3);font-style:italic}
 
 /* ── Shift list ───────────────────────────────────────────── */
 .le-shift-section{margin-bottom:16px}
@@ -8487,10 +8635,68 @@ body.skc-role-owner .skc-aud-gm{opacity:.45}
 #screen-labor-efficiency .le-ov-hero-cta{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
 #screen-labor-efficiency .le-ov-mini-heat{display:grid;grid-template-columns:36px repeat(7,1fr);gap:2px;font-size:9.5px;color:var(--t3)}
 #screen-labor-efficiency .le-ov-mini-cell{background:var(--card);border:1px solid var(--border);height:14px;border-radius:2px}
-#screen-labor-efficiency .le-ov-mini-cell.h1{background:#3a3a3f;border-color:#3a3a3f}
-#screen-labor-efficiency .le-ov-mini-cell.h2{background:var(--amber);opacity:.45;border-color:var(--amber-b)}
-#screen-labor-efficiency .le-ov-mini-cell.h3{background:var(--amber);opacity:.85;border-color:var(--amber)}
-#screen-labor-efficiency .le-ov-mini-cell.h4{background:var(--red);opacity:.85;border-color:var(--red)}
+/* Mini-heatmap palette unified with the real heatmap (le-hm-*) so operators
+   learn one color language for the whole screen. Four intensity levels for
+   compactness (real heatmap has three + N/A). */
+#screen-labor-efficiency .le-ov-mini-cell.h1{background:rgba(16,185,129,.18);border-color:rgba(16,185,129,.28)}   /* healthy → green */
+#screen-labor-efficiency .le-ov-mini-cell.h2{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.22)}   /* mild watch → light amber */
+#screen-labor-efficiency .le-ov-mini-cell.h3{background:rgba(245,158,11,.32);border-color:rgba(245,158,11,.45)}   /* watch → amber */
+#screen-labor-efficiency .le-ov-mini-cell.h4{background:rgba(239,68,68,.38);border-color:rgba(239,68,68,.55)}     /* severe → red */
+
+/* ── Overview · hero secondary-pattern callout ─────────────── */
+#screen-labor-efficiency .le-ov-hero-secondary{
+  display:flex;flex-direction:column;gap:2px;
+  margin-top:10px;padding:8px 10px;
+  background:var(--surface);border:1px dashed var(--border);
+  border-radius:var(--r-md);
+}
+#screen-labor-efficiency .le-ov-hero-sec-eyebrow{
+  font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--t3);
+}
+#screen-labor-efficiency .le-ov-hero-sec-text{
+  font-size:11.5px;color:var(--t2);line-height:1.5;
+}
+
+/* ── Overview · "Biggest opportunity" action item ──────────── */
+#screen-labor-efficiency .le-ov-action-item.le-ov-action-item-biggest{
+  border-left:3px solid var(--amber);
+  background:var(--amber-d);
+}
+#screen-labor-efficiency .le-ov-action-biggest-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--amber);margin-bottom:4px;
+}
+#screen-labor-efficiency .le-ov-biggest-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--amber);
+  box-shadow:0 0 0 3px rgba(245,158,11,.18);
+}
+
+/* ── Overview · clickable strip cell (e.g. Confidence → DQ) ── */
+#screen-labor-efficiency .le-sp-strip-cell-clickable{cursor:pointer;transition:background .12s,border-color .12s}
+#screen-labor-efficiency .le-sp-strip-cell-clickable:hover{background:var(--hover);border-color:var(--border-s)}
+#screen-labor-efficiency .le-sp-strip-cell-clickable:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* ── Overview · Active monitoring status rows ──────────────── */
+#screen-labor-efficiency .le-ov-mon-list{
+  display:flex;flex-direction:column;gap:4px;
+  margin:8px 0 4px;
+}
+#screen-labor-efficiency .le-ov-mon-row{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;line-height:1.4;
+}
+#screen-labor-efficiency .le-ov-mon-dot{
+  width:7px;height:7px;border-radius:50%;flex-shrink:0;
+}
+#screen-labor-efficiency .le-mon-active{background:var(--green);box-shadow:0 0 0 2px rgba(16,185,129,.18)}
+#screen-labor-efficiency .le-mon-blocked{background:var(--red);box-shadow:0 0 0 2px rgba(239,68,68,.18)}
+#screen-labor-efficiency .le-ov-mon-loc{color:var(--t1);font-weight:600;flex:1;min-width:0}
+#screen-labor-efficiency .le-ov-mon-meta{color:var(--t3);font-family:var(--mono);font-size:10px}
+
+/* ── Overview · strip-value period suffix (e.g. "/wk") ─────── */
+#screen-labor-efficiency .le-sp-strip-period{font-size:11px;color:var(--t3);font-weight:500;margin-left:2px}
 #screen-labor-efficiency .le-ov-mini-label{font-size:9px;color:var(--t3);font-weight:600;align-self:center;text-align:right;padding-right:4px}
 #screen-labor-efficiency .le-ov-mini-foot{font-size:10px;color:var(--t3);margin-top:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
 #screen-labor-efficiency .le-ov-action-list{display:flex;flex-direction:column;gap:8px}
@@ -8520,6 +8726,177 @@ body.skc-role-owner .skc-aud-gm{opacity:.45}
 #screen-labor-efficiency .le-sf-side-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px dashed var(--border);font-size:11px;color:var(--t2)}
 #screen-labor-efficiency .le-sf-side-row:last-child{border-bottom:none}
 #screen-labor-efficiency .le-sf-side-row strong{color:var(--t1);font-weight:600;font-family:var(--mono)}
+
+/* ── Staffing Plan · v32 additions ─────────────────────────── */
+
+/* Planning-stage hero — the leak that the page turns into a plan.
+   Amber side = problem framing; the green apply bar below = solution. */
+#screen-labor-efficiency .le-sf-hero{
+  display:flex;justify-content:space-between;align-items:center;gap:24px;
+  padding:18px 22px;margin-bottom:12px;
+  background:linear-gradient(135deg, rgba(245,158,11,.10) 0%, var(--card) 75%);
+  border:1px solid var(--amber-b);border-left:4px solid var(--amber);
+  border-radius:var(--r-lg);
+}
+#screen-labor-efficiency .le-sf-hero-l{display:flex;flex-direction:column;gap:6px;min-width:0}
+#screen-labor-efficiency .le-sf-hero-eyebrow{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--amber);
+}
+#screen-labor-efficiency .le-sf-hero-pulse{
+  width:7px;height:7px;border-radius:50%;background:var(--amber);
+  box-shadow:0 0 0 3px rgba(245,158,11,.20);
+  animation:le-sf-hero-pulse-anim 2.4s ease-in-out infinite;
+}
+@keyframes le-sf-hero-pulse-anim{
+  0%,100%{box-shadow:0 0 0 3px rgba(245,158,11,.20)}
+  50%{box-shadow:0 0 0 6px rgba(245,158,11,.10)}
+}
+#screen-labor-efficiency .le-sf-hero-amount{
+  display:flex;align-items:baseline;gap:3px;line-height:1;
+}
+#screen-labor-efficiency .le-sf-hero-currency{
+  font-size:26px;font-weight:600;color:var(--amber);font-family:var(--mono);
+}
+#screen-labor-efficiency .le-sf-hero-num{
+  font-size:48px;font-weight:800;color:var(--amber);font-family:var(--mono);
+  letter-spacing:-1.5px;
+}
+#screen-labor-efficiency .le-sf-hero-period{
+  font-size:18px;color:var(--t3);font-family:var(--mono);font-weight:600;margin-left:2px;
+}
+#screen-labor-efficiency .le-sf-hero-tag{
+  font-size:10px;color:var(--amber);font-weight:700;letter-spacing:.04em;
+  align-self:center;margin-left:8px;
+  padding:2px 6px;border:1px solid var(--amber-b);border-radius:3px;
+  background:var(--amber-d);
+}
+#screen-labor-efficiency .le-sf-hero-projection{
+  font-size:12.5px;color:var(--t2);font-family:var(--mono);line-height:1.5;
+}
+#screen-labor-efficiency .le-sf-hero-projection strong{color:var(--t1);font-weight:700}
+#screen-labor-efficiency .le-sf-hero-r{
+  display:flex;flex-direction:column;gap:4px;text-align:right;max-width:280px;flex-shrink:0;
+}
+#screen-labor-efficiency .le-sf-hero-narrative-eyebrow{
+  font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--t3);
+}
+#screen-labor-efficiency .le-sf-hero-narrative{
+  font-size:11.5px;color:var(--t2);line-height:1.55;
+}
+#screen-labor-efficiency .le-sf-hero-narrative strong{color:var(--green);font-weight:700}
+
+/* Per-recommendation value block — amplified $/wk + annual line */
+#screen-labor-efficiency .le-sf-item-val-block{text-align:right;display:flex;flex-direction:column;gap:1px;align-items:flex-end}
+/* Override the base .le-sf-item-val (13px) for a hero-sized number */
+#screen-labor-efficiency .le-sf-item .le-sf-item-val{font-size:20px;line-height:1;letter-spacing:-.5px}
+#screen-labor-efficiency .le-sf-item-val-period{
+  font-size:11px;color:var(--t3);font-weight:600;margin-left:1px;letter-spacing:0;
+}
+#screen-labor-efficiency .le-sf-item-val-annual{
+  font-size:10px;color:var(--t3);font-family:var(--mono);font-style:italic;
+  margin-top:2px;
+}
+
+/* Amplified bulk-apply bar — $559 as the action-hero number */
+#screen-labor-efficiency .le-sf-apply-amount-row{
+  display:flex;align-items:baseline;gap:14px;margin-top:4px;flex-wrap:wrap;
+}
+#screen-labor-efficiency .le-sf-apply-amount{
+  display:flex;align-items:baseline;gap:3px;line-height:1;
+}
+#screen-labor-efficiency .le-sf-apply-currency{
+  font-size:20px;font-weight:600;color:var(--green);font-family:var(--mono);
+}
+#screen-labor-efficiency .le-sf-apply-num{
+  font-size:38px;font-weight:800;color:var(--green);font-family:var(--mono);
+  letter-spacing:-1.2px;
+}
+#screen-labor-efficiency .le-sf-apply-period{
+  font-size:15px;color:var(--t3);font-family:var(--mono);font-weight:600;margin-left:2px;
+}
+#screen-labor-efficiency .le-sf-apply-amount-proj{
+  font-size:11.5px;color:var(--t2);font-family:var(--mono);line-height:1.5;
+}
+#screen-labor-efficiency .le-sf-apply-amount-proj strong{color:var(--green);font-weight:700}
+
+/* When apply-bar's amount block is present, give the bar a touch more breathing room */
+#screen-labor-efficiency .le-sf-apply-bar{padding:14px 18px}
+
+/* Header timestamp */
+#screen-labor-efficiency .le-sf-timestamp{
+  font-size:10.5px;color:var(--t3);font-family:var(--mono);
+  align-self:center;margin-right:6px;
+}
+
+/* Strip-value period suffix (mirrors Overview pattern) */
+#screen-labor-efficiency .le-sp-strip-period{font-size:11px;color:var(--t3);font-weight:500;margin-left:2px}
+
+/* Bulk "Apply plan" bar */
+#screen-labor-efficiency .le-sf-apply-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:12px 14px;margin-bottom:10px;
+  background:var(--green-d);border:1px solid var(--green-b);
+  border-radius:var(--r-md);
+}
+#screen-labor-efficiency .le-sf-apply-bar-l{display:flex;flex-direction:column;gap:2px;min-width:0}
+#screen-labor-efficiency .le-sf-apply-bar-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--green);
+}
+#screen-labor-efficiency .le-sf-apply-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 0 3px rgba(16,185,129,.18);
+}
+#screen-labor-efficiency .le-sf-apply-bar-title{font-size:13px;font-weight:700;color:var(--t1)}
+#screen-labor-efficiency .le-sf-apply-bar-sub{font-size:10.5px;color:var(--t3);line-height:1.4}
+#screen-labor-efficiency .le-sf-apply-bar-cta{flex-shrink:0}
+
+/* Heatmap-focal notice (sets expectation before per-rec "View in Heatmap") */
+#screen-labor-efficiency .le-sf-heatmap-note{
+  font-size:10.5px;color:var(--t2);line-height:1.55;
+  padding:8px 12px;margin-bottom:10px;
+  background:var(--surface);border:1px dashed var(--border);
+  border-radius:var(--r-md);
+}
+
+/* Confidence-tier left borders — chained for specificity over base .le-sf-item */
+#screen-labor-efficiency .le-sf-item.le-sf-item-conf-green{border-left-color:var(--green)}
+#screen-labor-efficiency .le-sf-item.le-sf-item-conf-amber{border-left-color:var(--amber)}
+#screen-labor-efficiency .le-sf-item.le-sf-item-conf-red{border-left-color:var(--red);background:rgba(239,68,68,.04)}
+
+/* Confidence badges in the meta row */
+#screen-labor-efficiency .le-sf-conf-badge{
+  font-size:9.5px;font-weight:700;letter-spacing:.03em;
+  padding:1px 6px;border-radius:3px;font-family:var(--mono);
+}
+#screen-labor-efficiency .le-sf-conf-badge-green{color:var(--green);background:var(--green-d);border:1px solid var(--green-b)}
+#screen-labor-efficiency .le-sf-conf-badge-amber{color:var(--amber);background:var(--amber-d);border:1px solid var(--amber-b)}
+#screen-labor-efficiency .le-sf-conf-badge-red{color:var(--red);background:var(--red-d);border:1px solid var(--red-b)}
+
+/* Per-item caveats — short explanatory line above the CTAs */
+#screen-labor-efficiency .le-sf-item-caveat{
+  margin-top:8px;padding:6px 10px;
+  border-radius:var(--r);font-size:10.5px;line-height:1.5;
+}
+#screen-labor-efficiency .le-sf-item-caveat-amber{
+  color:var(--amber);background:var(--amber-d);border:1px solid var(--amber-b);
+}
+#screen-labor-efficiency .le-sf-item-caveat-red{
+  color:var(--red);background:var(--red-d);border:1px solid var(--red-b);
+}
+
+/* Clickable side-card (Wage assumptions → Settings) */
+#screen-labor-efficiency .le-sf-side-card-clickable{cursor:pointer;transition:background .12s,border-color .12s}
+#screen-labor-efficiency .le-sf-side-card-clickable:hover{background:var(--hover);border-color:var(--border-s)}
+#screen-labor-efficiency .le-sf-side-card-clickable:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+#screen-labor-efficiency .le-sf-side-h-action{
+  font-size:9px;font-weight:600;color:var(--blue);
+  letter-spacing:0;text-transform:none;margin-left:6px;
+}
 
 /* Benchmarks grid */
 #screen-labor-efficiency .le-bm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;min-height:0}
