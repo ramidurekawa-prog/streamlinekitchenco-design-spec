@@ -90,3 +90,8 @@ Server Coaching axis-state model: [docs/data-sources.md](docs/data-sources.md).
   `docs/handoff-notes/vNN.md` are the contract for what changed.
 - Don't invent UX, copy, or numbers not in the spec. Raise divergence as a GitHub
   issue rather than implementing it silently.
+
+## Git Workflow
+
+Conventional commits: `feat:`, `fix:`, `refactor:`, `docs:`, `test:`
+Conventional branch names: `feature/<name>`
