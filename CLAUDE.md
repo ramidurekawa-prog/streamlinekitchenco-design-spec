@@ -91,6 +91,34 @@ Server Coaching axis-state model: [docs/data-sources.md](docs/data-sources.md).
 - Don't invent UX, copy, or numbers not in the spec. Raise divergence as a GitHub
   issue rather than implementing it silently.
 
+## Release documentation (do this on every major push)
+
+Whenever a **major push lands on `main`** — a merged feature PR, or the moment a
+weekly `vNN` tag is cut — update the human-readable release record in the same
+turn. Don't wait to be asked; treat it as part of the push. Steps:
+
+1. **Find the delta.** `git describe --tags --abbrev=0` for the last tag, then
+   `git log <lastTag>..HEAD --oneline` and `git diff <lastTag>..HEAD --stat` to
+   see what actually changed. Read the substantive diffs, not just commit
+   subjects.
+2. **Prepend a `## vNN — YYYY-MM-DD` entry to [CHANGELOG.md](CHANGELOG.md)**, above
+   the previous version, in the existing terse bullet style. Group by screen /
+   area; name the files and key functions touched.
+3. **Add `docs/handoff-notes/vNN.md`** in the established house style (see
+   [v31.md](docs/handoff-notes/v31.md) / [v32.md](docs/handoff-notes/v32.md)):
+   header (Tagged / Predecessor / Audience), "What this version is", "What
+   changed", implementation notes, "Known caveats", "What's planned next", and
+   "Questions". This file is the contract for what the engineer should re-implement.
+4. **Guard the doctrine.** If any canonical dollar value changed, grep the repo
+   and confirm every occurrence agrees (see
+   [docs/canonical-numbers.md](docs/canonical-numbers.md)); call out any
+   `OUTPUT_TYPES` / state-model changes explicitly. Flag divergence rather than
+   silently reconciling it.
+
+Determine `NN` from the latest tag/changelog entry plus one. Committing, pushing,
+and tagging stay manual unless the user asks — this instruction covers writing the
+docs, not publishing them.
+
 ## Git Workflow
 
 Conventional commits: `feat:`, `fix:`, `refactor:`, `docs:`, `test:`
