@@ -9704,6 +9704,14 @@ function populateHeatmap() {
   grid.dataset.populated = '1';
 }
 
+// Evidence subpage — expand all / collapse all cards.
+function leEvToggleAll(open) {
+  document.querySelectorAll('#le-subpage-evidence details.le-ev-card').forEach(d => {
+    if (open) d.setAttribute('open', '');
+    else d.removeAttribute('open');
+  });
+}
+
 function leCloseHeatmapDetail() {
   const panel = document.getElementById('le-heatmap-detail');
   if (panel) {
@@ -9792,9 +9800,9 @@ function leShowHeatmapDetail(day, hourIdx, score) {
       : (score < 100 && hrs ? (hrs * (1 - score/100)).toFixed(1) : '0.0');
     const isTueLunch = (day === 'Tue' && hourIdx >= 1 && hourIdx <= 4);
     const rec = isTueLunch
-      ? 'Remove or shift one FOH slot from 11 AM–2 PM'
-      : (score < 70 ? 'Investigate root cause this hour' : score < 85 ? 'Monitor closely — under baseline' : 'No action required — within baseline');
-    const statusText = score >= 85 ? 'On baseline · Healthy' : score >= 70 ? 'Below baseline · Watch' : 'Below baseline · Severe';
+      ? 'Remove or shift one front-of-house slot from 11 AM–2 PM'
+      : (score < 70 ? 'Investigate why this hour is so far behind' : score < 85 ? 'Watch this hour — under the healthy benchmark' : 'No action required — within the healthy range');
+    const statusText = score >= 85 ? 'Healthy · meeting benchmark' : score >= 70 ? 'Watch · below benchmark' : 'Problem · well below benchmark';
     const statusClass = score >= 85 ? 'le-hmd-status-healthy' : score >= 70 ? 'le-hmd-status-watch' : 'le-hmd-status-severe';
 
     gridEl.innerHTML =
@@ -9809,10 +9817,10 @@ function leShowHeatmapDetail(day, hourIdx, score) {
       '<div class="le-hmd-compact">' +
         '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Revenue</div><div class="le-hmd-cell-val">' + (rev !== null ? '$' + rev : '—') + '</div></div>' +
         '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Labor hours</div><div class="le-hmd-cell-val">' + (hrs !== null ? hrs + ' hrs' : '—') + '</div></div>' +
-        '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Current RPLH</div><div class="le-hmd-cell-val">$' + currRplh + '/hr <span class="le-hmd-tag-det">DET</span></div></div>' +
-        '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Baseline</div><div class="le-hmd-cell-val">$' + (base ? base.toFixed(2) : '—') + '/hr</div></div>' +
-        '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Score</div><div class="le-hmd-cell-val">' + score + ' <span class="le-hmd-tag-det">DET</span></div></div>' +
-        '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Excess hrs</div><div class="le-hmd-cell-val">' + excessHrs + ' hrs <span class="le-hmd-tag-est">EST</span></div></div>' +
+        '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Sales / labor hr</div><div class="le-hmd-cell-val">$' + currRplh + '/hr <span class="le-hmd-tag-det" title="Measured directly from POS data">Measured</span></div></div>' +
+        '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Healthy benchmark</div><div class="le-hmd-cell-val">$' + (base ? base.toFixed(2) : '—') + '/hr</div></div>' +
+        '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Score · out of 100</div><div class="le-hmd-cell-val">' + score + ' <span class="le-hmd-tag-det" title="Measured directly from POS data">Measured</span></div></div>' +
+        '<div class="le-hmd-cell"><div class="le-hmd-cell-key">Extra hours staffed</div><div class="le-hmd-cell-val">' + excessHrs + ' hrs <span class="le-hmd-tag-est" title="Estimated based on wage assumptions">Estimated</span></div></div>' +
       '</div>' +
       sparklineHtml +
       '<div class="le-hmd-source">Source: Toast POS + Toast Labor + SKC baseline engine</div>' +

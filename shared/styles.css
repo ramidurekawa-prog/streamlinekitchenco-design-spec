@@ -8988,7 +8988,7 @@ body.skc-role-owner .skc-aud-gm{opacity:.45}
 #screen-labor-efficiency .le-co-patleg-dot.struc{background:var(--red)}
 
 /* Main 2-col grid: server cards LEFT / patterns RIGHT */
-#screen-labor-efficiency .le-co-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;flex:1;min-height:0}
+#screen-labor-efficiency .le-co-grid{display:grid;grid-template-columns:1fr;gap:12px;flex:1;min-height:0}
 #screen-labor-efficiency .le-co-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:14px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
 #screen-labor-efficiency .le-co-panel-h{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;justify-content:space-between;align-items:center;gap:8px}
 #screen-labor-efficiency .le-co-panel-h .le-co-count{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1px 7px;font-weight:700;color:var(--t1);font-size:10px;letter-spacing:0;text-transform:none}
@@ -9002,7 +9002,52 @@ body.skc-role-owner .skc-aud-gm{opacity:.45}
 #screen-labor-efficiency .le-co-list{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:8px}
 
 /* Server card with radar */
-#screen-labor-efficiency .le-co-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 13px;display:grid;grid-template-columns:1fr 100px;gap:12px;align-items:start}
+/* Server card — collapsible. Summary is a 1-line scannable row; body has full detail. */
+#screen-labor-efficiency .le-co-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);
+  overflow:hidden;
+}
+#screen-labor-efficiency .le-co-card > summary{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 13px;cursor:pointer;
+  list-style:none;
+}
+#screen-labor-efficiency .le-co-card > summary::-webkit-details-marker{display:none}
+#screen-labor-efficiency .le-co-card > summary:hover{background:var(--hover)}
+#screen-labor-efficiency .le-co-card[open] > summary{
+  border-bottom:1px solid var(--border);
+}
+#screen-labor-efficiency .le-co-card-body{
+  padding:12px 13px;
+}
+
+/* Summary row regions — name + pattern badge inline, chips beside, lift right */
+#screen-labor-efficiency .le-co-summary-name-wrap{
+  display:flex;align-items:center;gap:8px;min-width:0;flex:1;
+}
+#screen-labor-efficiency .le-co-summary-name-wrap .le-co-card-name{
+  font-size:13px;color:var(--t1);font-weight:600;line-height:1.3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;
+}
+#screen-labor-efficiency .le-co-summary-name-wrap .le-co-card-pat{flex-shrink:0}
+#screen-labor-efficiency .le-co-summary-chips{
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex-shrink:0;
+}
+#screen-labor-efficiency .le-co-summary-lift{
+  flex-shrink:0;font-size:16px;font-weight:700;color:var(--amber);
+  font-family:var(--mono);line-height:1;letter-spacing:-.3px;
+}
+#screen-labor-efficiency .le-co-summary-lift.is-asset{font-size:11px;color:var(--green);letter-spacing:.06em}
+#screen-labor-efficiency .le-co-summary-lift-period{font-size:11px;color:var(--t3);font-weight:600;margin-left:1px;letter-spacing:0}
+
+/* Hide the old grid pieces — no longer used in the new structure */
+#screen-labor-efficiency .le-co-card-left,
+#screen-labor-efficiency .le-co-card-right,
+#screen-labor-efficiency .le-co-card-htop,
+#screen-labor-efficiency .le-co-card-coached-row,
+#screen-labor-efficiency .le-co-card-tier-row,
+#screen-labor-efficiency .le-co-scheduled-row{display:none}
 #screen-labor-efficiency .le-co-card.pattern-triple{border-left:3px solid var(--green)}
 #screen-labor-efficiency .le-co-card.pattern-revenue{border-left:3px solid var(--blue)}
 #screen-labor-efficiency .le-co-card.pattern-hospitality{border-left:3px solid #a855f7}
@@ -9037,10 +9082,746 @@ body.skc-role-owner .skc-aud-gm{opacity:.45}
 /* Right column: radar + lift */
 #screen-labor-efficiency .le-co-card-right{display:flex;flex-direction:column;align-items:center;gap:6px}
 #screen-labor-efficiency .le-co-radar{width:88px;height:88px;flex-shrink:0}
-#screen-labor-efficiency .le-co-card-lift{text-align:center}
+#screen-labor-efficiency .le-co-card-lift{text-align:center;display:flex;flex-direction:column;align-items:center;gap:1px}
 #screen-labor-efficiency .le-co-card-lift-v{font-size:13px;font-weight:700;color:var(--amber);font-family:var(--mono);line-height:1.1}
 #screen-labor-efficiency .le-co-card-lift-v.is-asset{color:var(--green)}
 #screen-labor-efficiency .le-co-card-lift-k{font-size:8.5px;color:var(--t3);font-weight:600;letter-spacing:.04em;margin-top:1px}
+/* Amplified lift — chained for specificity. Bigger weekly number + annual line. */
+#screen-labor-efficiency .le-co-card-lift .le-co-card-lift-v{font-size:20px;line-height:1;letter-spacing:-.4px}
+#screen-labor-efficiency .le-co-card-lift-period{font-size:11px;color:var(--t3);font-weight:600;margin-left:1px}
+#screen-labor-efficiency .le-co-card-lift-annual{
+  font-size:9.5px;color:var(--t3);font-family:var(--mono);font-style:italic;line-height:1.2;
+}
+
+/* ── Planning-stage hero: team coaching opportunity + top priorities ── */
+#screen-labor-efficiency .le-co-hero{
+  display:flex;justify-content:space-between;align-items:stretch;gap:20px;
+  padding:16px 20px;margin-bottom:12px;
+  background:linear-gradient(135deg, rgba(245,158,11,.10) 0%, var(--card) 70%);
+  border:1px solid var(--amber-b);border-left:4px solid var(--amber);
+  border-radius:var(--r-lg);
+}
+#screen-labor-efficiency .le-co-hero-l{
+  display:flex;flex-direction:column;gap:5px;min-width:0;justify-content:center;
+}
+#screen-labor-efficiency .le-co-hero-eyebrow{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--amber);
+}
+#screen-labor-efficiency .le-co-hero-pulse{
+  width:7px;height:7px;border-radius:50%;background:var(--amber);
+  box-shadow:0 0 0 3px rgba(245,158,11,.20);
+  animation:le-co-hero-pulse-anim 2.4s ease-in-out infinite;
+}
+@keyframes le-co-hero-pulse-anim{
+  0%,100%{box-shadow:0 0 0 3px rgba(245,158,11,.20)}
+  50%{box-shadow:0 0 0 6px rgba(245,158,11,.10)}
+}
+#screen-labor-efficiency .le-co-hero-amount{display:flex;align-items:baseline;gap:3px;line-height:1}
+#screen-labor-efficiency .le-co-hero-currency{font-size:24px;font-weight:600;color:var(--amber);font-family:var(--mono)}
+#screen-labor-efficiency .le-co-hero-num{font-size:44px;font-weight:800;color:var(--amber);font-family:var(--mono);letter-spacing:-1.2px}
+#screen-labor-efficiency .le-co-hero-period{font-size:17px;color:var(--t3);font-family:var(--mono);font-weight:600;margin-left:2px}
+#screen-labor-efficiency .le-co-hero-tag{
+  font-size:10px;color:var(--amber);font-weight:700;letter-spacing:.04em;
+  align-self:center;margin-left:8px;padding:2px 6px;
+  border:1px solid var(--amber-b);border-radius:3px;background:var(--amber-d);
+}
+#screen-labor-efficiency .le-co-hero-projection{
+  font-size:12px;color:var(--t2);font-family:var(--mono);line-height:1.5;
+}
+#screen-labor-efficiency .le-co-hero-projection strong{color:var(--t1);font-weight:700}
+
+/* Top-priority list on the right side of the hero */
+#screen-labor-efficiency .le-co-hero-r{
+  display:flex;flex-direction:column;gap:6px;
+  min-width:280px;max-width:380px;flex-shrink:0;
+  padding-left:18px;border-left:1px dashed var(--border);
+}
+#screen-labor-efficiency .le-co-hero-pri-label{
+  font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--t3);
+}
+#screen-labor-efficiency .le-co-hero-pri-list{display:flex;flex-direction:column;gap:4px}
+#screen-labor-efficiency .le-co-hero-pri-row{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 8px;border-radius:var(--r);
+  background:var(--card);border:1px solid var(--border);
+}
+#screen-labor-efficiency .le-co-hero-pri-rank{
+  flex-shrink:0;width:18px;height:18px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;font-family:var(--mono);
+  color:var(--amber);background:var(--amber-d);border:1px solid var(--amber-b);
+}
+#screen-labor-efficiency .le-co-hero-pri-mid{flex:1;min-width:0}
+#screen-labor-efficiency .le-co-hero-pri-name{
+  font-size:11.5px;font-weight:600;color:var(--t1);line-height:1.25;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+#screen-labor-efficiency .le-co-hero-pri-meta{
+  font-size:9.5px;color:var(--t3);font-family:var(--mono);line-height:1.3;
+}
+#screen-labor-efficiency .le-co-hero-pri-lift{
+  flex-shrink:0;font-size:14px;font-weight:700;color:var(--amber);
+  font-family:var(--mono);line-height:1;
+}
+#screen-labor-efficiency .le-co-hero-pri-empty{
+  font-size:11px;color:var(--t3);font-style:italic;padding:8px;text-align:center;
+}
+
+/* Hero "top 3 = $309/wk · 37% of gap" sub-line */
+#screen-labor-efficiency .le-co-hero-fraction{
+  font-size:11px;color:var(--t2);font-family:var(--mono);
+  padding-top:6px;margin-top:2px;
+  border-top:1px dashed var(--amber-b);
+}
+#screen-labor-efficiency .le-co-hero-fraction strong{color:var(--amber);font-weight:700}
+
+/* Hero footer — math trail (details/summary) + verified-to-date chip */
+#screen-labor-efficiency .le-co-hero-footer{
+  display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;
+  margin-top:8px;padding-top:8px;border-top:1px dashed var(--amber-b);
+}
+#screen-labor-efficiency .le-co-hero-math{font-size:10.5px}
+#screen-labor-efficiency .le-co-hero-math > summary{
+  display:inline-flex;align-items:center;gap:5px;
+  color:var(--t3);font-family:var(--mono);
+  padding:2px 0;
+}
+#screen-labor-efficiency .le-co-hero-math > summary:hover{color:var(--t1)}
+#screen-labor-efficiency .le-co-hero-math[open] > summary{color:var(--t1);margin-bottom:6px}
+#screen-labor-efficiency .le-co-hero-math-body{
+  font-size:10.5px;color:var(--t2);line-height:1.55;
+  padding:8px 10px;background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);max-width:680px;
+}
+#screen-labor-efficiency .le-co-hero-math-breakdown{
+  display:block;margin-top:2px;font-family:var(--mono);font-size:10.5px;color:var(--t3);
+}
+#screen-labor-efficiency .le-co-hero-math-breakdown strong{color:var(--t1)}
+#screen-labor-efficiency .le-co-hero-verified{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:10.5px;color:var(--t2);font-family:var(--mono);
+  padding:3px 9px;border-radius:10px;
+  background:var(--card);border:1px solid var(--border);
+  cursor:pointer;transition:border-color .12s,background .12s;
+}
+#screen-labor-efficiency .le-co-hero-verified:hover{border-color:var(--blue-b);background:var(--blue-d)}
+#screen-labor-efficiency .le-co-hero-verified:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+#screen-labor-efficiency .le-co-hero-verified strong{color:var(--t1);font-weight:700}
+#screen-labor-efficiency .le-co-hero-verified-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--t3);flex-shrink:0;
+}
+
+/* Clickable hero priority row — keyboard + scroll-target affordance */
+#screen-labor-efficiency .le-co-hero-pri-row{cursor:pointer;transition:background .12s,border-color .12s,transform .12s}
+#screen-labor-efficiency .le-co-hero-pri-row:hover{background:var(--hover);border-color:var(--border-s);transform:translateX(-2px)}
+#screen-labor-efficiency .le-co-hero-pri-row:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+#screen-labor-efficiency .le-co-hero-pri-chev{
+  font-size:13px;color:var(--t3);margin-left:4px;flex-shrink:0;
+  transition:transform .12s,color .12s;
+}
+#screen-labor-efficiency .le-co-hero-pri-row:hover .le-co-hero-pri-chev{color:var(--amber);transform:translateX(2px)}
+
+/* Filter button counts */
+#screen-labor-efficiency .le-co-filter-count{
+  display:inline-block;margin-left:5px;padding:0 5px;
+  font-size:9px;font-weight:700;line-height:14px;
+  color:var(--t3);background:var(--surface);border:1px solid var(--border);
+  border-radius:7px;font-family:var(--mono);min-width:14px;text-align:center;
+  vertical-align:1px;
+}
+#screen-labor-efficiency .le-co-filter.active .le-co-filter-count{
+  color:var(--blue);background:rgba(59,130,246,.10);border-color:var(--blue-b);
+}
+
+/* Trend arrows next to axis percentile */
+#screen-labor-efficiency .le-co-trend{
+  display:inline-block;margin-left:4px;font-size:10px;font-weight:700;
+  vertical-align:1px;
+}
+#screen-labor-efficiency .le-co-trend.is-up{color:var(--green)}
+#screen-labor-efficiency .le-co-trend.is-down{color:var(--red)}
+#screen-labor-efficiency .le-co-trend.is-flat{color:var(--t3);font-weight:500}
+
+/* Per-card "Last coached" chip in the header */
+#screen-labor-efficiency .le-co-card-coached-row{margin-top:4px}
+#screen-labor-efficiency .le-co-coached{
+  display:inline-block;font-size:9.5px;font-weight:600;font-family:var(--mono);
+  padding:1px 7px;border-radius:9px;letter-spacing:.02em;
+}
+#screen-labor-efficiency .le-co-coached-recent{color:var(--blue);background:var(--blue-d);border:1px solid var(--blue-b)}
+#screen-labor-efficiency .le-co-coached-topic{font-weight:700;color:var(--t1)}
+#screen-labor-efficiency .le-co-coached-neutral{color:var(--t3);background:var(--surface);border:1px solid var(--border)}
+#screen-labor-efficiency .le-co-coached-flag{color:var(--amber);background:var(--amber-d);border:1px solid var(--amber-b)}
+
+/* Raw-metrics block — header + lines with chips */
+#screen-labor-efficiency .le-co-card-metrics{
+  margin-top:9px;padding-top:8px;border-top:1px dashed var(--border);
+}
+#screen-labor-efficiency .le-co-metrics-hdr{
+  font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--t3);margin-bottom:4px;
+}
+#screen-labor-efficiency .le-co-metrics-line{
+  font-size:10.5px;color:var(--t2);font-family:var(--mono);line-height:1.65;
+  display:flex;align-items:center;gap:4px;flex-wrap:wrap;
+}
+#screen-labor-efficiency .le-co-metrics-line strong{color:var(--t2);font-weight:700;margin-right:2px}
+#screen-labor-efficiency .le-co-metrics-caveat{color:var(--amber);font-size:9.5px;font-style:italic}
+
+/* Per-metric delta chip — ▲ green better, ▼ red worse, — gray flat */
+#screen-labor-efficiency .le-co-mchip{
+  display:inline-flex;align-items:center;gap:2px;
+  font-size:9.5px;font-weight:700;font-family:var(--mono);
+  padding:0 5px;border-radius:3px;line-height:14px;
+}
+#screen-labor-efficiency .le-co-mchip.is-up{color:var(--green);background:var(--green-d);border:1px solid var(--green-b)}
+#screen-labor-efficiency .le-co-mchip.is-down{color:var(--red);background:var(--red-d);border:1px solid var(--red-b)}
+#screen-labor-efficiency .le-co-mchip.is-flat{color:var(--t3);background:var(--surface);border:1px solid var(--border);font-weight:500}
+
+/* Click-to-scroll target pulse on the matched card */
+@keyframes le-co-card-pulse-anim{
+  0%   {box-shadow:0 0 0 0 rgba(245,158,11,.55)}
+  60%  {box-shadow:0 0 0 8px rgba(245,158,11,0)}
+  100% {box-shadow:0 0 0 0 rgba(245,158,11,0)}
+}
+#screen-labor-efficiency .le-co-card.le-co-card-pulse{
+  animation:le-co-card-pulse-anim 1.6s ease-out;
+}
+
+/* Responsive: stack the hero on narrow viewports */
+@media (max-width: 1100px){
+  #screen-labor-efficiency .le-co-hero{flex-direction:column}
+  #screen-labor-efficiency .le-co-hero-r{
+    min-width:0;max-width:none;
+    padding-left:0;padding-top:12px;
+    border-left:none;border-top:1px dashed var(--border);
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Coaching — confidence tiers, scheduled state, hero pills, about footer
+   ────────────────────────────────────────────────────────────── */
+
+/* Confidence chip on each card */
+#screen-labor-efficiency .le-co-card-tier-row{margin-top:4px}
+#screen-labor-efficiency .le-co-conf-chip{
+  display:inline-block;font-size:9.5px;font-weight:700;font-family:var(--mono);
+  padding:1px 7px;border-radius:9px;letter-spacing:.02em;
+}
+#screen-labor-efficiency .le-co-conf-chip.tier-green{color:var(--green);background:var(--green-d);border:1px solid var(--green-b)}
+#screen-labor-efficiency .le-co-conf-chip.tier-amber{color:var(--amber);background:var(--amber-d);border:1px solid var(--amber-b)}
+#screen-labor-efficiency .le-co-conf-chip.tier-red{color:var(--red);background:var(--red-d);border:1px solid var(--red-b)}
+
+/* Card border picks up tier color (overrides pattern border for actionable cards) */
+#screen-labor-efficiency .le-co-card.tier-amber{border-left:3px solid var(--amber)}
+#screen-labor-efficiency .le-co-card.tier-red{border-left:3px solid var(--red);background:rgba(239,68,68,.03)}
+
+/* Tier caveats — spans full card width below the lift/right column */
+#screen-labor-efficiency .le-co-card-caveat{
+  grid-column:1 / -1;
+  margin-top:6px;padding:6px 10px;border-radius:var(--r);
+  font-size:10.5px;line-height:1.5;
+}
+#screen-labor-efficiency .le-co-card-caveat-amber{
+  color:var(--amber);background:var(--amber-d);border:1px solid var(--amber-b);
+}
+#screen-labor-efficiency .le-co-card-caveat-red{
+  color:var(--red);background:var(--red-d);border:1px solid var(--red-b);
+}
+
+/* Scheduled state badge (replaces tier chip cluster when card has an open action) */
+#screen-labor-efficiency .le-co-scheduled-row{margin-top:4px}
+#screen-labor-efficiency .le-co-scheduled-badge{
+  display:inline-block;font-size:9.5px;font-weight:700;font-family:var(--mono);
+  padding:1px 7px;border-radius:9px;letter-spacing:.02em;
+  color:var(--green);background:var(--green-d);border:1px solid var(--green-b);
+}
+#screen-labor-efficiency .le-co-card.is-scheduled{
+  background:linear-gradient(90deg, rgba(16,185,129,.04) 0%, var(--card) 30%);
+}
+
+/* Hero priority row — status pills + done state */
+#screen-labor-efficiency .le-co-hero-pri-status{
+  flex-shrink:0;font-size:9px;font-weight:700;font-family:var(--mono);
+  padding:1px 6px;border-radius:8px;letter-spacing:.02em;
+  margin:0 8px 0 4px;white-space:nowrap;
+}
+#screen-labor-efficiency .le-co-hero-pri-status.is-scheduled{color:var(--green);background:var(--green-d);border:1px solid var(--green-b)}
+#screen-labor-efficiency .le-co-hero-pri-status.is-red{color:var(--red);background:var(--red-d);border:1px solid var(--red-b)}
+#screen-labor-efficiency .le-co-hero-pri-status.is-amber{color:var(--amber);background:var(--amber-d);border:1px solid var(--amber-b)}
+#screen-labor-efficiency .le-co-hero-pri-status.is-blue{color:var(--blue);background:var(--blue-d);border:1px solid var(--blue-b)}
+#screen-labor-efficiency .le-co-hero-pri-status.is-neutral{color:var(--t3);background:var(--surface);border:1px solid var(--border)}
+#screen-labor-efficiency .le-co-hero-pri-row.is-done{opacity:.72}
+#screen-labor-efficiency .le-co-hero-pri-row.is-done .le-co-hero-pri-lift{text-decoration:line-through;color:var(--t3)}
+
+/* Hero bulk-schedule button */
+#screen-labor-efficiency .le-co-hero-bulk{margin-top:10px}
+#screen-labor-efficiency .le-co-hero-bulk-btn{width:100%;justify-content:center;font-weight:600}
+#screen-labor-efficiency .le-co-hero-bulk-done{
+  display:inline-flex;align-items:center;justify-content:center;width:100%;
+  font-size:10.5px;color:var(--green);background:var(--green-d);
+  border:1px solid var(--green-b);border-radius:var(--r);padding:6px 10px;font-family:var(--mono);
+}
+
+/* Hero fraction-split sub-line — shows ready vs below-floor breakdown */
+#screen-labor-efficiency .le-co-hero-fraction-split{
+  font-size:10.5px;color:var(--t3);font-family:var(--mono);
+}
+
+/* About-this-analysis footer — full-width slim collapsible below the cards */
+#screen-labor-efficiency .le-co-about-footer{
+  margin-top:14px;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Coaching — collapsibles (native <details>) and condensed patterns
+   ────────────────────────────────────────────────────────────── */
+
+/* Reusable chevron — rotates 180° when its parent <details> is open */
+#screen-labor-efficiency .le-co-toggle-chev{
+  display:inline-block;font-size:10px;color:var(--t3);
+  margin-left:auto;flex-shrink:0;
+  transition:transform .15s ease,color .15s ease;
+}
+#screen-labor-efficiency details[open] > summary .le-co-toggle-chev{
+  transform:rotate(180deg);color:var(--t1);
+}
+#screen-labor-efficiency details > summary{
+  cursor:pointer;list-style:none;outline:none;
+}
+#screen-labor-efficiency details > summary::-webkit-details-marker{display:none}
+#screen-labor-efficiency details > summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:var(--r-md)}
+
+/* Coaching-only warning — collapsible. Summary is the always-visible 1-liner.
+   Neutralize the base .le-co-warn block styling so the summary owns it. */
+#screen-labor-efficiency details.le-co-warn{
+  display:block;padding:0;background:transparent;border:none;border-radius:0;
+}
+#screen-labor-efficiency .le-co-warn-summary{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 12px;border-radius:var(--r-md);
+  background:var(--amber-d);border:1px solid var(--amber-b);
+  font-size:11px;color:var(--t2);line-height:1.4;
+}
+#screen-labor-efficiency .le-co-warn-summary-text{flex:1;min-width:0}
+#screen-labor-efficiency .le-co-warn-summary strong{color:var(--amber)}
+#screen-labor-efficiency details.le-co-warn[open] .le-co-warn-summary{
+  border-radius:var(--r-md) var(--r-md) 0 0;border-bottom:none;
+}
+#screen-labor-efficiency details.le-co-warn[open] .le-co-warn-body{
+  padding:10px 12px;border:1px solid var(--amber-b);border-top:none;
+  border-radius:0 0 var(--r-md) var(--r-md);
+  background:rgba(245,158,11,.04);
+}
+
+/* Side-rail Methodology / Doctrine — collapsible header */
+#screen-labor-efficiency .le-co-side-h-collapsible{
+  display:flex;align-items:center;gap:8px;margin-bottom:0;
+}
+#screen-labor-efficiency .le-co-side-h-summary{
+  font-size:9.5px;font-weight:500;color:var(--t3);text-transform:none;
+  letter-spacing:0;flex:1;min-width:0;font-family:var(--mono);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+#screen-labor-efficiency details.le-co-side-card-collapsible[open] .le-co-side-h-collapsible{
+  margin-bottom:8px;
+}
+#screen-labor-efficiency details.le-co-side-card-collapsible[open] .le-co-side-h-summary{
+  display:none;
+}
+
+/* Doctrine — collapsible footer (chain .le-co-doc.le-co-doc-collapsible
+   for specificity over the base .le-co-doc block rule defined elsewhere) */
+#screen-labor-efficiency details.le-co-doc.le-co-doc-collapsible{
+  padding:0;background:var(--blue-d);border:1px solid var(--blue-b);
+  border-radius:var(--r);margin-top:8px;font-size:10.5px;color:var(--t2);line-height:1.55;
+}
+#screen-labor-efficiency .le-co-doc-summary{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 11px;font-size:10.5px;line-height:1.4;color:var(--t2);
+}
+#screen-labor-efficiency .le-co-doc-summary strong{color:var(--blue);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;flex-shrink:0}
+#screen-labor-efficiency .le-co-doc-summary-text{flex:1;min-width:0;color:var(--t2);font-size:10.5px}
+#screen-labor-efficiency details.le-co-doc-collapsible[open] .le-co-doc-summary{
+  border-bottom:1px solid var(--border);
+}
+#screen-labor-efficiency details.le-co-doc-collapsible[open] .le-co-doc-summary-text{display:none}
+#screen-labor-efficiency .le-co-doc-body{padding:10px 12px;font-size:10.5px;color:var(--t2);line-height:1.55}
+#screen-labor-efficiency .le-co-doc-body strong{color:var(--t1)}
+
+/* Per-card metrics — collapsible drilldown */
+#screen-labor-efficiency details.le-co-card-metrics-details{
+  margin-top:9px;padding-top:8px;border-top:1px dashed var(--border);
+}
+#screen-labor-efficiency .le-co-card-metrics-summary{
+  display:flex;align-items:center;gap:6px;
+  font-size:10px;font-weight:600;color:var(--t3);
+  letter-spacing:.04em;text-transform:uppercase;
+}
+#screen-labor-efficiency .le-co-card-metrics-summary:hover{color:var(--t2)}
+#screen-labor-efficiency details.le-co-card-metrics-details[open] .le-co-card-metrics{
+  margin-top:6px;padding-top:0;border-top:none;
+}
+
+/* Pattern distribution — horizontal stacked bar + inline legend */
+#screen-labor-efficiency .le-co-pat-bar{
+  display:flex;height:12px;border-radius:var(--r);overflow:hidden;
+  background:var(--surface);border:1px solid var(--border);margin-bottom:8px;
+}
+#screen-labor-efficiency .le-co-pat-seg{transition:flex .3s ease,opacity .12s}
+#screen-labor-efficiency .le-co-pat-seg:hover{opacity:.85;cursor:default}
+#screen-labor-efficiency .le-co-pat-seg.pattern-triple{background:var(--green)}
+#screen-labor-efficiency .le-co-pat-seg.pattern-revenue{background:var(--blue)}
+#screen-labor-efficiency .le-co-pat-seg.pattern-hospitality{background:#a855f7}
+#screen-labor-efficiency .le-co-pat-seg.pattern-coaching{background:var(--amber)}
+#screen-labor-efficiency .le-co-pat-seg.pattern-structural{background:var(--red)}
+#screen-labor-efficiency .le-co-pat-legend{
+  display:flex;flex-direction:column;gap:3px;
+  font-size:10.5px;color:var(--t2);
+}
+#screen-labor-efficiency .le-co-pat-legend-item{display:flex;align-items:center;gap:6px}
+#screen-labor-efficiency .le-co-pat-legend-item.is-empty{opacity:.4}
+#screen-labor-efficiency .le-co-pat-legend-item strong{color:var(--t1);font-weight:700;font-family:var(--mono);margin-left:auto}
+#screen-labor-efficiency .le-co-pat-legend-swatch{
+  width:8px;height:8px;border-radius:2px;flex-shrink:0;
+}
+#screen-labor-efficiency .le-co-pat-legend-swatch.pattern-triple{background:var(--green)}
+#screen-labor-efficiency .le-co-pat-legend-swatch.pattern-revenue{background:var(--blue)}
+#screen-labor-efficiency .le-co-pat-legend-swatch.pattern-hospitality{background:#a855f7}
+#screen-labor-efficiency .le-co-pat-legend-swatch.pattern-coaching{background:var(--amber)}
+#screen-labor-efficiency .le-co-pat-legend-swatch.pattern-structural{background:var(--red)}
+#screen-labor-efficiency .le-co-pat-empty{font-size:11px;color:var(--t3);font-style:italic;padding:8px;text-align:center}
+
+/* ──────────────────────────────────────────────────────────────
+   Benchmarks · hero + chart + detail row + rule cards + footer
+   ────────────────────────────────────────────────────────────── */
+
+#screen-labor-efficiency .le-bm-hero{
+  display:grid;grid-template-columns:1fr 1.3fr;gap:18px;
+  padding:16px 20px;margin-bottom:14px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r-lg);
+}
+#screen-labor-efficiency .le-bm-hero-l{display:flex;flex-direction:column;gap:6px;min-width:0}
+#screen-labor-efficiency .le-bm-hero-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--blue);
+}
+#screen-labor-efficiency .le-bm-hero-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--blue);
+}
+#screen-labor-efficiency .le-bm-hero-title{
+  font-size:18px;font-weight:700;color:var(--t1);letter-spacing:-.01em;
+  line-height:1.25;margin:0;
+}
+#screen-labor-efficiency .le-bm-hero-sub{
+  font-size:12.5px;color:var(--t2);line-height:1.55;margin:0;
+}
+#screen-labor-efficiency .le-bm-hero-sub strong{color:var(--t1);font-weight:700}
+#screen-labor-efficiency .le-bm-hero-srcline{
+  font-size:10.5px;color:var(--t3);font-family:var(--mono);
+  margin-top:6px;padding-top:6px;border-top:1px dashed var(--border);
+}
+#screen-labor-efficiency .le-bm-hero-r{
+  display:flex;flex-direction:column;gap:6px;min-width:0;
+}
+#screen-labor-efficiency .le-bm-chart-h{
+  font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--t3);
+}
+#screen-labor-efficiency .le-bm-chart{width:100%;height:auto;max-height:170px}
+
+/* Compact per-location labor% row (companion to the RPLH chart) */
+#screen-labor-efficiency .le-bm-detail-row{
+  display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;margin-bottom:14px;
+}
+#screen-labor-efficiency .le-bm-detail-cell{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:10px 12px;
+}
+#screen-labor-efficiency .le-bm-detail-cell.is-group{
+  background:var(--surface);border-style:dashed;
+}
+#screen-labor-efficiency .le-bm-detail-loc{
+  font-size:11px;font-weight:600;color:var(--t2);
+  letter-spacing:.02em;
+}
+#screen-labor-efficiency .le-bm-detail-val{
+  font-size:22px;font-weight:700;color:var(--t1);
+  font-family:var(--mono);line-height:1.1;margin-top:3px;
+}
+#screen-labor-efficiency .le-bm-detail-val.is-good{color:var(--green)}
+#screen-labor-efficiency .le-bm-detail-val.is-warn{color:var(--amber)}
+#screen-labor-efficiency .le-bm-detail-val.is-bad{color:var(--red)}
+#screen-labor-efficiency .le-bm-detail-meta{
+  font-size:10px;color:var(--t3);margin-top:3px;font-family:var(--mono);
+}
+#screen-labor-efficiency .le-bm-detail-meta strong{color:var(--t1);font-weight:700}
+
+/* Threshold rules — visual icon cards */
+#screen-labor-efficiency .le-bm-rules-grid{
+  display:grid;grid-template-columns:repeat(5, 1fr);gap:10px;margin-bottom:14px;
+}
+#screen-labor-efficiency .le-bm-rule-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:12px;
+  display:flex;flex-direction:column;gap:4px;min-width:0;
+}
+#screen-labor-efficiency .le-bm-rule-icon{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;font-family:var(--mono);
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--t2);
+  margin-bottom:2px;
+}
+#screen-labor-efficiency .le-bm-rule-icon.is-floor{color:var(--amber);background:var(--amber-d);border-color:var(--amber-b)}
+#screen-labor-efficiency .le-bm-rule-icon.is-ceiling{color:var(--red);background:var(--red-d);border-color:var(--red-b)}
+#screen-labor-efficiency .le-bm-rule-icon.is-sample{color:var(--blue);background:var(--blue-d);border-color:var(--blue-b)}
+#screen-labor-efficiency .le-bm-rule-icon.is-norm{color:var(--green);background:var(--green-d);border-color:var(--green-b)}
+#screen-labor-efficiency .le-bm-rule-icon.is-conf{color:var(--t2)}
+#screen-labor-efficiency .le-bm-rule-h{
+  font-size:11px;font-weight:700;color:var(--t2);
+  letter-spacing:.04em;text-transform:uppercase;
+}
+#screen-labor-efficiency .le-bm-rule-val{
+  font-size:14px;font-weight:700;color:var(--t1);font-family:var(--mono);line-height:1.1;
+}
+#screen-labor-efficiency .le-bm-rule-b{
+  font-size:10.5px;color:var(--t3);line-height:1.5;margin-top:2px;
+}
+
+/* "Closing the gap" calculator — illustrative anchors */
+#screen-labor-efficiency .le-bm-calc{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:14px 16px;margin-bottom:14px;
+}
+#screen-labor-efficiency .le-bm-calc-h{margin-bottom:10px}
+#screen-labor-efficiency .le-bm-calc-eyebrow{
+  display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--blue);
+}
+#screen-labor-efficiency .le-bm-calc-sub{
+  display:block;font-size:11.5px;color:var(--t2);line-height:1.5;margin-top:3px;
+}
+#screen-labor-efficiency .le-bm-calc-sub strong{color:var(--t1);font-weight:700}
+#screen-labor-efficiency .le-bm-calc-grid{
+  display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;
+}
+#screen-labor-efficiency .le-bm-calc-cell{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:11px 13px;
+  display:flex;flex-direction:column;gap:3px;
+}
+#screen-labor-efficiency .le-bm-calc-cell.is-bad{
+  border-color:var(--red-b);background:rgba(239,68,68,.03);
+}
+#screen-labor-efficiency .le-bm-calc-cell.is-total{
+  border-style:dashed;background:rgba(245,158,11,.04);
+}
+#screen-labor-efficiency .le-bm-calc-loc{
+  font-size:11.5px;font-weight:600;color:var(--t1);letter-spacing:.02em;
+}
+#screen-labor-efficiency .le-bm-calc-gap{
+  font-size:10px;color:var(--t3);font-family:var(--mono);
+}
+#screen-labor-efficiency .le-bm-calc-gap strong{color:var(--t2);font-weight:700}
+#screen-labor-efficiency .le-bm-calc-recovery{
+  display:flex;align-items:baseline;gap:1px;margin-top:2px;
+}
+#screen-labor-efficiency .le-bm-calc-amt{
+  font-size:22px;font-weight:700;color:var(--amber);
+  font-family:var(--mono);letter-spacing:-.4px;line-height:1.1;
+}
+#screen-labor-efficiency .le-bm-calc-period{
+  font-size:11px;color:var(--t3);font-weight:600;font-family:var(--mono);
+}
+#screen-labor-efficiency .le-bm-calc-period-line{
+  font-size:10px;color:var(--t3);font-family:var(--mono);font-style:italic;
+}
+#screen-labor-efficiency .le-bm-calc-footer{
+  margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);
+  font-size:10.5px;color:var(--t3);line-height:1.55;
+}
+#screen-labor-efficiency .le-bm-calc-footer strong{color:var(--t2);font-weight:700}
+
+@media (max-width: 900px){
+  #screen-labor-efficiency .le-bm-calc-grid{grid-template-columns:1fr}
+}
+
+/* Footer CTA bar */
+#screen-labor-efficiency .le-bm-footer{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px 16px;background:var(--card);
+  border:1px solid var(--border);border-radius:var(--r-md);
+  flex-wrap:wrap;
+}
+#screen-labor-efficiency .le-bm-footer-text{
+  font-size:11.5px;color:var(--t2);max-width:340px;line-height:1.5;
+}
+#screen-labor-efficiency .le-bm-footer-ctas{display:flex;gap:8px;flex-wrap:wrap}
+
+/* Benchmarks scroll fix — same pattern as Coaching */
+#le-subpage-benchmarks .le-sp-shell{height:auto;min-height:0;overflow:visible}
+#le-subpage-benchmarks .le-sp-body{overflow:visible;flex:none;min-height:0}
+
+@media (max-width: 1100px){
+  #screen-labor-efficiency .le-bm-hero{grid-template-columns:1fr}
+  #screen-labor-efficiency .le-bm-detail-row{grid-template-columns:repeat(2, 1fr)}
+  #screen-labor-efficiency .le-bm-rules-grid{grid-template-columns:repeat(2, 1fr)}
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Evidence · sticky TOC + section grouping + icon eyebrows
+   ────────────────────────────────────────────────────────────── */
+
+/* Evidence scroll fix — same pattern as Coaching/Benchmarks so anchor links work */
+#le-subpage-evidence .le-sp-shell{height:auto;min-height:0;overflow:visible}
+#le-subpage-evidence .le-sp-body{overflow:visible;flex:none;min-height:0;scroll-behavior:smooth}
+#le-subpage-evidence{scroll-behavior:smooth}
+
+/* Sticky TOC */
+#screen-labor-efficiency .le-ev-toc{
+  display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;
+  padding:10px 12px;margin-bottom:14px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r-md);
+  position:sticky;top:0;z-index:5;
+}
+#screen-labor-efficiency .le-ev-toc-item{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 12px;border-radius:var(--r-md);
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--t2);text-decoration:none;
+  transition:background .12s,border-color .12s,color .12s;
+}
+#screen-labor-efficiency .le-ev-toc-item:hover{
+  background:var(--hover);border-color:var(--blue-b);color:var(--t1);
+}
+#screen-labor-efficiency .le-ev-toc-num{
+  flex-shrink:0;width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;font-family:var(--mono);
+  color:var(--blue);background:var(--blue-d);border:1px solid var(--blue-b);
+}
+#screen-labor-efficiency .le-ev-toc-label{
+  flex:1;font-size:12px;font-weight:600;color:var(--t1);
+}
+#screen-labor-efficiency .le-ev-toc-sub{
+  font-size:10px;color:var(--t3);font-family:var(--mono);
+}
+
+/* Section heading band */
+#screen-labor-efficiency .le-ev-section{
+  margin-bottom:18px;scroll-margin-top:80px;
+}
+#screen-labor-efficiency .le-ev-section-h{
+  display:flex;align-items:baseline;gap:10px;margin-bottom:10px;
+  padding-bottom:8px;border-bottom:1px solid var(--border);
+}
+#screen-labor-efficiency .le-ev-section-num{
+  flex-shrink:0;width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;font-family:var(--mono);
+  color:var(--blue);background:var(--blue-d);border:1px solid var(--blue-b);
+  align-self:center;
+}
+#screen-labor-efficiency .le-ev-section-title{
+  font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-.01em;margin:0;
+}
+#screen-labor-efficiency .le-ev-section-sub{
+  font-size:11px;color:var(--t3);line-height:1.4;
+}
+
+/* Evidence cards are now collapsible <details>. Override the original
+   div-based padding so summary + body each carry their own padding,
+   not the outer details element. */
+#screen-labor-efficiency details.le-ev-card{
+  padding:0;display:block;overflow:hidden;
+}
+#screen-labor-efficiency details.le-ev-card > summary.le-ev-h{
+  cursor:pointer;list-style:none;
+  padding:11px 14px;margin-bottom:0;
+  border-bottom:none;
+  display:flex;align-items:center;gap:0;
+  transition:background .12s;
+}
+#screen-labor-efficiency details.le-ev-card > summary.le-ev-h::-webkit-details-marker{display:none}
+#screen-labor-efficiency details.le-ev-card > summary.le-ev-h:hover{background:var(--hover)}
+#screen-labor-efficiency details.le-ev-card > summary.le-ev-h:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+#screen-labor-efficiency details.le-ev-card[open] > summary.le-ev-h{
+  border-bottom:1px solid var(--border);background:var(--card);
+}
+#screen-labor-efficiency details.le-ev-card > .le-ev-body{
+  padding:12px 14px 14px 14px;flex:none;overflow:visible;
+}
+#screen-labor-efficiency .le-ev-card-chev{
+  margin-left:auto;color:var(--t3);font-size:11px;flex-shrink:0;
+  transition:transform .18s ease,color .18s ease;
+}
+#screen-labor-efficiency details.le-ev-card[open] .le-ev-card-chev{
+  transform:rotate(180deg);color:var(--t1);
+}
+
+/* Expand / collapse toolbar */
+#screen-labor-efficiency .le-ev-toolbar{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  margin-bottom:14px;padding:8px 12px;
+  background:var(--surface);border:1px dashed var(--border);
+  border-radius:var(--r-md);
+}
+#screen-labor-efficiency .le-ev-toolbar-hint{
+  font-size:11px;color:var(--t3);font-family:var(--mono);flex:1;min-width:0;
+}
+
+/* Card icon eyebrow */
+#screen-labor-efficiency .le-ev-icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:50%;
+  font-size:12px;font-weight:700;font-family:var(--mono);
+  color:var(--t2);background:var(--surface);border:1px solid var(--border);
+  margin-right:8px;vertical-align:middle;
+}
+#screen-labor-efficiency .le-ev-h{display:flex;align-items:center;gap:0}
+
+@media (max-width: 900px){
+  #screen-labor-efficiency .le-ev-toc{grid-template-columns:repeat(2, 1fr);position:relative;top:auto}
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Server Coaching scroll fix
+   Default subpage shell is locked to viewport height with internal
+   scroll on .le-co-list / .le-co-side. After the warning + hero +
+   data-sources strip + filter row, the card list's scroll area gets
+   crushed. Switch Coaching to natural page scroll (like Heatmap):
+   the shell grows with content and #content handles scrolling.
+   Side rail stays visible via position:sticky.
+   ────────────────────────────────────────────────────────────── */
+#le-subpage-coaching .le-sp-shell{
+  height:auto;min-height:0;overflow:visible;
+}
+#le-subpage-coaching .le-sp-body{
+  overflow:visible;flex:none;min-height:0;
+}
+#le-subpage-coaching .le-co-grid{
+  flex:none;min-height:0;align-items:start;
+}
+#le-subpage-coaching .le-co-panel{
+  overflow:visible;
+}
+#le-subpage-coaching .le-co-list{
+  overflow:visible;flex:none;min-height:0;
+}
+#le-subpage-coaching .le-co-side{
+  overflow:visible;min-height:0;
+  position:sticky;top:12px;
+  max-height:calc(100vh - var(--th) - 60px);
+  overflow-y:auto;
+}
 
 /* Card actions */
 #screen-labor-efficiency .le-co-card-cta{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;grid-column:1 / -1}
