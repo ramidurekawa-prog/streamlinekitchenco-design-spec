@@ -9702,6 +9702,187 @@ function populateHeatmap() {
     });
   });
   grid.dataset.populated = '1';
+  // Apply whichever focal is pending (default = Oakland Tue Lunch) once cells exist.
+  if (typeof leApplyHeatmapFocal === 'function') {
+    leApplyHeatmapFocal(typeof LE_PENDING_FOCAL !== 'undefined' ? LE_PENDING_FOCAL : 'default');
+  }
+}
+
+// Staffing Plan · drafted-action state. Same shape as Coaching's scheduled state:
+// session-scoped, keyed by recommendation id, mutates the DOM in place since
+// the recommendation cards are static HTML (not JS-rendered).
+let LE_SF_DRAFTED = {};
+
+function leSfDraftRec(recId, recLabel, recAmount) {
+  if (LE_SF_DRAFTED[recId]) {
+    // Idempotent — clicking again does nothing besides a toast nudge.
+    if (typeof showDemoToast === 'function') {
+      showDemoToast(recLabel + ' is already drafted · review in Actions', 'blue');
+    }
+    return;
+  }
+  LE_SF_DRAFTED[recId] = { label: recLabel, amount: recAmount, date: 'today' };
+  if (typeof showDemoToast === 'function') {
+    showDemoToast('Action drafted · ' + recLabel + ' ($' + recAmount + '/wk) · review in Actions', 'green');
+  }
+  leSfApplyDraftedState();
+}
+
+function leSfUndraftRec(recId) {
+  delete LE_SF_DRAFTED[recId];
+  if (typeof showDemoToast === 'function') {
+    showDemoToast('Draft removed · recommendation back in queue', 'blue');
+  }
+  leSfApplyDraftedState();
+}
+
+// Bulk apply — drafts every recommendation above the action floor (tier !== red).
+// Skips items already drafted. Floor enforcement lives in the rec card classes.
+function leSfBulkApplyDraft() {
+  const cards = document.querySelectorAll('#le-subpage-staffing .le-sf-item[data-rec-id]');
+  let drafted = 0;
+  cards.forEach(card => {
+    const id = card.getAttribute('data-rec-id');
+    const tierRed = card.classList.contains('le-sf-item-conf-red');
+    if (tierRed) return;
+    if (LE_SF_DRAFTED[id]) return;
+    const label = card.getAttribute('data-rec-label') || id;
+    const amount = parseInt(card.getAttribute('data-rec-amount') || '0', 10);
+    LE_SF_DRAFTED[id] = { label: label, amount: amount, date: 'today' };
+    drafted++;
+  });
+  if (typeof showDemoToast === 'function') {
+    if (drafted > 0) {
+      showDemoToast(drafted + ' action' + (drafted === 1 ? '' : 's') + ' drafted · review in Actions', 'green');
+    } else {
+      showDemoToast('No new actions to draft · all ready items are already drafted', 'amber');
+    }
+  }
+  leSfApplyDraftedState();
+}
+
+// Update every recommendation card + the bulk-apply bar to reflect current draft state.
+// Idempotent — safe to call multiple times.
+function leSfApplyDraftedState() {
+  document.querySelectorAll('#le-subpage-staffing .le-sf-item[data-rec-id]').forEach(card => {
+    const id = card.getAttribute('data-rec-id');
+    const draft = LE_SF_DRAFTED[id];
+    const ctaRow = card.querySelector('.le-sf-item-cta');
+    let badge = card.querySelector('.le-sf-drafted-badge');
+    if (draft) {
+      card.classList.add('is-drafted');
+      // Insert drafted badge in the value block if not present
+      const valBlock = card.querySelector('.le-sf-item-val-block');
+      if (valBlock && !badge) {
+        badge = document.createElement('div');
+        badge.className = 'le-sf-drafted-badge';
+        badge.innerHTML = '✓ Drafted · today';
+        valBlock.appendChild(badge);
+      }
+      // Swap CTAs: primary "Turn into Action" → secondary "Open in Actions" + ghost "Undo draft"
+      if (ctaRow && !ctaRow.dataset.draftedCtas) {
+        ctaRow.dataset.draftedCtas = '1';
+        const label = card.getAttribute('data-rec-label') || id;
+        const heatmapKey = id;
+        ctaRow.innerHTML =
+          '<button class="btn btn-secondary btn-sm" onclick="showScreen(\'actions\',null,\'Active Recovery\');setTimeout(()=>showActionsSubpage(\'active\'),30)">Open in Actions →</button>'
+          + '<button class="btn btn-ghost btn-sm" onclick="leSfUndraftRec(\'' + id + '\')">Undo draft</button>'
+          + '<button class="btn btn-ghost btn-sm" onclick="leShowHeatmapWithFocal(\'' + heatmapKey + '\')">View in Heatmap</button>';
+      }
+    } else {
+      card.classList.remove('is-drafted');
+      if (badge) badge.remove();
+      // Restore original CTAs if previously swapped
+      if (ctaRow && ctaRow.dataset.draftedCtas) {
+        delete ctaRow.dataset.draftedCtas;
+        const label = card.getAttribute('data-rec-label') || id;
+        const amount = card.getAttribute('data-rec-amount') || '0';
+        ctaRow.innerHTML =
+          '<button class="btn btn-primary btn-sm" onclick="leSfDraftRec(\'' + id + '\',\'' + label + '\',' + amount + ')">Turn into Action</button>'
+          + '<button class="btn btn-secondary btn-sm" onclick="leShowHeatmapWithFocal(\'' + id + '\')">View in Heatmap</button>';
+      }
+    }
+  });
+
+  // Update the bulk apply bar
+  const bulkBtn = document.querySelector('#le-subpage-staffing .le-sf-apply-bar-cta');
+  if (bulkBtn) {
+    const eligible = document.querySelectorAll('#le-subpage-staffing .le-sf-item[data-rec-id]:not(.le-sf-item-conf-red)');
+    const remaining = Array.from(eligible).filter(c => !LE_SF_DRAFTED[c.getAttribute('data-rec-id')]);
+    const remainingSum = remaining.reduce((a, c) => a + parseInt(c.getAttribute('data-rec-amount') || '0', 10), 0);
+    if (remaining.length === 0) {
+      bulkBtn.innerHTML = '<span class="le-sf-bulk-done">✓ All ready actions drafted</span>';
+    } else {
+      bulkBtn.innerHTML = '<button class="btn btn-primary" onclick="leSfBulkApplyDraft()">Apply ' + remaining.length + ' action' + (remaining.length === 1 ? '' : 's') + ' · $' + remainingSum + '/wk →</button>';
+    }
+  }
+}
+
+// Heatmap focal map — each Staffing Plan recommendation (and other call sites)
+// can navigate to the Heatmap with the correct focal context, instead of
+// landing on the same default focal regardless of where the user clicked from.
+const LE_HEATMAP_FOCALS = {
+  'default': {
+    eyebrow: 'Worst shift this week',
+    shift:   'Oakland · Tuesday · Lunch',
+    sev:     'Medium severity · lowest sales per labor hour',
+    day:     'Tue',
+    hours:   ['11A', '12P', '1P', '2P']
+  },
+  'oakland-tue-dinner': {
+    eyebrow: 'Coming from Staffing Plan',
+    shift:   'Oakland · Tuesday · Dinner',
+    sev:     'High severity · over-staffed by 1 front-of-house server',
+    day:     'Tue',
+    hours:   ['5P', '6P', '7P', '8P', '9P']
+  },
+  'wc-wed-dinner': {
+    eyebrow: 'Coming from Staffing Plan',
+    shift:   'Walnut Creek · Wednesday · Dinner',
+    sev:     'Medium severity · slow bar service · 4 of 4 comparable shifts',
+    day:     'Wed',
+    hours:   ['5P', '6P', '7P', '8P', '9P']
+  },
+  'berkeley-mon-lunch': {
+    eyebrow: 'Coming from Staffing Plan',
+    shift:   'Berkeley · Monday · Lunch',
+    sev:     'Below 70% — too low to act on yet · investigate first',
+    day:     'Mon',
+    hours:   ['11A', '12P', '1P', '2P']
+  }
+};
+let LE_PENDING_FOCAL = 'default';
+
+// Apply a focal preset to the Heatmap subpage: rewrite the focal eyebrow text
+// and toggle the .is-focal class on matching cells. Called after the heatmap
+// renders (cells must exist before .is-focal is applied).
+function leApplyHeatmapFocal(key) {
+  const f = LE_HEATMAP_FOCALS[key] || LE_HEATMAP_FOCALS.default;
+  const eb = document.getElementById('leFocalEyebrow');
+  const sh = document.getElementById('leFocalShift');
+  const sv = document.getElementById('leFocalSev');
+  if (eb) eb.textContent = f.eyebrow;
+  if (sh) sh.textContent = f.shift;
+  if (sv) sv.textContent = f.sev;
+  // Clear prior focal cells, then mark the new ones.
+  document.querySelectorAll('.le-heatmap-cell.is-focal')
+    .forEach(c => c.classList.remove('is-focal'));
+  f.hours.forEach(h => {
+    const sel = '.le-heatmap-cell[data-day="' + f.day + '"][data-hour="' + h + '"]';
+    document.querySelectorAll(sel).forEach(c => c.classList.add('is-focal'));
+  });
+}
+
+// Called from any Staffing Plan / Overview button that wants to open the
+// Heatmap with a specific focal context. Stores the focal key and triggers
+// subpage navigation; the heatmap-render hook will pick it up on activation.
+function leShowHeatmapWithFocal(focalKey) {
+  LE_PENDING_FOCAL = focalKey || 'default';
+  if (typeof showLaborSubpage === 'function') {
+    showLaborSubpage('heatmap');
+  }
+  // Apply focal slightly after subpage activation so cells exist + populateHeatmap has run.
+  setTimeout(() => leApplyHeatmapFocal(LE_PENDING_FOCAL), 60);
 }
 
 // Evidence subpage — expand all / collapse all cards.

@@ -10,6 +10,7 @@
           </div>
           <div class="le-sp-hdr-right">
             <button class="btn btn-secondary btn-sm" onclick="showLaborSubpage('heatmap')">Open Heatmap</button>
+            <button class="btn btn-secondary btn-sm" onclick="showLaborSubpage('staffing')">Staffing Plan</button>
             <button class="btn btn-ghost btn-sm" onclick="showLaborSubpage('evidence')">Open Evidence</button>
           </div>
         </div>
@@ -36,7 +37,7 @@
                     <span class="le-ov-hero-val-k">/wk [ESTIMATED]</span>
                   </div>
                   <div style="font-size:10.5px;color:var(--t3);line-height:1.6;font-family:var(--mono)">
-                    Math: $185/service · 2 services/week = $370/wk<br>
+                    Math: 5 hrs × $18.50/hr × 4 services/wk = $370/wk<br>
                     Monthly run-rate: $370 × 4.33 = ~$1,602/mo
                   </div>
                   <div class="le-ov-hero-secondary">
@@ -45,7 +46,7 @@
                   </div>
                   <div class="le-ov-hero-cta">
                     <button class="btn btn-primary btn-sm" onclick="openCA('leak1')">Turn into Action</button>
-                    <button class="btn btn-secondary btn-sm" onclick="showLaborSubpage('heatmap')">See in Heatmap</button>
+                    <button class="btn btn-secondary btn-sm" onclick="leShowHeatmapWithFocal('oakland-tue-dinner')">See in Heatmap</button>
                   </div>
                 </div>
               </div>
@@ -58,17 +59,17 @@
                 <div class="le-ov-mini-heat">
                   <span class="le-ov-mini-label"></span>
                   <span class="le-ov-mini-label">M</span><span class="le-ov-mini-label">T</span><span class="le-ov-mini-label">W</span><span class="le-ov-mini-label">T</span><span class="le-ov-mini-label">F</span><span class="le-ov-mini-label">S</span><span class="le-ov-mini-label">S</span>
-                  <span class="le-ov-mini-label">L</span>
-                  <span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h2"></span><span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h2"></span><span class="le-ov-mini-cell h2"></span>
                   <span class="le-ov-mini-label">B</span>
                   <span class="le-ov-mini-cell h2"></span><span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h2"></span><span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h3"></span><span class="le-ov-mini-cell h3"></span>
+                  <span class="le-ov-mini-label">L</span>
+                  <span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h2"></span><span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h2"></span><span class="le-ov-mini-cell h2"></span>
                   <span class="le-ov-mini-label">D</span>
                   <span class="le-ov-mini-cell h2"></span><span class="le-ov-mini-cell h4"></span><span class="le-ov-mini-cell h3"></span><span class="le-ov-mini-cell h2"></span><span class="le-ov-mini-cell h3"></span><span class="le-ov-mini-cell h2"></span><span class="le-ov-mini-cell h1"></span>
                   <span class="le-ov-mini-label">N</span>
                   <span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h1"></span><span class="le-ov-mini-cell h2"></span><span class="le-ov-mini-cell h3"></span><span class="le-ov-mini-cell h2"></span>
                 </div>
                 <div class="le-ov-mini-foot">
-                  <span>L=Lunch · B=Brunch · D=Dinner · N=Night</span>
+                  <span>B=Breakfast · L=Lunch · D=Dinner · N=Late Night</span>
                   <span style="color:var(--red);font-weight:600">Tue dinner · worst</span>
                 </div>
                 <div style="margin-top:10px;padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px;font-size:10.5px;color:var(--t3);line-height:1.5">
@@ -180,10 +181,10 @@
     </div>
 
         <!-- SUMMARY BAR -->
-        <div class="le-summary-focal">
-          <span class="le-focal-eyebrow">Worst shift this week</span>
-          <span class="le-focal-shift">Oakland · Tuesday · Lunch</span>
-          <span class="le-focal-sev">Medium severity · lowest sales per labor hour</span>
+        <div class="le-summary-focal" id="leFocalBar">
+          <span class="le-focal-eyebrow" id="leFocalEyebrow">Worst shift this week</span>
+          <span class="le-focal-shift" id="leFocalShift">Oakland · Tuesday · Dinner</span>
+          <span class="le-focal-sev" id="leFocalSev">High severity · biggest labor cost leak this week</span>
         </div>
         <div class="le-summary-strip">
           <div class="le-sum-cell">
@@ -206,13 +207,13 @@
           <div class="le-sum-div"></div>
           <div class="le-sum-cell">
             <div class="le-sum-label">Extra hours staffed</div>
-            <div class="le-sum-val le-sum-amber">2.8<span class="le-sum-period"> hrs</span></div>
-            <div class="le-sum-tag">More than sales support</div>
+            <div class="le-sum-val le-sum-amber">5.0<span class="le-sum-period"> hrs</span></div>
+            <div class="le-sum-tag">Per service · 6 of 6 confirmed</div>
           </div>
           <div class="le-sum-div"></div>
           <div class="le-sum-cell">
             <div class="le-sum-label">Estimated overspend</div>
-            <div class="le-sum-val le-sum-amber">~$97<span class="le-sum-period">/wk</span></div>
+            <div class="le-sum-val le-sum-red">~$370<span class="le-sum-period">/wk</span></div>
             <div class="le-sum-tag le-tag-est">Estimated · 78% confidence</div>
           </div>
         </div>
@@ -235,7 +236,7 @@
             <div class="le-section-sub">Each cell is one hour. Color shows how well that hour's sales covered its labor cost compared to a healthy benchmark for the same hour.</div>
             <div class="le-pattern-chip">
               <span class="le-pattern-chip-dot"></span>
-              Repeat problem: Tuesday lunch has been below the benchmark 4 of the last 6 weeks
+              Repeat problem: Tuesday dinner has been below the benchmark 6 of the last 6 weeks
             </div>
           </div>
           <div class="le-heatmap-flex">
@@ -406,13 +407,13 @@
               </div>
             </div>
             <div class="le-sf-apply-bar-cta">
-              <button class="btn btn-primary" onclick="showDemoToast('Drafting 2 actions · ready for review','green')">Apply 2 actions →</button>
+              <button class="btn btn-primary" onclick="leSfBulkApplyDraft()">Apply 2 actions · $559/wk →</button>
             </div>
           </div>
 
           <!-- Heatmap focal note — sets expectation before the per-rec "View in Heatmap" buttons -->
           <div class="le-sf-heatmap-note">
-            <strong>Heatmap</strong> shows the weekly hourly grid · current focal pattern is <strong>Tue Lunch ($97/wk)</strong>. Use <strong>Turn into Action</strong> or <strong>Show Evidence</strong> from any recommendation for the shift-specific drill-in.
+            Each <strong>View in Heatmap</strong> button below opens the heatmap focused on that recommendation's shift — Oakland Tue dinner, Walnut Creek Wed dinner, or Berkeley Mon lunch — so you see the exact hours behind the dollar amount.
           </div>
 
           <div class="le-sf-grid">
@@ -423,7 +424,7 @@
                 <span style="font-size:10px;font-weight:400;color:var(--t3);text-transform:none;letter-spacing:0">Sorted by · Weekly $ exposure ↓</span>
               </div>
               <div class="le-sf-list">
-                <div class="le-sf-item le-sf-item-conf-amber">
+                <div class="le-sf-item le-sf-item-conf-amber" data-rec-id="oakland-tue-dinner" data-rec-label="Oakland Tue dinner" data-rec-amount="370">
                   <div class="le-sf-item-h">
                     <div>
                       <div class="le-sf-item-t">Remove one 5–10 PM front-of-house server · Oakland Tue dinner</div>
@@ -436,7 +437,7 @@
                     </div>
                   </div>
                   <div class="le-sf-item-meta">
-                    <span>5 hrs × $18.50 × 4 services</span>
+                    <span>5 hrs × $18.50/hr × 4 services/wk</span>
                     <span>·</span>
                     <span class="le-sf-conf-badge le-sf-conf-badge-amber">78% · review before acting</span>
                     <span>·</span>
@@ -446,12 +447,12 @@
                     Review before applying — confidence is between 70% (enough to act) and 80% (enough to count as verified). Check the math, then proceed.
                   </div>
                   <div class="le-sf-item-cta">
-                    <button class="btn btn-primary btn-sm" onclick="openCA('leak1')">Turn into Action</button>
-                    <button class="btn btn-secondary btn-sm" onclick="showLaborSubpage('heatmap')">View in Heatmap</button>
+                    <button class="btn btn-primary btn-sm" onclick="leSfDraftRec('oakland-tue-dinner','Oakland Tue dinner',370)">Turn into Action</button>
+                    <button class="btn btn-secondary btn-sm" onclick="leShowHeatmapWithFocal('oakland-tue-dinner')">View in Heatmap</button>
                   </div>
                 </div>
 
-                <div class="le-sf-item le-sf-item-conf-green">
+                <div class="le-sf-item le-sf-item-conf-green" data-rec-id="wc-wed-dinner" data-rec-label="Walnut Creek Wed dinner" data-rec-amount="189">
                   <div class="le-sf-item-h">
                     <div>
                       <div class="le-sf-item-t">Reduce bar staffing −1 · Walnut Creek Wed dinner</div>
@@ -471,12 +472,12 @@
                     <span>~$818/mo</span>
                   </div>
                   <div class="le-sf-item-cta">
-                    <button class="btn btn-primary btn-sm" onclick="showDemoToast('Action draft created · pending approval','blue')">Turn into Action</button>
-                    <button class="btn btn-secondary btn-sm" onclick="showLaborSubpage('heatmap')">View in Heatmap</button>
+                    <button class="btn btn-primary btn-sm" onclick="leSfDraftRec('wc-wed-dinner','Walnut Creek Wed dinner',189)">Turn into Action</button>
+                    <button class="btn btn-secondary btn-sm" onclick="leShowHeatmapWithFocal('wc-wed-dinner')">View in Heatmap</button>
                   </div>
                 </div>
 
-                <div class="le-sf-item le-sf-item-conf-red">
+                <div class="le-sf-item le-sf-item-conf-red" data-rec-id="berkeley-mon-lunch" data-rec-label="Berkeley Mon lunch" data-rec-amount="125">
                   <div class="le-sf-item-h">
                     <div>
                       <div class="le-sf-item-t">Cut 1 kitchen expo · Berkeley Mon lunch</div>
@@ -500,7 +501,7 @@
                   </div>
                   <div class="le-sf-item-cta">
                     <button class="btn btn-secondary btn-sm" onclick="showLaborSubpage('evidence')">Investigate evidence</button>
-                    <button class="btn btn-ghost btn-sm" onclick="showLaborSubpage('heatmap')">View in Heatmap</button>
+                    <button class="btn btn-ghost btn-sm" onclick="leShowHeatmapWithFocal('berkeley-mon-lunch')">View in Heatmap</button>
                   </div>
                 </div>
               </div>
@@ -510,10 +511,15 @@
             <div class="le-sf-side">
               <div class="le-sf-side-card">
                 <div class="le-sf-side-h">Plan totals</div>
+                <div class="le-sf-side-subh">Ready to apply now <span class="le-sf-side-subh-meta">2 of 3</span></div>
+                <div class="le-sf-side-row"><span>Hours reduced / wk</span><strong>8.0</strong></div>
+                <div class="le-sf-side-row"><span>Combined / wk</span><strong style="color:var(--green)">$559</strong></div>
+                <div class="le-sf-side-row"><span>Monthly run-rate</span><strong style="color:var(--green)">~$2,420</strong></div>
+                <div class="le-sf-side-subh le-sf-side-subh-dim">Full plan <span class="le-sf-side-subh-meta">if all 3 applied</span></div>
                 <div class="le-sf-side-row"><span>Hours reduced / wk</span><strong>18.5</strong></div>
                 <div class="le-sf-side-row"><span>Combined / wk</span><strong style="color:var(--amber)">$684</strong></div>
                 <div class="le-sf-side-row"><span>Monthly run-rate</span><strong style="color:var(--amber)">~$2,961</strong></div>
-                <div class="le-sf-side-row"><span>Verified savings</span><strong style="color:var(--t3)">$0</strong></div>
+                <div class="le-sf-side-row le-sf-side-row-divider"><span>Verified savings</span><strong style="color:var(--t3)">$0</strong></div>
               </div>
               <div class="le-sf-side-card le-sf-side-card-clickable" onclick="showScreen('settings',null,'Data Quality')" role="button" tabindex="0" aria-label="Open Settings to edit wage rates">
                 <div class="le-sf-side-h">Wage assumptions (fully loaded) <span class="le-sf-side-h-action">edit →</span></div>
@@ -544,6 +550,7 @@
             <div class="le-sp-hdr-sub"><strong style="color:var(--t1)">How your locations compare to similar restaurants.</strong> These numbers are the reference points — the dollar savings live in Heatmap and Staffing Plan.</div>
           </div>
           <div class="le-sp-hdr-right">
+            <button class="btn btn-ghost btn-sm" onclick="showLaborSubpage('overview')">← Overview</button>
             <button class="btn btn-secondary btn-sm" onclick="showLaborSubpage('heatmap')">Open Heatmap</button>
             <button class="btn btn-ghost btn-sm" onclick="showLaborSubpage('evidence')">Open Evidence</button>
           </div>
@@ -684,7 +691,7 @@
               <span class="le-bm-rule-icon is-ceiling">▲</span>
               <div class="le-bm-rule-h">Labor cost ceiling</div>
               <div class="le-bm-rule-val">31.0%</div>
-              <div class="le-bm-rule-b">If labor as a share of sales goes above this, it's flagged as out of band. Range is set for full-service casual without delivery.</div>
+              <div class="le-bm-rule-b">Flag threshold: if labor as a share of sales exceeds this, the shift is flagged as out of band. Distinct from the <strong>target (29.3%)</strong>, which is the top-quarter peer benchmark to aim for. Range is set for full-service casual without delivery.</div>
             </div>
             <div class="le-bm-rule-card">
               <span class="le-bm-rule-icon is-sample">∑</span>
@@ -770,7 +777,7 @@
                 <span class="le-co-hero-tag">[estimated]</span>
               </div>
               <div class="le-co-hero-projection">
-                = <strong>$3,646</strong>/month · ~<strong>$43,784</strong>/year if everyone on the team performed at your team's typical sales level
+                = <strong>$3,646</strong>/month · ~<strong>$43,752</strong>/year if everyone on the team performed at your team's typical sales level
               </div>
               <div class="le-co-hero-fraction" id="leCoHeroFraction">
                 <!-- Filled by renderLeCoHero() — e.g. "Top 3 priorities at right cover $309/wk · 37% of the team gap" -->
@@ -827,6 +834,50 @@
               </div>
               <div class="le-co-list" id="leCoList">
                 <!-- Filled by renderLeCoaching() -->
+              </div>
+            </div>
+
+            <!-- RIGHT · Pattern guide + score thresholds -->
+            <div class="le-co-side">
+              <div class="le-co-side-card">
+                <div class="le-co-side-h">Pattern guide</div>
+                <div class="le-co-pat-row">
+                  <span><strong style="color:var(--green)">Triple-threat</strong></span>
+                  <span class="le-co-pat-tag" style="background:rgba(34,197,94,0.15);color:var(--green)">Top 3</span>
+                </div>
+                <div style="font-size:10px;color:var(--t3);margin:2px 0 8px;line-height:1.4">Top quartile on all available axes. Use for recognition and pairing with new hires.</div>
+                <div class="le-co-pat-row">
+                  <span><strong style="color:var(--blue)">Revenue specialist</strong></span>
+                  <span class="le-co-pat-tag" style="background:rgba(59,130,246,0.15);color:var(--blue)">Sell</span>
+                </div>
+                <div style="font-size:10px;color:var(--t3);margin:2px 0 8px;line-height:1.4">High on revenue, average elsewhere. Coach toward building repeat guests and reliability.</div>
+                <div class="le-co-pat-row">
+                  <span><strong style="color:#a855f7">Hospitality specialist</strong></span>
+                  <span class="le-co-pat-tag" style="background:rgba(168,85,247,0.15);color:#a855f7">Host</span>
+                </div>
+                <div style="font-size:10px;color:var(--t3);margin:2px 0 8px;line-height:1.4">Strong on retention or reliability, average on revenue. Coach toward premium item attach and modifiers.</div>
+                <div class="le-co-pat-row">
+                  <span><strong style="color:var(--amber)">Coaching opportunity</strong></span>
+                  <span class="le-co-pat-tag" style="background:rgba(245,158,11,0.15);color:var(--amber)">Coach</span>
+                </div>
+                <div style="font-size:10px;color:var(--t3);margin:2px 0 8px;line-height:1.4">Bottom quartile on one axis. Targeted 1-on-1 coaching on the specific gap produces the clearest lift.</div>
+                <div class="le-co-pat-row">
+                  <span><strong style="color:var(--red)">Structural concern</strong></span>
+                  <span class="le-co-pat-tag" style="background:rgba(239,68,68,0.15);color:var(--red)">Review</span>
+                </div>
+                <div style="font-size:10px;color:var(--t3);margin:2px 0 4px;line-height:1.4">Bottom quartile on two or more axes. Investigate section or scheduling fit before coaching.</div>
+              </div>
+              <div class="le-co-side-card">
+                <div class="le-co-side-h">Score thresholds</div>
+                <div class="le-co-side-row"><span>Top quartile</span><strong>≥ 70</strong></div>
+                <div class="le-co-side-row"><span>Middle (hidden)</span><strong>36 – 69</strong></div>
+                <div class="le-co-side-row"><span>Bottom quartile</span><strong>≤ 35</strong></div>
+                <div class="le-co-side-row"><span>Min shifts (60 days)</span><strong>12</strong></div>
+                <div class="le-co-side-row"><span>Min peer servers</span><strong>3</strong></div>
+              </div>
+              <div class="le-co-doc">
+                <strong>Doctrine</strong>
+                Server Coaching diagnoses — it does not decide. Turn opportunities into Actions. Verified savings only after coaching produces measurable, guardrail-safe lift.
               </div>
             </div>
 

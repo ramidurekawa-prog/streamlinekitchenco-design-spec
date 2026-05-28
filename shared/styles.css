@@ -6934,12 +6934,10 @@ body.skc-phase-paying .rp-pilot-card{display:none}
   position:relative;z-index:1;
 }
 
-/* Focal-shift outline — ties the "Focal shift this week" eyebrow to the
-   heatmap cells it actually describes (Oakland Tue Lunch · 11A–2P). */
-.le-heatmap-cell[data-day="Tue"][data-hour="11A"],
-.le-heatmap-cell[data-day="Tue"][data-hour="12P"],
-.le-heatmap-cell[data-day="Tue"][data-hour="1P"],
-.le-heatmap-cell[data-day="Tue"][data-hour="2P"]{
+/* Focal-shift outline — ties the focal eyebrow to its matching heatmap cells.
+   JS adds .is-focal to whichever cells match the current focal shift; default
+   is Oakland Tue Lunch (set on initial render). */
+.le-heatmap-cell.is-focal{
   outline:1.5px dashed var(--amber);outline-offset:-2px;
   position:relative;z-index:1;
 }
@@ -8726,6 +8724,18 @@ body.skc-role-owner .skc-aud-gm{opacity:.45}
 #screen-labor-efficiency .le-sf-side-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px dashed var(--border);font-size:11px;color:var(--t2)}
 #screen-labor-efficiency .le-sf-side-row:last-child{border-bottom:none}
 #screen-labor-efficiency .le-sf-side-row strong{color:var(--t1);font-weight:600;font-family:var(--mono)}
+#screen-labor-efficiency .le-sf-side-subh{
+  display:flex;align-items:baseline;justify-content:space-between;gap:6px;
+  font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--green);
+  margin-top:6px;padding-top:6px;border-top:1px dashed var(--border);
+}
+#screen-labor-efficiency .le-sf-side-subh:first-of-type{margin-top:2px;padding-top:0;border-top:none}
+#screen-labor-efficiency .le-sf-side-subh-dim{color:var(--t3)}
+#screen-labor-efficiency .le-sf-side-subh-meta{
+  font-size:9px;color:var(--t3);text-transform:none;letter-spacing:0;font-weight:500;font-family:var(--mono);
+}
+#screen-labor-efficiency .le-sf-side-row-divider{margin-top:6px;padding-top:6px;border-top:1px solid var(--border)}
 
 /* ── Staffing Plan · v32 additions ─────────────────────────── */
 
@@ -8889,6 +8899,26 @@ body.skc-role-owner .skc-aud-gm{opacity:.45}
   color:var(--red);background:var(--red-d);border:1px solid var(--red-b);
 }
 
+/* Drafted state — applies to a recommendation card after its action is created.
+   Mirrors Coaching's scheduled-state pattern: subtle green tint + a small chip
+   in the value block + CTAs swapped to "Open in Actions / Undo". */
+#screen-labor-efficiency .le-sf-item.is-drafted{
+  background:linear-gradient(90deg, rgba(16,185,129,.05) 0%, var(--card) 40%);
+}
+#screen-labor-efficiency .le-sf-drafted-badge{
+  display:inline-block;font-size:9.5px;font-weight:700;font-family:var(--mono);
+  padding:1px 7px;border-radius:9px;margin-top:5px;letter-spacing:.02em;
+  color:var(--green);background:var(--green-d);border:1px solid var(--green-b);
+}
+
+/* Bulk-apply "all drafted" success state */
+#screen-labor-efficiency .le-sf-bulk-done{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:11.5px;font-weight:700;color:var(--green);
+  background:var(--green-d);border:1px solid var(--green-b);
+  border-radius:var(--r-md);padding:6px 12px;font-family:var(--mono);
+}
+
 /* Clickable side-card (Wage assumptions → Settings) */
 #screen-labor-efficiency .le-sf-side-card-clickable{cursor:pointer;transition:background .12s,border-color .12s}
 #screen-labor-efficiency .le-sf-side-card-clickable:hover{background:var(--hover);border-color:var(--border-s)}
@@ -8988,7 +9018,7 @@ body.skc-role-owner .skc-aud-gm{opacity:.45}
 #screen-labor-efficiency .le-co-patleg-dot.struc{background:var(--red)}
 
 /* Main 2-col grid: server cards LEFT / patterns RIGHT */
-#screen-labor-efficiency .le-co-grid{display:grid;grid-template-columns:1fr;gap:12px;flex:1;min-height:0}
+#screen-labor-efficiency .le-co-grid{display:grid;grid-template-columns:2fr 1fr;gap:12px;flex:1;min-height:0;align-items:start}
 #screen-labor-efficiency .le-co-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:14px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
 #screen-labor-efficiency .le-co-panel-h{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;justify-content:space-between;align-items:center;gap:8px}
 #screen-labor-efficiency .le-co-panel-h .le-co-count{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1px 7px;font-weight:700;color:var(--t1);font-size:10px;letter-spacing:0;text-transform:none}
@@ -9790,6 +9820,34 @@ body.skc-role-owner .skc-aud-gm{opacity:.45}
 
 @media (max-width: 900px){
   #screen-labor-efficiency .le-ev-toc{grid-template-columns:repeat(2, 1fr);position:relative;top:auto}
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Staffing Plan scroll fix
+   Same pattern as Coaching: with the hero + strip + apply bar +
+   heatmap note + section header above, the inner .le-sf-list scroll
+   area gets crushed. Switch to natural page scroll, sticky right rail.
+   ────────────────────────────────────────────────────────────── */
+#le-subpage-staffing .le-sp-shell{
+  height:auto;min-height:0;overflow:visible;
+}
+#le-subpage-staffing .le-sp-body{
+  overflow:visible;flex:none;min-height:0;
+}
+#le-subpage-staffing .le-sf-grid{
+  flex:none;min-height:0;align-items:start;
+}
+#le-subpage-staffing .le-sf-panel{
+  overflow:visible;
+}
+#le-subpage-staffing .le-sf-list{
+  overflow:visible;flex:none;min-height:0;
+}
+#le-subpage-staffing .le-sf-side{
+  overflow:visible;min-height:0;
+  position:sticky;top:12px;
+  max-height:calc(100vh - var(--th) - 60px);
+  overflow-y:auto;
 }
 
 /* ──────────────────────────────────────────────────────────────
