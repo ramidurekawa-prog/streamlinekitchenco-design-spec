@@ -8,12 +8,12 @@
       <div class="pr-page-header-left">
         <div class="page-header-title">Profit Recovery</div>
         <div class="page-header-sub">Recovery opportunities ranked by value, confidence, and verification readiness.</div>
-        <div class="pr-doctrine">Only Verified Savings count toward ROI. Open opportunities and Active Recovery are not counted until monitoring confirms guardrails held.</div>
+        <div class="doctrine-line">Only Verified Savings count toward ROI. Open opportunities and Active Recovery are not counted until monitoring confirms guardrails held.</div>
       </div>
       <div class="pr-page-header-right">
-        <span class="skc-aud-badge skc-aud-both" title="Profit Recovery is used by both GM (assign) and Owner (review)">Both</span>
-        <button class="btn btn-primary" onclick="openCA('leak1')">Assign Highest-Value Action</button>
-        <button class="btn btn-secondary btn-sm" onclick="openEvDrawer('leak1')">Show the Math</button>
+        <span class="aud-badge aud-both" title="Profit Recovery is used by both GM (assign) and Owner (review)">Both</span>
+        <button class="btn btn-primary" onclick="openCA('leak1')">Turn into Action</button>
+        <button class="btn btn-secondary btn-sm" onclick="openEvDrawer('leak1')">See full math</button>
       </div>
     </div>
 
@@ -36,7 +36,7 @@
           <div class="pr-hero-cat-row">
             <span class="pr-cat-badge pr-cat-labor">Labor</span>
             <span class="pr-hero-loc">Oakland · Tuesday Lunch</span>
-            <span class="pr-hero-priority" title="Priority score: 87/100 — see Show the Math">Ranked #1 · High priority</span>
+            <span class="pr-hero-priority" title="Priority score: 87/100 — see See full math">Ranked #1 · High priority</span>
           </div>
 
           <div class="pr-hero-title">Oakland Tuesday dinner labor recovery</div>
@@ -108,8 +108,8 @@
 
           <!-- CTAs -->
           <div class="pr-hero-ctas">
-            <button class="btn btn-primary" id="dq-action-create-btn" onclick="openCA('leak1')">Assign Highest-Value Action</button>
-            <button class="btn btn-secondary" onclick="openEvDrawer('leak1')">Show the Math</button>
+            <button class="btn btn-primary" id="dq-action-create-btn" onclick="openCA('leak1')">Turn into Action</button>
+            <button class="btn btn-secondary" onclick="openEvDrawer('leak1')">See full math</button>
             <button class="btn btn-ghost btn-sm" onclick="showDemoToast('Simulation: $185–$520/wk modeled · not counted as ROI','blue')">Simulate Fix</button>
             <button class="btn btn-ghost btn-sm" onclick="showScreen('labor-efficiency',null,'Labor Efficiency')">Labor math →</button>
             <button class="ask-why-btn" onclick="askPanelQ('Why did the Oakland Tuesday dinner labor recovery trigger?')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Ask SKC why</button>
@@ -310,8 +310,8 @@
           <div class="pr-opp-score" title="Priority score">74<span class="pr-opp-score-denom">/100</span></div>
         </div>
         <div class="pr-opp-actions">
-          <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openCA('leak2')">Assign Recovery Action</button>
-          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openEvDrawer('leak2')">Show the Math</button>
+          <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openCA('leak2')">Turn into Action</button>
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openEvDrawer('leak2')">See full math</button>
         </div>
       </div>
 
@@ -342,8 +342,8 @@
           <div class="pr-opp-score" title="Priority score">69<span class="pr-opp-score-denom">/100</span></div>
         </div>
         <div class="pr-opp-actions">
-          <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openCA('leak3')">Assign Recovery Action</button>
-          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openEvDrawer('leak3')">Show the Math</button>
+          <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openCA('leak3')">Turn into Action</button>
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openEvDrawer('leak3')">See full math</button>
         </div>
       </div>
 
@@ -375,7 +375,7 @@
         </div>
         <div class="pr-opp-actions">
           <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();showScreen('table-turns',null,'Table Turns')">Open Table Turns</button>
-          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();showScreen('table-turns',null,'Table Turns');setTimeout(function(){if(typeof ttOpenEvidence==='function')ttOpenEvidence()},120)">Show the Math</button>
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();showScreen('table-turns',null,'Table Turns');setTimeout(function(){if(typeof ttOpenEvidence==='function')ttOpenEvidence()},120)">See full math</button>
         </div>
       </div>
 
@@ -390,7 +390,7 @@
     <!-- ══ DEEP TABS (hidden behind label) ═══════════════════ -->
     <!-- These tabs are preserved for Evidence, Guardrails,
          Verification, and History depth — accessible via
-         "Show the Math" and evidence drawer links, not primary nav -->
+         "See full math" and evidence drawer links, not primary nav -->
     <div class="pr-deep-section">
       <div class="pr-deep-label">Deep analysis</div>
       <div class="skc-tab-bar" style="margin-bottom:0">
@@ -474,7 +474,7 @@
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;padding:14px 0;border-top:1px solid var(--border);flex-wrap:wrap">
-          <button class="btn btn-primary" onclick="openCA('leak1')">Assign Highest-Value Action</button>
+          <button class="btn btn-primary" onclick="openCA('leak1')">Turn into Action</button>
           <button class="btn btn-secondary" onclick="switchTab('recovery','guardrails')">View guardrails</button>
           <button class="btn btn-ghost btn-sm" onclick="switchTab('recovery','verification')">Verification rules</button>
           <button class="ask-why-btn" onclick="askPanelQ('How confident is SKC in the RPLH calculation?')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Ask SKC</button>

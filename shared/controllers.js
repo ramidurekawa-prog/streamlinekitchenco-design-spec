@@ -306,6 +306,24 @@ function navTtChildKeydown(event, sub) {
   }
 }
 
+// ── (v32) Table Turns · Watch — toggle 4-stage vs hour-by-hour view ──
+function toggleWatchStageView(mode) {
+  const v4 = document.getElementById('watchStageView4');
+  const vh = document.getElementById('watchStageViewHourly');
+  const b4 = document.getElementById('watchStageBtn4');
+  const bh = document.getElementById('watchStageBtnHourly');
+  if (!v4 || !vh || !b4 || !bh) return;
+  const on  = (el) => { el.style.background = 'var(--surface)'; el.style.color = 'var(--t1)'; };
+  const off = (el) => { el.style.background = 'transparent';    el.style.color = 'var(--t3)'; };
+  if (mode === 'hourly') {
+    v4.style.display = 'none';  vh.style.display = 'block';
+    off(b4); on(bh);
+  } else {
+    v4.style.display = 'block'; vh.style.display = 'none';
+    on(b4); off(bh);
+  }
+}
+
 // ── Matrix: select an item ──────────────────────────────────
 
 // ────────────────────────────────────────────────────────────────────

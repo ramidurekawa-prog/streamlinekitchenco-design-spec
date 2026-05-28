@@ -12,7 +12,7 @@
         <div class="page-header-sub">Last 30 days · Owner-ready verified value · Guardrail-safe monitored recovery only</div>
       </div>
       <div class="rp-page-header-right">
-        <span class="skc-aud-badge skc-aud-owner" title="ROI Proof is the owner-facing verified value surface">Owner view</span>
+        <span class="aud-badge aud-owner" title="ROI Proof is the owner-facing verified value surface">Owner view</span>
         <button class="btn btn-primary" onclick="openOwnerReport()">Export Owner Report</button>
         <button class="btn btn-secondary btn-sm" onclick="showDemoToast('Owner summary copied to clipboard','blue')">Copy Summary</button>
       </div>
@@ -562,9 +562,9 @@
           <table class="cct">
             <thead><tr><th>Opportunity</th><th>Weekly exposure</th><th>Why not verified</th><th>Path to verification</th><th></th></tr></thead>
             <tbody>
-              <tr class="cct-row"><td><div class="cct-issue">Tuesday–Wednesday labor overstaffing</div><div class="cct-issue-sub">Oakland + Berkeley · $185/service · 2 svc/wk per location</div></td><td class="cct-money cct-red">$370/wk<div class="cct-muted">not assigned</div></td><td style="font-size:11.5px;color:var(--t3)">No action created. 7shifts stale reduces confidence to 78%.</td><td style="font-size:11.5px;color:var(--t2)">Assign → implement → 2-week monitoring → RPLH ≥ $36.50</td><td><button class="btn btn-primary btn-sm" onclick="openCA('leak1')">Assign Action</button></td></tr>
+              <tr class="cct-row"><td><div class="cct-issue">Tuesday–Wednesday labor overstaffing</div><div class="cct-issue-sub">Oakland + Berkeley · $185/service · 2 svc/wk per location</div></td><td class="cct-money cct-red">$370/wk<div class="cct-muted">not assigned</div></td><td style="font-size:11.5px;color:var(--t3)">No action created. 7shifts stale reduces confidence to 78%.</td><td style="font-size:11.5px;color:var(--t2)">Assign → implement → 2-week monitoring → RPLH ≥ $36.50</td><td><button class="btn btn-primary btn-sm" onclick="openCA('leak1')">Turn into Action</button></td></tr>
               <tr class="cct-row"><td><div class="cct-issue">Grilled Salmon below margin threshold</div><div class="cct-issue-sub">All locations · $5.52/plate · 94 covers/wk</div></td><td class="cct-money cct-amber">$519/wk<div class="cct-muted">blocked</div></td><td style="font-size:11.5px;color:var(--t3)">Owner approval required. Recipe cost stale 18d.</td><td style="font-size:11.5px;color:var(--t2)">Owner approval → reprice → 3-week monitoring → CM ≥ 45%</td><td><button class="btn btn-secondary btn-sm" onclick="switchTab('execution','approvals');showScreen('actions',null,'Actions')">Get Approval</button></td></tr>
-              <tr class="cct-row"><td><div class="cct-issue">Friday lunch ticket time spike · Berkeley</div><div class="cct-issue-sub">Berkeley · $384/Friday service · 1 service/wk</div></td><td class="cct-money" style="color:var(--blue)">$354/wk<div class="cct-muted">KDS partial</div></td><td style="font-size:11.5px;color:var(--t3)">KDS partial. Root cause unconfirmed.</td><td style="font-size:11.5px;color:var(--t2)">Line review → process fix → 3-week monitoring → ticket time ≤ 12 min</td><td><button class="btn btn-ghost btn-sm" onclick="openCA('leak3')">Assign Action</button></td></tr>
+              <tr class="cct-row"><td><div class="cct-issue">Friday lunch ticket time spike · Berkeley</div><div class="cct-issue-sub">Berkeley · $384/Friday service · 1 service/wk</div></td><td class="cct-money" style="color:var(--blue)">$354/wk<div class="cct-muted">KDS partial</div></td><td style="font-size:11.5px;color:var(--t3)">KDS partial. Root cause unconfirmed.</td><td style="font-size:11.5px;color:var(--t2)">Line review → process fix → 3-week monitoring → ticket time ≤ 12 min</td><td><button class="btn btn-ghost btn-sm" onclick="openCA('leak3')">Turn into Action</button></td></tr>
             </tbody>
           </table>
           <div class="cct-footer">

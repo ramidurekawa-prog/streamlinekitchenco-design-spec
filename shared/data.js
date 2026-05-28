@@ -224,11 +224,9 @@ const LE_CO_PATTERN_META = {
 
 // ── from source lines 24397-24404 (TT_SUBPAGE_TITLES) ──
 const TT_SUBPAGE_TITLES = {
-  overview:   'Table Turns',
-  stages:     'Table Turn Stage Flow',
-  lostcovers: 'Lost Cover Model',
-  playbooks:  'Turn Playbooks',
-  evidence:   'Table Turn Evidence',
+  overview:   'Table Turns · Watch',
+  playbooks:  'Table Turns · Decide',
+  evidence:   'Table Turns · Evidence',
 };
 
 

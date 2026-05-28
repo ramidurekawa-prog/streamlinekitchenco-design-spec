@@ -8,11 +8,11 @@
       <div class="ac-page-header-left">
         <div class="page-header-title">Actions</div>
         <div class="page-header-sub">Assigned operating changes, due services, monitoring windows, and verification progress.</div>
-        <div class="ac-doctrine">Active Recovery does not count toward ROI until monitoring confirms guardrails held.</div>
+        <div class="doctrine-line">Active Recovery does not count toward ROI until monitoring confirms guardrails held.</div>
       </div>
       <div class="ac-page-header-right">
-        <span class="skc-aud-badge skc-aud-gm" title="Actions is the GM's daily execution surface">GM view</span>
-        <button class="btn btn-primary" onclick="openCA('leak1')">Assign Recovery Action</button>
+        <span class="aud-badge aud-gm" title="Actions is the GM's daily execution surface">GM view</span>
+        <button class="btn btn-primary" onclick="openCA('leak1')">Turn into Action</button>
         <button class="btn btn-secondary btn-sm" onclick="switchTab('execution','monitoring')">View monitoring</button>
       </div>
     </div>
@@ -501,24 +501,24 @@
 
     <!-- ══ (v28) Subpage: PENDING DECISIONS ══════════════════════════ -->
     <div class="ac-subpage" id="ac-subpage-pending">
-      <div class="ac-sp-shell">
-        <div class="ac-sp-header">
-          <div class="ac-sp-hdr-left">
-            <div class="ac-sp-hdr-title">Pending Decisions</div>
-            <div class="ac-sp-hdr-sub">Awaiting operator approval. Items here are <strong style="color:var(--amber)">[ESTIMATED]</strong> opportunity. Approval moves them into Active Recovery for monitoring — not into Verified Savings.</div>
+      <div class="sp-shell">
+        <div class="page-hdr">
+          <div class="page-hdr-left">
+            <div class="page-hdr-title">Pending Decisions</div>
+            <div class="page-hdr-sub">Awaiting operator approval. Items here are <strong style="color:var(--amber)">[EST · not guaranteed]</strong> opportunity. Approval moves them into Active Recovery for monitoring — not into Verified Savings.</div>
           </div>
-          <div class="ac-sp-hdr-right">
+          <div class="page-hdr-right">
             <button class="btn btn-secondary btn-sm" onclick="showActionsSubpage('active')">Open Active Recovery</button>
             <button class="btn btn-ghost btn-sm" onclick="showActionsSubpage('evidence')">Open Evidence</button>
           </div>
         </div>
-        <div class="ac-sp-body">
-          <div class="ac-sp-strip">
-            <div class="ac-sp-strip-cell is-warn"><div class="ac-sp-strip-k">Pending count</div><div class="ac-sp-strip-v">2</div><div class="ac-sp-strip-sub">Awaiting decision</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Oldest pending</div><div class="ac-sp-strip-v">6h</div><div class="ac-sp-strip-sub">Oakland Tue dinner</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Total est. opportunity</div><div class="ac-sp-strip-v">$1,250</div><div class="ac-sp-strip-sub" style="color:var(--amber)">/wk [ESTIMATED]</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Monthly run-rate</div><div class="ac-sp-strip-v">~$5,413</div><div class="ac-sp-strip-sub" style="color:var(--amber)">/mo · projection</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Median age</div><div class="ac-sp-strip-v">4h</div><div class="ac-sp-strip-sub">in queue</div></div>
+        <div class="sp-body">
+          <div class="sp-strip">
+            <div class="sp-strip-cell is-warn"><div class="sp-strip-k">Pending count</div><div class="sp-strip-v">2</div><div class="sp-strip-sub">Awaiting decision</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Oldest pending</div><div class="sp-strip-v">6h</div><div class="sp-strip-sub">Oakland Tue dinner</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Total est. opportunity</div><div class="sp-strip-v">$1,250</div><div class="sp-strip-sub" style="color:var(--amber)">/wk [EST · not guaranteed]</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Monthly run-rate</div><div class="sp-strip-v">~$5,413</div><div class="sp-strip-sub" style="color:var(--amber)">/mo · projection</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Median age</div><div class="sp-strip-v">4h</div><div class="sp-strip-sub">in queue</div></div>
           </div>
 
           <div class="ac-pl-list">
@@ -536,7 +536,7 @@
               <span><span class="ac-pl-chip ac-pl-chip-cat">Labor</span></span>
               <span><strong>Oakland</strong><br><span style="font-size:10.5px;color:var(--t3)">Tue · Dinner</span></span>
               <span><span class="ac-pl-chip ac-pl-chip-pending">PENDING</span></span>
-              <span><span class="ac-pl-val-est">$370/wk</span><br><span style="font-size:10px;color:var(--amber)">[ESTIMATED]</span></span>
+              <span><span class="ac-pl-val-est">$370/wk</span><br><span style="font-size:10px;color:var(--amber)">[EST · not guaranteed]</span></span>
               <span>Sarah C.</span>
               <span><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openCA('leak1')">Review</button></span>
             </div>
@@ -545,7 +545,7 @@
               <span><span class="ac-pl-chip ac-pl-chip-cat">Labor</span></span>
               <span><strong>Walnut Creek</strong><br><span style="font-size:10.5px;color:var(--t3)">Wed · Dinner</span></span>
               <span><span class="ac-pl-chip ac-pl-chip-pending">PENDING</span></span>
-              <span><span class="ac-pl-val-est">$189/wk</span><br><span style="font-size:10px;color:var(--amber)">[ESTIMATED]</span></span>
+              <span><span class="ac-pl-val-est">$189/wk</span><br><span style="font-size:10px;color:var(--amber)">[EST · not guaranteed]</span></span>
               <span>Marcus L.</span>
               <span><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();showDemoToast('Pending review opened','blue')">Review</button></span>
             </div>
@@ -556,24 +556,24 @@
 
     <!-- ══ (v28) Subpage: ACTIVE RECOVERY ════════════════════════════ -->
     <div class="ac-subpage" id="ac-subpage-active">
-      <div class="ac-sp-shell">
-        <div class="ac-sp-header">
-          <div class="ac-sp-hdr-left">
-            <div class="ac-sp-hdr-title">Active Recovery</div>
-            <div class="ac-sp-hdr-sub">Implemented and currently monitoring. Items here are <strong style="color:var(--blue)">[ACTIVE RECOVERY]</strong> — they do <strong>not</strong> count as Verified Savings until the monitoring window closes and guardrails pass.</div>
+      <div class="sp-shell">
+        <div class="page-hdr">
+          <div class="page-hdr-left">
+            <div class="page-hdr-title">Active Recovery</div>
+            <div class="page-hdr-sub">Implemented and currently monitoring. Items here are <strong style="color:var(--blue)">[ACT · in monitoring]</strong> — they do <strong>not</strong> count as Verified Savings until the monitoring window closes and guardrails pass.</div>
           </div>
-          <div class="ac-sp-hdr-right">
+          <div class="page-hdr-right">
             <button class="btn btn-secondary btn-sm" onclick="showActionsSubpage('ready')">Ready to Verify</button>
             <button class="btn btn-ghost btn-sm" onclick="showActionsSubpage('evidence')">Open Evidence</button>
           </div>
         </div>
-        <div class="ac-sp-body">
-          <div class="ac-sp-strip">
-            <div class="ac-sp-strip-cell is-blue"><div class="ac-sp-strip-k">In monitoring</div><div class="ac-sp-strip-v">3</div><div class="ac-sp-strip-sub">Across 2 locations</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Avg monitor window</div><div class="ac-sp-strip-v">28d</div><div class="ac-sp-strip-sub">Standard</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Tracked opportunity</div><div class="ac-sp-strip-v">$3,128</div><div class="ac-sp-strip-sub" style="color:var(--blue)">/wk · tracking</div></div>
-            <div class="ac-sp-strip-cell is-good"><div class="ac-sp-strip-k">Guardrails OK</div><div class="ac-sp-strip-v">3/3</div><div class="ac-sp-strip-sub">Holding</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Days to close</div><div class="ac-sp-strip-v">6</div><div class="ac-sp-strip-sub">Soonest</div></div>
+        <div class="sp-body">
+          <div class="sp-strip">
+            <div class="sp-strip-cell is-blue"><div class="sp-strip-k">In monitoring</div><div class="sp-strip-v">3</div><div class="sp-strip-sub">Across 2 locations</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Avg monitor window</div><div class="sp-strip-v">28d</div><div class="sp-strip-sub">Standard</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Tracked opportunity</div><div class="sp-strip-v">$3,128</div><div class="sp-strip-sub" style="color:var(--blue)">/wk · tracking</div></div>
+            <div class="sp-strip-cell is-good"><div class="sp-strip-k">Guardrails OK</div><div class="sp-strip-v">3/3</div><div class="sp-strip-sub">Holding</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Days to close</div><div class="sp-strip-v">6</div><div class="sp-strip-sub">Soonest</div></div>
           </div>
 
           <div class="ac-pl-list">
@@ -620,24 +620,24 @@
 
     <!-- ══ (v28) Subpage: READY TO VERIFY ════════════════════════════ -->
     <div class="ac-subpage" id="ac-subpage-ready">
-      <div class="ac-sp-shell">
-        <div class="ac-sp-header">
-          <div class="ac-sp-hdr-left">
-            <div class="ac-sp-hdr-title">Ready to Verify</div>
-            <div class="ac-sp-hdr-sub">Monitoring window complete, guardrails passed. These can move to <strong style="color:var(--green)">[VERIFIED]</strong> in ROI Proof on owner review. Until verified, they remain Active Recovery for ROI counting.</div>
+      <div class="sp-shell">
+        <div class="page-hdr">
+          <div class="page-hdr-left">
+            <div class="page-hdr-title">Ready to Verify</div>
+            <div class="page-hdr-sub">Monitoring window complete, guardrails passed. These can move to <strong style="color:var(--green)">[VER · counted]</strong> in ROI Proof on owner review. Until verified, they remain Active Recovery for ROI counting.</div>
           </div>
-          <div class="ac-sp-hdr-right">
+          <div class="page-hdr-right">
             <button class="btn btn-primary btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">Open ROI Proof</button>
             <button class="btn btn-ghost btn-sm" onclick="showActionsSubpage('evidence')">Open Evidence</button>
           </div>
         </div>
-        <div class="ac-sp-body">
-          <div class="ac-sp-strip">
-            <div class="ac-sp-strip-cell is-good"><div class="ac-sp-strip-k">Ready count</div><div class="ac-sp-strip-v">3</div><div class="ac-sp-strip-sub">Eligible for verification</div></div>
-            <div class="ac-sp-strip-cell is-good"><div class="ac-sp-strip-k">Guardrails passed</div><div class="ac-sp-strip-v">3/3</div><div class="ac-sp-strip-sub">All 3 actions</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Combined / wk</div><div class="ac-sp-strip-v">$1,141</div><div class="ac-sp-strip-sub">Pending verification</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Monthly projection</div><div class="ac-sp-strip-v">~$4,941</div><div class="ac-sp-strip-sub">If verified</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Awaiting owner</div><div class="ac-sp-strip-v">3</div><div class="ac-sp-strip-sub">Review queue</div></div>
+        <div class="sp-body">
+          <div class="sp-strip">
+            <div class="sp-strip-cell is-good"><div class="sp-strip-k">Ready count</div><div class="sp-strip-v">3</div><div class="sp-strip-sub">Eligible for verification</div></div>
+            <div class="sp-strip-cell is-good"><div class="sp-strip-k">Guardrails passed</div><div class="sp-strip-v">3/3</div><div class="sp-strip-sub">All 3 actions</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Combined / wk</div><div class="sp-strip-v">$1,141</div><div class="sp-strip-sub">Pending verification</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Monthly projection</div><div class="sp-strip-v">~$4,941</div><div class="sp-strip-sub">If verified</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Awaiting owner</div><div class="sp-strip-v">3</div><div class="sp-strip-sub">Review queue</div></div>
           </div>
 
           <div class="ac-pl-list">
@@ -684,38 +684,38 @@
 
     <!-- ══ (v28) Subpage: BLOCKED ════════════════════════════════════ -->
     <div class="ac-subpage" id="ac-subpage-blocked">
-      <div class="ac-sp-shell">
-        <div class="ac-sp-header">
-          <div class="ac-sp-hdr-left">
-            <div class="ac-sp-hdr-title">Blocked Actions</div>
-            <div class="ac-sp-hdr-sub">Cannot proceed until the listed blocker is resolved. Items here are <strong style="color:var(--red)">[BLOCKED]</strong> and excluded from ROI counting. Resolving the blocker moves them back into Pending or Active state.</div>
+      <div class="sp-shell">
+        <div class="page-hdr">
+          <div class="page-hdr-left">
+            <div class="page-hdr-title">Blocked Actions</div>
+            <div class="page-hdr-sub">Cannot proceed until the listed blocker is resolved. Items here are <strong style="color:var(--red)">[BLOCKED]</strong> and excluded from ROI counting. Resolving the blocker moves them back into Pending or Active state.</div>
           </div>
-          <div class="ac-sp-hdr-right">
+          <div class="page-hdr-right">
             <button class="btn btn-secondary btn-sm" onclick="showScreen('settings',null,'Data Quality')">Open Data Quality</button>
             <button class="btn btn-ghost btn-sm" onclick="showActionsSubpage('evidence')">Open Evidence</button>
           </div>
         </div>
-        <div class="ac-sp-body">
-          <div class="ac-sp-strip">
-            <div class="ac-sp-strip-cell is-bad"><div class="ac-sp-strip-k">Blocked count</div><div class="ac-sp-strip-v">2</div><div class="ac-sp-strip-sub">Cannot proceed</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">By data quality</div><div class="ac-sp-strip-v">1</div><div class="ac-sp-strip-sub">Recipe cost stale</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">By approval</div><div class="ac-sp-strip-v">1</div><div class="ac-sp-strip-sub">Owner sign-off</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Blocked value</div><div class="ac-sp-strip-v">$684</div><div class="ac-sp-strip-sub" style="color:var(--red)">/wk · NOT COUNTED</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Oldest block</div><div class="ac-sp-strip-v">4d</div><div class="ac-sp-strip-sub">Recipe upload</div></div>
+        <div class="sp-body">
+          <div class="sp-strip">
+            <div class="sp-strip-cell is-bad"><div class="sp-strip-k">Blocked count</div><div class="sp-strip-v">2</div><div class="sp-strip-sub">Cannot proceed</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">By data quality</div><div class="sp-strip-v">1</div><div class="sp-strip-sub">Recipe cost stale</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">By approval</div><div class="sp-strip-v">1</div><div class="sp-strip-sub">Owner sign-off</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Blocked value</div><div class="sp-strip-v">$684</div><div class="sp-strip-sub" style="color:var(--red)">/wk · NOT COUNTED</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Oldest block</div><div class="sp-strip-v">4d</div><div class="sp-strip-sub">Recipe upload</div></div>
           </div>
 
           <div class="ac-bk-grid">
             <div class="ac-bk-panel">
               <div class="ac-bk-panel-h">Blocked by Data Quality (1)</div>
               <div class="ac-bk-list">
-                <div class="ac-bk-item">
-                  <div class="ac-bk-item-title">Salmon reprice $24 → $27 · All locations</div>
-                  <div class="ac-bk-item-sub">Menu margin verification requires fresh food cost. Recipe cost file is stale 18d — confidence reduced from 81% to 71%, cannot move to Active Recovery.</div>
-                  <div class="ac-bk-item-meta">
+                <div class="item-card is-blocked">
+                  <div class="item-card-t">Salmon reprice $24 → $27 · All locations</div>
+                  <div class="item-card-sub">Menu margin verification requires fresh food cost. Recipe cost file is stale 18d — confidence reduced from 81% to 71%, cannot move to Active Recovery.</div>
+                  <div class="item-card-meta">
                     <span class="ac-pl-chip ac-pl-chip-blocked">RECIPE COST STALE 18d</span>
                     <span>$519/wk · <span style="color:var(--red)">NOT COUNTED</span></span>
                   </div>
-                  <div class="ac-bk-item-cta">
+                  <div class="item-card-cta">
                     <button class="btn btn-primary btn-sm" onclick="showScreen('settings',null,'Data Quality')">Resolve in Data Quality</button>
                     <button class="btn btn-ghost btn-sm" onclick="showActionsSubpage('evidence')">Why blocked?</button>
                   </div>
@@ -725,14 +725,14 @@
             <div class="ac-bk-panel">
               <div class="ac-bk-panel-h">Blocked by Approval (1)</div>
               <div class="ac-bk-list">
-                <div class="ac-bk-item" style="border-left-color:var(--amber)">
-                  <div class="ac-bk-item-title">Crispy Chicken reprice +$1.00 · All locations</div>
-                  <div class="ac-bk-item-sub">Cross-location price change requires owner approval before pilot. Simulated lift $300/28d — not counted until approval and monitoring complete.</div>
-                  <div class="ac-bk-item-meta">
+                <div class="item-card is-blocked" style="border-left-color:var(--amber)">
+                  <div class="item-card-t">Crispy Chicken reprice +$1.00 · All locations</div>
+                  <div class="item-card-sub">Cross-location price change requires owner approval before pilot. Simulated lift $300/28d — not counted until approval and monitoring complete.</div>
+                  <div class="item-card-meta">
                     <span class="ac-pl-chip ac-pl-chip-blocked" style="background:var(--amber-d);color:var(--amber);border-color:var(--amber-b)">OWNER APPROVAL</span>
-                    <span>$165/wk · <span style="color:var(--amber)">[SIMULATED]</span></span>
+                    <span>$165/wk · <span style="color:var(--amber)">[SIM · what-if]</span></span>
                   </div>
-                  <div class="ac-bk-item-cta">
+                  <div class="item-card-cta">
                     <button class="btn btn-primary btn-sm" onclick="showDemoToast('Owner approval request sent','blue')">Request approval</button>
                     <button class="btn btn-ghost btn-sm" onclick="showActionsSubpage('evidence')">Why blocked?</button>
                   </div>
@@ -746,24 +746,24 @@
 
     <!-- ══ (v28) Subpage: HISTORY ════════════════════════════════════ -->
     <div class="ac-subpage" id="ac-subpage-history">
-      <div class="ac-sp-shell">
-        <div class="ac-sp-header">
-          <div class="ac-sp-hdr-left">
-            <div class="ac-sp-hdr-title">Action History</div>
-            <div class="ac-sp-hdr-sub">Completed actions — verified, rejected, or guardrail-failed. Verified items appear in ROI Proof. Rejected and failed items remain visible here for retrospective review and pattern learning.</div>
+      <div class="sp-shell">
+        <div class="page-hdr">
+          <div class="page-hdr-left">
+            <div class="page-hdr-title">Action History</div>
+            <div class="page-hdr-sub">Completed actions — verified, rejected, or guardrail-failed. Verified items appear in ROI Proof. Rejected and failed items remain visible here for retrospective review and pattern learning.</div>
           </div>
-          <div class="ac-sp-hdr-right">
+          <div class="page-hdr-right">
             <button class="btn btn-secondary btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">Open ROI Proof</button>
             <button class="btn btn-ghost btn-sm" onclick="showActionsSubpage('evidence')">Open Evidence</button>
           </div>
         </div>
-        <div class="ac-sp-body">
-          <div class="ac-sp-strip">
-            <div class="ac-sp-strip-cell is-good"><div class="ac-sp-strip-k">Verified · 90d</div><div class="ac-sp-strip-v">8</div><div class="ac-sp-strip-sub">In ROI Proof</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Rejected</div><div class="ac-sp-strip-v">2</div><div class="ac-sp-strip-sub">Operator declined</div></div>
-            <div class="ac-sp-strip-cell is-bad"><div class="ac-sp-strip-k">Guardrail-failed</div><div class="ac-sp-strip-v">1</div><div class="ac-sp-strip-sub">Sentiment dropped</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Verified value · 90d</div><div class="ac-sp-strip-v">$11.2k</div><div class="ac-sp-strip-sub" style="color:var(--green)">[VERIFIED]</div></div>
-            <div class="ac-sp-strip-cell"><div class="ac-sp-strip-k">Verification rate</div><div class="ac-sp-strip-v">73%</div><div class="ac-sp-strip-sub">8 of 11 completed</div></div>
+        <div class="sp-body">
+          <div class="sp-strip">
+            <div class="sp-strip-cell is-good"><div class="sp-strip-k">Verified · 90d</div><div class="sp-strip-v">8</div><div class="sp-strip-sub">In ROI Proof</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Rejected</div><div class="sp-strip-v">2</div><div class="sp-strip-sub">Operator declined</div></div>
+            <div class="sp-strip-cell is-bad"><div class="sp-strip-k">Guardrail-failed</div><div class="sp-strip-v">1</div><div class="sp-strip-sub">Sentiment dropped</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Verified value · 90d</div><div class="sp-strip-v">$11.2k</div><div class="sp-strip-sub" style="color:var(--green)">[VER · counted]</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Verification rate</div><div class="sp-strip-v">73%</div><div class="sp-strip-sub">8 of 11 completed</div></div>
           </div>
 
           <div class="ac-pl-list">
@@ -819,18 +819,18 @@
 
     <!-- ══ (v28) Subpage: EVIDENCE ═══════════════════════════════════ -->
     <div class="ac-subpage" id="ac-subpage-evidence">
-      <div class="ac-sp-shell">
-        <div class="ac-sp-header">
-          <div class="ac-sp-hdr-left">
-            <div class="ac-sp-hdr-title">Action Evidence</div>
-            <div class="ac-sp-hdr-sub">Status rules, verification logic, guardrails, and workflow definitions. This page defines how actions move between Pending, Active Recovery, Ready to Verify, Blocked, and Verified — and what blocks each transition.</div>
+      <div class="sp-shell">
+        <div class="page-hdr">
+          <div class="page-hdr-left">
+            <div class="page-hdr-title">Action Evidence</div>
+            <div class="page-hdr-sub">Status rules, verification logic, guardrails, and workflow definitions. This page defines how actions move between Pending, Active Recovery, Ready to Verify, Blocked, and Verified — and what blocks each transition.</div>
           </div>
-          <div class="ac-sp-hdr-right">
+          <div class="page-hdr-right">
             <button class="btn btn-secondary btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">Open ROI Proof</button>
             <button class="btn btn-ghost btn-sm" onclick="showScreen('settings',null,'Data Quality')">Data Quality</button>
           </div>
         </div>
-        <div class="ac-sp-body">
+        <div class="sp-body">
           <div class="ac-ev-grid">
             <div class="ac-ev-card">
               <div class="ac-ev-h">Status definitions</div>
@@ -854,7 +854,7 @@
                 <div class="ac-ev-rule"><strong>2.</strong> All guardrails hold for the full window — no breaches.</div>
                 <div class="ac-ev-rule"><strong>3.</strong> Source data is fresh (no stale-source confidence penalty active).</div>
                 <div class="ac-ev-rule"><strong>4.</strong> Owner review/sign-off completed in ROI Proof.</div>
-                <p style="margin:10px 0 0;font-style:italic;color:var(--t3);font-size:10.5px">Until all 4 conditions are met, the action's value is <strong>[ACTIVE RECOVERY]</strong> or <strong>[ESTIMATED]</strong> — never counted as Verified Savings.</p>
+                <p style="margin:10px 0 0;font-style:italic;color:var(--t3);font-size:10.5px">Until all 4 conditions are met, the action's value is <strong>[ACT · in monitoring]</strong> or <strong>[EST · not guaranteed]</strong> — never counted as Verified Savings.</p>
               </div>
             </div>
 
@@ -871,10 +871,10 @@
             <div class="ac-ev-card">
               <div class="ac-ev-h">Financial label rules</div>
               <div class="ac-ev-body">
-                <div class="ac-ev-row"><span style="color:var(--amber)">[ESTIMATED]</span><strong>Pre-implementation projection</strong></div>
-                <div class="ac-ev-row"><span style="color:var(--amber)">[SIMULATED]</span><strong>Modeled lift, not yet attempted</strong></div>
-                <div class="ac-ev-row"><span style="color:var(--blue)">[ACTIVE RECOVERY]</span><strong>Tracking in monitoring window</strong></div>
-                <div class="ac-ev-row"><span style="color:var(--green)">[VERIFIED]</span><strong>Counted in ROI Proof</strong></div>
+                <div class="ac-ev-row"><span style="color:var(--amber)">[EST · not guaranteed]</span><strong>Pre-implementation projection</strong></div>
+                <div class="ac-ev-row"><span style="color:var(--amber)">[SIM · what-if]</span><strong>Modeled lift, not yet attempted</strong></div>
+                <div class="ac-ev-row"><span style="color:var(--blue)">[ACT · in monitoring]</span><strong>Tracking in monitoring window</strong></div>
+                <div class="ac-ev-row"><span style="color:var(--green)">[VER · counted]</span><strong>Counted in ROI Proof</strong></div>
                 <div class="ac-ev-row"><span style="color:var(--red)">[BLOCKED]</span><strong>Excluded from all counts</strong></div>
                 <p style="margin:8px 0 0;font-style:italic;color:var(--t3);font-size:10.5px">Every dollar value carries time basis, output type, and a derivation link to evidence. Never "saved" or "recovered" until all 4 verification conditions hold.</p>
               </div>

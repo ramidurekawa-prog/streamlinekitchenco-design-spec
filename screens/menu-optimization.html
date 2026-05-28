@@ -9,11 +9,14 @@
             <div class="menu-hdr-sub">Oakland · Dinner · Last 28 Days · 2,004 items</div>
           </div>
           <div class="menu-hdr-right">
+            <span class="aud-badge aud-both" title="Menu Optimization is used by both GM and Chef, with Owner approval on pricing">Both</span>
             <span class="menu-mode-chip menu-mode-est">ESTIMATED MODE</span>
             <span class="menu-mode-chip menu-mode-blocked">VERIFICATION BLOCKED</span>
             <button class="btn btn-secondary btn-sm" onclick="showScreen('settings',null,'Data Quality');switchTab('dq','overview')">Fix Cost Data</button>
           </div>
         </div>
+        <!-- (v32) Doctrine line — required on every feature parent page -->
+        <div class="doctrine-line"><strong>Doctrine:</strong> Mix-shift exposure is estimated from contribution margin × item velocity. Verified recoveries require recipe-cost confirmation and 4 weeks of post-change monitoring.</div>
         <div class="menu-filter-bar">
           <span class="menu-filter"><span class="menu-filter-k">Location</span><span class="menu-filter-v">Oakland</span></span>
           <span class="menu-filter"><span class="menu-filter-k">Period</span><span class="menu-filter-v">Last 28 Days</span></span>
@@ -41,7 +44,7 @@
             <div class="menu-panel menu-panel-exposure">
               <div class="menu-exp-eyebrow">Estimated menu exposure · 28 days</div>
               <div class="menu-exp-val">~$1,420<span class="menu-exp-per">/mo</span></div>
-              <div class="menu-exp-tag">[ESTIMATED — verification blocked]</div>
+              <div class="menu-exp-tag">[EST · not guaranteed · verification blocked]</div>
               <div class="menu-exp-headline">Oakland dinner menu mix is under-earning by <strong>$0.71 per item.</strong></div>
               <div class="menu-exp-sub">Popular low-margin items are taking share from higher-margin items.</div>
 
@@ -127,7 +130,7 @@
                   <div class="menu-move-body">
                     <div class="menu-move-title">Review Crispy Chicken Sandwich</div>
                     <div class="menu-move-sub">$5.80 CM · $2.95 below threshold · Plowhorse</div>
-                    <div class="menu-move-val">~$300/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                    <div class="menu-move-val">~$300/28d <span class="menu-val-tag">[SIM · what-if]</span></div>
                   </div>
                 </div>
                 <div class="menu-move menu-move-2">
@@ -135,7 +138,7 @@
                   <div class="menu-move-body">
                     <div class="menu-move-title">Review Burger price/portion</div>
                     <div class="menu-move-sub">$6.40 CM · $2.35 below threshold · Plowhorse</div>
-                    <div class="menu-move-val">~$210/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                    <div class="menu-move-val">~$210/28d <span class="menu-val-tag">[SIM · what-if]</span></div>
                   </div>
                 </div>
                 <div class="menu-move menu-move-3">
@@ -143,7 +146,7 @@
                   <div class="menu-move-body">
                     <div class="menu-move-title">Promote Mushroom Risotto</div>
                     <div class="menu-move-sub">$14.20 CM · only 4.2% popularity · Puzzle</div>
-                    <div class="menu-move-val">~$355/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                    <div class="menu-move-val">~$355/28d <span class="menu-val-tag">[SIM · what-if]</span></div>
                   </div>
                 </div>
               </div>
@@ -154,6 +157,18 @@
               </div>
             </div>
 
+          </div>
+
+          <!-- (v32) Crosslink footer — required on every feature parent page -->
+          <div class="crosslink-footer">
+            <button class="crosslink-card" onclick="showScreen('leaks',null,'Profit Recovery')">
+              <div class="crosslink-card-t">Profit Recovery →</div>
+              <div class="crosslink-card-body">See how this menu mix-shift opportunity ranks against Labor, Table Turns, and Kitchen Speed across the portfolio.</div>
+            </button>
+            <button class="crosslink-card" onclick="showScreen('actions',null,'Actions')">
+              <div class="crosslink-card-t">Actions →</div>
+              <div class="crosslink-card-body">Once a menu reprice or redesign is approved, the monitoring lifecycle lives in Actions. Verified savings only count after the post-change window closes.</div>
+            </button>
           </div>
         </div><!-- /Overview -->
 
@@ -280,7 +295,7 @@
                   <div class="menu-side-rec-v">Review price or portion cost.</div>
                 </div>
                 <div class="menu-side-ctas">
-                  <button class="btn btn-primary btn-sm" onclick="showMenuSubpage('actions')">Create Action</button>
+                  <button class="btn btn-primary btn-sm" onclick="showMenuSubpage('actions')">Turn into Action</button>
                   <button class="btn btn-secondary btn-sm" onclick="showMenuSubpage('simulations')">Simulate Price</button>
                   <button class="btn btn-ghost btn-sm" onclick="showMenuSubpage('evidence')">Open Evidence</button>
                 </div>
@@ -310,7 +325,7 @@
               <div class="menu-mix-metric"><div class="menu-mix-metric-k">Current weighted CM</div><div class="menu-mix-metric-v">$8.42</div></div>
               <div class="menu-mix-metric"><div class="menu-mix-metric-k">Baseline (8 weeks)</div><div class="menu-mix-metric-v">$9.13</div></div>
               <div class="menu-mix-metric menu-mix-metric-loss"><div class="menu-mix-metric-k">Mix shift</div><div class="menu-mix-metric-v">−$0.71<span class="menu-mix-metric-u">/item</span></div></div>
-              <div class="menu-mix-metric menu-mix-metric-exp"><div class="menu-mix-metric-k">Estimated exposure</div><div class="menu-mix-metric-v">~$1,420<span class="menu-mix-metric-u">/mo</span></div><div class="menu-mix-metric-tag">[ESTIMATED]</div></div>
+              <div class="menu-mix-metric menu-mix-metric-exp"><div class="menu-mix-metric-k">Estimated exposure</div><div class="menu-mix-metric-v">~$1,420<span class="menu-mix-metric-u">/mo</span></div><div class="menu-mix-metric-tag">[EST · not guaranteed]</div></div>
             </div>
 
             <div class="menu-grid menu-grid-mix">
@@ -396,7 +411,7 @@
               <span class="menu-mix-formula-label">Estimated exposure</span>
               <span class="menu-mono">2,004 items × $0.71 = $1,422.84</span>
               <span class="menu-mix-formula-arrow">→</span>
-              <span class="menu-mix-formula-result">~$1,420/mo <span class="menu-val-tag">[ESTIMATED]</span></span>
+              <span class="menu-mix-formula-result">~$1,420/mo <span class="menu-val-tag">[EST · not guaranteed]</span></span>
               <div class="menu-mix-formula-ctas">
                 <button class="btn btn-ghost btn-sm" onclick="openMenuEvidenceDrawer()">Show Formula</button>
                 <button class="btn btn-secondary btn-sm" onclick="showMenuSubpage('actions')">Open Actions</button>
@@ -469,7 +484,7 @@
                   </ul>
                 </div>
                 <div class="menu-side-ctas">
-                  <button class="btn btn-primary btn-sm" onclick="showMenuSubpage('actions')">Create Action</button>
+                  <button class="btn btn-primary btn-sm" onclick="showMenuSubpage('actions')">Turn into Action</button>
                   <button class="btn btn-secondary btn-sm" onclick="showMenuSubpage('simulations')">Simulate</button>
                 </div>
               </div>
@@ -485,9 +500,9 @@
         <div class="menu-subpage" id="menu-subpage-actions">
           <div class="menu-actions-wrap">
             <div class="menu-act-strip">
-              <div class="menu-act-strip-cell"><div class="menu-act-strip-k">Estimated exposure</div><div class="menu-act-strip-v">~$1,420/mo <span class="menu-val-tag">[ESTIMATED]</span></div></div>
-              <div class="menu-act-strip-cell"><div class="menu-act-strip-k">Simulated lift · ready approvals</div><div class="menu-act-strip-v">~$510/28d <span class="menu-val-tag">[SIMULATED]</span></div><div class="menu-act-strip-sub" style="font-size:10.5px;color:var(--t3);margin-top:2px">Crispy + Burger price/portion reviews only</div></div>
-              <div class="menu-act-strip-cell"><div class="menu-act-strip-k">All scenario upside</div><div class="menu-act-strip-v">~$865/28d <span class="menu-val-tag">[SIMULATED]</span></div><div class="menu-act-strip-sub" style="font-size:10.5px;color:var(--t3);margin-top:2px">Incl. Risotto promo test</div></div>
+              <div class="menu-act-strip-cell"><div class="menu-act-strip-k">Estimated exposure</div><div class="menu-act-strip-v">~$1,420/mo <span class="menu-val-tag">[EST · not guaranteed]</span></div></div>
+              <div class="menu-act-strip-cell"><div class="menu-act-strip-k">Simulated lift · ready approvals</div><div class="menu-act-strip-v">~$510/28d <span class="menu-val-tag">[SIM · what-if]</span></div><div class="menu-act-strip-sub" style="font-size:10.5px;color:var(--t3);margin-top:2px">Crispy + Burger price/portion reviews only</div></div>
+              <div class="menu-act-strip-cell"><div class="menu-act-strip-k">All scenario upside</div><div class="menu-act-strip-v">~$865/28d <span class="menu-val-tag">[SIM · what-if]</span></div><div class="menu-act-strip-sub" style="font-size:10.5px;color:var(--t3);margin-top:2px">Incl. Risotto promo test</div></div>
               <div class="menu-act-strip-cell"><div class="menu-act-strip-k">Verified menu savings</div><div class="menu-act-strip-v menu-val-zero">$0</div></div>
               <div class="menu-act-strip-cell menu-act-strip-block"><div class="menu-act-strip-k">Verification blocker</div><div class="menu-act-strip-v">Recipe cost stale 18d</div></div>
             </div>
@@ -499,14 +514,14 @@
                 <div class="menu-kanban-cards">
                   <div class="menu-kanban-card">
                     <div class="menu-kanban-card-title">Crispy Chicken Sandwich · price/portion review</div>
-                    <div class="menu-kanban-card-val">~$300/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                    <div class="menu-kanban-card-val">~$300/28d <span class="menu-val-tag">[SIM · what-if]</span></div>
                     <div class="menu-kanban-card-reason">$5.80 CM vs $8.75 threshold · Plowhorse</div>
                     <div class="menu-kanban-card-block"><span class="menu-kanban-block-icon">⚠</span> Recipe cost stale</div>
                     <button class="btn btn-primary btn-sm" onclick="showDemoToast('Menu action drafted · Pending Owner Approval · Actions','blue')">Send for owner approval</button>
                   </div>
                   <div class="menu-kanban-card">
                     <div class="menu-kanban-card-title">Burger · price/portion review</div>
-                    <div class="menu-kanban-card-val">~$210/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                    <div class="menu-kanban-card-val">~$210/28d <span class="menu-val-tag">[SIM · what-if]</span></div>
                     <div class="menu-kanban-card-reason">$6.40 CM vs $8.75 threshold · Plowhorse</div>
                     <button class="btn btn-secondary btn-sm" onclick="showMenuSubpage('simulations')">Simulate</button>
                   </div>
@@ -519,7 +534,7 @@
                 <div class="menu-kanban-cards">
                   <div class="menu-kanban-card">
                     <div class="menu-kanban-card-title">Promote Mushroom Risotto</div>
-                    <div class="menu-kanban-card-val">~$355/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                    <div class="menu-kanban-card-val">~$355/28d <span class="menu-val-tag">[SIM · what-if]</span></div>
                     <div class="menu-kanban-card-reason">$14.20 CM, only 4.2% popularity · Puzzle</div>
                     <button class="btn btn-secondary btn-sm" onclick="showDemoToast('Test action drafted · Promo placement test queued','blue')">Create test</button>
                   </div>
@@ -570,21 +585,21 @@
                     <div class="menu-sim-card-row"><span>Current price</span><strong>$18.00</strong></div>
                     <div class="menu-sim-card-row"><span>Simulated price</span><strong>$19.00</strong></div>
                     <div class="menu-sim-card-row"><span>Sensitivity</span><strong>−3.0% units</strong></div>
-                    <div class="menu-sim-card-lift">~$300/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                    <div class="menu-sim-card-lift">~$300/28d <span class="menu-val-tag">[SIM · what-if]</span></div>
                   </div>
                   <div class="menu-sim-card" data-scenario="burger" onclick="menuSimSelect('burger', this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuSimSelect('burger',this)}">
                     <div class="menu-sim-card-title">Burger +$1.00</div>
                     <div class="menu-sim-card-row"><span>Current price</span><strong>$19.00</strong></div>
                     <div class="menu-sim-card-row"><span>Simulated price</span><strong>$20.00</strong></div>
                     <div class="menu-sim-card-row"><span>Sensitivity</span><strong>−1.7% units</strong></div>
-                    <div class="menu-sim-card-lift">~$210/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                    <div class="menu-sim-card-lift">~$210/28d <span class="menu-val-tag">[SIM · what-if]</span></div>
                   </div>
                   <div class="menu-sim-card" data-scenario="risotto" onclick="menuSimSelect('risotto', this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuSimSelect('risotto',this)}">
                     <div class="menu-sim-card-title">Promote Mushroom Risotto</div>
                     <div class="menu-sim-card-row"><span>Current units</span><strong>84</strong></div>
                     <div class="menu-sim-card-row"><span>Expected units</span><strong>109</strong></div>
                     <div class="menu-sim-card-row"><span>Sensitivity</span><strong>+30% units</strong></div>
-                    <div class="menu-sim-card-lift">~$355/28d <span class="menu-val-tag">[SIMULATED]</span></div>
+                    <div class="menu-sim-card-lift">~$355/28d <span class="menu-val-tag">[SIM · what-if]</span></div>
                   </div>
                 </div>
               </div>
@@ -692,7 +707,7 @@
                 <div class="menu-mono menu-ev-mono">Mix Shift = $8.42 − $9.13 = −$0.71/item</div>
                 <div class="menu-mono menu-ev-mono">Exposure = 2,004 × $0.71 = $1,422.84</div>
                 <div class="menu-mono menu-ev-mono" style="color:var(--t3);font-size:10px;margin-top:4px">Top 9 + 273 other mapped items reconcile to $8.42 weighted CM.</div>
-                <div class="menu-ev-result">~$1,420/mo <span class="menu-val-tag">[ESTIMATED]</span></div>
+                <div class="menu-ev-result">~$1,420/mo <span class="menu-val-tag">[EST · not guaranteed]</span></div>
               </div>
             </div>
 

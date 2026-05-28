@@ -9885,9 +9885,9 @@ function leShowHeatmapWithFocal(focalKey) {
   setTimeout(() => leApplyHeatmapFocal(LE_PENDING_FOCAL), 60);
 }
 
-// Evidence subpage — expand all / collapse all cards.
+// (v32) Evidence subpage — expand/collapse all cards (works on any Evidence page using .ev-card)
 function leEvToggleAll(open) {
-  document.querySelectorAll('#le-subpage-evidence details.le-ev-card').forEach(d => {
+  document.querySelectorAll('details.ev-card').forEach(d => {
     if (open) d.setAttribute('open', '');
     else d.removeAttribute('open');
   });

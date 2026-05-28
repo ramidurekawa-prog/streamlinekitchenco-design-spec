@@ -102,7 +102,7 @@
         <div class="nav-child" data-sub="evidence"  role="button" tabindex="0" onclick="navLaborChildClick('evidence', this)"  onkeydown="navLaborChildKeydown(event,'evidence')"  aria-label="Labor Evidence">Evidence</div>
       </div>
 
-      <!-- ── (v28c) TABLE TURNS — expandable parent + 5 children ── -->
+      <!-- ── (v32) TABLE TURNS — expandable parent + 3 children (Watch / Decide / Evidence) ── -->
       <div class="nav-item nav-parent" id="navTtParent" role="button" tabindex="0"
            aria-expanded="false" aria-controls="navTtChildren"
            onclick="navTtParentClick(event)" onkeydown="navTtParentKeydown(event)">
@@ -112,11 +112,9 @@
         <svg class="ni-caret" id="navTtCaret" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" onclick="toggleTtNav(event)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleTtNav(event)}" role="button" tabindex="0" aria-label="Toggle Table Turns children" style="cursor:pointer;padding:6px;margin:-6px"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="nav-children" id="navTtChildren">
-        <div class="nav-child" data-sub="overview"   role="button" tabindex="0" onclick="navTtChildClick('overview', this)"   onkeydown="navTtChildKeydown(event,'overview')"   aria-label="Table Turns Overview">Overview</div>
-        <div class="nav-child" data-sub="stages"     role="button" tabindex="0" onclick="navTtChildClick('stages', this)"     onkeydown="navTtChildKeydown(event,'stages')"     aria-label="Stage Flow">Stage Flow</div>
-        <div class="nav-child" data-sub="lostcovers" role="button" tabindex="0" onclick="navTtChildClick('lostcovers', this)" onkeydown="navTtChildKeydown(event,'lostcovers')" aria-label="Lost Covers">Lost Covers</div>
-        <div class="nav-child" data-sub="playbooks"  role="button" tabindex="0" onclick="navTtChildClick('playbooks', this)"  onkeydown="navTtChildKeydown(event,'playbooks')"  aria-label="Playbooks">Playbooks</div>
-        <div class="nav-child" data-sub="evidence"   role="button" tabindex="0" onclick="navTtChildClick('evidence', this)"   onkeydown="navTtChildKeydown(event,'evidence')"   aria-label="Table Turns Evidence">Evidence</div>
+        <div class="nav-child" data-sub="overview"  role="button" tabindex="0" onclick="navTtChildClick('overview', this)"   onkeydown="navTtChildKeydown(event,'overview')"   aria-label="Watch">Watch</div>
+        <div class="nav-child" data-sub="playbooks" role="button" tabindex="0" onclick="navTtChildClick('playbooks', this)"  onkeydown="navTtChildKeydown(event,'playbooks')"  aria-label="Decide">Decide</div>
+        <div class="nav-child" data-sub="evidence"  role="button" tabindex="0" onclick="navTtChildClick('evidence', this)"   onkeydown="navTtChildKeydown(event,'evidence')"   aria-label="Evidence">Evidence</div>
       </div>
 
     </div>

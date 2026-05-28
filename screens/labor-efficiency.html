@@ -2,25 +2,26 @@
 
     <!-- ══ (v28b) Subpage: OVERVIEW · NEW compact 5-second view ══ -->
     <div class="le-subpage active" id="le-subpage-overview">
-      <div class="le-sp-shell">
-        <div class="le-sp-header">
-          <div class="le-sp-hdr-left">
-            <div class="le-sp-hdr-title">Labor Efficiency · Overview</div>
-            <div class="le-sp-hdr-sub"><strong style="color:var(--t1)">What's costing you money in labor — at a glance.</strong> Dollar amounts are <strong style="color:var(--amber)">[estimated]</strong> until an action is created and the savings are verified.</div>
+      <div class="sp-shell">
+        <div class="page-hdr">
+          <div class="page-hdr-left">
+            <div class="page-hdr-title">Labor Efficiency · Overview</div>
+            <div class="page-hdr-sub"><strong style="color:var(--t1)">What's costing you money in labor — at a glance.</strong> Dollar amounts are <strong style="color:var(--amber)">[estimated]</strong> until an action is created and the savings are verified.</div>
           </div>
-          <div class="le-sp-hdr-right">
+          <div class="page-hdr-right">
+            <span class="aud-badge aud-gm" title="Labor Efficiency is the GM's scheduling-and-staffing surface">GM view</span>
             <button class="btn btn-secondary btn-sm" onclick="showLaborSubpage('heatmap')">Open Heatmap</button>
             <button class="btn btn-secondary btn-sm" onclick="showLaborSubpage('staffing')">Staffing Plan</button>
             <button class="btn btn-ghost btn-sm" onclick="showLaborSubpage('evidence')">Open Evidence</button>
           </div>
         </div>
-        <div class="le-sp-body">
-          <div class="le-sp-strip">
-            <div class="le-sp-strip-cell"><div class="le-sp-strip-k">Labor cost</div><div class="le-sp-strip-v">31.4%</div><div class="le-sp-strip-sub" style="color:var(--amber)">of sales · 2.1 points over target</div></div>
-            <div class="le-sp-strip-cell"><div class="le-sp-strip-k">Sales per labor hour</div><div class="le-sp-strip-v">$34.20</div><div class="le-sp-strip-sub" style="color:var(--amber)">Below $36.50 healthy floor</div></div>
-            <div class="le-sp-strip-cell is-warn"><div class="le-sp-strip-k">Extra hours staffed / wk</div><div class="le-sp-strip-v">18.5</div><div class="le-sp-strip-sub">Across 3 locations</div></div>
-            <div class="le-sp-strip-cell is-warn"><div class="le-sp-strip-k">Pending recommendations</div><div class="le-sp-strip-v">$684<span class="le-sp-strip-period">/wk</span></div><div class="le-sp-strip-sub" style="color:var(--amber)">$370 + $189 + $125 · [estimated]</div></div>
-            <div class="le-sp-strip-cell le-sp-strip-cell-clickable" onclick="showScreen('settings',null,'Data Quality')" role="button" tabindex="0" aria-label="Open Data Quality to refresh 7shifts"><div class="le-sp-strip-k">Confidence</div><div class="le-sp-strip-v">78%</div><div class="le-sp-strip-sub" style="color:var(--amber)">7shifts stale 18h · fix →</div></div>
+        <div class="sp-body">
+          <div class="sp-strip">
+            <div class="sp-strip-cell"><div class="sp-strip-k">Labor cost</div><div class="sp-strip-v">31.4%</div><div class="sp-strip-sub" style="color:var(--amber)">of sales · 2.1 points over target</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Sales per labor hour</div><div class="sp-strip-v">$34.20</div><div class="sp-strip-sub" style="color:var(--amber)">Below $36.50 healthy floor</div></div>
+            <div class="sp-strip-cell is-warn"><div class="sp-strip-k">Extra hours staffed / wk</div><div class="sp-strip-v">18.5</div><div class="sp-strip-sub">Across 3 locations</div></div>
+            <div class="sp-strip-cell is-warn"><div class="sp-strip-k">Pending recommendations</div><div class="sp-strip-v">$684<span class="sp-strip-period">/wk</span></div><div class="sp-strip-sub" style="color:var(--amber)">$370 + $189 + $125 · [estimated]</div></div>
+            <div class="sp-strip-cell sp-strip-cell-clickable" onclick="showScreen('settings',null,'Data Quality')" role="button" tabindex="0" aria-label="Open Data Quality to refresh 7shifts"><div class="sp-strip-k">Confidence</div><div class="sp-strip-v">78%</div><div class="sp-strip-sub" style="color:var(--amber)">7shifts stale 18h · fix →</div></div>
           </div>
 
           <div class="le-ov-grid">
@@ -34,7 +35,7 @@
                   <div class="le-ov-hero-sub">Sales per labor hour has been below normal for 6 of the last 6 Tuesday dinner services. Consistent pattern, not a one-off — schedule is overstaffed for the demand that actually shows up.</div>
                   <div class="le-ov-hero-val">
                     <span class="le-ov-hero-val-n">$370</span>
-                    <span class="le-ov-hero-val-k">/wk [ESTIMATED]</span>
+                    <span class="le-ov-hero-val-k">/wk [EST · not guaranteed]</span>
                   </div>
                   <div style="font-size:10.5px;color:var(--t3);line-height:1.6;font-family:var(--mono)">
                     Math: 5 hrs × $18.50/hr × 4 services/wk = $370/wk<br>
@@ -85,7 +86,7 @@
                 <div class="le-ov-action-list">
                   <div class="le-ov-action-item is-pending">
                     <div class="le-ov-action-item-h">Remove one 5–10 PM front-of-house server · Oakland Tue dinner</div>
-                    <div class="le-ov-action-item-s">PENDING · Owner: Sarah C. · $370/wk [ESTIMATED]</div>
+                    <div class="le-ov-action-item-s">PENDING · Owner: Sarah C. · $370/wk [EST · not guaranteed]</div>
                     <div class="le-ov-action-item-cta">
                       <button class="btn btn-primary btn-sm" onclick="openCA('leak1')">Turn into Action</button>
                     </div>
@@ -107,7 +108,7 @@
                       Biggest opportunity · 2.3× the next-largest leak
                     </div>
                     <div class="le-ov-action-item-h">Server coaching · 3 opportunities</div>
-                    <div class="le-ov-action-item-s">Premium attach gap · ~$842/wk if team matches median [ESTIMATED]</div>
+                    <div class="le-ov-action-item-s">Premium attach gap · ~$842/wk if team matches median [EST · not guaranteed]</div>
                     <div class="le-ov-action-item-cta">
                       <button class="btn btn-primary btn-sm" onclick="showLaborSubpage('coaching')">Open Server Coaching</button>
                     </div>
@@ -118,6 +119,18 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <!-- (v32) Crosslink footer — required on every feature parent page -->
+          <div class="crosslink-footer">
+            <button class="crosslink-card" onclick="showScreen('leaks',null,'Profit Recovery')">
+              <div class="crosslink-card-t">Profit Recovery →</div>
+              <div class="crosslink-card-body">See how this labor leak ranks against Menu, Table Turns, and Kitchen Speed across the portfolio.</div>
+            </button>
+            <button class="crosslink-card" onclick="showScreen('actions',null,'Actions')">
+              <div class="crosslink-card-t">Actions →</div>
+              <div class="crosslink-card-body">Once you turn a recommendation into an action, the monitoring lifecycle lives in Actions. Track here whether it's tracking to verify.</div>
+            </button>
           </div>
         </div>
       </div>
@@ -131,7 +144,7 @@
       <div class="le-page-header-left">
         <div class="page-header-title">Labor Efficiency · Heatmap</div>
         <div class="page-header-sub"><strong style="color:var(--t1)">Which hours of which days your labor isn't paying off.</strong> Color shows how much each hour's sales-per-labor-hour beats or misses its same-daypart benchmark.</div>
-        <div class="le-doctrine">Sales per labor hour shows where the problem is. Dollar savings come from cutting excess hours at the right wage — not from the productivity number itself.</div>
+        <div class="doctrine-line">Sales per labor hour shows where the problem is. Dollar savings come from cutting excess hours at the right wage — not from the productivity number itself.</div>
       </div>
       <div class="le-page-header-right">
         <div class="le-period-group">
@@ -173,11 +186,11 @@
       </div>
     </div>
 
-    <!-- Top data notice -->
-    <div class="le-data-notice">
+    <!-- (v32) DQ banner — canonical .dq-banner per docs/design-system.md §13 -->
+    <div class="dq-banner warn" data-feature="labor">
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span><strong>Payroll wage data partially connected.</strong> Excess hours are primary; dollar values use estimated wage rate.</span>
-      <button class="btn btn-ghost btn-sm" style="font-size:11px;margin-left:auto" onclick="showScreen('settings',null,'Data Quality')">Connect payroll →</button>
+      <button class="dq-banner-cta" onclick="showScreen('settings',null,'Data Quality')">Connect payroll →</button>
     </div>
 
         <!-- SUMMARY BAR -->
@@ -190,7 +203,7 @@
           <div class="le-sum-cell">
             <div class="le-sum-label">Sales per labor hour</div>
             <div class="le-sum-val le-sum-red">$31.40<span class="le-sum-period">/hr</span></div>
-            <div class="le-sum-tag le-tag-det">Measured · 100%</div>
+            <div class="tag-det">Measured · 100%</div>
           </div>
           <div class="le-sum-div"></div>
           <div class="le-sum-cell">
@@ -202,7 +215,7 @@
           <div class="le-sum-cell">
             <div class="le-sum-label">Productivity score</div>
             <div class="le-sum-val le-sum-amber">82<span class="le-sum-period"> / 100</span></div>
-            <div class="le-sum-tag le-tag-det">100 = healthy</div>
+            <div class="tag-det">100 = healthy</div>
           </div>
           <div class="le-sum-div"></div>
           <div class="le-sum-cell">
@@ -214,7 +227,7 @@
           <div class="le-sum-cell">
             <div class="le-sum-label">Estimated overspend</div>
             <div class="le-sum-val le-sum-red">~$370<span class="le-sum-period">/wk</span></div>
-            <div class="le-sum-tag le-tag-est">Estimated · 78% confidence</div>
+            <div class="tag-est">Estimated · 78% confidence</div>
           </div>
         </div>
 
@@ -273,7 +286,7 @@
         <div class="le-chart-card">
           <div class="le-chart-header">
             <div class="le-chart-title">Sales per labor hour · last 7 days</div>
-            <span class="le-chart-tag le-tag-det">Measured</span>
+            <span class="tag-det tag-pill">Measured</span>
           </div>
           <div class="le-chart-sub">Each day's average sales per labor hour vs the same-location benchmark</div>
           <svg class="le-trend-svg" viewBox="0 0 900 180" preserveAspectRatio="xMidYMid meet" role="img" aria-label="7-day sales per labor hour trend chart">
@@ -350,19 +363,19 @@
 
     <!-- ══ (v28b) Subpage: STAFFING PLAN ═══════════════════════════ -->
     <div class="le-subpage" id="le-subpage-staffing">
-      <div class="le-sp-shell">
-        <div class="le-sp-header">
-          <div class="le-sp-hdr-left">
-            <div class="le-sp-hdr-title">Staffing Plan</div>
-            <div class="le-sp-hdr-sub"><strong style="color:var(--t1)">Specific changes you can make this week to save money.</strong> Each recommendation shows the math, the confidence level, and what to act on first. Dollar amounts are <strong style="color:var(--amber)">[estimated]</strong> until verified.</div>
+      <div class="sp-shell">
+        <div class="page-hdr">
+          <div class="page-hdr-left">
+            <div class="page-hdr-title">Staffing Plan</div>
+            <div class="page-hdr-sub"><strong style="color:var(--t1)">Specific changes you can make this week to save money.</strong> Each recommendation shows the math, the confidence level, and what to act on first. Dollar amounts are <strong style="color:var(--amber)">[estimated]</strong> until verified.</div>
           </div>
-          <div class="le-sp-hdr-right">
+          <div class="page-hdr-right">
             <div class="le-sf-timestamp">Last analysis · Today 09:42 ET</div>
             <button class="btn btn-secondary btn-sm" onclick="showLaborSubpage('heatmap')">Back to Heatmap</button>
             <button class="btn btn-ghost btn-sm" onclick="showLaborSubpage('evidence')">Open Evidence</button>
           </div>
         </div>
-        <div class="le-sp-body">
+        <div class="sp-body">
 
           <!-- ── Planning-stage hero: the leak that becomes the plan ── -->
           <div class="le-sf-hero">
@@ -384,12 +397,12 @@
             </div>
           </div>
 
-          <div class="le-sp-strip">
-            <div class="le-sp-strip-cell is-warn"><div class="le-sp-strip-k">Pending changes</div><div class="le-sp-strip-v">3</div><div class="le-sp-strip-sub">Across 3 locations</div></div>
-            <div class="le-sp-strip-cell"><div class="le-sp-strip-k">Hours to cut / wk</div><div class="le-sp-strip-v">18.5</div><div class="le-sp-strip-sub">Net of additions</div></div>
-            <div class="le-sp-strip-cell is-warn"><div class="le-sp-strip-k">Combined weekly</div><div class="le-sp-strip-v">$684<span class="le-sp-strip-period">/wk</span></div><div class="le-sp-strip-sub" style="color:var(--amber)">$370 + $189 + $125 · [ESTIMATED]</div></div>
-            <div class="le-sp-strip-cell is-warn"><div class="le-sp-strip-k">Monthly run-rate</div><div class="le-sp-strip-v">~$2,961</div><div class="le-sp-strip-sub" style="color:var(--amber)">/mo projection</div></div>
-            <div class="le-sp-strip-cell is-warn"><div class="le-sp-strip-k">Avg confidence</div><div class="le-sp-strip-v">76%</div><div class="le-sp-strip-sub" style="color:var(--amber)">Range 64–82% · 1 too low to act on yet</div></div>
+          <div class="sp-strip">
+            <div class="sp-strip-cell is-warn"><div class="sp-strip-k">Pending changes</div><div class="sp-strip-v">3</div><div class="sp-strip-sub">Across 3 locations</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Hours to cut / wk</div><div class="sp-strip-v">18.5</div><div class="sp-strip-sub">Net of additions</div></div>
+            <div class="sp-strip-cell is-warn"><div class="sp-strip-k">Combined weekly</div><div class="sp-strip-v">$684<span class="sp-strip-period">/wk</span></div><div class="sp-strip-sub" style="color:var(--amber)">$370 + $189 + $125 · [EST · not guaranteed]</div></div>
+            <div class="sp-strip-cell is-warn"><div class="sp-strip-k">Monthly run-rate</div><div class="sp-strip-v">~$2,961</div><div class="sp-strip-sub" style="color:var(--amber)">/mo projection</div></div>
+            <div class="sp-strip-cell is-warn"><div class="sp-strip-k">Avg confidence</div><div class="sp-strip-v">76%</div><div class="sp-strip-sub" style="color:var(--amber)">Range 64–82% · 1 too low to act</div></div>
           </div>
 
           <!-- Bulk plan action — applies ready items only (above 70% action floor) -->
@@ -424,82 +437,82 @@
                 <span style="font-size:10px;font-weight:400;color:var(--t3);text-transform:none;letter-spacing:0">Sorted by · Weekly $ exposure ↓</span>
               </div>
               <div class="le-sf-list">
-                <div class="le-sf-item le-sf-item-conf-amber" data-rec-id="oakland-tue-dinner" data-rec-label="Oakland Tue dinner" data-rec-amount="370">
-                  <div class="le-sf-item-h">
+                <div class="item-card is-review" data-rec-id="oakland-tue-dinner" data-rec-label="Oakland Tue dinner" data-rec-amount="370">
+                  <div class="item-card-h">
                     <div>
-                      <div class="le-sf-item-t">Remove one 5–10 PM front-of-house server · Oakland Tue dinner</div>
-                      <div class="le-sf-item-sub">5 excess hours per service · 6 of 6 comparable shifts confirmed</div>
+                      <div class="item-card-t">Remove one 5–10 PM front-of-house server · Oakland Tue dinner</div>
+                      <div class="item-card-sub">5 excess hours per service · 6 of 6 comparable shifts confirmed</div>
                     </div>
-                    <div class="le-sf-item-val-block">
-                      <div class="le-sf-item-val">$370<span class="le-sf-item-val-period">/wk</span></div>
-                      <div class="le-sf-item-val-annual">~$19,240/yr at current pace</div>
-                      <div class="le-sf-item-tag">[ESTIMATED]</div>
+                    <div class="item-card-val-block">
+                      <div class="item-card-val">$370<span class="item-card-val-period">/wk</span></div>
+                      <div class="item-card-val-annual">~$19,240/yr at current pace</div>
+                      <div class="tag-est">[EST · not guaranteed]</div>
                     </div>
                   </div>
-                  <div class="le-sf-item-meta">
+                  <div class="item-card-meta">
                     <span>5 hrs × $18.50/hr × 4 services/wk</span>
                     <span>·</span>
-                    <span class="le-sf-conf-badge le-sf-conf-badge-amber">78% · review before acting</span>
+                    <span class="le-sf-conf-badge le-sf-conf-badge-amber">78% · review first</span>
                     <span>·</span>
                     <span>~$1,602/mo</span>
                   </div>
-                  <div class="le-sf-item-caveat le-sf-item-caveat-amber">
+                  <div class="item-card-caveat">
                     Review before applying — confidence is between 70% (enough to act) and 80% (enough to count as verified). Check the math, then proceed.
                   </div>
-                  <div class="le-sf-item-cta">
+                  <div class="item-card-cta">
                     <button class="btn btn-primary btn-sm" onclick="leSfDraftRec('oakland-tue-dinner','Oakland Tue dinner',370)">Turn into Action</button>
                     <button class="btn btn-secondary btn-sm" onclick="leShowHeatmapWithFocal('oakland-tue-dinner')">View in Heatmap</button>
                   </div>
                 </div>
 
-                <div class="le-sf-item le-sf-item-conf-green" data-rec-id="wc-wed-dinner" data-rec-label="Walnut Creek Wed dinner" data-rec-amount="189">
-                  <div class="le-sf-item-h">
+                <div class="item-card is-ready" data-rec-id="wc-wed-dinner" data-rec-label="Walnut Creek Wed dinner" data-rec-amount="189">
+                  <div class="item-card-h">
                     <div>
-                      <div class="le-sf-item-t">Reduce bar staffing −1 · Walnut Creek Wed dinner</div>
-                      <div class="le-sf-item-sub">Slow bar service · 4 of 4 comparable shifts confirmed</div>
+                      <div class="item-card-t">Reduce bar staffing −1 · Walnut Creek Wed dinner</div>
+                      <div class="item-card-sub">Slow bar service · 4 of 4 comparable shifts confirmed</div>
                     </div>
-                    <div class="le-sf-item-val-block">
-                      <div class="le-sf-item-val">$189<span class="le-sf-item-val-period">/wk</span></div>
-                      <div class="le-sf-item-val-annual">~$9,828/yr at current pace</div>
-                      <div class="le-sf-item-tag">[ESTIMATED]</div>
+                    <div class="item-card-val-block">
+                      <div class="item-card-val">$189<span class="item-card-val-period">/wk</span></div>
+                      <div class="item-card-val-annual">~$9,828/yr at current pace</div>
+                      <div class="tag-est">[EST · not guaranteed]</div>
                     </div>
                   </div>
-                  <div class="le-sf-item-meta">
+                  <div class="item-card-meta">
                     <span>3 hrs × $17.00 × 3.7 services</span>
                     <span>·</span>
-                    <span class="le-sf-conf-badge le-sf-conf-badge-green">82% · ready to act</span>
+                    <span class="le-sf-conf-badge le-sf-conf-badge-green">82% · ready</span>
                     <span>·</span>
                     <span>~$818/mo</span>
                   </div>
-                  <div class="le-sf-item-cta">
+                  <div class="item-card-cta">
                     <button class="btn btn-primary btn-sm" onclick="leSfDraftRec('wc-wed-dinner','Walnut Creek Wed dinner',189)">Turn into Action</button>
                     <button class="btn btn-secondary btn-sm" onclick="leShowHeatmapWithFocal('wc-wed-dinner')">View in Heatmap</button>
                   </div>
                 </div>
 
-                <div class="le-sf-item le-sf-item-conf-red" data-rec-id="berkeley-mon-lunch" data-rec-label="Berkeley Mon lunch" data-rec-amount="125">
-                  <div class="le-sf-item-h">
+                <div class="item-card is-too-low" data-rec-id="berkeley-mon-lunch" data-rec-label="Berkeley Mon lunch" data-rec-amount="125">
+                  <div class="item-card-h">
                     <div>
-                      <div class="le-sf-item-t">Cut 1 kitchen expo · Berkeley Mon lunch</div>
-                      <div class="le-sf-item-sub">Expo idle &gt; 40% of shift · 3 of 5 comparable shifts (partial pattern)</div>
+                      <div class="item-card-t">Cut 1 kitchen expo · Berkeley Mon lunch</div>
+                      <div class="item-card-sub">Expo idle &gt; 40% of shift · 3 of 5 comparable shifts (partial pattern)</div>
                     </div>
-                    <div class="le-sf-item-val-block">
-                      <div class="le-sf-item-val">$125<span class="le-sf-item-val-period">/wk</span></div>
-                      <div class="le-sf-item-val-annual">~$6,500/yr at current pace</div>
-                      <div class="le-sf-item-tag">[ESTIMATED]</div>
+                    <div class="item-card-val-block">
+                      <div class="item-card-val">$125<span class="item-card-val-period">/wk</span></div>
+                      <div class="item-card-val-annual">~$6,500/yr at current pace</div>
+                      <div class="tag-est">[EST · not guaranteed]</div>
                     </div>
                   </div>
-                  <div class="le-sf-item-meta">
+                  <div class="item-card-meta">
                     <span>2 hrs × $15.50 × 4 services</span>
                     <span>·</span>
-                    <span class="le-sf-conf-badge le-sf-conf-badge-red">64% · too low to act on yet</span>
+                    <span class="le-sf-conf-badge le-sf-conf-badge-red">64% · too low to act</span>
                     <span>·</span>
                     <span>~$541/mo</span>
                   </div>
-                  <div class="le-sf-item-caveat le-sf-item-caveat-red">
+                  <div class="item-card-caveat">
                     Confidence below 70% — too low to turn into an action until the evidence is stronger. Investigate why the pattern looks partial (something might be skewing the signal) and re-evaluate next week.
                   </div>
-                  <div class="le-sf-item-cta">
+                  <div class="item-card-cta">
                     <button class="btn btn-secondary btn-sm" onclick="showLaborSubpage('evidence')">Investigate evidence</button>
                     <button class="btn btn-ghost btn-sm" onclick="leShowHeatmapWithFocal('berkeley-mon-lunch')">View in Heatmap</button>
                   </div>
@@ -543,25 +556,25 @@
 
     <!-- ══ (v28b) Subpage: BENCHMARKS ══════════════════════════════ -->
     <div class="le-subpage" id="le-subpage-benchmarks">
-      <div class="le-sp-shell">
-        <div class="le-sp-header">
-          <div class="le-sp-hdr-left">
-            <div class="le-sp-hdr-title">Labor Benchmarks</div>
-            <div class="le-sp-hdr-sub"><strong style="color:var(--t1)">How your locations compare to similar restaurants.</strong> These numbers are the reference points — the dollar savings live in Heatmap and Staffing Plan.</div>
+      <div class="sp-shell">
+        <div class="page-hdr">
+          <div class="page-hdr-left">
+            <div class="page-hdr-title">Labor Benchmarks</div>
+            <div class="page-hdr-sub"><strong style="color:var(--t1)">How your locations compare to similar restaurants.</strong> These numbers are the reference points — the dollar savings live in Heatmap and Staffing Plan.</div>
           </div>
-          <div class="le-sp-hdr-right">
+          <div class="page-hdr-right">
             <button class="btn btn-ghost btn-sm" onclick="showLaborSubpage('overview')">← Overview</button>
             <button class="btn btn-secondary btn-sm" onclick="showLaborSubpage('heatmap')">Open Heatmap</button>
             <button class="btn btn-ghost btn-sm" onclick="showLaborSubpage('evidence')">Open Evidence</button>
           </div>
         </div>
-        <div class="le-sp-body">
-          <div class="le-sp-strip">
-            <div class="le-sp-strip-cell"><div class="le-sp-strip-k">Healthy floor</div><div class="le-sp-strip-v">$36.50<span class="le-sp-strip-period">/hr</span></div><div class="le-sp-strip-sub">Sales per labor hour · below = leak signal</div></div>
-            <div class="le-sp-strip-cell"><div class="le-sp-strip-k">Labor cost target</div><div class="le-sp-strip-v">29.3%</div><div class="le-sp-strip-sub">Top-quarter peer benchmark</div></div>
-            <div class="le-sp-strip-cell is-warn"><div class="le-sp-strip-k">Labor cost actual</div><div class="le-sp-strip-v">31.4%</div><div class="le-sp-strip-sub" style="color:var(--amber)">+2.1 points over target</div></div>
-            <div class="le-sp-strip-cell"><div class="le-sp-strip-k">Best location</div><div class="le-sp-strip-v">Berkeley</div><div class="le-sp-strip-sub">$38.10 / labor hour</div></div>
-            <div class="le-sp-strip-cell is-bad"><div class="le-sp-strip-k">Worst location</div><div class="le-sp-strip-v">Oakland</div><div class="le-sp-strip-sub">$32.40 / labor hour</div></div>
+        <div class="sp-body">
+          <div class="sp-strip">
+            <div class="sp-strip-cell"><div class="sp-strip-k">Healthy floor</div><div class="sp-strip-v">$36.50<span class="sp-strip-period">/hr</span></div><div class="sp-strip-sub">Sales per labor hour · below = leak signal</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Labor cost target</div><div class="sp-strip-v">29.3%</div><div class="sp-strip-sub">Top-quarter peer benchmark</div></div>
+            <div class="sp-strip-cell is-warn"><div class="sp-strip-k">Labor cost actual</div><div class="sp-strip-v">31.4%</div><div class="sp-strip-sub" style="color:var(--amber)">+2.1 points over target</div></div>
+            <div class="sp-strip-cell"><div class="sp-strip-k">Best location</div><div class="sp-strip-v">Berkeley</div><div class="sp-strip-sub">$38.10 / labor hour</div></div>
+            <div class="sp-strip-cell is-bad"><div class="sp-strip-k">Worst location</div><div class="sp-strip-v">Oakland</div><div class="sp-strip-sub">$32.40 / labor hour</div></div>
           </div>
 
           <!-- Hero band — doctrinal framing + per-location RPLH bar chart -->
@@ -742,19 +755,19 @@
          Middle (no extremes) servers are not surfaced — not actionable.
          ═══════════════════════════════════════════════════════════════ -->
     <div class="le-subpage" id="le-subpage-coaching">
-      <div class="le-sp-shell">
-        <div class="le-sp-header">
-          <div class="le-sp-hdr-left">
-            <div class="le-sp-hdr-title">Server Coaching</div>
-            <div class="le-sp-hdr-sub"><strong style="color:var(--t1)">Which servers to coach — and what to focus on.</strong> Each server is scored on three things: how much they sell, how often guests come back for them, and how reliably they work. Dollar amounts are <strong style="color:var(--amber)">[estimated]</strong> until coaching changes produce verified lift.</div>
+      <div class="sp-shell">
+        <div class="page-hdr">
+          <div class="page-hdr-left">
+            <div class="page-hdr-title">Server Coaching</div>
+            <div class="page-hdr-sub"><strong style="color:var(--t1)">Which servers to coach — and what to focus on.</strong> Each server is scored on three things: how much they sell, how often guests come back for them, and how reliably they work. Dollar amounts are <strong style="color:var(--amber)">[estimated]</strong> until coaching changes produce verified lift.</div>
           </div>
-          <div class="le-sp-hdr-right">
+          <div class="page-hdr-right">
             <div class="le-sf-timestamp">Last analysis · Today 09:42 ET</div>
             <button class="btn btn-secondary btn-sm" onclick="showLaborSubpage('benchmarks')">Benchmarks</button>
             <button class="btn btn-ghost btn-sm" onclick="showLaborSubpage('evidence')">Open Evidence</button>
           </div>
         </div>
-        <div class="le-sp-body">
+        <div class="sp-body">
 
           <!-- USAGE GUARDRAIL — collapsible (summary always visible) -->
           <details class="le-co-warn">
@@ -909,60 +922,60 @@
 
     <!-- ══ (v28b) Subpage: EVIDENCE ════════════════════════════════ -->
     <div class="le-subpage" id="le-subpage-evidence">
-      <div class="le-sp-shell">
-        <div class="le-sp-header">
-          <div class="le-sp-hdr-left">
-            <div class="le-sp-hdr-title">Labor Evidence</div>
-            <div class="le-sp-hdr-sub"><strong style="color:var(--t1)">How we calculate what we calculate.</strong> The formulas, data sources, confidence rules, and what we deliberately don't do with this data.</div>
+      <div class="sp-shell">
+        <div class="page-hdr">
+          <div class="page-hdr-left">
+            <div class="page-hdr-title">Labor Evidence</div>
+            <div class="page-hdr-sub"><strong style="color:var(--t1)">How we calculate what we calculate.</strong> The formulas, data sources, confidence rules, and what we deliberately don't do with this data.</div>
           </div>
-          <div class="le-sp-hdr-right">
+          <div class="page-hdr-right">
             <button class="btn btn-secondary btn-sm" onclick="showScreen('settings',null,'Data Quality')">Data Quality</button>
             <button class="btn btn-ghost btn-sm" onclick="showLaborSubpage('heatmap')">Back to Heatmap</button>
           </div>
         </div>
-        <div class="le-sp-body">
+        <div class="sp-body">
           <!-- Sticky TOC — jumps to each section -->
-          <nav class="le-ev-toc" aria-label="Evidence sections">
-            <a href="#ev-detection" class="le-ev-toc-item">
-              <span class="le-ev-toc-num">1</span>
-              <span class="le-ev-toc-label">Detection</span>
-              <span class="le-ev-toc-sub">4 rules</span>
+          <nav class="ev-toc" aria-label="Evidence sections">
+            <a href="#ev-detection" class="ev-toc-item">
+              <span class="ev-toc-num">1</span>
+              <span class="ev-toc-label">Detection</span>
+              <span class="ev-toc-sub">4 rules</span>
             </a>
-            <a href="#ev-verification" class="le-ev-toc-item">
-              <span class="le-ev-toc-num">2</span>
-              <span class="le-ev-toc-label">Verification</span>
-              <span class="le-ev-toc-sub">1 ruleset</span>
+            <a href="#ev-verification" class="ev-toc-item">
+              <span class="ev-toc-num">2</span>
+              <span class="ev-toc-label">Verification</span>
+              <span class="ev-toc-sub">1 ruleset</span>
             </a>
-            <a href="#ev-coaching" class="le-ev-toc-item">
-              <span class="le-ev-toc-num">3</span>
-              <span class="le-ev-toc-label">Server Coaching</span>
-              <span class="le-ev-toc-sub">2 docs</span>
+            <a href="#ev-coaching" class="ev-toc-item">
+              <span class="ev-toc-num">3</span>
+              <span class="ev-toc-label">Server Coaching</span>
+              <span class="ev-toc-sub">2 docs</span>
             </a>
-            <a href="#ev-trust" class="le-ev-toc-item">
-              <span class="le-ev-toc-num">4</span>
-              <span class="le-ev-toc-label">Trust & Safety</span>
-              <span class="le-ev-toc-sub">1 doc</span>
+            <a href="#ev-trust" class="ev-toc-item">
+              <span class="ev-toc-num">4</span>
+              <span class="ev-toc-label">Trust & Safety</span>
+              <span class="ev-toc-sub">1 doc</span>
             </a>
           </nav>
 
           <!-- Expand / collapse toolbar — lets users scan all titles or read everything at once -->
-          <div class="le-ev-toolbar">
-            <span class="le-ev-toolbar-hint">Click any card title to expand it · or use:</span>
+          <div class="ev-toolbar">
+            <span class="ev-toolbar-hint">Click any card title to expand it · or use:</span>
             <button class="btn btn-ghost btn-sm" onclick="leEvToggleAll(true)">Expand all</button>
             <button class="btn btn-ghost btn-sm" onclick="leEvToggleAll(false)">Collapse all</button>
           </div>
 
           <!-- ═══ Section 1: Detection ═══ -->
-          <section class="le-ev-section" id="ev-detection">
-            <div class="le-ev-section-h">
-              <span class="le-ev-section-num">1</span>
-              <h2 class="le-ev-section-title">Detection</h2>
-              <span class="le-ev-section-sub">How labor leaks are surfaced — formulas, sources, confidence, blockers</span>
+          <section class="ev-section" id="ev-detection">
+            <div class="ev-section-h">
+              <span class="ev-section-num">1</span>
+              <h2 class="ev-section-title">Detection</h2>
+              <span class="ev-section-sub">How labor leaks are surfaced — formulas, sources, confidence, blockers</span>
             </div>
-            <div class="le-ev-grid">
-              <details class="le-ev-card">
-                <summary class="le-ev-h"><span class="le-ev-icon">ƒ</span>The formulas <span class="le-ev-card-chev" aria-hidden="true">&#9662;</span></summary>
-                <div class="le-ev-body">
+            <div class="ev-grid">
+              <details class="ev-card">
+                <summary class="ev-h"><span class="ev-icon">ƒ</span>The formulas <span class="ev-card-chev" aria-hidden="true">&#9662;</span></summary>
+                <div class="ev-body">
                   <span class="mono">Sales per labor hour (RPLH) = Net sales ÷ labor hours</span>
                   <span class="mono">Extra hours = scheduled hours − hours needed</span>
                   <span class="mono">Hours needed = guests ÷ guests-per-server target</span>
@@ -973,38 +986,38 @@
                 </div>
               </details>
 
-              <details class="le-ev-card">
-                <summary class="le-ev-h"><span class="le-ev-icon">◉</span>Source health <span class="le-ev-card-chev" aria-hidden="true">&#9662;</span></summary>
-                <div class="le-ev-body">
-                  <div class="le-ev-src"><span class="le-ev-src-dot ok"></span><span>Toast POS · connected · live</span></div>
-                  <div class="le-ev-src"><span class="le-ev-src-dot ok"></span><span>Sales by daypart · connected</span></div>
-                  <div class="le-ev-src"><span class="le-ev-src-dot warn"></span><span>7shifts · token stale 18h</span></div>
-                  <div class="le-ev-src"><span class="le-ev-src-dot ok"></span><span>Baseline window · 8 weeks</span></div>
-                  <div class="le-ev-src"><span class="le-ev-src-dot ok"></span><span>Wage assumptions · operator-confirmed</span></div>
+              <details class="ev-card">
+                <summary class="ev-h"><span class="ev-icon">◉</span>Source health <span class="ev-card-chev" aria-hidden="true">&#9662;</span></summary>
+                <div class="ev-body">
+                  <div class="ev-src"><span class="ev-src-dot ok"></span><span>Toast POS · connected · live</span></div>
+                  <div class="ev-src"><span class="ev-src-dot ok"></span><span>Sales by daypart · connected</span></div>
+                  <div class="ev-src"><span class="ev-src-dot warn"></span><span>7shifts · token stale 18h</span></div>
+                  <div class="ev-src"><span class="ev-src-dot ok"></span><span>Baseline window · 8 weeks</span></div>
+                  <div class="ev-src"><span class="ev-src-dot ok"></span><span>Wage assumptions · operator-confirmed</span></div>
                   <p style="margin:8px 0 0;font-size:10.5px;color:var(--t3);font-style:italic">Stale 7shifts reduces confidence from 85% to 78%. Refresh token to restore.</p>
                 </div>
               </details>
 
-              <details class="le-ev-card">
-                <summary class="le-ev-h"><span class="le-ev-icon">%</span>What confidence means <span class="le-ev-card-chev" aria-hidden="true">&#9662;</span></summary>
-                <div class="le-ev-body">
-                  <div class="le-ev-row"><span>Minimum to flag at all</span><strong>60%</strong></div>
-                  <div class="le-ev-row"><span>Minimum to act on</span><strong>70%</strong></div>
-                  <div class="le-ev-row"><span>Minimum to count as verified</span><strong>80%</strong></div>
-                  <div class="le-ev-row"><span>Stale 7shifts penalty</span><strong>−7 pts</strong></div>
-                  <div class="le-ev-row"><span>Stale Toast penalty</span><strong>−12 pts</strong></div>
-                  <div class="le-ev-row"><span>Missing wage data</span><strong>−15 pts</strong></div>
+              <details class="ev-card">
+                <summary class="ev-h"><span class="ev-icon">%</span>What confidence means <span class="ev-card-chev" aria-hidden="true">&#9662;</span></summary>
+                <div class="ev-body">
+                  <div class="ev-row"><span>Minimum to flag at all</span><strong>60%</strong></div>
+                  <div class="ev-row"><span>Minimum to act on</span><strong>70%</strong></div>
+                  <div class="ev-row"><span>Minimum to count as verified</span><strong>80%</strong></div>
+                  <div class="ev-row"><span>Stale 7shifts penalty</span><strong>−7 pts</strong></div>
+                  <div class="ev-row"><span>Stale Toast penalty</span><strong>−12 pts</strong></div>
+                  <div class="ev-row"><span>Missing wage data</span><strong>−15 pts</strong></div>
                   <p style="margin:8px 0 0;font-size:10.5px;color:var(--t3);font-style:italic">Confidence reflects how fresh the data is, how many comparable shifts we had to compare against, and how strong the pattern is. Below 70%, we won't let you turn it into an action until it improves.</p>
                 </div>
               </details>
 
-              <details class="le-ev-card">
-                <summary class="le-ev-h"><span class="le-ev-icon">⊘</span>Data-quality blockers <span class="le-ev-card-chev" aria-hidden="true">&#9662;</span></summary>
-                <div class="le-ev-body">
-                  <div class="le-ev-rule"><strong>POS down &gt; 6h</strong> → detection paused for affected period.</div>
-                  <div class="le-ev-rule"><strong>7shifts stale &gt; 24h</strong> → detection continues but confidence reduced.</div>
-                  <div class="le-ev-rule"><strong>Wage data unconfirmed</strong> → dollar values labeled [ESTIMATED · WAGE UNCONFIRMED]; cannot move to action.</div>
-                  <div class="le-ev-rule"><strong>Sample &lt; 4 services</strong> → no detection generated.</div>
+              <details class="ev-card">
+                <summary class="ev-h"><span class="ev-icon">⊘</span>Data-quality blockers <span class="ev-card-chev" aria-hidden="true">&#9662;</span></summary>
+                <div class="ev-body">
+                  <div class="ev-rule"><strong>POS down &gt; 6h</strong> → detection paused for affected period.</div>
+                  <div class="ev-rule"><strong>7shifts stale &gt; 24h</strong> → detection continues but confidence reduced.</div>
+                  <div class="ev-rule"><strong>Wage data unconfirmed</strong> → dollar values labeled [ESTIMATED · WAGE UNCONFIRMED]; cannot move to action.</div>
+                  <div class="ev-rule"><strong>Sample &lt; 4 services</strong> → no detection generated.</div>
                   <p style="margin:8px 0 0;font-size:10.5px;color:var(--t3);font-style:italic">All current blockers visible in <a href="#" onclick="event.preventDefault();showScreen('settings',null,'Data Quality')" style="color:var(--blue);text-decoration:underline">Data Quality</a>.</p>
                 </div>
               </details>
@@ -1012,20 +1025,20 @@
           </section>
 
           <!-- ═══ Section 2: Verification ═══ -->
-          <section class="le-ev-section" id="ev-verification">
-            <div class="le-ev-section-h">
-              <span class="le-ev-section-num">2</span>
-              <h2 class="le-ev-section-title">Verification</h2>
-              <span class="le-ev-section-sub">Guardrails enforced before estimated savings become verified</span>
+          <section class="ev-section" id="ev-verification">
+            <div class="ev-section-h">
+              <span class="ev-section-num">2</span>
+              <h2 class="ev-section-title">Verification</h2>
+              <span class="ev-section-sub">Guardrails enforced before estimated savings become verified</span>
             </div>
-            <div class="le-ev-grid">
-              <details class="le-ev-card">
-                <summary class="le-ev-h"><span class="le-ev-icon">◎</span>Guardrails (verification-side) <span class="le-ev-card-chev" aria-hidden="true">&#9662;</span></summary>
-                <div class="le-ev-body">
-                  <div class="le-ev-rule"><strong>Ticket time</strong> must not worsen during monitoring window. Measured per service vs baseline.</div>
-                  <div class="le-ev-rule"><strong>Guest sentiment</strong> must not drop. Tracked via review platforms + complaint patterns.</div>
-                  <div class="le-ev-rule"><strong>Sales / throughput</strong> must not fall. If covers drop &gt;5% with staffing held constant, guardrail trips.</div>
-                  <div class="le-ev-rule"><strong>Manager override</strong> allowed at any point. Pauses monitoring window; resumes on resume.</div>
+            <div class="ev-grid">
+              <details class="ev-card">
+                <summary class="ev-h"><span class="ev-icon">◎</span>Guardrails (verification-side) <span class="ev-card-chev" aria-hidden="true">&#9662;</span></summary>
+                <div class="ev-body">
+                  <div class="ev-rule"><strong>Ticket time</strong> must not worsen during monitoring window. Measured per service vs baseline.</div>
+                  <div class="ev-rule"><strong>Guest sentiment</strong> must not drop. Tracked via review platforms + complaint patterns.</div>
+                  <div class="ev-rule"><strong>Sales / throughput</strong> must not fall. If covers drop &gt;5% with staffing held constant, guardrail trips.</div>
+                  <div class="ev-rule"><strong>Manager override</strong> allowed at any point. Pauses monitoring window; resumes on resume.</div>
                   <p style="margin:8px 0 0;font-size:10.5px;color:var(--t3);font-style:italic">Staffing reduction is <strong>not counted</strong> as verified if service quality degrades, even if labor cost dropped.</p>
                 </div>
               </details>
@@ -1033,45 +1046,45 @@
           </section>
 
           <!-- ═══ Section 3: Server Coaching ═══ -->
-          <section class="le-ev-section" id="ev-coaching">
-            <div class="le-ev-section-h">
-              <span class="le-ev-section-num">3</span>
-              <h2 class="le-ev-section-title">Server Coaching</h2>
-              <span class="le-ev-section-sub">Three-axis methodology + the use restrictions baked into the product</span>
+          <section class="ev-section" id="ev-coaching">
+            <div class="ev-section-h">
+              <span class="ev-section-num">3</span>
+              <h2 class="ev-section-title">Server Coaching</h2>
+              <span class="ev-section-sub">Three-axis methodology + the use restrictions baked into the product</span>
             </div>
-            <div class="le-ev-grid">
-              <details class="le-ev-card">
-                <summary class="le-ev-h"><span class="le-ev-icon">⊕</span>Methodology <span class="le-ev-card-chev" aria-hidden="true">&#9662;</span></summary>
-                <div class="le-ev-body">
+            <div class="ev-grid">
+              <details class="ev-card">
+                <summary class="ev-h"><span class="ev-icon">⊕</span>Methodology <span class="ev-card-chev" aria-hidden="true">&#9662;</span></summary>
+                <div class="ev-body">
                   <p style="margin:0 0 6px"><strong style="color:var(--t1)">Primary metric:</strong> Premium item attach rate.</p>
                   <span class="mono">Attach % = checks w/ premium tag ÷ total checks</span>
                   <p style="margin:8px 0 6px"><strong style="color:var(--t1)">Secondary metrics:</strong> items/check, modifier capture, comp rate.</p>
                   <p style="margin:6px 0"><strong style="color:var(--t1)">Peer group:</strong></p>
-                  <div class="le-ev-rule">Same daypart × section type × location. Min 3 peer servers required.</div>
+                  <div class="ev-rule">Same daypart × section type × location. Min 3 peer servers required.</div>
                   <p style="margin:8px 0 6px"><strong style="color:var(--t1)">Sample floor:</strong></p>
-                  <div class="le-ev-rule">At least 12 shifts in the last 60 days per server. Below that, no ranking.</div>
+                  <div class="ev-rule">At least 12 shifts in the last 60 days per server. Below that, no ranking.</div>
                   <p style="margin:8px 0 6px"><strong style="color:var(--t1)">Who we show you:</strong></p>
-                  <div class="le-ev-rule">The top quarter (your standout performers) and the bottom quarter (your coaching opportunities). The middle 50% is intentionally hidden — coaching effort on average performers doesn't produce meaningful lift, and surfacing them invites misuse.</div>
+                  <div class="ev-rule">The top quarter (your standout performers) and the bottom quarter (your coaching opportunities). The middle 50% is intentionally hidden — coaching effort on average performers doesn't produce meaningful lift, and surfacing them invites misuse.</div>
                   <p style="margin:8px 0 6px;color:var(--amber)"><strong>Deliberately excluded:</strong></p>
-                  <div class="le-ev-rule" style="border-left-color:var(--amber)"><strong>Tip percentage.</strong> Correlates with section assignment and party demographics, not service quality. Including it would generate structurally biased rankings.</div>
-                  <div class="le-ev-rule" style="border-left-color:var(--amber)"><strong>Total tips, total sales.</strong> Confounded by section, daypart, party size. Not server-attributable.</div>
-                  <div class="le-ev-rule" style="border-left-color:var(--amber)"><strong>Composite "performance score".</strong> Hides what's being measured. Each metric stays decomposable.</div>
+                  <div class="ev-rule" style="border-left-color:var(--amber)"><strong>Tip percentage.</strong> Correlates with section assignment and party demographics, not service quality. Including it would generate structurally biased rankings.</div>
+                  <div class="ev-rule" style="border-left-color:var(--amber)"><strong>Total tips, total sales.</strong> Confounded by section, daypart, party size. Not server-attributable.</div>
+                  <div class="ev-rule" style="border-left-color:var(--amber)"><strong>Composite "performance score".</strong> Hides what's being measured. Each metric stays decomposable.</div>
                 </div>
               </details>
 
-              <details class="le-ev-card">
-                <summary class="le-ev-h"><span class="le-ev-icon">⊗</span>Use restrictions <span class="le-ev-card-chev" aria-hidden="true">&#9662;</span></summary>
-                <div class="le-ev-body">
+              <details class="ev-card">
+                <summary class="ev-h"><span class="ev-icon">⊗</span>Use restrictions <span class="ev-card-chev" aria-hidden="true">&#9662;</span></summary>
+                <div class="ev-body">
                   <p style="margin:0 0 6px">Per SKC Terms of Service, Server Coaching outputs may <strong style="color:var(--red)">not</strong> be used as the sole input for:</p>
-                  <div class="le-ev-rule" style="border-left-color:var(--red)"><strong>—</strong> Scheduling decisions (which servers get which shifts)</div>
-                  <div class="le-ev-rule" style="border-left-color:var(--red)"><strong>—</strong> Promotion or demotion decisions</div>
-                  <div class="le-ev-rule" style="border-left-color:var(--red)"><strong>—</strong> Disciplinary action</div>
-                  <div class="le-ev-rule" style="border-left-color:var(--red)"><strong>—</strong> Termination</div>
+                  <div class="ev-rule" style="border-left-color:var(--red)"><strong>—</strong> Scheduling decisions (which servers get which shifts)</div>
+                  <div class="ev-rule" style="border-left-color:var(--red)"><strong>—</strong> Promotion or demotion decisions</div>
+                  <div class="ev-rule" style="border-left-color:var(--red)"><strong>—</strong> Disciplinary action</div>
+                  <div class="ev-rule" style="border-left-color:var(--red)"><strong>—</strong> Termination</div>
                   <p style="margin:8px 0 6px"><strong style="color:var(--t1)">Allowed use cases:</strong></p>
-                  <div class="le-ev-rule"><strong>—</strong> Coaching conversations and training</div>
-                  <div class="le-ev-rule"><strong>—</strong> Shadow training pairing (top performer + new hire)</div>
-                  <div class="le-ev-rule"><strong>—</strong> Recognition and morale</div>
-                  <div class="le-ev-rule"><strong>—</strong> Identifying section/daypart structural issues</div>
+                  <div class="ev-rule"><strong>—</strong> Coaching conversations and training</div>
+                  <div class="ev-rule"><strong>—</strong> Shadow training pairing (top performer + new hire)</div>
+                  <div class="ev-rule"><strong>—</strong> Recognition and morale</div>
+                  <div class="ev-rule"><strong>—</strong> Identifying section/daypart structural issues</div>
                   <p style="margin:8px 0 0;font-size:10.5px;color:var(--t3);font-style:italic">Final personnel decisions remain with the operator. SKC data is one input among many.</p>
                 </div>
               </details>
@@ -1079,23 +1092,23 @@
           </section>
 
           <!-- ═══ Section 4: Trust & Safety ═══ -->
-          <section class="le-ev-section" id="ev-trust">
-            <div class="le-ev-section-h">
-              <span class="le-ev-section-num">4</span>
-              <h2 class="le-ev-section-title">Trust & Safety</h2>
-              <span class="le-ev-section-sub">What the LLM is — and isn't — permitted to do with labor data</span>
+          <section class="ev-section" id="ev-trust">
+            <div class="ev-section-h">
+              <span class="ev-section-num">4</span>
+              <h2 class="ev-section-title">Trust & Safety</h2>
+              <span class="ev-section-sub">What the LLM is — and isn't — permitted to do with labor data</span>
             </div>
-            <div class="le-ev-grid">
-              <details class="le-ev-card">
-                <summary class="le-ev-h"><span class="le-ev-icon">⚠</span>LLM restrictions <span class="le-ev-card-chev" aria-hidden="true">&#9662;</span></summary>
-                <div class="le-ev-body">
+            <div class="ev-grid">
+              <details class="ev-card">
+                <summary class="ev-h"><span class="ev-icon">⚠</span>LLM restrictions <span class="ev-card-chev" aria-hidden="true">&#9662;</span></summary>
+                <div class="ev-body">
                   <p style="margin:0 0 8px">Claude (Sonnet) generates labor analysis and natural-language summaries, but is <strong>not permitted</strong> to:</p>
-                  <div class="le-ev-rule"><strong>—</strong> Set or modify confidence scores. Confidence is rule-driven.</div>
-                  <div class="le-ev-rule"><strong>—</strong> Override RPLH thresholds or wage assumptions.</div>
-                  <div class="le-ev-rule"><strong>—</strong> Call estimated values "saved" or "recovered" in any output.</div>
-                  <div class="le-ev-rule"><strong>—</strong> Auto-create actions. Operator approval required.</div>
-                  <div class="le-ev-rule"><strong>—</strong> Generate language about a server's character, attitude, or perceived motivation. Only measurable behavior in metrics.</div>
-                  <div class="le-ev-rule"><strong>—</strong> Compare servers across different peer groups. Daypart/section/location must match.</div>
+                  <div class="ev-rule"><strong>—</strong> Set or modify confidence scores. Confidence is rule-driven.</div>
+                  <div class="ev-rule"><strong>—</strong> Override RPLH thresholds or wage assumptions.</div>
+                  <div class="ev-rule"><strong>—</strong> Call estimated values "saved" or "recovered" in any output.</div>
+                  <div class="ev-rule"><strong>—</strong> Auto-create actions. Operator approval required.</div>
+                  <div class="ev-rule"><strong>—</strong> Generate language about a server's character, attitude, or perceived motivation. Only measurable behavior in metrics.</div>
+                  <div class="ev-rule"><strong>—</strong> Compare servers across different peer groups. Daypart/section/location must match.</div>
                   <p style="margin:8px 0 0;font-size:10.5px;color:var(--t3);font-style:italic">LLM outputs are decision-support only. Final authority is the operator.</p>
                 </div>
               </details>
