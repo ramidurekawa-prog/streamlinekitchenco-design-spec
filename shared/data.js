@@ -89,6 +89,8 @@ const LE_CO_SERVERS = [
     name: 'Sarah C.', shift: 'Dinner', location: 'Oakland', section: '4-top',
     shifts: 23, confidence: 86,
     scores: { revenue: 90, retention: 84, reliability: 88 },
+    prevScores: { revenue: 85, retention: 82, reliability: 87 },
+    lastCoachedDays: 14, lastCoachedTopic: 'Modifier upsell',
     rawMetrics: {
       premiumAttach: '41%', premiumMedian: '23%',
       itemsCheck: '5.2', itemsMedian: '4.1',
@@ -101,6 +103,8 @@ const LE_CO_SERVERS = [
     name: 'Priya R.', shift: 'Dinner', location: 'Berkeley', section: 'patio',
     shifts: 21, confidence: 81,
     scores: { revenue: 82, retention: 76, reliability: 79 },
+    prevScores: { revenue: 78, retention: 72, reliability: 76 },
+    lastCoachedDays: null,
     rawMetrics: {
       premiumAttach: '34%', premiumMedian: '23%',
       itemsCheck: '4.7', itemsMedian: '4.1',
@@ -113,6 +117,8 @@ const LE_CO_SERVERS = [
     name: 'Devon K.', shift: 'Brunch', location: 'Walnut Creek', section: '4-top',
     shifts: 19, confidence: 76,
     scores: { revenue: 78, retention: 52, reliability: 71 },
+    prevScores: { revenue: 81, retention: 55, reliability: 72 },
+    lastCoachedDays: 21, lastCoachedTopic: 'Retention follow-up',
     rawMetrics: {
       premiumAttach: '29%', premiumMedian: '19%',
       itemsCheck: '3.8', itemsMedian: '3.2',
@@ -125,6 +131,8 @@ const LE_CO_SERVERS = [
     name: 'Elena V.', shift: 'Dinner', location: 'Oakland', section: 'window',
     shifts: 18, confidence: 79,
     scores: { revenue: 58, retention: 88, reliability: 84 },
+    prevScores: { revenue: 60, retention: 85, reliability: 82 },
+    lastCoachedDays: null,
     rawMetrics: {
       premiumAttach: '21%', premiumMedian: '23%',
       itemsCheck: '4.0', itemsMedian: '4.1',
@@ -137,6 +145,8 @@ const LE_CO_SERVERS = [
     name: 'Tom F.', shift: 'Brunch', location: 'Berkeley', section: '4-top',
     shifts: 17, confidence: 73,
     scores: { revenue: 49, retention: 81, reliability: 78 },
+    prevScores: { revenue: 52, retention: 79, reliability: 76 },
+    lastCoachedDays: 28, lastCoachedTopic: 'Premium attach drills',
     rawMetrics: {
       premiumAttach: '15%', premiumMedian: '19%',
       itemsCheck: '3.0', itemsMedian: '3.2',
@@ -149,6 +159,8 @@ const LE_CO_SERVERS = [
     name: 'Marcus L.', shift: 'Dinner', location: 'Oakland', section: '4-top',
     shifts: 16, confidence: 74,
     scores: { revenue: 22, retention: 48, reliability: 56 },
+    prevScores: { revenue: 26, retention: 52, reliability: 58 },
+    lastCoachedDays: 9, lastCoachedTopic: 'Premium attach focus',
     rawMetrics: {
       premiumAttach: '12%', premiumMedian: '23%',
       itemsCheck: '3.4', itemsMedian: '4.1',
@@ -162,6 +174,8 @@ const LE_CO_SERVERS = [
     name: 'Jordan T.', shift: 'Dinner', location: 'Oakland', section: 'bar-rail',
     shifts: 14, confidence: 68,
     scores: { revenue: 28, retention: 41, reliability: 62 },
+    prevScores: { revenue: 24, retention: 38, reliability: 60 },
+    lastCoachedDays: 32, lastCoachedTopic: 'Items/check + repeat-guest',
     rawMetrics: {
       premiumAttach: '14%', premiumMedian: '23%',
       itemsCheck: '3.6', itemsMedian: '4.1',
@@ -175,6 +189,8 @@ const LE_CO_SERVERS = [
     name: 'Alex M.', shift: 'Lunch', location: 'Berkeley', section: '4-top',
     shifts: 13, confidence: 62,
     scores: { revenue: 18, retention: 24, reliability: 35 },
+    prevScores: { revenue: 16, retention: 22, reliability: 33 },
+    lastCoachedDays: null,
     rawMetrics: {
       premiumAttach: '9%', premiumMedian: '16%',
       itemsCheck: '2.9', itemsMedian: '3.4',
