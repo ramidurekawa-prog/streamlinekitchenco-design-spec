@@ -4282,6 +4282,16 @@ function showScreen(id, navEl, title) {
 // ═══════════════════════════════════════════════════════════
 
 // Canonical demo data (must reconcile to ~$1,420/mo exposure)
+// (Taya #14) Central menu-class labels — plain operator language, no Star/Plowhorse/Puzzle/Dog.
+// Single source of truth: change wording here to update every chip, legend, and table label.
+// Data keys (cls:'star'|'plow'|'puzz'|'dog') and CSS classes (.menu-q-*) are unchanged.
+const MENU_CLASS_LABELS = {
+  star: 'High profit · high sales',
+  plow: 'Low profit · high sales',
+  puzz: 'High profit · low sales',
+  dog:  'Low profit · low sales',
+};
+
 const MENU_SUBPAGE_TITLES = {
   overview:    'Menu Optimization',
   matrix:      'Menu Matrix',
@@ -4354,7 +4364,7 @@ function menuMatrixSelect(key) {
   // Update side card
   const detail = document.getElementById('menuMatrixDetail');
   if (!detail) return;
-  const clsLabel = { star:'Star', plow:'Plowhorse', puzz:'Puzzle', dog:'Dog' }[item.cls];
+  const clsLabel = MENU_CLASS_LABELS[item.cls];
   const cmDelta = (item.cm - MENU_DATA.cm_threshold).toFixed(2);
   const popDelta = (item.pop - MENU_DATA.popularity_threshold).toFixed(1);
   detail.innerHTML =
@@ -4369,7 +4379,7 @@ function menuMatrixSelect(key) {
       '<div class="menu-side-row"><span data-tip="Total Contribution Margin — CM × units">Total CM</span><strong>$' + item.totalCM.toLocaleString() + '</strong></div>' +
     '</div>' +
     '<div class="menu-side-insight">' +
-      (item.cls === 'plow'   ? 'Popular but <strong>' + Math.abs(cmDelta) + ' below</strong> CM threshold. Plowhorses drive volume but starve the menu of margin.' :
+      (item.cls === 'plow'   ? 'Popular but <strong>' + Math.abs(cmDelta) + ' below</strong> CM threshold. These high-sales, low-profit items drive volume but starve the menu of margin.' :
        item.cls === 'puzz'   ? '<strong>$' + item.cm.toFixed(2) + '</strong> CM at only ' + item.pop.toFixed(1) + '% popularity. High-margin item under-promoted — biggest upside opportunity.' :
        item.cls === 'star'   ? 'High CM <em>and</em> high popularity. Protect placement and pricing — these items carry the menu.' :
        'Low margin and low popularity. Candidate for menu cleanup or reposition.') +
@@ -4404,13 +4414,13 @@ function renderMenuItemsTable() {
   const cmThresholdPct = (MENU_DATA.cm_threshold / cmMax * 100);
   const popThresholdPct = (MENU_DATA.popularity_threshold / popMax * 100);
   body.innerHTML = entries.map(([key, item]) => {
-    const clsLabel = { star:'Star', plow:'Plowhorse', puzz:'Puzzle', dog:'Dog' }[item.cls];
+    const clsLabel = MENU_CLASS_LABELS[item.cls];
     const cmBarPct = Math.min(100, item.cm / cmMax * 100);
     const popBarPct = Math.min(100, item.pop / popMax * 100);
     const cmBarColor = item.cm >= MENU_DATA.cm_threshold ? 'var(--green)' : 'var(--amber)';
     const popBarColor = item.pop >= MENU_DATA.popularity_threshold ? 'var(--blue)' : '#a1a1aa';
     return '<div class="menu-items-row" data-item="' + key + '" onclick="menuItemSelect(\'' + key + '\', this)" role="button" tabindex="0" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();menuItemSelect(\'' + key + '\',this)}" aria-label="' + item.name + ' · ' + clsLabel + '">' +
-      '<span><strong>' + item.name + '</strong>' + (item.watch ? ' <span data-tip="Near-threshold Plowhorse — flagged for monitoring" style="font-size:9px;color:var(--amber);font-weight:700">·WATCH</span>' : '') + '</span>' +
+      '<span><strong>' + item.name + '</strong>' + (item.watch ? ' <span data-tip="Near-threshold low-profit, high-sales item — flagged for monitoring" style="font-size:9px;color:var(--amber);font-weight:700">·WATCH</span>' : '') + '</span>' +
       '<span><span class="menu-items-class menu-q-' + item.cls + '">' + clsLabel + '</span></span>' +
       '<span>' +
         '<strong data-tip="Contribution Margin per item — price minus food cost">$' + item.cm.toFixed(2) + '</strong> <span data-tip="Estimated · Recipe cost file is stale 18 days" style="font-size:9px;color:var(--amber);font-weight:700;letter-spacing:.04em">EST</span>' +
@@ -4457,7 +4467,7 @@ function menuItemSelect(key, el) {
   // Update detail card
   const detail = document.getElementById('menuItemDetail');
   if (!detail) return;
-  const clsLabel = { star:'Star', plow:'Plowhorse', puzz:'Puzzle', dog:'Dog' }[item.cls];
+  const clsLabel = MENU_CLASS_LABELS[item.cls];
   const cmDelta = (item.cm - MENU_DATA.cm_threshold).toFixed(2);
   const popDelta = (item.pop - MENU_DATA.popularity_threshold).toFixed(1);
   const cmSign = parseFloat(cmDelta) >= 0 ? '+' : '−';
@@ -4474,7 +4484,7 @@ function menuItemSelect(key, el) {
       '<div class="menu-side-row"><span>Total CM</span><strong>$' + item.totalCM.toLocaleString() + '</strong></div>' +
     '</div>' +
     '<div class="menu-side-insight"><strong>Why it matters:</strong> ' +
-      (item.cls === 'plow' ? 'Popular but $' + Math.abs(parseFloat(cmDelta)).toFixed(2) + ' below CM threshold. Plowhorses drive volume but starve margin.' :
+      (item.cls === 'plow' ? 'Popular but $' + Math.abs(parseFloat(cmDelta)).toFixed(2) + ' below CM threshold. These high-sales, low-profit items drive volume but starve margin.' :
        item.cls === 'puzz' ? 'High CM at low popularity — biggest upside if it can move volume.' :
        item.cls === 'star' ? 'High CM and high popularity. Protect placement and pricing.' :
        'Low CM and low popularity. Candidate for cleanup.') +
@@ -5194,13 +5204,13 @@ const RESPONSES = {
     <p class="r-note">Estimated exposure: 2,004 items × $0.71 = <span class="r-hl amber">~$1,420/mo [ESTIMATED]</span>. This is exposure, not verified savings. Recipe costs are stale 18d, so menu ROI cannot move to Verified Savings until food costs refresh.</p>
 
     ${mkSection('Quadrant distribution (top 9 dinner items)')}
-    <p class="r-note">Stars: <strong>2</strong> · Plowhorses: <strong>3</strong> (incl. Truffle Fries Watch) · Puzzles: <strong>2</strong> · Dogs: <strong>2</strong>. Primary Plowhorses (Crispy + Burger) drive <span class="r-hl amber">30.6%</span> of dinner volume. Including Truffle Fries Watch, popular below-threshold items represent <span class="r-hl amber">46.4%</span>. Top 9 visible items + 273 other mapped dinner items reconcile to 2,004 total.</p>
+    <p class="r-note">High profit · high sales: <strong>2</strong> · Low profit · high sales: <strong>3</strong> (incl. Truffle Fries Watch) · High profit · low sales: <strong>2</strong> · Low profit · low sales: <strong>2</strong>. The primary low-profit, high-sales items (Crispy + Burger) account for <span class="r-hl amber">30.6%</span> of dinner volume. Including Truffle Fries Watch, popular below-threshold items represent <span class="r-hl amber">46.4%</span>. Top 9 visible items + 273 other mapped dinner items reconcile to 2,004 total.</p>
 
     ${mkSection('Where the leak comes from')}
     ${mkEv([
-      ['Plowhorse mix (primary)','−$0.46/item','baseline','30.6% of volume','r-amber','','SKC mix model · EST'],
-      ['Puzzle under-promo','−$0.18/item','baseline','9.8% of volume','r-amber','','SKC mix model · EST'],
-      ['Dogs / low perf','−$0.07/item','baseline','5.7% of volume','','','SKC mix model · EST'],
+      ['Low-profit, high-sales mix (primary)','−$0.46/item','baseline','30.6% of volume','r-amber','','SKC mix model · EST'],
+      ['High-profit, low-sales under-promo','−$0.18/item','baseline','9.8% of volume','r-amber','','SKC mix model · EST'],
+      ['Low-profit, low-sales items','−$0.07/item','baseline','5.7% of volume','','','SKC mix model · EST'],
       ['Total shift','−$0.71/item','—','×2,004 items','r-amber','r-amber','=$1,422.84/mo'],
     ])}
 
@@ -5226,19 +5236,19 @@ const RESPONSES = {
   menuPlowhorse: () => {
     return `
     ${mkSection('Direct Answer')}
-    <p>Crispy Chicken Sandwich is classified <span class="r-hl amber">Plowhorse</span> because it crosses both menu engineering thresholds in opposite directions: <span class="r-hl">18.6% popularity</span> (above the 8.0% line) but <span class="r-hl amber">$5.80 CM</span> (well below the $8.75 threshold).</p>
-    <p class="r-note">Plowhorses drive volume but starve margin. This one alone accounts for $2,163 of total CM at $5.80/plate — but the same volume at the menu's $8.75 threshold would yield $3,264.</p>
+    <p>Crispy Chicken Sandwich is classified <span class="r-hl amber">Low profit · high sales</span> because it crosses both menu engineering thresholds in opposite directions: <span class="r-hl">18.6% popularity</span> (above the 8.0% line) but <span class="r-hl amber">$5.80 CM</span> (well below the $8.75 threshold).</p>
+    <p class="r-note">High-sales, low-profit items drive volume but starve margin. This one alone accounts for $2,163 of total CM at $5.80/plate — but the same volume at the menu's $8.75 threshold would yield $3,264.</p>
 
     ${mkSection('Classification trace')}
     ${mkEv([
       ['Popularity', '18.6%', '8.0% threshold', '+10.6 pts','','','Toast POS · DET'],
       ['CM/item', '$5.80', '$8.75 threshold', '−$2.95','r-amber','r-amber','Recipe cost · EST (stale 18d)'],
       ['Units (28d)', '373', '—', 'rank #3 by volume','','','Toast POS · DET'],
-      ['Quadrant', 'Plowhorse', '—', 'high pop + low CM','r-amber','','Menu engineering 2×2'],
+      ['Quadrant', 'Low profit · high sales', '—', 'high pop + low CM','r-amber','','Menu engineering 2×2'],
     ])}
 
     ${mkSection('Why it matters')}
-    <p>$0.71/item mix shift is dominated by Plowhorses. Re-pricing or re-portioning the Crispy Chicken alone simulates to <span class="r-hl amber">~$300/28d</span> recovery — but that is simulated, not verified.</p>
+    <p>$0.71/item mix shift is dominated by low-profit, high-sales items. Re-pricing or re-portioning the Crispy Chicken alone simulates to <span class="r-hl amber">~$300/28d</span> recovery — but that is simulated, not verified.</p>
 
     ${mkCtaRow([
       {label:'Open Matrix', cls:'btn-primary', fn:"closeAskPanel();showScreen('menu',null,'Menu Matrix');showMenuSubpage('matrix')"},
@@ -5271,9 +5281,9 @@ const RESPONSES = {
     ${mkSection('Waterfall reconciliation')}
     ${mkCalc(
       '$9.13 (baseline)\n' +
-      '− $0.46 Plowhorse mix\n' +
-      '− $0.18 Puzzle under-promo\n' +
-      '− $0.07 Dogs / low perf\n' +
+      '− $0.46 low-profit, high-sales mix\n' +
+      '− $0.18 high-profit, low-sales under-promo\n' +
+      '− $0.07 low-profit, low-sales items\n' +
       '= $8.42 (current)',
       'Reconciles to $0.71 shift'
     )}

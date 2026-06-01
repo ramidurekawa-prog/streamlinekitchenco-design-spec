@@ -580,21 +580,21 @@
       <p>Menu engineering · 2×2 classification:</p>
       <ul>
         <li>Popularity threshold = <strong>8.0%</strong></li>
-        <li>CM threshold = <strong>$8.75</strong> (set above weighted avg $8.42 so above-average alone is not sufficient for Star classification)</li>
-        <li><strong>Star</strong> = high popularity + high CM</li>
-        <li><strong>Plowhorse</strong> = high popularity + low CM</li>
-        <li><strong>Puzzle</strong> = low popularity + high CM</li>
-        <li><strong>Dog</strong> = low popularity + low CM</li>
+        <li>CM threshold = <strong>$8.75</strong> (set above weighted avg $8.42 so above-average alone is not sufficient for high-profit · high-sales classification)</li>
+        <li><strong>High profit · high sales</strong> = high popularity + high CM</li>
+        <li><strong>Low profit · high sales</strong> = high popularity + low CM</li>
+        <li><strong>High profit · low sales</strong> = low popularity + high CM</li>
+        <li><strong>Low profit · low sales</strong> = low popularity + low CM</li>
       </ul>
       <p><strong>Current distribution (top 9 dinner items):</strong></p>
       <ul>
-        <li>Stars: <strong>2</strong> — Spicy Vodka Pasta, Espresso Martini</li>
-        <li>Plowhorses: <strong>3</strong> — Crispy Chicken Sandwich, Burger, Truffle Fries (Watch)</li>
-        <li>Puzzles: <strong>2</strong> — Mushroom Risotto, Burrata Toast</li>
-        <li>Dogs: <strong>2</strong> — Beet Salad, Kids Pasta</li>
+        <li>High profit · high sales: <strong>2</strong> — Spicy Vodka Pasta, Espresso Martini</li>
+        <li>Low profit · high sales: <strong>3</strong> — Crispy Chicken Sandwich, Burger, Truffle Fries (Watch)</li>
+        <li>High profit · low sales: <strong>2</strong> — Mushroom Risotto, Burrata Toast</li>
+        <li>Low profit · low sales: <strong>2</strong> — Beet Salad, Kids Pasta</li>
       </ul>
-      <p style="font-style:italic;color:var(--t3)">Truffle Fries is classified <strong>Plowhorse · Watch</strong> (near-threshold Plowhorse) — its CM ($7.60) sits below the $8.75 threshold and its popularity (15.8%) is above 8.0%. Operationally lower risk than Crispy/Burger because fries may drive attachment/guest satisfaction, but strict threshold logic still applies.</p>
-      <p style="font-style:italic;color:var(--t3)"><strong>Plowhorse share of dinner volume:</strong> Primary Plowhorses (Crispy + Burger) = 613 / 2,004 = <strong>30.6%</strong>. Including Truffle Fries Watch = 930 / 2,004 = <strong>46.4%</strong>.</p>
+      <p style="font-style:italic;color:var(--t3)">Truffle Fries is classified <strong>Low profit · high sales · Watch</strong> (near-threshold low-profit, high-sales item) — its CM ($7.60) sits below the $8.75 threshold and its popularity (15.8%) is above 8.0%. Operationally lower risk than Crispy/Burger because fries may drive attachment/guest satisfaction, but strict threshold logic still applies.</p>
+      <p style="font-style:italic;color:var(--t3)"><strong>Low-profit, high-sales share of dinner volume:</strong> The primary low-profit, high-sales items (Crispy + Burger) = 613 / 2,004 = <strong>30.6%</strong>. Including Truffle Fries Watch = 930 / 2,004 = <strong>46.4%</strong>.</p>
     </div>
 
     <div class="menu-ev-drawer-sec">
@@ -618,7 +618,7 @@
         <li>Units sold (28d): <strong>373</strong></li>
         <li>Total CM: <strong>$2,163.40</strong></li>
         <li>Popularity: <strong>18.6%</strong></li>
-        <li>Classification: <strong style="color:var(--amber)">Plowhorse</strong></li>
+        <li>Classification: <strong style="color:var(--amber)">Low profit · high sales</strong></li>
         <li>Recommendation: <strong>Review price or portion cost</strong></li>
       </ul>
     </div>
@@ -629,7 +629,7 @@
         <li>Missing food cost → category default only if configured · label [HEURISTIC]</li>
         <li>Stale food cost → reduce confidence and block verified savings</li>
         <li>Items with fewer than 5 units sold → insufficient data, excluded</li>
-        <li>LTO / seasonal items under 6 weeks → excluded from long-run baseline, not classified as Dog</li>
+        <li>LTO / seasonal items under 6 weeks → excluded from long-run baseline, not classified as Low profit · low sales</li>
         <li>Price change &gt;10% mid-period → split pre/post analysis</li>
         <li>Negative CM → validation prompt and exclude from weighted avg until operator review</li>
         <li>Always use price at time of sale for historical analysis</li>
