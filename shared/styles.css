@@ -10868,3 +10868,12 @@ body.skc-exec .skc-detail { display: none; }
 .pr-projection-v { font-family:var(--mono); font-size:18px; font-weight:700; color:var(--amber); }
 .pr-projection-note { font-size:10.5px; color:var(--t3); line-height:1.5; flex:1; min-width:240px; }
 .pr-projection-link { background:none; border:none; padding:0; color:var(--blue); cursor:pointer; font-size:10.5px; text-decoration:underline; }
+
+/* ════════════════════════════════════════════════════════════════════
+   (Taya #8) Paired action-status pill on Profit Recovery opportunity cards
+   ════════════════════════════════════════════════════════════════════ */
+.pr-opp-status { display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:600; padding:3px 9px; border-radius:99px; margin-right:auto; }
+.pr-opp-status .pr-status-dot { width:6px; height:6px; border-radius:50%; background:currentColor; }
+.pr-status-todo { background:var(--hover); color:var(--t3); border:1px solid var(--border); }
+.pr-status-progress { background:var(--blue-d); color:var(--blue); border:1px solid var(--blue-b); }
+.pr-status-done { background:var(--green-d); color:var(--green); border:1px solid var(--green-b); }
