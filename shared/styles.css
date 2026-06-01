@@ -10843,3 +10843,15 @@ body.skc-exec .skc-detail { display: none; }
 .ev-risk-mid { background:var(--amber-d); color:var(--amber); border:1px solid var(--amber-b); }
 .ev-risk-hi  { background:var(--red-d);   color:var(--red);   border:1px solid var(--red-b); }
 .ev-risk-note { margin-top:8px; font-size:11px; font-style:italic; color:var(--amber); }
+
+/* ════════════════════════════════════════════════════════════════════
+   (Taya #10/#11/#12) Period-over-period delta on labor figures
+   ════════════════════════════════════════════════════════════════════ */
+.le-strip-compare-note { font-size:11px; color:var(--t3); margin:2px 0 8px; }
+.le-sum-delta { font-size:10.5px; font-weight:600; margin-top:3px; display:flex; align-items:center; gap:3px; flex-wrap:wrap; }
+.le-delta-arr { font-size:9px; }
+.le-delta-pct { font-weight:500; }
+.le-delta-vs  { color:var(--t3); font-weight:400; }
+.le-delta-bad  { color:var(--amber); }
+.le-delta-good { color:var(--green); }
+.le-delta-flat { color:var(--t3); }
