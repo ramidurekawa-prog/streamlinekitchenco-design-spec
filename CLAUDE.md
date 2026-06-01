@@ -24,10 +24,15 @@ those require discussion, not unilateral edits.
 `fetch()` won't work over `file://`, so it needs a local server:
 
 ```bash
-python3 -m http.server 8000   # then open http://localhost:8000
+python3 serve.py              # no-cache dev server → http://localhost:8000
 ```
 
-Or VS Code → Live Server on `index.html`.
+Use `serve.py`, **not** `python3 -m http.server`: the plain server sends no
+`Cache-Control`, so browsers heuristically cache `core.js`/`styles.css`/fragments and
+serve them **stale** during review — which looks like "buttons don't work" (a stale
+`core.js` is missing the functions the freshly-fetched buttons call). `serve.py` sends
+`no-store` so every load is current. `shared/loader.js` also appends a per-load
+cache-buster to fragment/script URLs as a backstop. Or VS Code → Live Server.
 
 ## Architecture
 
