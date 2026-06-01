@@ -20,12 +20,20 @@ the **Status** column as items land.
 | `632462f` | #19 Projected recoverable savings (MODELED) |
 | `c6e9573` | #8 action-status pills · #9 feature shortcuts on recovery cards |
 | `e9052c3` | #5 Visual-weight tiers by dollar magnitude |
+| `bf4c567` | #20 Causal language softened to associational |
+| `be4e3f1` | #16 Food/Alcohol parallel views on Item Economics |
+| `18f568f` | #3/#4 Menu evidence routed into the single canonical drawer |
 
-**Remaining (need your input or a focused pass):** #16 Food/Alcohol split (recomputes canonical
-$8.42 / ~$1,420 — sign-off), #3/#4 evidence-drawer consolidation (menu drawer is whole-menu scope,
-not a leak2 dupe — real migration), #20 causal-language audit (17 phrases, design copy), and the
-table_turns vs NOT-INCLUDED product decision. `data.js` SAMPLE comments remain uncommitted
-(entangled with the table_turns WIP).
+**All Taya items now addressed.** Open follow-ups / caveats (not blockers):
+- **#16** — Matrix Food/Alcohol toggle follows the same `data-kind` pattern (Item Economics done).
+  A true food-only weighted-CM recompute needs the beverage breakdown SKC does not ingest, so
+  canonical `$8.42` / `~$1,420` are unchanged and the Alcohol view is an explicit ILLUSTRATIVE
+  placeholder (the fixture has only one alcohol line, Espresso Martini).
+- **#3/#4** — the inline menu Evidence *subpage* still duplicates content; reduce it to a thin
+  launcher in a later pass.
+- **table_turns** — relabelled as an "Illustrative preview" (banner added; **uncommitted** in the
+  WIP bucket). Confirm this vs. scoping the stage view back to Toast-only aggregates.
+- `data.js` SAMPLE comments + the table_turns banner remain uncommitted (entangled with your WIP).
 
 ## What the codebase already gives us (changes the effort math)
 
