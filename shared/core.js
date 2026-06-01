@@ -4556,18 +4556,43 @@ function menuSimSelect(key, el) {
   set('menuSimDetailLift', s.lift);
 }
 
-// ── Menu Evidence drawer ────────────────────────────────────
+// ── Menu Evidence drawer — (Taya #3/#4) consolidated into the ONE canonical evidence drawer ──
+// Every "show math" trigger now opens #evDrawer. The detailed menu content lives in the
+// #menuEvDrawer markup (kept as the content source); we inject it into the shared shell so
+// there is a single fixed-position evidence drawer rather than two competing systems.
 function openMenuEvidenceDrawer() {
-  const ov = document.getElementById('menuEvDrawerOverlay');
-  const dr = document.getElementById('menuEvDrawer');
-  if (ov) ov.classList.add('open');
-  if (dr) dr.classList.add('open');
+  const src     = document.querySelector('#menuEvDrawer .menu-ev-drawer-body');
+  const body    = document.getElementById('evDrawerBody');
+  const drawer  = document.getElementById('evDrawer');
+  const overlay = document.getElementById('evOverlay');
+  // Fallback to the standalone drawer if the canonical shell is unavailable.
+  if (!src || !body || !drawer) {
+    const ov = document.getElementById('menuEvDrawerOverlay');
+    const dr = document.getElementById('menuEvDrawer');
+    if (ov) ov.classList.add('open');
+    if (dr) dr.classList.add('open');
+    return;
+  }
+  const title = document.getElementById('evDrawerTitle');
+  if (title) title.textContent = 'Menu Optimization Evidence · Oakland · Dinner · Last 28 Days';
+  const strip = document.getElementById('evSummaryStrip');
+  if (strip) strip.innerHTML =
+    '<div class="ev-sum-cell ev-sum-span2"><div class="ev-sum-label">Recommended Action</div>' +
+    '<div class="ev-sum-val" style="font-size:11.5px;font-weight:500;line-height:1.5;white-space:normal">Reprice / re-portion the largest low-profit, high-sales items; promote high-profit, low-sales items.</div></div>' +
+    '<div class="ev-sum-cell"><div class="ev-sum-label">Estimated exposure</div>' +
+    '<div class="ev-sum-val"><div style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--t1)">~$1,420<span style="font-size:11px;color:var(--t2)">/mo</span></div></div></div>' +
+    '<div class="ev-sum-cell"><div class="ev-sum-label">Output</div><div class="ev-sum-val"><span class="tag-est tag-pill">ESTIMATED</span></div></div>' +
+    '<div class="ev-sum-cell"><div class="ev-sum-label">Verification</div><div class="ev-sum-val"><span class="badge" style="background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b);font-size:9.5px">Blocked · recipe cost stale</span></div></div>';
+  body.innerHTML = src.innerHTML;
+  drawer.classList.add('open');
+  if (overlay) overlay.classList.add('open');
 }
 function closeMenuEvidenceDrawer() {
-  const ov = document.getElementById('menuEvDrawerOverlay');
-  const dr = document.getElementById('menuEvDrawer');
-  if (ov) ov.classList.remove('open');
+  // Consolidated — menu evidence now lives in the canonical drawer.
+  if (typeof closeEvDrawer === 'function') { closeEvDrawer(); return; }
+  const dr = document.getElementById('evDrawer'); const ov = document.getElementById('evOverlay');
   if (dr) dr.classList.remove('open');
+  if (ov) ov.classList.remove('open');
 }
 
 // ── ASK SKC PANEL ────────────────────────────────────────
