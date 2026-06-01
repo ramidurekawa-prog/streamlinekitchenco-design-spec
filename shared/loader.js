@@ -23,6 +23,12 @@
 (function () {
   'use strict';
 
+  // Cache-buster: python -m http.server sends no Cache-Control, so browsers
+  // heuristically cache core.js/styles.css/fragments and serve them stale during
+  // review. Appending a per-load token forces every fragment + script to load
+  // fresh. Harmless to the spec; the engineer's Next.js build handles caching.
+  const BUST = '?v=' + Date.now();
+
   const COMPONENTS = [
     ['components/sidebar.html',   'sidebar',          'replace'],
     ['components/topbar.html',    'topbar',           'replace'],
@@ -51,7 +57,7 @@
 
   async function fetchInto(url, targetId, mode) {
     try {
-      const res = await fetch(url);
+      const res = await fetch(url + BUST);
       if (!res.ok) {
         console.warn('[loader] missing', url, res.status);
         return;
@@ -72,7 +78,7 @@
   function loadScript(src) {
     return new Promise(function (resolve) {
       const s = document.createElement('script');
-      s.src = src;
+      s.src = src + BUST;
       s.async = false; // preserve order across multiple appended scripts
       s.onload = resolve;
       s.onerror = function () {
