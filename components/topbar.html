@@ -1,5 +1,10 @@
     <span class="tb-title" id="tbTitle">Today</span>
     <div class="tb-right">
+      <!-- (User-view) GM vs Owner role lens — primary axis: who you are -->
+      <div class="tb-role" role="group" aria-label="View as">
+        <button type="button" class="tb-role-btn is-active" data-skc-role-btn="gm" onclick="setSkcRole('gm')" title="GM view — the daily decision, who owns it, is it safe">GM</button>
+        <button type="button" class="tb-role-btn" data-skc-role-btn="owner" onclick="setSkcRole('owner')" title="Owner view — money saved, in testing, available, and whether it pays for itself">Owner</button>
+      </div>
       <!-- (Taya #1/#2/#6) Executive vs Expanded detail mode — hides .skc-detail -->
       <div class="tb-mode" role="group" aria-label="Detail level">
         <button type="button" class="tb-mode-btn is-active" data-skc-mode-btn="exec" onclick="setSkcMode('exec')" title="Executive — diagnosis, dollar impact, recommended action only">Executive</button>

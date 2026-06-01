@@ -4737,6 +4737,20 @@ function renderTodayStatus(laborPct = 31.4, targetPct = 29.3, salesPacePct = 100
 }
 document.addEventListener('DOMContentLoaded', () => renderTodayStatus());
 
+// ── (User-view) GM ⇄ Owner role lens — primary axis is WHO you are ────────────
+// GM sees the daily decision + safety + who; Owner sees money saved / in testing /
+// available + whether it pays for itself. Drives body.skc-role-gm / .skc-role-owner;
+// .skc-gm-only / .skc-owner-only elements show/hide. Default GM (set on <body>).
+let skcRole = 'gm';
+function setSkcRole(role) {
+  skcRole = (role === 'owner') ? 'owner' : 'gm';
+  document.body.classList.toggle('skc-role-gm', skcRole === 'gm');
+  document.body.classList.toggle('skc-role-owner', skcRole === 'owner');
+  document.querySelectorAll('[data-skc-role-btn]').forEach(b => {
+    b.classList.toggle('is-active', b.getAttribute('data-skc-role-btn') === skcRole);
+  });
+}
+
 // ─── DRAWER ──────────────────────────────────────────────
 const drawerData = {
   leak1: {

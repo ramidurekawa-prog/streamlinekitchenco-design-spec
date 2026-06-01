@@ -10899,3 +10899,24 @@ body.skc-exec .skc-detail { display: none; }
 .menu-items-table[data-kind-filter="food"] .menu-items-row[data-kind="alcohol"] { display:none; }
 .menu-items-table[data-kind-filter="alcohol"] .menu-items-row:not([data-kind="alcohol"]) { display:none; }
 .menu-alcohol-note { display:flex; align-items:center; gap:10px; margin-top:10px; padding:10px 14px; background:rgba(148,163,184,.10); border:1px solid rgba(148,163,184,.28); border-radius:var(--r); font-size:11px; color:var(--t2); line-height:1.5; }
+
+/* ════════════════════════════════════════════════════════════════════
+   (User-view) GM / Owner role lens — primary "who are you" axis
+   ════════════════════════════════════════════════════════════════════ */
+.tb-role { display:inline-flex; background:var(--hover); border:1px solid var(--border); border-radius:var(--r); padding:2px; gap:2px; flex-shrink:0; }
+.tb-role-btn { background:transparent; border:none; cursor:pointer; font-size:11px; font-weight:600; color:var(--t3); padding:3px 10px; border-radius:4px; transition:all .15s; white-space:nowrap; }
+.tb-role-btn:hover { color:var(--t1); }
+.tb-role-btn.is-active { background:var(--card); color:var(--t1); box-shadow:0 1px 2px rgba(0,0,0,.15); }
+body.skc-role-gm .skc-owner-only { display:none; }
+body.skc-role-owner .skc-gm-only { display:none; }
+
+/* Owner money summary (Today) */
+.td-owner-summary { background:var(--card); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px 18px; margin-bottom:18px; }
+.td-os-eyebrow { font-size:11px; color:var(--t3); text-transform:uppercase; letter-spacing:.04em; margin-bottom:12px; }
+.td-os-row { display:flex; gap:28px; flex-wrap:wrap; }
+.td-os-cell { display:flex; flex-direction:column; }
+.td-os-v { font-family:var(--mono); font-size:22px; font-weight:700; color:var(--t1); line-height:1.1; }
+.td-os-v span { font-size:12px; color:var(--t2); font-weight:500; }
+.td-os-proven .td-os-v { color:var(--green); }
+.td-os-k { font-size:11px; color:var(--t3); margin-top:3px; }
+.td-os-foot { margin-top:14px; padding-top:12px; border-top:1px solid var(--border); font-size:12px; color:var(--t2); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }

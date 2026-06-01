@@ -26,15 +26,27 @@
     <!-- ══ FIRST FOLD ══════════════════════════════════════════════ -->
     <div class="td-first-fold">
 
+      <!-- (User-view) Owner money summary — shows in Owner role only -->
+      <div class="td-owner-summary skc-owner-only">
+        <div class="td-os-eyebrow">Rosewood Group · 4 restaurants · this week</div>
+        <div class="td-os-row">
+          <div class="td-os-cell td-os-proven"><div class="td-os-v">$97<span>/wk</span></div><div class="td-os-k">Proven saved</div></div>
+          <div class="td-os-cell"><div class="td-os-v">$189<span>/wk</span></div><div class="td-os-k">Fix in testing</div></div>
+          <div class="td-os-cell"><div class="td-os-v">$1,243<span>/wk</span></div><div class="td-os-k">Still on the table</div></div>
+          <div class="td-os-cell"><div class="td-os-v">1.2×</div><div class="td-os-k">Covers your $349/mo</div></div>
+        </div>
+        <div class="td-os-foot">Your GM has 1 fix ready to assign today. <button class="btn btn-ghost btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">See the proof →</button></div>
+      </div>
+
       <!-- (Taya #13) Big on-track / off-track status — driven by a stated threshold rule.
            Rule: ON TRACK when projected labor % <= peer target (29.3%) AND sales pace >= plan;
            OFF TRACK if either breaches. Today: labor +2.1 pts over target -> off track.
            Markup defaults to the computed (off) state; renderTodayStatus() makes it data-driven. -->
-      <div class="td-status td-status-off" id="todayStatus" role="status">
+      <div class="td-status td-status-off skc-gm-only" id="todayStatus" role="status">
         <div class="td-status-dot"></div>
         <div class="td-status-body">
           <div class="td-status-headline">Off track today</div>
-          <div class="td-status-sub">Labor is running <strong>+2.1 pts over</strong> your 29.3% peer target across today's services.<span class="skc-detail"> On track = projected labor % at or below target and sales pace at or above plan.</span></div>
+          <div class="td-status-sub">You're staffed heavier than tonight's sales pace supports. <strong>The fix below puts you back on track and saves about $370/wk.</strong><span class="skc-detail"> Off track = projected labor % above your 29.3% target, or sales pace below plan.</span></div>
         </div>
         <div class="td-status-metric">
           <div class="td-status-metric-v">31.4%</div>
@@ -68,7 +80,7 @@
           <!-- Left: decision -->
           <div class="td-card-left">
             <div class="td-decision">Remove one 5&ndash;10 PM FOH server from Oakland Tuesday dinner.</div>
-            <div class="td-reason">RPLH is below the normal range for 6 of the last 6 comparable Tuesday dinners.</div>
+            <div class="td-reason">Sales haven't kept up with the staffing for 6 Tuesday dinners running — you're paying for hours the volume doesn't support.</div>
 
             <!-- Owner + due -->
             <div class="td-meta-row">
@@ -82,9 +94,9 @@
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
               <span class="td-conf-val" data-skc="conf-labor">78%</span> confidence
               <span class="td-conf-sep">·</span>
-              <span class="td-conf-note">85% base &minus;7 pts · 7shifts stale 18h</span>
+              <span class="td-conf-note">scheduling data is ~18h old, so the exact dollars aren't locked yet</span>
               <span class="td-conf-sep">·</span>
-              <span class="td-conf-action">Action allowed · verification limited</span>
+              <span class="td-conf-action">safe to act now</span>
             </div>
 
             <!-- CTAs -->
@@ -97,10 +109,10 @@
 
           <!-- Right: value -->
           <div class="td-card-right">
-            <div class="td-value-label">Estimated Open Exposure</div>
+            <div class="td-value-label">Money on the table this week</div>
             <div class="td-value-main">$370<span class="td-value-period">/wk</span></div>
-            <div class="td-value-basis">$185/service · 2 services/week</div>
-            <div class="td-value-roi">Not counted in ROI yet</div>
+            <div class="td-value-basis">$185 a service · 2 services a week</div>
+            <div class="td-value-roi">Estimate — not proven yet</div>
           </div>
 
         </div><!-- /td-card-body -->
