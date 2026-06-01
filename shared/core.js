@@ -37,6 +37,15 @@ const OPPORTUNITIES = {
   labor: {
     opportunity_id: 'OPP-001',
     leak_key:       'leak1',
+
+    // (Taya #18) Static risk & effort profile — surfaced in the evidence drawer.
+    risk: {
+      difficulty: 'Low',
+      time:       'This week (next schedule)',
+      guest:      'low',       // overstaffed — removing one server should not affect service
+      staff:      'moderate',  // one server loses a Tue/Wed dinner shift
+      revenue:    'low',       // guardrails hold table turns + avg check
+    },
     ca_key:         'leak1',
 
     title:          'Tuesday–Wednesday dinner overstaffing',
@@ -327,6 +336,16 @@ const OPPORTUNITIES = {
   salmon: {
     opportunity_id: 'OPP-002',
     leak_key:       'leak2',
+
+    // (Taya #18) Price change — flagged elevated on guest-experience and revenue risk.
+    risk: {
+      difficulty: 'Low',
+      time:       'Immediate (menu price update)',
+      guest:      'elevated',  // guest-facing price increase $24 -> $27
+      staff:      'low',
+      revenue:    'elevated',  // volume-retention risk if guests resist the new price
+      note:       'Price change — elevated on guest-experience and revenue risk. Stress-test volume retention before shipping.',
+    },
     ca_key:         'leak2',
 
     title:          'Grilled Salmon below contribution margin threshold',
@@ -623,6 +642,15 @@ const OPPORTUNITIES = {
   throughput: {
     opportunity_id: 'OPP-003',
     leak_key:       'leak3',
+
+    // (Taya #18) Static risk & effort profile — surfaced in the evidence drawer.
+    risk: {
+      difficulty: 'Moderate',
+      time:       '1–2 weeks (observe + root cause)',
+      guest:      'moderate',  // ticket speed affects guest experience
+      staff:      'moderate',  // kitchen line-process change
+      revenue:    'low',
+    },
     ca_key:         'leak3',
 
     title:          'Friday lunch ticket time spike',
@@ -6031,6 +6059,9 @@ const evData = (function buildEvData() {
       excessHoursDerivation:  calc.excess_hours_derivation  || null,
       volumeRetentionModel:   calc.volume_retention_model   || null,
       dollarValueDerivation:  calc.dollar_value_derivation  || null,
+
+      // ── (Taya #18) Static risk & effort profile ─────────────
+      risk: opp.risk || null,
     };
   }
 
@@ -6449,6 +6480,28 @@ function _evMethodology(d) {
   }</div>`;
 }
 
+// ── (Taya #18) Risk & effort matrix — static labels per recommendation ──────
+function _evRisk(d) {
+  const r = d.risk;
+  if (!r) return '<div class="ev-empty" style="font-size:11.5px;color:var(--t3)">No risk profile recorded for this recommendation.</div>';
+  const lvl = (v) => {
+    const k = (v || '').toLowerCase();
+    const cls = (k === 'elevated' || k === 'high') ? 'ev-risk-hi' : k === 'moderate' ? 'ev-risk-mid' : 'ev-risk-lo';
+    const label = v ? v.charAt(0).toUpperCase() + v.slice(1) : '—';
+    return `<span class="ev-risk-chip ${cls}">${label}</span>`;
+  };
+  const rows = [
+    ['Difficulty',            `<span class="ev-risk-flat">${r.difficulty || '—'}</span>`],
+    ['Time to implement',     `<span class="ev-risk-flat">${r.time || '—'}</span>`],
+    ['Guest-experience risk', lvl(r.guest)],
+    ['Staff risk',            lvl(r.staff)],
+    ['Revenue risk',          lvl(r.revenue)],
+  ];
+  return `<div class="ev-risk-grid">${
+    rows.map(([k,v]) => `<div class="ev-risk-row"><span class="ev-risk-k">${k}</span><span class="ev-risk-v">${v}</span></div>`).join('')
+  }</div>${ r.note ? `<div class="ev-risk-note">${r.note}</div>` : '' }`;
+}
+
 function openEvDrawer(key) {
   const d = evData[key];
   if (!d) return;
@@ -6506,14 +6559,15 @@ function openEvDrawer(key) {
   body.innerHTML = [
     _evSection(1, 'Diagnosis',            _evTimeBasis(d),                                           true),
     _evSection(2, 'Financial Impact',     _evImpactBreakdown(d),                                     true),
-    _evSection(3, 'Calculation Trail',    _evFormulaInputs(d) + '<div style="margin-top:8px">' + _evThresholds(d) + '</div>'),
-    _evSection(4, 'Statistical Proof',    _evStatProof(d)),
-    _evSection(5, 'Source Data',          _evSources(d.sources) + '<div style="margin-top:8px">' + _evConfMath(d) + '</div>'),
-    _evSection(6, 'Before vs Baseline',   _evBaseline(d.baseline)),
-    _evSection(7, 'Guardrails',           _evGuardrails(d.guardrails, d.guardrailNote)),
-    _evSection(8, 'Verification Rule',    _evVerify(d.verifyWin, d.verifyBlock, d.verifyWindow, d.verifyBlockers) + (d.attribution ? '<div style="margin-top:10px">' + _evAttribution(d) + '</div>' : '')),
-    _evSection(9, 'Recommended Action',   _evCTA(d) + '<div style="margin-top:8px">' + _evOperatorMemo(d) + '</div>'),
-    _evSection(10, 'Methodology',          _evMethodology(d)),
+    _evSection(3, 'Risk & Effort',        _evRisk(d)),
+    _evSection(4, 'Calculation Trail',    _evFormulaInputs(d) + '<div style="margin-top:8px">' + _evThresholds(d) + '</div>'),
+    _evSection(5, 'Statistical Proof',    _evStatProof(d)),
+    _evSection(6, 'Source Data',          _evSources(d.sources) + '<div style="margin-top:8px">' + _evConfMath(d) + '</div>'),
+    _evSection(7, 'Before vs Baseline',   _evBaseline(d.baseline)),
+    _evSection(8, 'Guardrails',           _evGuardrails(d.guardrails, d.guardrailNote)),
+    _evSection(9, 'Verification Rule',    _evVerify(d.verifyWin, d.verifyBlock, d.verifyWindow, d.verifyBlockers) + (d.attribution ? '<div style="margin-top:10px">' + _evAttribution(d) + '</div>' : '')),
+    _evSection(10, 'Recommended Action',   _evCTA(d) + '<div style="margin-top:8px">' + _evOperatorMemo(d) + '</div>'),
+    _evSection(11, 'Methodology',          _evMethodology(d)),
   ].join('');
 
   document.getElementById('evDrawer').classList.add('open');
