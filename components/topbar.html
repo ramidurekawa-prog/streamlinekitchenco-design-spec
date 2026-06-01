@@ -1,5 +1,10 @@
     <span class="tb-title" id="tbTitle">Today</span>
     <div class="tb-right">
+      <!-- (Taya #1/#2/#6) Executive vs Expanded detail mode — hides .skc-detail -->
+      <div class="tb-mode" role="group" aria-label="Detail level">
+        <button type="button" class="tb-mode-btn is-active" data-skc-mode-btn="exec" onclick="setSkcMode('exec')" title="Executive — diagnosis, dollar impact, recommended action only">Executive</button>
+        <button type="button" class="tb-mode-btn" data-skc-mode-btn="expanded" onclick="setSkcMode('expanded')" title="Expanded — charts, breakdowns, supporting detail">Expanded</button>
+      </div>
       <div class="tb-health" onclick="showScreen('settings',null,'Data Quality')" title="Data Quality">
         <div class="tb-health-dot"></div>
         <span class="tb-health-label">Synced <span class="tb-health-time">4m ago</span></span>

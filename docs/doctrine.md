@@ -17,6 +17,7 @@ The canonical registry lives in `shared/core.js` under `OUTPUT_TYPES`. This doc 
 | `active_recovery` | ACT | blue | Action assigned or in monitoring. Value is estimated — not yet verified. | No. |
 | `open_opportunity` | OPEN | amber | Detected but not yet actioned. Estimated run-rate only. | No. |
 | `unavailable` | N/A | red | Source not connected or data missing. Cannot calculate. | No. |
+| `illustrative` | ILL | slate | Fabricated for a non-functional preview. No source data behind it — shown only to convey a future capability. | No. |
 
 ## The state machine
 

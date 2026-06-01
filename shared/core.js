@@ -1001,6 +1001,18 @@ const OUTPUT_TYPES = {
     color:       'red',
     cls:         'ot-unavail',
   },
+  // (Taya #20-labeling) For explicitly non-functional previews of capabilities
+  // SKC does not yet ingest data for (e.g. station/BOH/KDS-stage views). Numbers
+  // are fabricated to convey intent only — never a measurement, model, or scenario,
+  // and never eligible for ROI. Use only on screens labelled "Illustrative preview".
+  illustrative: {
+    id:          'illustrative',
+    short:       'ILL',
+    label:       'Illustrative',
+    description: 'Fabricated for a non-functional preview. No source data behind it — shown only to convey a future capability. Never counted in ROI.',
+    color:       'slate',
+    cls:         'ot-illustrative',
+  },
 };
 
 // ── Map from opportunity/action status → output type ──────────
@@ -4608,6 +4620,19 @@ function toggleTheme() {
   light = !light;
   document.body.classList.toggle('light', light);
   document.querySelector('.theme-toggle').textContent = light ? '☾' : '☀';
+}
+
+// ── (Taya #1/#2/#6) Executive vs Expanded detail mode ──────────────
+// One top-level body class hides everything marked .skc-detail. Default is
+// Executive (set statically on <body> in index.html). No per-screen rebuild —
+// progressive disclosure via a single CSS class, exactly like the theme toggle.
+let skcMode = 'exec';
+function setSkcMode(mode) {
+  skcMode = (mode === 'expanded') ? 'expanded' : 'exec';
+  document.body.classList.toggle('skc-exec', skcMode === 'exec');
+  document.querySelectorAll('[data-skc-mode-btn]').forEach(b => {
+    b.classList.toggle('is-active', b.getAttribute('data-skc-mode-btn') === skcMode);
+  });
 }
 
 // ─── DRAWER ──────────────────────────────────────────────
