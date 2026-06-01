@@ -26,6 +26,22 @@
     <!-- ══ FIRST FOLD ══════════════════════════════════════════════ -->
     <div class="td-first-fold">
 
+      <!-- (Taya #13) Big on-track / off-track status — driven by a stated threshold rule.
+           Rule: ON TRACK when projected labor % <= peer target (29.3%) AND sales pace >= plan;
+           OFF TRACK if either breaches. Today: labor +2.1 pts over target -> off track.
+           Markup defaults to the computed (off) state; renderTodayStatus() makes it data-driven. -->
+      <div class="td-status td-status-off" id="todayStatus" role="status">
+        <div class="td-status-dot"></div>
+        <div class="td-status-body">
+          <div class="td-status-headline">Off track today</div>
+          <div class="td-status-sub">Labor is running <strong>+2.1 pts over</strong> your 29.3% peer target across today's services.<span class="skc-detail"> On track = projected labor % at or below target and sales pace at or above plan.</span></div>
+        </div>
+        <div class="td-status-metric">
+          <div class="td-status-metric-v">31.4%</div>
+          <div class="td-status-metric-k">labor · target 29.3%</div>
+        </div>
+      </div>
+
       <!-- Hero: action-first, spacious, doctrine-quiet -->
       <div class="td-hero">
         <div class="td-hero-meta">Rosewood Group · Tuesday, May 19 · <span class="aud-badge aud-gm" title="Today is the GM's daily decision surface">GM view</span> · <span style="color:var(--amber);font-weight:600">1 decision ready</span></div>

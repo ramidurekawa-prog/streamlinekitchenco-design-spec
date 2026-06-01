@@ -4311,6 +4311,7 @@ function _ttUpdateNav(sub) {
 }
 
 function menuMatrixSelect(key) {
+  // SAMPLE — item.cm / Total CM are food-cost-derived; manual cost-input layer not built (Taya #20).
   const item = MENU_DATA.items[key];
   if (!item) return;
   // Update selection ring on matrix
@@ -4365,6 +4366,7 @@ function menuMatrixSelect(key) {
 // inside #menu-subpage-items, so the tooltip escapes overflow:auto
 // containers (table panel + items body).
 function renderMenuItemsTable() {
+  // SAMPLE — item.cm / Total CM are food-cost-derived; manual cost-input layer not built (Taya #20).
   const body = document.getElementById('menuItemsBody');
   if (!body || body.dataset.rendered === 'true') return;
   // Sort by total CM descending by default
@@ -4419,6 +4421,7 @@ function renderMenuItemsTable() {
 }
 
 function menuItemSelect(key, el) {
+  // SAMPLE — item.cm / Total CM are food-cost-derived; manual cost-input layer not built (Taya #20).
   const item = MENU_DATA.items[key];
   if (!item) return;
   document.querySelectorAll('#screen-menu .menu-items-row').forEach(r => r.classList.remove('menu-selected'));
@@ -4634,6 +4637,23 @@ function setSkcMode(mode) {
     b.classList.toggle('is-active', b.getAttribute('data-skc-mode-btn') === skcMode);
   });
 }
+
+// ── (Taya #13) Today on-track / off-track status — stated threshold rule ──────
+// ON TRACK when projected labor % <= peer target AND sales pace >= plan; else OFF.
+// Demo values are the canonical 29.3% target / +2.1 pts over (= 31.4% labor).
+// Markup defaults to the computed state; this makes it data-driven if called.
+function renderTodayStatus(laborPct = 31.4, targetPct = 29.3, salesPacePct = 100) {
+  const el = document.getElementById('todayStatus');
+  if (!el) return;
+  const onTrack = laborPct <= targetPct && salesPacePct >= 100;
+  el.classList.toggle('td-status-on', onTrack);
+  el.classList.toggle('td-status-off', !onTrack);
+  const hd = el.querySelector('.td-status-headline');
+  const mv = el.querySelector('.td-status-metric-v');
+  if (hd) hd.textContent = onTrack ? 'On track today' : 'Off track today';
+  if (mv) mv.textContent = laborPct.toFixed(1) + '%';
+}
+document.addEventListener('DOMContentLoaded', () => renderTodayStatus());
 
 // ─── DRAWER ──────────────────────────────────────────────
 const drawerData = {
