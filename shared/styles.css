@@ -10888,3 +10888,14 @@ body.skc-exec .skc-detail { display: none; }
 .pr-opp-value-main.skc-weight-lg { font-size:23px; }
 .pr-opp-value-main.skc-weight-md { font-size:18px; }
 .pr-opp-value-main.skc-weight-sm { font-size:15px; }
+
+/* ════════════════════════════════════════════════════════════════════
+   (Taya #16) Food / Alcohol parallel views on Item Economics
+   ════════════════════════════════════════════════════════════════════ */
+.menu-kind-toggle { display:inline-flex; background:var(--hover); border:1px solid var(--border); border-radius:var(--r); padding:2px; gap:2px; }
+.menu-kind-btn { background:transparent; border:none; cursor:pointer; font-size:11px; font-weight:500; color:var(--t3); padding:3px 10px; border-radius:4px; transition:all .15s; }
+.menu-kind-btn:hover { color:var(--t1); }
+.menu-kind-btn.is-active { background:var(--card); color:var(--t1); box-shadow:0 1px 2px rgba(0,0,0,.15); }
+.menu-items-table[data-kind-filter="food"] .menu-items-row[data-kind="alcohol"] { display:none; }
+.menu-items-table[data-kind-filter="alcohol"] .menu-items-row:not([data-kind="alcohol"]) { display:none; }
+.menu-alcohol-note { display:flex; align-items:center; gap:10px; margin-top:10px; padding:10px 14px; background:rgba(148,163,184,.10); border:1px solid rgba(148,163,184,.28); border-radius:var(--r); font-size:11px; color:var(--t2); line-height:1.5; }

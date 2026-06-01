@@ -4403,6 +4403,25 @@ function menuMatrixSelect(key) {
 // Uses a single position:fixed element shared across all [data-tip]
 // inside #menu-subpage-items, so the tooltip escapes overflow:auto
 // containers (table panel + items body).
+// (Taya #16) Food vs Alcohol axis. The demo fixture is almost entirely food; Espresso
+// Martini is the only alcohol line. A full beverage program (cocktails/wine/beer) needs
+// connected bar/POS data SKC does not yet ingest — so the Alcohol view is an explicit
+// illustrative placeholder. Default is Food; food metrics exclude alcohol (Taya #16).
+const MENU_ITEM_KIND = { martini: 'alcohol' };   // every other item defaults to 'food'
+function _menuItemKind(key) { return MENU_ITEM_KIND[key] || 'food'; }
+function menuItemsSetKind(kind) {
+  const k = (kind === 'alcohol') ? 'alcohol' : 'food';
+  const table = document.querySelector('#menu-subpage-items .menu-items-table');
+  if (table) table.setAttribute('data-kind-filter', k);
+  document.querySelectorAll('#menu-subpage-items [data-kind-btn]').forEach(b => {
+    b.classList.toggle('is-active', b.getAttribute('data-kind-btn') === k);
+  });
+  const note = document.getElementById('menuAlcoholNote');
+  if (note) note.style.display = (k === 'alcohol') ? 'flex' : 'none';
+  const hdr = document.getElementById('menuItemsPanelH');
+  if (hdr) hdr.textContent = (k === 'alcohol') ? 'Item economics · alcohol' : 'Item economics · food items';
+}
+
 function renderMenuItemsTable() {
   // SAMPLE — item.cm / Total CM are food-cost-derived; manual cost-input layer not built (Taya #20).
   const body = document.getElementById('menuItemsBody');
@@ -4419,7 +4438,7 @@ function renderMenuItemsTable() {
     const popBarPct = Math.min(100, item.pop / popMax * 100);
     const cmBarColor = item.cm >= MENU_DATA.cm_threshold ? 'var(--green)' : 'var(--amber)';
     const popBarColor = item.pop >= MENU_DATA.popularity_threshold ? 'var(--blue)' : '#a1a1aa';
-    return '<div class="menu-items-row" data-item="' + key + '" onclick="menuItemSelect(\'' + key + '\', this)" role="button" tabindex="0" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();menuItemSelect(\'' + key + '\',this)}" aria-label="' + item.name + ' · ' + clsLabel + '">' +
+    return '<div class="menu-items-row" data-item="' + key + '" data-kind="' + _menuItemKind(key) + '" onclick="menuItemSelect(\'' + key + '\', this)" role="button" tabindex="0" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();menuItemSelect(\'' + key + '\',this)}" aria-label="' + item.name + ' · ' + clsLabel + '">' +
       '<span><strong>' + item.name + '</strong>' + (item.watch ? ' <span data-tip="Near-threshold low-profit, high-sales item — flagged for monitoring" style="font-size:9px;color:var(--amber);font-weight:700">·WATCH</span>' : '') + '</span>' +
       '<span><span class="menu-items-class menu-q-' + item.cls + '">' + clsLabel + '</span></span>' +
       '<span>' +
