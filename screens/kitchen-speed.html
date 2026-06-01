@@ -15,7 +15,7 @@
     <!-- ── DATA QUALITY WARNING ──────────────────────────── -->
     <div class="dq-banner warn" style="margin-bottom:16px">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;color:var(--amber)"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      <strong>KDS partial / degraded</strong> · Last sync: 6m ago · Aggregate ticket time available · Station-level root cause unavailable · Confidence 64% · ROI verification conditional
+      <strong>KDS partial / degraded</strong> · Last sync: 6m ago · Aggregate ticket time available · Station-level root cause unavailable · Confidence 64% · can't fully prove the savings until KDS reconnects
       <button class="btn btn-ghost btn-sm" style="margin-left:auto;font-size:11px" onclick="showScreen('settings',null,'Data Quality')">Fix KDS connection →</button>
     </div>
 
@@ -57,7 +57,7 @@
         <span style="color:var(--t3)">·</span>
         <span style="color:var(--t3)">76% base −12 pts partial KDS</span>
         <span style="color:var(--t3)">·</span>
-        <span>Action allowed · observation only · automated root cause blocked until station-level KDS connects · ROI verification conditional</span>
+        <span>Action allowed · observation only · automated root cause blocked until station-level KDS connects · can't fully prove the savings until KDS reconnects</span>
       </div>
 
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -86,9 +86,9 @@
         <div class="si-metric-note">vs 96 baseline · stable · volume is not the cause <span class="output-chip ot-det" title="DET = Deterministic — measured directly from your data">DET</span></div>
       </div>
       <div class="si-metric si-metric-alert" style="border-top-color:var(--blue)">
-        <div class="si-metric-label">Weekly exposure</div>
+        <div class="si-metric-label">Money on the table</div>
         <div class="si-metric-val" style="color:var(--blue)" data-skc="ticket-chain-weekly">$356<span class="si-metric-unit">/wk</span></div>
-        <div class="si-metric-note">$384/Friday service · 1 affected service/wk · <span style="color:var(--t3)" data-skc="ticket-opp">$1,540/mo run-rate</span></div>
+        <div class="si-metric-note">$384/Friday service · 1 affected service/wk · <span style="color:var(--t3)" data-skc="ticket-opp">$1,540/mo if it keeps up</span></div>
       </div>
     </div>
 
@@ -109,7 +109,7 @@
               <th>Baseline</th>
               <th>Variance</th>
               <th>Per-service impact</th>
-              <th>Weekly exposure</th>
+              <th>Money on the table</th>
               <th>Confidence</th>
               <th>Next action</th>
             </tr>
@@ -126,8 +126,8 @@
               <td class="mono">11.8 min</td>
               <td class="mono" style="color:var(--amber)">+2.4 min</td>
               <td class="cct-money cct-blue">$384/service</td>
-              <td class="cct-money cct-blue">$356/wk<div class="cct-muted">$1,540/mo run-rate</div></td>
-              <td><span class="output-chip ot-est" title="EST = Estimated — calculated from available data with stated confidence">EST · 64%</span></td>
+              <td class="cct-money cct-blue">$356/wk<div class="cct-muted">$1,540/mo if it keeps up</div></td>
+              <td><span class="output-chip ot-est" title="EST = Estimated — calculated from available data with stated confidence">Estimate · 64%</span></td>
               <td><button class="btn btn-primary btn-sm" onclick="openCA('leak3')">Schedule review</button></td>
             </tr>
             <tr class="cct-row">
@@ -142,7 +142,7 @@
               <td class="mono" style="color:var(--t3)">Unknown</td>
               <td class="cct-money cct-muted">Unconfirmed</td>
               <td class="cct-money cct-muted">Unknown</td>
-              <td><span class="output-chip ot-est" title="EST = Estimated — calculated from available data with stated confidence">EST · 40%</span></td>
+              <td><span class="output-chip ot-est" title="EST = Estimated — calculated from available data with stated confidence">Estimate · 40%</span></td>
               <td style="font-size:11px;color:var(--t3)">Confirm on-site</td>
             </tr>
             <tr class="cct-row">
@@ -258,7 +258,7 @@
     <div class="section-shell mb-24">
       <div class="section-shell-hd">
         <div class="section-shell-title">Recommended Actions</div>
-        <div class="section-shell-note">Ranked by confidence · $356/wk exposure not counted in ROI until monitoring confirms</div>
+        <div class="section-shell-note">Ranked by confidence · $356/wk on the table, not proven until we test the fix</div>
       </div>
       <div class="responsive-table mb-12">
         <table>
@@ -269,7 +269,7 @@
               <th>Owner</th>
               <th>Due</th>
               <th>Per-service impact</th>
-              <th>Weekly exposure</th>
+              <th>Money on the table</th>
               <th>Verification rule</th>
               <th></th>
             </tr>
@@ -284,7 +284,7 @@
               <td class="cct-owner">Jamie L.</td>
               <td class="cct-mono" style="color:var(--blue)">Before Fri service · 10:30 AM</td>
               <td class="cct-money cct-blue">$384/service</td>
-              <td class="cct-money cct-blue">$356/wk<div class="cct-muted">$1,540/mo run-rate</div></td>
+              <td class="cct-money cct-blue">$356/wk<div class="cct-muted">$1,540/mo if it keeps up</div></td>
               <td style="font-size:11.5px;color:var(--t3)">Ticket time ≤ 12 min for 3 consecutive Friday lunches · all guardrails passing</td>
               <td><button class="btn btn-primary btn-sm" onclick="openCA('leak3')">Assign before service</button></td>
             </tr>
