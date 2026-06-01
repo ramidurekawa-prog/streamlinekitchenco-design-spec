@@ -10855,3 +10855,16 @@ body.skc-exec .skc-detail { display: none; }
 .le-delta-bad  { color:var(--amber); }
 .le-delta-good { color:var(--green); }
 .le-delta-flat { color:var(--t3); }
+
+/* ════════════════════════════════════════════════════════════════════
+   (Taya #19) Projected savings — MODELED linear extrapolation
+   ════════════════════════════════════════════════════════════════════ */
+.pr-projection { display:flex; flex-direction:column; gap:8px; padding:12px 16px; margin:0 0 16px; background:var(--card); border:1px solid var(--border); border-radius:var(--r-md); }
+.pr-projection-hd { display:flex; align-items:center; gap:8px; }
+.pr-projection-title { font-size:12px; font-weight:600; color:var(--t1); }
+.pr-projection-body { display:flex; align-items:flex-start; gap:24px; flex-wrap:wrap; }
+.pr-projection-cell { display:flex; flex-direction:column; }
+.pr-projection-k { font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--t3); }
+.pr-projection-v { font-family:var(--mono); font-size:18px; font-weight:700; color:var(--amber); }
+.pr-projection-note { font-size:10.5px; color:var(--t3); line-height:1.5; flex:1; min-width:240px; }
+.pr-projection-link { background:none; border:none; padding:0; color:var(--blue); cursor:pointer; font-size:10.5px; text-decoration:underline; }
