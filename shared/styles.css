@@ -10877,3 +10877,14 @@ body.skc-exec .skc-detail { display: none; }
 .pr-status-todo { background:var(--hover); color:var(--t3); border:1px solid var(--border); }
 .pr-status-progress { background:var(--blue-d); color:var(--blue); border:1px solid var(--blue-b); }
 .pr-status-done { background:var(--green-d); color:var(--green); border:1px solid var(--green-b); }
+
+/* ════════════════════════════════════════════════════════════════════
+   (Taya #5) Visual weight — figure size reflects dollar magnitude.
+   Reusable tiers (size is a function of weekly-normalized $, not fixed per card).
+   Applied conservatively: the two largest weekly values are promoted; the rest
+   stay at the 18px default. Weighting basis (weekly-normalized vs category
+   importance like "total margin") is design-tunable — extend to charts as needed.
+   ════════════════════════════════════════════════════════════════════ */
+.pr-opp-value-main.skc-weight-lg { font-size:23px; }
+.pr-opp-value-main.skc-weight-md { font-size:18px; }
+.pr-opp-value-main.skc-weight-sm { font-size:15px; }
