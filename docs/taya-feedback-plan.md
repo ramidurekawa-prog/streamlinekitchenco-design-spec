@@ -8,6 +8,25 @@ the **Status** column as items land.
 > copy, canonical numbers, and interaction flows are design-owned. Items marked
 > **⚠ decision** below need Ramidu's call before implementation, not a unilateral edit.
 
+## Shipped on `feature/taya-feedback` (local commits, not pushed)
+
+| Commit | Items |
+|---|---|
+| `769d40b` | #1/#2/#6 Executive/Expanded mode · #20 `illustrative` output type |
+| `db0ebc2` | #13 Today on-track/off-track status · #20-cost SAMPLE markers |
+| `a19eb83` | #18 Risk & effort matrix (evidence drawer) |
+| `9aaef59` | #14 Menu quadrant rename → plain profit/sales language |
+| `a9619f1` | #10/#11/#12 Period-over-period deltas on labor figures |
+| `632462f` | #19 Projected recoverable savings (MODELED) |
+| `c6e9573` | #8 action-status pills · #9 feature shortcuts on recovery cards |
+| `e9052c3` | #5 Visual-weight tiers by dollar magnitude |
+
+**Remaining (need your input or a focused pass):** #16 Food/Alcohol split (recomputes canonical
+$8.42 / ~$1,420 — sign-off), #3/#4 evidence-drawer consolidation (menu drawer is whole-menu scope,
+not a leak2 dupe — real migration), #20 causal-language audit (17 phrases, design copy), and the
+table_turns vs NOT-INCLUDED product decision. `data.js` SAMPLE comments remain uncommitted
+(entangled with the table_turns WIP).
+
 ## What the codebase already gives us (changes the effort math)
 
 1. **Three evidence-drawer systems already exist** — the "single Math drawer"
