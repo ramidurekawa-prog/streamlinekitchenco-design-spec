@@ -12,7 +12,7 @@
   <div class="sb-loc-wrap">
     <div class="sb-loc-btn">
       <svg class="sb-loc-ico" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      <select class="sb-loc-sel" onchange="this.blur()">
+      <select class="sb-loc-sel" onchange="setSKCLocation(this.value); this.blur()">
         <option>All Locations</option>
         <option>Oakland</option>
         <option>Berkeley</option>
@@ -47,10 +47,7 @@
       </div>
       <div class="nav-children" id="navActionsChildren">
         <div class="nav-child" data-sub="overview"  role="button" tabindex="0" onclick="navActionsChildClick('overview', this)"  onkeydown="navActionsChildKeydown(event,'overview')"  aria-label="Actions Overview">Overview</div>
-        <div class="nav-child" data-sub="pending"   role="button" tabindex="0" onclick="navActionsChildClick('pending', this)"   onkeydown="navActionsChildKeydown(event,'pending')"   aria-label="Pending Decisions">Pending Decisions</div>
-        <div class="nav-child" data-sub="active"    role="button" tabindex="0" onclick="navActionsChildClick('active', this)"    onkeydown="navActionsChildKeydown(event,'active')"    aria-label="Active Recovery">Active Recovery</div>
-        <div class="nav-child" data-sub="ready"     role="button" tabindex="0" onclick="navActionsChildClick('ready', this)"     onkeydown="navActionsChildKeydown(event,'ready')"     aria-label="Ready to Verify">Ready to Verify</div>
-        <div class="nav-child" data-sub="blocked"   role="button" tabindex="0" onclick="navActionsChildClick('blocked', this)"   onkeydown="navActionsChildKeydown(event,'blocked')"   aria-label="Blocked Actions">Blocked</div>
+        <div class="nav-child" data-sub="queue"     role="button" tabindex="0" onclick="navActionsChildClick('queue', this)"     onkeydown="navActionsChildKeydown(event,'queue')"     aria-label="Action Queue">Action Queue</div>
         <div class="nav-child" data-sub="history"   role="button" tabindex="0" onclick="navActionsChildClick('history', this)"   onkeydown="navActionsChildKeydown(event,'history')"   aria-label="Action History">History</div>
         <div class="nav-child" data-sub="evidence"  role="button" tabindex="0" onclick="navActionsChildClick('evidence', this)"  onkeydown="navActionsChildKeydown(event,'evidence')"  aria-label="Action Evidence">Evidence</div>
       </div>

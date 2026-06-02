@@ -94,27 +94,37 @@ function navMenuChildKeydown(event, sub) {
 
 // ── from source lines 23862-23886 (showActionsSubpage) ──
 function showActionsSubpage(sub) {
-  if (!ACTIONS_SUBPAGE_TITLES[sub]) sub = 'overview';
+  // (consolidated) pending / active / ready / blocked now live in one
+  // #ac-subpage-queue with an in-page toggle. Route those four (and 'queue') there.
+  var QUEUE = { pending: 1, active: 1, ready: 1, blocked: 1, queue: 1 };
+  if (!ACTIONS_SUBPAGE_TITLES[sub] && !QUEUE[sub]) sub = 'overview';
 
   // Ensure parent screen is active
   const screen = document.getElementById('screen-actions');
   if (!screen || !screen.classList.contains('active')) {
-    showScreen('actions', null, ACTIONS_SUBPAGE_TITLES[sub]);
-    // showScreen defaults to overview-shaped behavior; re-target after the screen flips.
+    showScreen('actions', null, ACTIONS_SUBPAGE_TITLES[sub] || 'Actions');
     setTimeout(() => showActionsSubpage(sub), 30);
     return;
   }
 
-  // Hide all subpages, show selected
+  // Hide all subpages
   document.querySelectorAll('#screen-actions .ac-subpage').forEach(p => p.classList.remove('active'));
+
+  // Queue group → show the one queue subpage and switch its inner view
+  if (QUEUE[sub]) {
+    const q = document.getElementById('ac-subpage-queue');
+    if (q) q.classList.add('active');
+    const view = (sub === 'queue') ? 'pending' : sub;
+    if (typeof acQueueShow === 'function') acQueueShow(view);
+    _actionsUpdateNav('queue');
+    return;
+  }
+
+  // Normal subpage
   const target = document.getElementById('ac-subpage-' + sub);
   if (target) target.classList.add('active');
-
-  // Update topbar title
   const tb = document.getElementById('tbTitle');
   if (tb) tb.textContent = ACTIONS_SUBPAGE_TITLES[sub];
-
-  // Update sidebar nav active state
   _actionsUpdateNav(sub);
 }
 
@@ -261,6 +271,11 @@ function showTtSubpage(sub) {
   if (tb) tb.textContent = TT_SUBPAGE_TITLES[sub];
 
   _ttUpdateNav(sub);
+
+  // Re-sync the Watch day switcher with the current sidebar location
+  if (sub === 'overview' && typeof window.ttApplyLocation === 'function') {
+    window.ttApplyLocation(window.SKC_LOCATION || 'All Locations');
+  }
 }
 
 
@@ -826,5 +841,265 @@ function toggleWatchStageView(mode) {
     ttShowStage('pay');
   });
 
+})();
+
+// ════════════════════════════════════════════════════════════════════
+// (table_turns) Watch · day switcher + sidebar-location filter
+//
+// The Watch overview is one <div class="tt-day-view"> per service day.
+// #ttDay-friday is the hand-built static layout (untouched); #ttDay-saturday
+// and #ttDay-sunday are generated from TT_WATCH_SCENARIOS by ttRenderDay()
+// into that same Friday layout; #ttDay-empty covers no-data locations.
+// This controller shows exactly one at a time and keeps the header day
+// dropdown in sync with the sidebar location.
+// ════════════════════════════════════════════════════════════════════
+(function(){
+  function $(id){ return document.getElementById(id); }
+
+  // Which location each service day belongs to (all Oakland for now)
+  var DAY_LOCATION = { friday: 'Oakland', saturday: 'Oakland', sunday: 'Oakland' };
+  var DAY_LABEL    = { friday: 'Friday Dinner', saturday: 'Saturday Dinner', sunday: 'Sunday Dinner' };
+  var ALL_DAYS     = ['friday', 'saturday', 'sunday'];
+  var currentDay   = 'friday';
+
+  // ── Render helpers (reproduce the Friday static layout from data) ──
+  function pct(min, total){ return (min / total * 100).toFixed(2); }
+  function sevColor(s){ return s === 'red' ? 'var(--red)' : s === 'amber' ? 'var(--amber)' : 'var(--green)'; }
+  function sevBg(s){ return s === 'red' ? 'rgba(239,68,68,.32)' : 'rgba(245,158,11,.30)'; }
+  function stripClass(st){ return st === 'danger' ? 'is-bad' : st === 'strong' ? 'is-good' : st === 'warning' ? 'is-warn' : ''; }
+  function boldFirst(msg){
+    var i = msg.indexOf('. ');
+    if (i === -1) return '<strong style="color:var(--t1)">' + msg + '</strong>';
+    return '<strong style="color:var(--t1)">' + msg.slice(0, i + 1) + '</strong>' + msg.slice(i + 1);
+  }
+  var GREY = [0.28, 0.18, 0.24, 0.18, 0.22];
+
+  function ttRenderDay(s){
+    var sb = s.stageBreakdown;
+    var total = sb.actualTotalMin;
+    var bn = sb.stages.filter(function(x){ return x.status === 'bottleneck'; })[0] || sb.stages[sb.stages.length - 1];
+    var f = s.formula.values;
+    var rev = Math.round(f.missedRevenue);
+
+    // 1 · headline
+    var headline =
+      '<div style="padding:14px 16px;margin-bottom:12px;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:6px;font-size:13.5px;line-height:1.55;color:var(--t2)">' +
+        boldFirst(s.heroInsight.message) +
+      '</div>';
+
+    // 2 · 4-cell strip
+    var strip = '<div class="sp-strip" style="grid-template-columns:repeat(4,1fr)">' +
+      s.summaryCards.map(function(c){
+        var subColor = (c.status === 'warning' || c.status === 'danger') ? 'color:var(--amber)' : '';
+        return '<div class="sp-strip-cell ' + stripClass(c.status) + '"><div class="sp-strip-k">' + c.label +
+          '</div><div class="sp-strip-v">' + c.value +
+          '</div><div class="sp-strip-sub" style="' + subColor + '">' + c.subtext + '</div></div>';
+      }).join('') +
+    '</div>';
+
+    // 3a · LEFT panel — Why <day> is slow
+    var dp = s.diagnosisPanel;
+    var left =
+      '<div class="tt-ov-panel"><div class="tt-ov-panel-h"><span>' + dp.eyebrow + '</span><span class="tag-kds tag-pill">' + dp.badge + '</span></div>' +
+      '<div class="tt-ov-body"><div class="hero-card">' +
+        '<div class="hero-title">' + dp.headline + '</div>' +
+        '<div class="hero-sub">' + dp.body + '</div>' +
+        '<div class="hero-value-block"><span class="hero-value-num">~$' + dp.estimatedWeeklyRevenue + '</span>' +
+          '<span class="hero-value-period">/wk · estimated, not guaranteed</span></div>' +
+        '<div style="font-size:11.5px;color:var(--t2);line-height:1.6;margin-top:8px">' + dp.explanation + '</div>' +
+        '<details style="margin-top:8px;font-size:10.5px;color:var(--t3)">' +
+          '<summary style="cursor:pointer;color:var(--blue);user-select:none">Show the formula</summary>' +
+          '<div style="margin-top:6px;padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px;font-family:var(--mono);line-height:1.7">' +
+            f.missedTables + ' tables × $' + f.averageCheck + ' avg check = ~$' + rev + '/wk<br>' +
+            '~$' + rev + ' × 4.33 weeks = ~$' + dp.monthlyPace + '/mo<br>' +
+            'Tables-missed always rounded <em>down</em>, never up.<br>' +
+            'Confidence in the pattern: ' + s.heroInsight.patternConfidence + '% · in the dollar amount: medium' +
+          '</div></details>' +
+        '<div class="hero-ctas">' +
+          '<button class="btn btn-primary btn-sm" onclick="showTtSubpage(\'playbooks\')">See what to do</button>' +
+          '<button class="btn btn-secondary btn-sm" onclick="showTtSubpage(\'evidence\')">See full math</button>' +
+        '</div></div></div></div>';
+
+    // 3b · CENTER panel — Where the time goes
+    var targetSegs = sb.stages.filter(function(x){ return x.targetMin > 0; }).map(function(x, i){
+      return '<div style="width:' + pct(x.targetMin, total) + '%;background:rgba(161,161,170,' + GREY[i % 5] + ');border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9.5px;color:var(--t2);font-family:var(--mono);font-weight:700">' + x.targetMin + '</div>';
+    }).join('');
+    var actualSegs = sb.stages.map(function(x, i){
+      if (x.status === 'bottleneck'){
+        var out = '';
+        if (x.targetMin > 0){
+          out += '<div style="width:' + pct(x.targetMin, total) + '%;background:rgba(161,161,170,' + GREY[i % 5] + ');border-right:1px solid var(--amber);display:flex;align-items:center;justify-content:center;font-size:9.5px;color:var(--t1);font-family:var(--mono);font-weight:700">' + x.targetMin + '</div>';
+        }
+        out += '<div style="width:' + pct(x.delta, total) + '%;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:9.5px;color:#fff;font-family:var(--mono);font-weight:700">+' + x.delta + '</div>';
+        return out;
+      }
+      return '<div style="width:' + pct(x.actualMin, total) + '%;background:rgba(161,161,170,' + GREY[i % 5] + ');border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--t1);font-family:var(--mono);font-weight:700">' + x.actualMin + '</div>';
+    }).join('');
+    var stageLabels = sb.stages.map(function(x){
+      var isBn = x.status === 'bottleneck';
+      return '<div style="width:' + pct(x.actualMin, total) + '%;font-size:9px;color:' + (isBn ? 'var(--amber)' : 'var(--t3)') + ';text-align:center;line-height:1.2' + (isBn ? ';font-weight:700' : '') + '">' + x.id + ' · ' + x.name + (isBn ? ' ⚠' : '') + '</div>';
+    }).join('');
+    var stageCards = sb.stages.map(function(x){
+      var isBn = x.status === 'bottleneck';
+      var statusText = isBn ? 'bottleneck' : (x.status === 'on_target' ? 'on target' : 'in tolerance');
+      return '<div style="padding:6px 8px;background:' + (isBn ? 'var(--amber-d)' : 'var(--card)') + ';border:1px solid ' + (isBn ? 'var(--amber-b)' : 'var(--border)') + ';border-radius:4px;text-align:center">' +
+        '<div style="font-size:8.5px;color:' + (isBn ? 'var(--amber)' : 'var(--t3)') + ';font-weight:700;letter-spacing:.04em;text-transform:uppercase">Stage ' + x.id + (isBn ? ' ⚠' : '') + '</div>' +
+        '<div style="font-family:var(--mono);font-size:' + (isBn ? '12' : '11') + 'px;color:' + (isBn ? 'var(--amber)' : 'var(--t2)') + ';font-weight:700;margin-top:2px">' + (x.delta > 0 ? '+' : '') + x.delta + '</div>' +
+        '<div style="font-size:8px;color:' + (isBn ? 'var(--amber)' : 'var(--t3)') + ';margin-top:1px' + (isBn ? ';font-weight:600' : '') + '">' + statusText + '</div></div>';
+    }).join('');
+    var center =
+      '<div class="tt-ov-panel"><div class="tt-ov-panel-h"><span>Where the time goes · ' + sb.stageCount + ' stages</span></div>' +
+      '<div class="tt-ov-body"><div>' +
+        '<div style="display:flex;align-items:flex-end;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)">' +
+          '<div><div style="font-family:var(--mono);font-size:30px;font-weight:700;color:var(--amber);line-height:1">' + total + '<span style="font-size:14px;color:var(--t3);font-weight:500;margin-left:3px">min</span></div>' +
+            '<div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:3px">Actual · this week</div></div>' +
+          '<div style="font-family:var(--mono);font-size:18px;color:var(--t3);padding-bottom:4px">vs</div>' +
+          '<div><div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--t2);line-height:1">' + sb.targetTotalMin + '<span style="font-size:13px;color:var(--t3);font-weight:500;margin-left:3px">min</span></div>' +
+            '<div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:3px">Your target</div></div>' +
+          '<div style="margin-left:auto;text-align:right"><div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--amber);line-height:1">+' + sb.overTargetMin + ' min</div>' +
+            '<div style="font-size:9.5px;color:var(--t3);margin-top:3px;line-height:1.4">' + bn.delta + ' of ' + sb.overTargetMin + ' are in<br><strong style="color:var(--amber)">Stage ' + bn.id + ' alone</strong></div></div>' +
+        '</div>' +
+        '<div style="margin-bottom:14px">' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">' +
+            '<div style="font-size:9.5px;color:var(--t3);width:50px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0">Target</div>' +
+            '<div style="flex:1;display:flex;height:24px;border-radius:3px;background:var(--surface);border:1px solid var(--border);overflow:hidden">' + targetSegs + '</div>' +
+            '<div style="font-size:11px;color:var(--t2);font-family:var(--mono);font-weight:700;width:36px;text-align:right;flex-shrink:0">' + sb.targetTotalMin + '</div>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px">' +
+            '<div style="font-size:9.5px;color:var(--t1);width:50px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0">Actual</div>' +
+            '<div style="flex:1;display:flex;height:24px;border-radius:3px;background:var(--surface);border:1px solid var(--border);overflow:hidden">' + actualSegs + '</div>' +
+            '<div style="font-size:11px;color:var(--amber);font-family:var(--mono);font-weight:700;width:36px;text-align:right;flex-shrink:0">' + total + '</div>' +
+          '</div>' +
+          '<div style="display:flex;gap:0;margin-top:6px;padding-left:58px;padding-right:44px">' + stageLabels + '</div>' +
+        '</div>' +
+        '<div style="display:grid;grid-template-columns:repeat(' + sb.stageCount + ',1fr);gap:4px;margin-bottom:12px">' + stageCards + '</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
+          '<div style="padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:3px">Total now</div><div style="font-size:14px;color:var(--amber);font-family:var(--mono);font-weight:700">' + total + ' min</div></div>' +
+          '<div style="padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:3px">Your target</div><div style="font-size:14px;color:var(--t1);font-family:var(--mono);font-weight:700">' + sb.targetTotalMin + ' min</div></div>' +
+        '</div>' +
+      '</div></div></div>';
+
+    // 3c · RIGHT panel — What to do / is it safe
+    var rec = s.recommendedActionCard;
+    var sg = s.serviceGuardrails;
+    var checks = sg.checks.map(function(c){
+      var mono = /\$|%/.test(c.current) ? ';font-family:var(--mono)' : '';
+      return '<div style="display:flex;justify-content:space-between"><span>' + c.label + '</span><strong style="color:var(--green)' + mono + '">' + c.current + '</strong></div>';
+    }).join('');
+    var right =
+      '<div class="tt-ov-panel"><div class="tt-ov-panel-h">What to do · is it safe?</div><div class="tt-ov-body">' +
+        '<div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:4px;padding:11px 13px;margin-bottom:8px">' +
+          '<div style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--blue);margin-bottom:4px">Recommended action</div>' +
+          '<div style="font-size:12px;color:var(--t1);font-weight:600;line-height:1.4">' + rec.action + '</div>' +
+          '<div style="font-size:10.5px;color:var(--t3);margin-top:4px;line-height:1.5">' + rec.description + '</div>' +
+          '<div style="margin-top:8px;display:flex;gap:6px"><button class="btn btn-primary btn-sm" onclick="showTtSubpage(\'playbooks\')">Turn into Action</button></div>' +
+        '</div>' +
+        '<div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:4px;padding:11px 13px;margin-bottom:8px">' +
+          '<div style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--green);margin-bottom:4px">Will it hurt service?</div>' +
+          '<div style="font-size:12px;color:var(--t1);font-weight:600;line-height:1.4">' + sg.summary + '</div>' +
+          '<div style="font-size:10.5px;color:var(--t3);margin-top:6px;line-height:1.7">' + checks + '</div>' +
+          '<div style="font-size:10px;color:var(--t3);margin-top:8px;padding-top:7px;border-top:1px dashed var(--border);font-style:italic;line-height:1.5">' + sg.warning + '</div>' +
+        '</div>' +
+      '</div></div>';
+
+    // 4 · Hour-by-hour
+    var rows = s.hourlyRows.map(function(h){
+      var col = sevColor(h.severity);
+      var bg;
+      if (h.severity === 'green'){
+        bg = 'rgba(34,197,94,.18)';
+      } else {
+        var greenPct = Math.max(0, 100 - (h.overTargetMin / h.totalMin * 100)).toFixed(0);
+        bg = 'linear-gradient(90deg,rgba(34,197,94,.18) ' + greenPct + '%,' + sevBg(h.severity) + ' ' + greenPct + '%)';
+      }
+      return '<div style="color:var(--t3);font-weight:700">' + h.hour + '</div>' +
+        '<div style="background:' + bg + ';height:22px;border-radius:3px;display:flex;align-items:center;padding:0 8px;color:' + col + ';font-size:10px;font-family:var(--sans)">' + h.label + '</div>' +
+        '<div style="color:' + col + ';font-weight:700">' + h.totalMin + 'm</div>';
+    }).join('');
+    var hourly =
+      '<div class="tt-ov-panel" style="margin-top:12px"><div class="tt-ov-panel-h"><span>Hour-by-hour · ' + s.day + ' ' + s.service.toLowerCase() + ' ' + s.timeWindow + '</span></div>' +
+      '<div class="tt-ov-body"><div>' +
+        '<div style="font-size:11px;color:var(--t3);margin-bottom:8px;line-height:1.5">Each row is one hour of ' + s.day + ' ' + s.service.toLowerCase() + ' service. The <strong style="color:var(--amber)">amber section</strong> shows where Stage ' + bn.id + ' (' + bn.name + ') is running over target.</div>' +
+        '<div style="display:grid;grid-template-columns:auto 1fr auto;gap:8px 10px;font-size:11px;font-family:var(--mono);align-items:center">' + rows + '</div>' +
+        '<div style="margin-top:10px;padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px;font-size:10.5px;color:var(--t3);line-height:1.5">' + s.worstStretch.message + '</div>' +
+      '</div></div></div>';
+
+    return headline + strip + '<div class="tt-ov-grid">' + left + center + right + '</div>' + hourly;
+  }
+
+  // Inject the generated Saturday / Sunday markup into their containers.
+  // Idempotent: runs once, but safe to call repeatedly (e.g. lazily on first
+  // switch) so it self-heals regardless of init timing.
+  var generatedBuilt = false;
+  function ttBuildGeneratedDays(){
+    if (generatedBuilt) return;
+    var scenarios = (typeof TT_WATCH_SCENARIOS !== 'undefined') ? TT_WATCH_SCENARIOS
+                  : (window.TT_WATCH_SCENARIOS || null);
+    if (!scenarios) return;
+    var any = false;
+    Object.keys(scenarios).forEach(function(key){
+      var el = $('ttDay-' + key);
+      if (!el) return;
+      try { el.innerHTML = ttRenderDay(scenarios[key]); any = true; }
+      catch (err){ console.warn('[table_turns] render failed for ' + key + ':', err); }
+    });
+    if (any) generatedBuilt = true;
+  }
+
+  // Show one day view, hide the rest. Unknown / no-data → #ttDay-empty.
+  window.ttSwitchDay = function(key){
+    ttBuildGeneratedDays(); // lazy safety net — build generated days if not yet built
+    var views = document.querySelectorAll('#tt-subpage-overview .tt-day-view');
+    if (!views.length) return;
+    views.forEach(function(v){ v.style.display = 'none'; });
+    var target = $('ttDay-' + key);
+    if (target){
+      target.style.display = '';
+      currentDay = key;
+    } else {
+      var empty = $('ttDay-empty');
+      if (empty) empty.style.display = '';
+    }
+    var sel = $('ttDaySel');
+    if (sel && key !== '__none__' && sel.value !== key) sel.value = key;
+  };
+
+  // Filter the header day dropdown to the chosen sidebar location, then
+  // select a sensible default and render it.
+  window.ttApplyLocation = function(loc){
+    var sel = $('ttDaySel');
+    if (!sel) return; // not on the Table Turns screen yet
+    var visible = ALL_DAYS.filter(function(d){
+      if (!loc || loc === 'All Locations') return true;
+      return DAY_LOCATION[d] === loc;
+    });
+    sel.innerHTML = '';
+    visible.forEach(function(d){
+      var o = document.createElement('option');
+      o.value = d;
+      o.textContent = DAY_LABEL[d];
+      sel.appendChild(o);
+    });
+    if (visible.length === 0){
+      sel.disabled = true;
+      ttSwitchDay('__none__'); // → empty state
+      return;
+    }
+    sel.disabled = false;
+    var pick = visible.indexOf(currentDay) !== -1 ? currentDay : visible[0];
+    sel.value = pick;
+    ttSwitchDay(pick);
+  };
+
+  // Sidebar location selector calls this.
+  window.setSKCLocation = function(loc){
+    window.SKC_LOCATION = loc;
+    ttApplyLocation(loc);
+  };
+
+  document.addEventListener('DOMContentLoaded', function(){
+    ttBuildGeneratedDays();
+    ttApplyLocation(window.SKC_LOCATION || 'All Locations');
+  });
 })();
 
