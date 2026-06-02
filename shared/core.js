@@ -4818,10 +4818,10 @@ function renderTodayMonth(savedThisMonth, paidThisMonth) {
   card.classList.toggle('td-kpi-month-up', up);
   card.classList.toggle('td-kpi-month-down', !up);
   const arrow = card.querySelector('.td-kpi-arrow'); if (arrow) arrow.textContent = up ? '▲' : '▼';
-  const val = card.querySelector('.td-kpi-month-val'); if (val) val.textContent = '$' + Math.abs(savedThisMonth).toLocaleString();
+  const val = card.querySelector('.td-kpi-month-val'); if (val) val.textContent = '$' + Math.abs(net).toLocaleString();
+  const dir = card.querySelector('.td-kpi-month-dir'); if (dir) dir.textContent = up ? 'ahead' : 'behind';
   const note = card.querySelector('.td-kpi-note');
-  if (note) note.innerHTML = 'vs $' + paidThisMonth + ' you paid · <strong>' +
-    (up ? '+$' + net.toLocaleString() + ' ahead' : '−$' + Math.abs(net).toLocaleString() + ' behind') + '</strong>';
+  if (note) note.textContent = '$' + savedThisMonth.toLocaleString() + ' saved · $' + paidThisMonth.toLocaleString() + ' you pay';
 }
 document.addEventListener('DOMContentLoaded', function () { try { renderTodayMonth(); } catch (e) {} });
 

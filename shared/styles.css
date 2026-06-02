@@ -10942,3 +10942,6 @@ body.skc-role-owner .skc-gm-only { display:none; }
 .td-kpi-month-down { border-color:var(--red-b); }
 .td-kpi-month-down .td-kpi-arrow, .td-kpi-month-down .td-kpi-month-val { color:var(--red); }
 .td-kpi-proj .tag-pill { margin-left:6px; vertical-align:middle; font-size:8.5px; }
+.td-kpi-month-dir { font-size:12px; font-weight:600; align-self:flex-end; padding-bottom:4px; }
+.td-kpi-month-up .td-kpi-month-dir { color:var(--green); }
+.td-kpi-month-down .td-kpi-month-dir { color:var(--red); }
