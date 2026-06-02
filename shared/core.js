@@ -4348,6 +4348,45 @@ function _ttUpdateNav(sub) {
   });
 }
 
+// (Taya #15) Data-driven menu matrix — bubbles render from MENU_DATA.items instead of
+// 9 hand-coded SVG nodes, so the matrix scales to 100+ items. Position uses the
+// documented mapping (x = 50 + pop/22*500, y = 370 − cm/15*350); radius scales with
+// units; colour by class. Compact mode (>24 items) drops per-bubble labels to stay
+// legible at scale. Static bubbles in the HTML remain as a no-JS fallback.
+const MENU_MATRIX_LABEL = { crispy:'Crispy', burger:'Burger', vodka:'Vodka', fries:'Fries', martini:'Martini', risotto:'Risotto', burrata:'Burrata', beet:'Beet', kids:'Kids' };
+const MENU_Q_FILL = { star:'var(--green)', plow:'var(--amber)', puzz:'var(--blue)', dog:'#a1a1aa' };
+const MENU_Q_NAME = { star:'High profit · high sales', plow:'Low profit · high sales', puzz:'High profit · low sales', dog:'Low profit · low sales' };
+function renderMenuMatrix() {
+  const host = document.getElementById('menuMatrixBubbles');
+  if (!host || typeof MENU_DATA === 'undefined' || !MENU_DATA.items) return;
+  // SAMPLE — cm is food-cost-derived; requires a manual cost-input layer, not built (Taya #20).
+  const entries = Object.entries(MENU_DATA.items);
+  const compact = entries.length > 24;
+  host.innerHTML = entries.map(([key, it]) => {
+    const cx = (50 + (it.pop / 22) * 500).toFixed(1);
+    const cy = (370 - (it.cm / 15) * 350).toFixed(1);
+    const r  = Math.max(13, Math.min(30, 13 + it.units * 0.04)).toFixed(0);
+    const fill = MENU_Q_FILL[it.cls] || '#a1a1aa';
+    const dash = it.watch ? ' stroke-dasharray="3 3"' : '';
+    const op   = it.watch ? '0.4' : '0.52';
+    const label = MENU_MATRIX_LABEL[key] || (it.name || '').split(' ')[0];
+    const kind = (typeof _menuItemKind === 'function') ? _menuItemKind(key) : 'food';
+    const aria = (it.name || key) + ' · ' + (MENU_Q_NAME[it.cls] || '') + (it.watch ? ' · Watch' : '') +
+                 ' · CM $' + it.cm.toFixed(2) + ' · ' + it.pop.toFixed(1) + '% popularity';
+    const text = (compact || r < 14) ? '' :
+      '<text x="' + cx + '" y="' + (parseFloat(cy) + 3.5).toFixed(1) + '" font-size="' + (r >= 22 ? 10 : 9) +
+      '" fill="var(--t1)" text-anchor="middle" font-weight="700">' + label + '</text>';
+    return '<g class="menu-bubble menu-q-' + it.cls + '" data-item="' + key + '" data-kind="' + kind +
+      '" tabindex="0" role="button" aria-label="' + aria + '" onclick="menuMatrixSelect(\'' + key +
+      '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();menuMatrixSelect(\'' + key + '\')}">' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="' + fill + '" opacity="' + op +
+      '" stroke="' + fill + '" stroke-width="1.8"' + dash + '/>' + text + '</g>';
+  }).join('');
+}
+document.addEventListener('DOMContentLoaded', function () {
+  try { renderMenuMatrix(); } catch (e) { console.warn('renderMenuMatrix failed:', e); }
+});
+
 function menuMatrixSelect(key) {
   // SAMPLE — item.cm / Total CM are food-cost-derived; manual cost-input layer not built (Taya #20).
   const item = MENU_DATA.items[key];

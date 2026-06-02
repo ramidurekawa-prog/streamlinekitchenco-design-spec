@@ -227,7 +227,8 @@
                   <text x="14" y="200" font-size="10" fill="var(--t2)" font-weight="600" text-anchor="middle" transform="rotate(-90 14 200)">CM / item</text>
                   <!-- X-axis label -->
                   <text x="300" y="397" font-size="10" fill="var(--t2)" font-weight="600" text-anchor="middle">Popularity %</text>
-                  <!-- BUBBLES (computed inline; x=50+(pop/22)*500, y=370-(cm/15)*350) -->
+                  <!-- (Taya #15) BUBBLES render from MENU_DATA.items via renderMenuMatrix() — scales to 100+ items. Static bubbles below are the no-JS fallback. -->
+                  <g id="menuMatrixBubbles">
                   <!-- Crispy Chicken: pop 18.6, cm 5.80, plowhorse, units 373 (big) -->
                   <g class="menu-bubble menu-q-plow" data-item="crispy" tabindex="0" role="button" aria-label="Crispy Chicken Sandwich · Low profit · high sales · CM $5.80 · 18.6% popularity" onclick="menuMatrixSelect('crispy')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();menuMatrixSelect('crispy')}">
                     <circle cx="473" cy="235" r="28" fill="var(--amber)" opacity="0.55" stroke="var(--amber)" stroke-width="2.5"/>
@@ -273,6 +274,7 @@
                     <circle cx="120" cy="295" r="15" fill="#a1a1aa" opacity="0.5" stroke="#a1a1aa" stroke-width="1.5"/>
                     <text x="120" y="299" font-size="9" fill="var(--t1)" text-anchor="middle" font-weight="700">Kids</text>
                   </g>
+                  </g><!-- /menuMatrixBubbles -->
                   <!-- Selection ring -->
                   <circle id="menuMatrixSelectionRing" cx="473" cy="235" r="34" fill="none" stroke="var(--t1)" stroke-width="2" stroke-dasharray="3 3" opacity="0.6"/>
                 </svg>
