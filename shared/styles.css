@@ -10930,3 +10930,15 @@ body.skc-role-owner .skc-gm-only { display:none; }
 .ac-qt-btn.is-active { background:var(--card); color:var(--t1); box-shadow:0 1px 2px rgba(0,0,0,.15); }
 .ac-queue-view { display:none; }
 .ac-queue-view.active { display:block; }
+
+/* ════════════════════════════════════════════════════════════════════
+   (Today) Saved-or-lost-this-month big arrow + 30-day projection card
+   ════════════════════════════════════════════════════════════════════ */
+.td-kpi-month-row { display:flex; align-items:center; gap:8px; margin:3px 0 2px; }
+.td-kpi-arrow { font-size:30px; line-height:1; font-weight:700; }
+.td-kpi-month-val { font-family:var(--mono); font-size:30px; font-weight:700; line-height:1; }
+.td-kpi-month-up { border-color:var(--green-b); }
+.td-kpi-month-up .td-kpi-arrow, .td-kpi-month-up .td-kpi-month-val { color:var(--green); }
+.td-kpi-month-down { border-color:var(--red-b); }
+.td-kpi-month-down .td-kpi-arrow, .td-kpi-month-down .td-kpi-month-val { color:var(--red); }
+.td-kpi-proj .tag-pill { margin-left:6px; vertical-align:middle; font-size:8.5px; }

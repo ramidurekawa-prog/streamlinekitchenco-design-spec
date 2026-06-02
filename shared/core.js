@@ -4806,6 +4806,25 @@ function acQueueShow(view) {
   if (tb) tb.textContent = titles[view];
 }
 
+// ── (Today) Big saved-or-lost-this-month indicator — green ▲ when ahead of the
+// subscription, red ▼ when behind. Data-driven so the arrow flips with the numbers. ──
+function renderTodayMonth(savedThisMonth, paidThisMonth) {
+  if (savedThisMonth == null) savedThisMonth = 420;  // proven recovery this month (run-rate equiv.)
+  if (paidThisMonth == null)  paidThisMonth  = 349;  // subscription
+  const card = document.getElementById('tdMonthCard');
+  if (!card) return;
+  const net = savedThisMonth - paidThisMonth;
+  const up = net >= 0;
+  card.classList.toggle('td-kpi-month-up', up);
+  card.classList.toggle('td-kpi-month-down', !up);
+  const arrow = card.querySelector('.td-kpi-arrow'); if (arrow) arrow.textContent = up ? '▲' : '▼';
+  const val = card.querySelector('.td-kpi-month-val'); if (val) val.textContent = '$' + Math.abs(savedThisMonth).toLocaleString();
+  const note = card.querySelector('.td-kpi-note');
+  if (note) note.innerHTML = 'vs $' + paidThisMonth + ' you paid · <strong>' +
+    (up ? '+$' + net.toLocaleString() + ' ahead' : '−$' + Math.abs(net).toLocaleString() + ' behind') + '</strong>';
+}
+document.addEventListener('DOMContentLoaded', function () { try { renderTodayMonth(); } catch (e) {} });
+
 // ─── DRAWER ──────────────────────────────────────────────
 const drawerData = {
   leak1: {

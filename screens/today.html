@@ -218,22 +218,27 @@
     <!-- ══ SECOND FOLD ═══════════════════════════════════════════════ -->
     <div class="td-second-fold">
 
-      <!-- KPI strip: exactly 3 cards -->
+      <!-- KPI strip: money saved this month (big arrow), pipeline, projection -->
       <div class="td-kpi-strip">
-        <div class="td-kpi-card td-kpi-green" onclick="showScreen('scorecard',null,'ROI Proof')">
-          <div class="td-kpi-label">Verified Savings</div>
-          <div class="td-kpi-val td-kpi-green-val">$97<span class="td-kpi-period">/wk equiv.</span></div>
-          <div class="td-kpi-note td-kpi-green-note">Counts toward ROI</div>
+        <!-- (1) Big saved-or-lost-this-month arrow — replaces the verified-savings number -->
+        <div class="td-kpi-card td-kpi-month td-kpi-month-up" id="tdMonthCard" onclick="showScreen('scorecard',null,'ROI Proof')">
+          <div class="td-kpi-label">Saved this month</div>
+          <div class="td-kpi-month-row">
+            <span class="td-kpi-arrow">▲</span>
+            <span class="td-kpi-month-val">$420</span>
+          </div>
+          <div class="td-kpi-note">vs $349 you paid · <strong>+$71 ahead</strong></div>
         </div>
-        <div class="td-kpi-card" onclick="showScreen('actions',null,'Actions')">
-          <div class="td-kpi-label">Active Recovery</div>
+        <div class="td-kpi-card" onclick="showActionsSubpage('active')">
+          <div class="td-kpi-label">Fix in testing</div>
           <div class="td-kpi-val td-kpi-blue-val">$189<span class="td-kpi-period">/wk</span></div>
-          <div class="td-kpi-note">Monitoring · not counted yet</div>
+          <div class="td-kpi-note">Being tested · not proven yet</div>
         </div>
-        <div class="td-kpi-card" onclick="showScreen('settings',null,'Data Quality')">
-          <div class="td-kpi-label">Data Confidence</div>
-          <div class="td-kpi-val td-kpi-amber-val" data-skc="conf-labor">78%</div>
-          <div class="td-kpi-note">Action allowed · verification limited</div>
+        <!-- (2) Projection — the renewal-decision number -->
+        <div class="td-kpi-card td-kpi-proj" onclick="showScreen('scorecard',null,'ROI Proof')">
+          <div class="td-kpi-label">Projected · next 30 days <span class="tag-mod tag-pill">MODELED</span></div>
+          <div class="td-kpi-val td-kpi-amber-val">~$1,240</div>
+          <div class="td-kpi-note">14 days ~$580 · would cover your $349 ~3.5×</div>
         </div>
       </div><!-- /td-kpi-strip -->
 
