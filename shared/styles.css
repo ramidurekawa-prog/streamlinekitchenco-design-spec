@@ -10945,3 +10945,14 @@ body.skc-role-owner .skc-gm-only { display:none; }
 .td-kpi-month-dir { font-size:12px; font-weight:600; align-self:flex-end; padding-bottom:4px; }
 .td-kpi-month-up .td-kpi-month-dir { color:var(--green); }
 .td-kpi-month-down .td-kpi-month-dir { color:var(--red); }
+
+/* Bigger + highlighted KPI numbers on Today */
+.td-kpi-strip .td-kpi-arrow,
+.td-kpi-strip .td-kpi-month-val { font-size:40px; }
+.td-kpi-strip .td-kpi-blue-val  { font-size:36px; }
+.td-kpi-strip .td-kpi-amber-val { font-size:27px; }
+.td-kpi-strip .td-kpi-card { padding:16px 18px; }
+.td-kpi-month-up   { background:var(--green-d); border-color:var(--green-b); }
+.td-kpi-month-down { background:var(--red-d);   border-color:var(--red-b); }
+.td-kpi-testing    { background:var(--blue-d);  border-color:var(--blue-b); }
+.td-kpi-proj       { background:var(--amber-d); border-color:var(--amber-b); }
