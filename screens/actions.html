@@ -500,7 +500,15 @@
     </div><!-- /ac-subpage-overview (legacy content wrapper) -->
 
     <!-- ══ (v28) Subpage: PENDING DECISIONS ══════════════════════════ -->
-    <div class="ac-subpage" id="ac-subpage-pending">
+    <!-- Consolidated work queue — the 4 lifecycle stages in one subpage with a toggle -->
+    <div class="ac-subpage" id="ac-subpage-queue">
+      <div class="ac-queue-toggle" role="group" aria-label="Queue stage">
+        <button type="button" class="ac-qt-btn is-active" data-queue-btn="pending" onclick="acQueueShow('pending')">Pending Decisions</button>
+        <button type="button" class="ac-qt-btn" data-queue-btn="active" onclick="acQueueShow('active')">Active Recovery</button>
+        <button type="button" class="ac-qt-btn" data-queue-btn="ready" onclick="acQueueShow('ready')">Ready to Verify</button>
+        <button type="button" class="ac-qt-btn" data-queue-btn="blocked" onclick="acQueueShow('blocked')">Blocked</button>
+      </div>
+    <div class="ac-queue-view active" id="ac-queue-pending">
       <div class="sp-shell">
         <div class="page-hdr">
           <div class="page-hdr-left">
@@ -555,7 +563,7 @@
     </div>
 
     <!-- ══ (v28) Subpage: ACTIVE RECOVERY ════════════════════════════ -->
-    <div class="ac-subpage" id="ac-subpage-active">
+    <div class="ac-queue-view" id="ac-queue-active">
       <div class="sp-shell">
         <div class="page-hdr">
           <div class="page-hdr-left">
@@ -619,7 +627,7 @@
     </div>
 
     <!-- ══ (v28) Subpage: READY TO VERIFY ════════════════════════════ -->
-    <div class="ac-subpage" id="ac-subpage-ready">
+    <div class="ac-queue-view" id="ac-queue-ready">
       <div class="sp-shell">
         <div class="page-hdr">
           <div class="page-hdr-left">
@@ -683,7 +691,7 @@
     </div>
 
     <!-- ══ (v28) Subpage: BLOCKED ════════════════════════════════════ -->
-    <div class="ac-subpage" id="ac-subpage-blocked">
+    <div class="ac-queue-view" id="ac-queue-blocked">
       <div class="sp-shell">
         <div class="page-hdr">
           <div class="page-hdr-left">
@@ -745,6 +753,8 @@
     </div>
 
     <!-- ══ (v28) Subpage: HISTORY ════════════════════════════════════ -->
+    </div><!-- /ac-subpage-queue -->
+
     <div class="ac-subpage" id="ac-subpage-history">
       <div class="sp-shell">
         <div class="page-hdr">

@@ -4790,6 +4790,22 @@ function setSkcRole(role) {
   });
 }
 
+// ── (Consolidated Actions queue) The four lifecycle stages live in one
+// #ac-subpage-queue; this toggles among them (Pending / Active / Ready / Blocked). ──
+function acQueueShow(view) {
+  const valid = ['pending', 'active', 'ready', 'blocked'];
+  if (valid.indexOf(view) === -1) view = 'pending';
+  document.querySelectorAll('#ac-subpage-queue .ac-queue-view').forEach(v => v.classList.remove('active'));
+  const t = document.getElementById('ac-queue-' + view);
+  if (t) t.classList.add('active');
+  document.querySelectorAll('#ac-subpage-queue [data-queue-btn]').forEach(b => {
+    b.classList.toggle('is-active', b.getAttribute('data-queue-btn') === view);
+  });
+  const titles = { pending: 'Pending Decisions', active: 'Active Recovery', ready: 'Ready to Verify', blocked: 'Blocked Actions' };
+  const tb = document.getElementById('tbTitle');
+  if (tb) tb.textContent = titles[view];
+}
+
 // ─── DRAWER ──────────────────────────────────────────────
 const drawerData = {
   leak1: {

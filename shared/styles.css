@@ -10920,3 +10920,13 @@ body.skc-role-owner .skc-gm-only { display:none; }
 .td-os-proven .td-os-v { color:var(--green); }
 .td-os-k { font-size:11px; color:var(--t3); margin-top:3px; }
 .td-os-foot { margin-top:14px; padding-top:12px; border-top:1px solid var(--border); font-size:12px; color:var(--t2); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+
+/* ════════════════════════════════════════════════════════════════════
+   Consolidated Actions queue — one subpage, toggle among the 4 stages
+   ════════════════════════════════════════════════════════════════════ */
+.ac-queue-toggle { display:inline-flex; flex-wrap:wrap; gap:4px; background:var(--hover); border:1px solid var(--border); border-radius:var(--r); padding:3px; margin-bottom:16px; }
+.ac-qt-btn { background:transparent; border:none; cursor:pointer; font-size:12px; font-weight:600; color:var(--t3); padding:6px 12px; border-radius:5px; transition:all .15s; white-space:nowrap; }
+.ac-qt-btn:hover { color:var(--t1); }
+.ac-qt-btn.is-active { background:var(--card); color:var(--t1); box-shadow:0 1px 2px rgba(0,0,0,.15); }
+.ac-queue-view { display:none; }
+.ac-queue-view.active { display:block; }
