@@ -91,6 +91,15 @@
   }
 
   async function boot() {
+    // 0) Bust the static stylesheet <link> too. We cache-bust every fragment and
+    //    script below, but styles.css is a plain <link> in index.html pinned to a
+    //    manual ?v token — so a caching dev server (VS Code Live Server / Live
+    //    Preview) serves a STALE styles.css and new markup renders unstyled.
+    //    Re-point it at the per-load token. serve.py already sends no-store, so
+    //    this only matters under other servers; harmless there.
+    const cssLink = document.querySelector('link[rel="stylesheet"][href*="styles.css"]');
+    if (cssLink) cssLink.href = cssLink.getAttribute('href').split('?')[0] + BUST;
+
     // 1) Inject all components and screens into the shell.
     for (const [url, id, mode] of COMPONENTS) {
       await fetchInto(url, id, mode);

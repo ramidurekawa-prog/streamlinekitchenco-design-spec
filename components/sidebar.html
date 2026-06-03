@@ -46,20 +46,11 @@
       </div>
 
 
-      <!-- ── (v28) ACTIONS — expandable parent + 7 children ── -->
-      <div class="nav-item nav-parent" id="navActionsParent" role="button" tabindex="0"
-           aria-expanded="false" aria-controls="navActionsChildren"
-           onclick="navActionsParentClick(event)" onkeydown="navActionsParentKeydown(event)">
+      <!-- ── (v33) ACTIONS — single flat board (Hero · Kanban · Proof) ── -->
+      <div class="nav-item" onclick="showScreen('actions',this,'Actions')">
         <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         Actions
         <span class="ni-badge red">2</span>
-        <svg class="ni-caret" id="navActionsCaret" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" onclick="toggleActionsNav(event)" onkeydown="if(event.key==='Enter'||event.key===' '){toggleActionsNav(event)}" role="button" tabindex="0" aria-label="Toggle Actions children" style="cursor:pointer;padding:6px;margin:-6px"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="nav-children" id="navActionsChildren">
-        <div class="nav-child" data-sub="overview"  role="button" tabindex="0" onclick="navActionsChildClick('overview', this)"  onkeydown="navActionsChildKeydown(event,'overview')"  aria-label="Actions Overview">Overview</div>
-        <div class="nav-child" data-sub="queue"     role="button" tabindex="0" onclick="navActionsChildClick('queue', this)"     onkeydown="navActionsChildKeydown(event,'queue')"     aria-label="Action Queue">Action Queue</div>
-        <div class="nav-child" data-sub="history"   role="button" tabindex="0" onclick="navActionsChildClick('history', this)"   onkeydown="navActionsChildKeydown(event,'history')"   aria-label="Action History">History</div>
-        <div class="nav-child" data-sub="evidence"  role="button" tabindex="0" onclick="navActionsChildClick('evidence', this)"  onkeydown="navActionsChildKeydown(event,'evidence')"  aria-label="Action Evidence">Evidence</div>
       </div>
     </div>
 

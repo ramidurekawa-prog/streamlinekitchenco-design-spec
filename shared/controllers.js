@@ -96,41 +96,27 @@ function navMenuChildKeydown(event, sub) {
 
 
 // ── from source lines 23862-23886 (showActionsSubpage) ──
+// (v33) Actions is now one flat board (Hero · Kanban · Proof). This is a COMPAT
+// SHIM so the ~30 legacy callers (per-section "Open in Actions" links, the
+// submitCA deep-link, sidebar, etc.) keep resolving: it opens the board screen
+// and scroll-anchors to the relevant section.
+//   history  → Proof block        ·   evidence → doctrine expander
+//   overview / queue / pending / active / ready / blocked → the board
 function showActionsSubpage(sub) {
-  // (consolidated) pending / active / ready / blocked now live in one
-  // #ac-subpage-queue with an in-page toggle. Route those four (and 'queue') there.
-  var QUEUE = { pending: 1, active: 1, ready: 1, blocked: 1, queue: 1 };
-  if (!ACTIONS_SUBPAGE_TITLES[sub] && !QUEUE[sub]) sub = 'overview';
-
-  // Ensure parent screen is active
   const screen = document.getElementById('screen-actions');
   if (!screen || !screen.classList.contains('active')) {
-    showScreen('actions', null, ACTIONS_SUBPAGE_TITLES[sub] || 'Actions');
-    setTimeout(() => showActionsSubpage(sub), 30);
+    showScreen('actions', null, 'Actions');
+    setTimeout(() => showActionsSubpage(sub), 40);
     return;
   }
-
-  // Hide all subpages
-  document.querySelectorAll('#screen-actions .ac-subpage').forEach(p => p.classList.remove('active'));
-
-  // Queue group → show the one queue subpage and switch its inner view
-  if (QUEUE[sub]) {
-    const q = document.getElementById('ac-subpage-queue');
-    if (q) q.classList.add('active');
-    const view = (sub === 'queue') ? 'pending' : sub;
-    if (typeof acQueueShow === 'function') acQueueShow(view);
-    _actionsUpdateNav('queue');
-    saveLastView({ screen: 'actions', sub, title: ACTIONS_SUBPAGE_TITLES[sub] || 'Actions' });
-    return;
-  }
-
-  // Normal subpage
-  const target = document.getElementById('ac-subpage-' + sub);
-  if (target) target.classList.add('active');
+  const anchorId = (sub === 'history')  ? 'ac-proof'
+                 : (sub === 'evidence') ? 'ac-doctrine'
+                 : 'ac-board';
+  const el = document.getElementById(anchorId);
+  if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   const tb = document.getElementById('tbTitle');
-  if (tb) tb.textContent = ACTIONS_SUBPAGE_TITLES[sub];
-  _actionsUpdateNav(sub);
-  saveLastView({ screen: 'actions', sub, title: ACTIONS_SUBPAGE_TITLES[sub] });
+  if (tb) tb.textContent = 'Actions';
+  saveLastView({ screen: 'actions', sub: null, title: 'Actions' });
 }
 
 

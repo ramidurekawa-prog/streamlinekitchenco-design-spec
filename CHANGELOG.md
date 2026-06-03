@@ -1,5 +1,29 @@
 # Changelog
 
+## v33 — 2026-06-03
+
+Consolidated **Actions** from a four-subpage tree into **one scrollable board** matching the Taya wireframe: LIVE line → run-rate Hero → action bar → 4-column Kanban → Proof → condensed doctrine. Numbers were adopted **verbatim from the mockups and registered as canonical** (see [docs/canonical-numbers.md](docs/canonical-numbers.md)); these are additive — no existing canonical value changed. `$1,243/wk` Open Exposure, `$370`, `$189`, `$97`, `$519` are untouched.
+
+**Actions — board** (`screens/actions.html`, full rewrite ~921 → ~265 lines)
+- Replaced the `#ac-subpage-overview/queue/history/evidence` tree (urgent-action hero, status strip, 4 filter `<select>`s, List/Board stub, `execution` tab group) with: `.ac-live` LIVE status line; `.ac-hero-rr` run-rate hero (`$1,229 /wk in play`, **no** `[EST · not guaranteed]` chip — honesty carried by "in play" + an "estimated run-rate · not yet verified" subcaption); `.ac-actionbar` (Undo · Filter · New action); `.ac-board` 4-column Kanban (**Blocked → Ready → Monitoring → Verified**); `.ac-proof` (`$1,847 [VERIFIED]` · 24 banked · 86% verify rate · `$97/wk` added · 3 history rows); a condensed doctrine `<details>`.
+- Cards are **not draggable** — column = a card's status only. Ready/Monitoring/Verified card containers carry ids `kanbanOpen`/`kanbanMonitoring`/`kanbanVerified` so `injectKanbanCard()` drops "New action" cards into Ready.
+
+**Actions — behavior** (`shared/core.js`)
+- Added `RUN_RATE_IN_PLAY` (1229) + `PROOF_LIFETIME` aggregates and `acInitActionsPage` / `acToggleFilter` / `acFilterOutside` / `acApplyFilter` / `acClearFilter` / `acUpdateColumnCounts` / `acUndo`. Filter = Assignee × Category, combinable (OR within a group, AND across groups), live per-column counts.
+- `showScreen` actions branches repointed to `acInitActionsPage` (binds canonical numbers, data → render); removed the dead subpage/nav-sync block.
+- Rewrote `injectKanbanCard()` to emit the new `.ac-card` markup; fixed `submitCA()` (it injected with a null key after `closeCA()` cleared `CA_CURRENT`).
+- Tour Step 5 no longer calls the removed `switchTab('execution','queue')`.
+
+**Actions — routing & nav** (`shared/controllers.js`, `components/sidebar.html`)
+- `showActionsSubpage()` is now a compat **shim**: opens the board and scroll-anchors (`history`→Proof, `evidence`→doctrine, everything else→board), so the ~30 legacy callers still resolve. Left vestigial `switchTab('execution',…)` prefixes in legacy CTAs (harmless no-ops — `switchTab` is null-safe).
+- Sidebar "Actions" flattened from an expandable parent + 4 children to a single `nav-item`.
+
+**Styles** (`shared/styles.css`)
+- New `#screen-actions` blocks (`.ac-live/.ac-hero-rr/.ac-actionbar/.ac-filter-pop/.ac-board/.ac-col/.ac-card/.ac-proof*/.ac-doctrine`), responsive 4→2→1. Old `.ac-subpage/.ac-queue/.sp-*` blocks left in place (now unused) for a later deletion pass.
+
+**Tooling** (`shared/loader.js`, `index.html`)
+- `loader.js` now also cache-busts the `styles.css` `<link>` with the per-load token (it already busted fragments + scripts). Without this, caching dev servers (VS Code Live Server / Live Preview) served a **stale stylesheet** and new markup rendered unstyled; `serve.py` was unaffected (it sends `no-store`). Bumped `?v=3` → `?v=4` on the `index.html` asset tokens to deploy the new loader.
+
 ## v32 — 2026-05-26
 
 Reworked the **Labor Efficiency** screen across three subpages (commit `feat: over + heat + 1/2 staff`, PR #1) and added repo-hygiene scaffolding. Doctrine, state model, and canonical numbers are unchanged — the new UI surfaces the existing 70% action floor / 80% verification floor more explicitly.

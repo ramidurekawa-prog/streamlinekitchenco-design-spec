@@ -1,921 +1,270 @@
   <div class="screen" id="screen-actions">
 
-    <!-- ══ (v28) Subpage: OVERVIEW · wraps existing Actions content ══ -->
-    <div class="ac-subpage active" id="ac-subpage-overview">
+    <!-- ══ (v33) ACTIONS — single board: LIVE · Hero · Kanban · Proof ══════ -->
 
-    <!-- ── PAGE HEADER ──────────────────────────────────── -->
-    <div class="ac-page-header">
-      <div class="ac-page-header-left">
-        <div class="page-header-title">Actions</div>
-        <div class="page-header-sub">Assigned operating changes, due services, monitoring windows, and verification progress.</div>
-        <div class="doctrine-line">Active Recovery does not count toward ROI until monitoring confirms guardrails held.</div>
-      </div>
-      <div class="ac-page-header-right">
-        <button class="btn btn-primary" onclick="openCA('leak1')">Turn into Action</button>
-        <button class="btn btn-secondary btn-sm" onclick="switchTab('execution','monitoring')">View monitoring</button>
+    <!-- ── HERO — weekly run-rate in play ─────────────────────────────────── -->
+    <div class="ac-hero-rr">
+      <div class="ac-hero-rr-num"><span id="acInPlay">$1,229</span><span class="ac-hero-rr-unit">/wk in play</span></div>
+      <div class="ac-hero-rr-sub">estimated run-rate · not yet verified</div>
+    </div>
+
+    <!-- ── ACTION BAR — Undo · Filter · New action ────────────────────────── -->
+    <div class="ac-actionbar">
+      <div class="ac-actionbar-eyebrow"><span class="ac-step-num">2</span> The Board</div>
+      <div class="ac-actionbar-ctrls">
+        <button class="btn btn-ghost btn-sm" onclick="acUndo()">↩ Undo</button>
+
+        <div class="ac-filter-wrap" id="acFilterWrap">
+          <button class="btn btn-secondary btn-sm" id="acFilterBtn" onclick="acToggleFilter(event)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            Filter <span class="ac-filter-dot" id="acFilterDot"></span>
+          </button>
+          <div class="ac-filter-pop" id="acFilterPop">
+            <div class="ac-filter-grp">
+              <div class="ac-filter-grp-h">Assignee</div>
+              <label class="ac-filter-opt"><input type="checkbox" data-filter="owner" value="SC" onchange="acApplyFilter()"> <span class="op-ava">SC</span> Sarah Chen</label>
+              <label class="ac-filter-opt"><input type="checkbox" data-filter="owner" value="RK" onchange="acApplyFilter()"> <span class="op-ava">RK</span> Riley K.</label>
+              <label class="ac-filter-opt"><input type="checkbox" data-filter="owner" value="ML" onchange="acApplyFilter()"> <span class="op-ava">ML</span> Mia L.</label>
+              <label class="ac-filter-opt"><input type="checkbox" data-filter="owner" value="MS" onchange="acApplyFilter()"> <span class="op-ava">MS</span> Morgan S.</label>
+              <label class="ac-filter-opt"><input type="checkbox" data-filter="owner" value="CJT" onchange="acApplyFilter()"> <span class="op-ava">CJT</span> C.J. Tran</label>
+            </div>
+            <div class="ac-filter-grp">
+              <div class="ac-filter-grp-h">Category</div>
+              <label class="ac-filter-opt"><input type="checkbox" data-filter="cat" value="Labor" onchange="acApplyFilter()"> Labor</label>
+              <label class="ac-filter-opt"><input type="checkbox" data-filter="cat" value="Menu" onchange="acApplyFilter()"> Menu</label>
+            </div>
+            <div class="ac-filter-foot">
+              <button class="btn btn-ghost btn-sm" onclick="acClearFilter()">Clear</button>
+              <span class="ac-filter-note">Assignee × Category · combinable</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-sm" onclick="openCA('leak1')">+ New action</button>
       </div>
     </div>
 
-    <!-- ══ READY TO VERIFY · embed from Operating System ══ -->
-    <div class="os-embed-card" style="border-left-color:var(--green)">
-      <div class="os-embed-card-body">
-        <div class="os-embed-card-eyebrow" style="color:var(--green)">Ready to verify · feeds monthly ROI Proof</div>
-        <div class="os-embed-card-title">3 actions in or past monitoring window</div>
-        <div class="os-embed-card-sub">Tuesday lunch labor (closes in 6 days) · Friday dinner table-turn (guardrails stable) · Berkeley menu mix (ready for owner proof)</div>
-      </div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <button class="btn btn-secondary btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">Open verification queue</button>
-        <button class="btn btn-ghost btn-sm" onclick="showScreen('operating-system',null,'Operating System')">View retention loop</button>
-      </div>
-    </div>
+    <!-- ── KANBAN BOARD — Blocked → Ready → Monitoring → Verified ─────────── -->
+    <div class="ac-board" id="ac-board">
 
-    <!-- ── URGENT HERO ACTION (Due Today) ─────────────────── -->
-    <div class="ac-hero" id="ac-hero-module">
-      <div class="ac-hero-eyebrow">
-        <span class="ac-hero-dot"></span>
-        <span class="ac-hero-label">Due before service today</span>
-      </div>
-      <div class="ac-hero-grid">
-        <div class="ac-hero-left">
-          <div class="ac-hero-headline">Oakland labor recovery is due before 3 PM.</div>
-          <div class="ac-hero-tagline">Execution is the bridge between detected leaks and verified ROI.</div>
-          <div class="ac-hero-action">Remove one 5–10 PM FOH server from Oakland Tuesday dinner.</div>
-
-          <div class="ac-hero-meta-row">
-            <span class="ac-hero-meta-item"><span class="ac-hero-meta-label">Owner</span><strong>Sarah C.</strong></span>
-            <span class="ac-hero-meta-sep">·</span>
-            <span class="ac-hero-meta-item"><span class="ac-hero-meta-label">Due</span><strong class="ac-hero-due">Before 3 PM</strong></span>
-            <span class="ac-hero-meta-sep">·</span>
-            <span class="ac-hero-meta-item"><span class="ac-hero-meta-label">Location</span><strong>Oakland · Tuesday Dinner</strong></span>
-          </div>
-
-          <div class="ac-hero-caveat">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            7shifts stale 18h · GM approval required · ROI verification limited until refresh
-          </div>
-
-          <div class="ac-hero-guardrails">
-            <span class="ac-hero-gr-label">Guardrails watched:</span>
-            <span class="ac-hero-gr-item">Dining duration</span>
-            <span class="ac-hero-gr-sep">·</span>
-            <span class="ac-hero-gr-item">Ticket time</span>
-            <span class="ac-hero-gr-sep">·</span>
-            <span class="ac-hero-gr-item">Average check</span>
-            <span class="ac-hero-gr-sep">·</span>
-            <span class="ac-hero-gr-item">Guest complaints</span>
-          </div>
-
-          <div class="ac-hero-ctas">
-            <button class="btn btn-primary" onclick="advanceAction('leak1','inprogress');showDemoToast('A006 marked implemented · Monitoring starts tonight','green')">Mark implemented</button>
-            <button class="btn btn-secondary" onclick="switchTab('recovery','guardrails');showScreen('leaks',null,'Profit Recovery')">View guardrails</button>
-            <button class="btn btn-ghost btn-sm" onclick="openActionDrawer('leak1')">Open action drawer</button>
-          </div>
+      <!-- ── Column: BLOCKED ── -->
+      <div class="ac-col ac-col-blocked">
+        <div class="ac-col-head">
+          <span class="ac-card-dot ac-dot-red"></span>
+          <span class="ac-col-label">Blocked</span>
+          <span class="ac-col-count">2</span>
         </div>
+        <div class="ac-col-cards">
 
-        <div class="ac-hero-right">
-          <div class="ac-hero-value-label">Estimated Open Exposure</div>
-          <div class="ac-hero-value">$370<span class="ac-hero-value-period">/wk</span></div>
-          <div class="ac-hero-value-basis">$185/service · 2 services/week</div>
-          <div class="ac-hero-roi-note">Not counted in ROI yet</div>
-          <div class="ac-hero-conf">
-            <span class="ac-hero-conf-val" data-skc="conf-labor">78%</span> confidence
+          <div class="ac-card" data-owner="MS" data-cat="Menu" onclick="showScreen('settings',null,'Data Quality')">
+            <div class="ac-card-top">
+              <span class="ac-card-dot ac-dot-red"></span>
+              <span class="op-ava">MS</span>
+              <span class="ac-card-amt ac-amt-red">$519</span>
+            </div>
+            <div class="ac-card-title">Approve salmon reprice $24 → $27</div>
+            <div class="ac-card-ctx">All locations · Menu</div>
+            <div class="ac-card-block"><span class="ac-pl-chip ac-pl-chip-blocked">RECIPE COST STALE 18d</span></div>
+            <div class="ac-card-cta">
+              <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();showScreen('settings',null,'Data Quality')">Resolve</button>
+            </div>
           </div>
 
-          <!-- State rail -->
-          <div class="ac-state-rail">
-            <div class="ac-state-step ac-state-done">Assigned</div>
-            <div class="ac-state-arrow">→</div>
-            <div class="ac-state-step ac-state-active">Implemented</div>
-            <div class="ac-state-arrow">→</div>
-            <div class="ac-state-step">Monitoring</div>
-            <div class="ac-state-arrow">→</div>
-            <div class="ac-state-step">Verified</div>
+          <div class="ac-card" data-owner="CJT" data-cat="Menu" onclick="showDemoToast('Owner approval requested','blue')">
+            <div class="ac-card-top">
+              <span class="ac-card-dot ac-dot-amber"></span>
+              <span class="op-ava">CJT</span>
+              <span class="ac-card-amt ac-amt-amber">$165</span>
+            </div>
+            <div class="ac-card-title">Crispy Chicken reprice +$1.00</div>
+            <div class="ac-card-ctx">All locations · Menu</div>
+            <div class="ac-card-block"><span class="ac-pl-chip ac-pl-chip-blocked" style="background:var(--amber-d);color:var(--amber);border-color:var(--amber-b)">OWNER APPROVAL</span></div>
+            <div class="ac-card-cta">
+              <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();showDemoToast('Owner approval request sent','blue')">Request</button>
+            </div>
           </div>
-        </div>
-      </div>
-    </div><!-- /ac-hero -->
 
-    <!-- ── STATUS STRIP ───────────────────────────────────── -->
-    <div class="ac-status-strip">
-      <div class="ac-ss-cell ac-ss-due" onclick="switchTab('execution','queue')">
-        <div class="ac-ss-val">1</div>
-        <div class="ac-ss-label">Due Today</div>
-        <div class="ac-ss-note">Oakland labor · before 3 PM</div>
-      </div>
-      <div class="ac-ss-div"></div>
-      <div class="ac-ss-cell" onclick="switchTab('execution','open')">
-        <div class="ac-ss-val ac-ss-amber">2</div>
-        <div class="ac-ss-label">Assigned</div>
-        <div class="ac-ss-note">Awaiting implementation</div>
-      </div>
-      <div class="ac-ss-div"></div>
-      <div class="ac-ss-cell" onclick="switchTab('execution','monitoring')">
-        <div class="ac-ss-val ac-ss-blue">1</div>
-        <div class="ac-ss-label">Monitoring</div>
-        <div class="ac-ss-note">Bar staffing · Wk 3/4</div>
-      </div>
-      <div class="ac-ss-div"></div>
-      <div class="ac-ss-cell" onclick="switchTab('execution','approvals')">
-        <div class="ac-ss-val ac-ss-red">2</div>
-        <div class="ac-ss-label">Blocked</div>
-        <div class="ac-ss-note">Approval or source issue</div>
-      </div>
-      <div class="ac-ss-div"></div>
-      <div class="ac-ss-cell" onclick="showScreen('scorecard',null,'ROI Proof')">
-        <div class="ac-ss-val ac-ss-green">$97<span style="font-size:11px;font-weight:400">/wk</span></div>
-        <div class="ac-ss-label">Verified this period</div>
-        <div class="ac-ss-note">Counts toward ROI</div>
-      </div>
-    </div><!-- /ac-status-strip -->
-
-    <!-- ── FILTERS + VIEW TOGGLE ──────────────────────────── -->
-    <div class="ac-filter-bar">
-      <div class="ac-filters">
-        <select class="ac-filter-select" onchange="showDemoToast('Filter: '+this.value,'blue')">
-          <option>All Locations</option>
-          <option>Oakland</option>
-          <option>Berkeley</option>
-          <option>Walnut Creek</option>
-        </select>
-        <select class="ac-filter-select" onchange="showDemoToast('Filter: '+this.value,'blue')">
-          <option>All Owners</option>
-          <option>Sarah C.</option>
-          <option>Devon K.</option>
-          <option>Marcus R.</option>
-          <option>Jamie L.</option>
-        </select>
-        <select class="ac-filter-select" onchange="showDemoToast('Filter: '+this.value,'blue')">
-          <option>Active statuses</option>
-          <option>Assigned</option>
-          <option>Monitoring</option>
-          <option>Blocked</option>
-          <option>Verified</option>
-        </select>
-        <select class="ac-filter-select" onchange="showDemoToast('Filter: '+this.value,'blue')">
-          <option>All types</option>
-          <option>Labor</option>
-          <option>Menu</option>
-          <option>Throughput</option>
-          <option>Data</option>
-        </select>
-      </div>
-      <div class="ac-view-toggle">
-        <button class="ac-view-btn ac-view-active" id="ac-view-list" onclick="document.getElementById('ac-view-list').classList.add('ac-view-active');document.getElementById('ac-view-kanban').classList.remove('ac-view-active')">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-          List
-        </button>
-        <button class="ac-view-btn" id="ac-view-kanban" onclick="document.getElementById('ac-view-kanban').classList.add('ac-view-active');document.getElementById('ac-view-list').classList.remove('ac-view-active');showDemoToast('Board view — use List view for full detail','blue')">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-          Board
-        </button>
-      </div>
-    </div>
-
-    <!-- ── TABS ──────────────────────────────────────────── -->
-    <div class="skc-tab-bar" style="margin-bottom:0">
-      <div class="skc-tabs" data-tabs="execution">
-        <button class="skc-tab active" data-key="queue"      onclick="switchTab('execution','queue')">Queue <span class="ac-tab-badge ac-tab-badge-red">3</span></button>
-        <button class="skc-tab"        data-key="open"       onclick="switchTab('execution','open')">Assigned <span class="ac-tab-badge ac-tab-badge-amber">2</span></button>
-        <button class="skc-tab"        data-key="monitoring" onclick="switchTab('execution','monitoring')">Monitoring <span class="ac-tab-badge ac-tab-badge-blue">1</span></button>
-        <button class="skc-tab"        data-key="approvals"  onclick="switchTab('execution','approvals')">Blocked <span class="ac-tab-badge ac-tab-badge-red">2</span></button>
-        <button class="skc-tab"        data-key="completed"  onclick="switchTab('execution','completed')" style="color:var(--t3)">Completed</button>
-        <button class="skc-tab"        data-key="timeline"   onclick="switchTab('execution','timeline');setTimeout(()=>tlBuildDynamic('tlListExec'),50)" style="color:var(--t3)">History</button>
-      </div>
-    </div>
-
-    <!-- ══ TAB: QUEUE ════════════════════════════════════ -->
-    <div class="skc-panel active" data-tab="execution-queue">
-
-      <!-- Owner workload strip -->
-      <div class="ac-owner-strip skc-detail">
-        <div class="ac-owner-strip-label">Owner workload</div>
-        <div class="ac-owner-cards">
-          <div class="ac-owner-card ac-owner-warn">
-            <div class="ac-owner-name">Sarah C.</div>
-            <div class="ac-owner-meta">2 assigned · <span class="ac-owner-due">1 due today</span></div>
-          </div>
-          <div class="ac-owner-card">
-            <div class="ac-owner-name">Devon K.</div>
-            <div class="ac-owner-meta">1 monitoring · Wk 3/4</div>
-          </div>
-          <div class="ac-owner-card ac-owner-blocked">
-            <div class="ac-owner-name">Owner approval</div>
-            <div class="ac-owner-meta">1 approval needed · salmon reprice</div>
-          </div>
-          <div class="ac-owner-card">
-            <div class="ac-owner-name">Jamie L.</div>
-            <div class="ac-owner-meta">1 observation needed · Berkeley</div>
-          </div>
         </div>
       </div>
 
-      <!-- Prioritized execution list -->
-      <div class="ac-list" id="ac-list-main">
-
-        <!-- A006: Oakland labor — Due Today -->
-        <div class="ac-row ac-row-priority" onclick="openActionDrawer('leak1')">
-          <div class="ac-row-status">
-            <span class="ac-chip ac-chip-due">Due Today</span>
-          </div>
-          <div class="ac-row-main">
-            <div class="ac-row-title">Remove one 5–10 PM FOH server · Oakland Tuesday dinner</div>
-            <div class="ac-row-sub">
-              <span class="ac-row-sub-item ac-row-type-labor">Labor</span>
-              <span class="ac-row-sub-sep">·</span>
-              <span class="ac-row-sub-item">Oakland · Tuesday Dinner</span>
-              <span class="ac-row-sub-sep">·</span>
-              <span class="ac-row-sub-item">RPLH −18% · 6 weeks running</span>
-            </div>
-          </div>
-          <div class="ac-row-owner">
-            <div class="ac-row-owner-name">Sarah C.</div>
-            <div class="ac-row-due-label">Before 3 PM</div>
-          </div>
-          <div class="ac-row-value">
-            <div class="ac-row-value-main">$370<span class="ac-row-value-period">/wk</span></div>
-            <div class="ac-row-value-basis">$185/service · 2 svc/wk</div>
-            <div class="ac-row-roi-note">Not counted yet</div>
-          </div>
-          <div class="ac-row-conf">
-            <div class="ac-row-conf-val ac-conf-amber"><span data-skc="conf-labor">78%</span></div>
-            <div class="ac-row-caveat">7shifts stale · limited</div>
-          </div>
-          <div class="ac-row-guardrails">
-            <div class="ac-row-gr-label">Guardrails</div>
-            <div class="ac-row-gr-list">
-              <span class="ac-gr-item ac-gr-watch">Duration</span>
-              <span class="ac-gr-item ac-gr-pass">Ticket time</span>
-              <span class="ac-gr-item ac-gr-pass">Avg check</span>
-              <span class="ac-gr-item ac-gr-pass">Complaints</span>
-            </div>
-          </div>
-          <div class="ac-row-action">
-            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openCA('leak1')">Assign</button>
-          </div>
+      <!-- ── Column: READY (new "open" cards land here via injectKanbanCard) ── -->
+      <div class="ac-col ac-col-ready">
+        <div class="ac-col-head">
+          <span class="ac-card-dot ac-dot-amber"></span>
+          <span class="ac-col-label">Ready</span>
+          <span class="ac-col-count" id="kanbanOpenCt">2</span>
         </div>
+        <div class="ac-col-cards" id="kanbanOpen">
 
-        <!-- A007: Salmon reprice — Blocked/Approval -->
-        <div class="ac-row ac-row-blocked" onclick="openActionDrawer('leak2')">
-          <div class="ac-row-status">
-            <span class="ac-chip ac-chip-blocked">Blocked</span>
-          </div>
-          <div class="ac-row-main">
-            <div class="ac-row-title">Approve salmon reprice $24 → $27 · all locations</div>
-            <div class="ac-row-sub">
-              <span class="ac-row-sub-item ac-row-type-menu">Menu</span>
-              <span class="ac-row-sub-sep">·</span>
-              <span class="ac-row-sub-item">All Locations</span>
-              <span class="ac-row-sub-sep">·</span>
-              <span class="ac-row-sub-item">CM 38% vs 61% avg · owner approval req.</span>
+          <div class="ac-card ac-card-priority" id="demo-target-action-row" data-owner="SC" data-cat="Labor" onclick="openActionDrawer('leak1')">
+            <div class="ac-card-top">
+              <span class="ac-card-dot ac-dot-amber"></span>
+              <span class="op-ava">SC</span>
+              <span class="ac-card-amt ac-amt-amber">$370</span>
+            </div>
+            <div class="ac-card-title">Remove one 5–10 PM FOH server</div>
+            <div class="ac-card-ctx">Oakland · Tue · Dinner</div>
+            <div class="ac-card-note">RPLH below normal band · 6/6 comparable services · GM approval required</div>
+            <div class="ac-card-cta">
+              <span class="ac-pl-chip ac-pl-chip-pending">PENDING</span>
+              <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();showDemoToast('A006 approved · monitoring starts tonight','green')">Approve</button>
+              <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openActionDrawer('leak1')">Evidence</button>
             </div>
           </div>
-          <div class="ac-row-owner">
-            <div class="ac-row-owner-name">Marcus R.</div>
-            <div class="ac-row-due-label ac-row-due-amber">48h approval window</div>
-          </div>
-          <div class="ac-row-value">
-            <div class="ac-row-value-main ac-row-value-amber">$519<span class="ac-row-value-period">/wk</span></div>
-            <div class="ac-row-value-basis">$5.52/plate · 94 covers/wk</div>
-            <div class="ac-row-roi-note">Blocked until recipe cost refresh</div>
-          </div>
-          <div class="ac-row-conf">
-            <div class="ac-row-conf-val ac-conf-amber">74%</div>
-            <div class="ac-row-caveat">Recipe cost stale</div>
-          </div>
-          <div class="ac-row-guardrails">
-            <div class="ac-row-gr-label">Guardrails</div>
-            <div class="ac-row-gr-list">
-              <span class="ac-gr-item ac-gr-watch">Unit sales</span>
-              <span class="ac-gr-item ac-gr-pass">CM%</span>
-              <span class="ac-gr-item ac-gr-pass">Sentiment</span>
+
+          <div class="ac-card" data-owner="MS" data-cat="Labor" onclick="openActionDrawer('leak1')">
+            <div class="ac-card-top">
+              <span class="ac-card-dot ac-dot-amber"></span>
+              <span class="op-ava">MS</span>
+              <span class="ac-card-amt ac-amt-amber">$150</span>
+            </div>
+            <div class="ac-card-title">Trim prep labor 2h</div>
+            <div class="ac-card-ctx">Oakland · Daily prep</div>
+            <div class="ac-card-cta">
+              <span class="ac-pl-chip ac-pl-chip-pending">PENDING</span>
+              <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();showDemoToast('Evidence opened','blue')">Evidence</button>
             </div>
           </div>
-          <div class="ac-row-action">
-            <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();showDemoToast('Approval request sent to owner','blue')">Request approval</button>
-          </div>
-        </div>
 
-        <!-- A008: Berkeley throughput — Surfaced -->
-        <div class="ac-row" onclick="openActionDrawer('leak3')">
-          <div class="ac-row-status">
-            <span class="ac-chip ac-chip-surfaced">Surfaced</span>
-          </div>
-          <div class="ac-row-main">
-            <div class="ac-row-title">Kitchen line review · Berkeley Friday lunch</div>
-            <div class="ac-row-sub">
-              <span class="ac-row-sub-item ac-row-type-throughput">Throughput</span>
-              <span class="ac-row-sub-sep">·</span>
-              <span class="ac-row-sub-item">Berkeley · Friday Lunch</span>
-              <span class="ac-row-sub-sep">·</span>
-              <span class="ac-row-sub-item">Ticket time +2.4 min · 5 weeks running</span>
-            </div>
-          </div>
-          <div class="ac-row-owner">
-            <div class="ac-row-owner-name">Jamie L.</div>
-            <div class="ac-row-due-label">Before Fri service</div>
-          </div>
-          <div class="ac-row-value">
-            <div class="ac-row-value-main ac-row-value-blue">$356<span class="ac-row-value-period">/wk</span></div>
-            <div class="ac-row-value-basis">$384/service · 1 svc/wk</div>
-            <div class="ac-row-roi-note">Not counted yet</div>
-          </div>
-          <div class="ac-row-conf">
-            <div class="ac-row-conf-val ac-conf-gray">64%</div>
-            <div class="ac-row-caveat">KDS aggregate only</div>
-          </div>
-          <div class="ac-row-guardrails">
-            <div class="ac-row-gr-label">Guardrails</div>
-            <div class="ac-row-gr-list">
-              <span class="ac-gr-item ac-gr-watch">Ticket time</span>
-              <span class="ac-gr-item ac-gr-pass">Turns</span>
-              <span class="ac-gr-item ac-gr-pass">Complaints</span>
-            </div>
-          </div>
-          <div class="ac-row-action">
-            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openCA('leak3')">Assign</button>
-          </div>
-        </div>
-
-        <!-- A005: Bar staffing — Monitoring -->
-        <div class="ac-row ac-row-monitoring" onclick="openActionDrawer('leak1')">
-          <div class="ac-row-status">
-            <span class="ac-chip ac-chip-monitoring">Monitoring</span>
-          </div>
-          <div class="ac-row-main">
-            <div class="ac-row-title">Bar staffing reduction · Walnut Creek bar shifts</div>
-            <div class="ac-row-sub">
-              <span class="ac-row-sub-item ac-row-type-labor">Labor</span>
-              <span class="ac-row-sub-sep">·</span>
-              <span class="ac-row-sub-item">Walnut Creek · Bar shifts</span>
-              <span class="ac-row-sub-sep">·</span>
-              <span class="ac-row-sub-item">Devon K. · Monitoring window closes May 24</span>
-            </div>
-          </div>
-          <div class="ac-row-owner">
-            <div class="ac-row-owner-name">Devon K.</div>
-            <div class="ac-row-due-label ac-row-due-blue">Closes May 24</div>
-          </div>
-          <div class="ac-row-value">
-            <div class="ac-row-value-main ac-row-value-blue">$189<span class="ac-row-value-period">/wk</span></div>
-            <div class="ac-row-value-basis">$46/shift · 4 shifts/wk</div>
-            <div class="ac-row-roi-note">Active Recovery · Wk 3/4</div>
-          </div>
-          <div class="ac-row-conf">
-            <div class="ac-row-conf-val ac-conf-green">82%</div>
-            <div class="ac-row-caveat">RPLH on track</div>
-          </div>
-          <div class="ac-row-guardrails">
-            <div class="ac-row-gr-label">Guardrails</div>
-            <div class="ac-row-gr-list">
-              <span class="ac-gr-item ac-gr-pass">RPLH ✓</span>
-              <span class="ac-gr-item ac-gr-pass">Avg check</span>
-              <span class="ac-gr-item ac-gr-pass">Complaints</span>
-            </div>
-          </div>
-          <div class="ac-row-action">
-            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();switchTab('roi','active');showScreen('scorecard',null,'ROI Proof')">View monitoring</button>
-          </div>
-        </div>
-
-        <!-- A000: Risotto — Verified -->
-        <div class="ac-row ac-row-verified" onclick="showScreen('scorecard',null,'ROI Proof')">
-          <div class="ac-row-status">
-            <span class="ac-chip ac-chip-verified">Verified ✓</span>
-          </div>
-          <div class="ac-row-main">
-            <div class="ac-row-title">Menu cleanup · Risotto removed · all locations</div>
-            <div class="ac-row-sub">
-              <span class="ac-row-sub-item ac-row-type-menu">Menu</span>
-              <span class="ac-row-sub-sep">·</span>
-              <span class="ac-row-sub-item">All Locations</span>
-              <span class="ac-row-sub-sep">·</span>
-              <span class="ac-row-sub-item">Monitoring closed May 3 · all guardrails passed</span>
-            </div>
-          </div>
-          <div class="ac-row-owner">
-            <div class="ac-row-owner-name">Marcus R.</div>
-            <div class="ac-row-due-label ac-row-due-green">Closed May 3</div>
-          </div>
-          <div class="ac-row-value">
-            <div class="ac-row-value-main ac-row-value-green">$97<span class="ac-row-value-period">/wk equiv.</span></div>
-            <div class="ac-row-value-basis" data-skc="verified-savings-mo">$420/mo run-rate equiv.</div>
-            <div class="ac-row-roi-note ac-row-roi-counted">Counts toward ROI</div>
-          </div>
-          <div class="ac-row-conf">
-            <div class="ac-row-conf-val ac-conf-green">✓ VER</div>
-            <div class="ac-row-caveat">All guardrails held</div>
-          </div>
-          <div class="ac-row-guardrails">
-            <div class="ac-row-gr-label">Guardrails</div>
-            <div class="ac-row-gr-list">
-              <span class="ac-gr-item ac-gr-pass">Food cost ✓</span>
-              <span class="ac-gr-item ac-gr-pass">Covers ✓</span>
-              <span class="ac-gr-item ac-gr-pass">Avg check ✓</span>
-            </div>
-          </div>
-          <div class="ac-row-action">
-            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();switchTab('roi','verified');showScreen('scorecard',null,'ROI Proof')">View proof</button>
-          </div>
-        </div>
-
-      </div><!-- /ac-list -->
-
-      <!-- ROI lifecycle rail -->
-      <div class="ac-lifecycle-rail skc-detail">
-        <span class="ac-lc-step ac-lc-gray">Surfaced</span>
-        <span class="ac-lc-arrow">→</span>
-        <span class="ac-lc-step ac-lc-amber">Assigned</span>
-        <span class="ac-lc-arrow">→</span>
-        <span class="ac-lc-step ac-lc-amber">Implemented</span>
-        <span class="ac-lc-arrow">→</span>
-        <span class="ac-lc-step ac-lc-blue">Monitoring</span>
-        <span class="ac-lc-arrow">→</span>
-        <span class="ac-lc-step ac-lc-green">Verified ✓</span>
-        <span class="ac-lc-rule">Only <strong>Verified</strong> actions count toward ROI.</span>
-      </div>
-
-    </div><!-- /queue -->
-
-    <!-- ══ TAB: ASSIGNED ════════════════════════════════ -->
-    <div class="skc-panel" data-tab="execution-open">
-      <div id="ex-tab-open-container" class="ex-rendered-tab">
-        <div class="ac-empty-state">
-          <div class="ac-empty-icon">📋</div>
-          <div class="ac-empty-title">Loading assigned actions…</div>
-          <div class="ac-empty-body">Assigned actions waiting for implementation appear here.</div>
         </div>
       </div>
-    </div>
 
-    <!-- ══ TAB: MONITORING ════════════════════════════════ -->
-    <div class="skc-panel" data-tab="execution-monitoring">
-      <div id="ex-tab-monitoring-container" class="ex-rendered-tab">
-        <div class="ac-empty-state">
-          <div class="ac-empty-icon">◎</div>
-          <div class="ac-empty-title">Loading monitoring actions…</div>
-          <div class="ac-empty-body">Actions in active monitoring windows appear here. Active Recovery does not count toward ROI until the window closes.</div>
+      <!-- ── Column: MONITORING (Active Recovery) ── -->
+      <div class="ac-col ac-col-monitoring">
+        <div class="ac-col-head">
+          <span class="ac-card-dot ac-dot-blue"></span>
+          <span class="ac-col-label">Monitoring</span>
+          <span class="ac-col-count">3</span>
+        </div>
+        <div class="ac-col-cards" id="kanbanMonitoring">
+
+          <div class="ac-card" data-owner="RK" data-cat="Labor" onclick="showDemoToast('Lunch RPLH staffing tweak · 20/28 days monitored','blue')">
+            <div class="ac-card-top">
+              <span class="ac-card-dot ac-dot-blue"></span>
+              <span class="op-ava">RK</span>
+              <span class="ac-card-amt ac-amt-blue">$180</span>
+            </div>
+            <div class="ac-card-title">Lunch RPLH staffing tweak</div>
+            <div class="ac-card-ctx">Oakland · Tue · Lunch · 20/28d</div>
+            <div class="prog-bar"><div class="prog-fill" style="width:71%"></div></div>
+          </div>
+
+          <div class="ac-card" data-owner="CJT" data-cat="Labor" onclick="showDemoToast('Friday lunch queue coaching · 13/28 days monitored','blue')">
+            <div class="ac-card-top">
+              <span class="ac-card-dot ac-dot-blue"></span>
+              <span class="op-ava">CJT</span>
+              <span class="ac-card-amt ac-amt-blue">$340</span>
+            </div>
+            <div class="ac-card-title">Friday lunch queue coaching</div>
+            <div class="ac-card-ctx">Berkeley · Fri · Lunch · 13/28d</div>
+            <div class="prog-bar"><div class="prog-fill" style="width:46%"></div></div>
+          </div>
+
+          <div class="ac-card" data-owner="ML" data-cat="Labor" onclick="showDemoToast('Reduce bar staffing −1 · 8/28 days monitored','blue')">
+            <div class="ac-card-top">
+              <span class="ac-card-dot ac-dot-blue"></span>
+              <span class="op-ava">ML</span>
+              <span class="ac-card-amt ac-amt-blue">$189</span>
+            </div>
+            <div class="ac-card-title">Reduce bar staffing −1</div>
+            <div class="ac-card-ctx">Walnut Creek · Wed · Dinner · 8/28d</div>
+            <div class="prog-bar"><div class="prog-fill" style="width:29%"></div></div>
+          </div>
+
         </div>
       </div>
-    </div>
 
-    <!-- ══ TAB: BLOCKED ═════════════════════════════════ -->
-    <div class="skc-panel" data-tab="execution-approvals">
-      <div id="ex-tab-approvals-container" class="ex-rendered-tab">
-        <div class="ac-empty-state">
-          <div class="ac-empty-icon">⊘</div>
-          <div class="ac-empty-title">Loading blocked actions…</div>
-          <div class="ac-empty-body">Actions blocked by missing approvals or stale data appear here.</div>
+      <!-- ── Column: VERIFIED (counts toward ROI) ── -->
+      <div class="ac-col ac-col-verified">
+        <div class="ac-col-head">
+          <span class="ac-card-dot ac-dot-green"></span>
+          <span class="ac-col-label">Verified</span>
+          <span class="ac-col-count">2</span>
+        </div>
+        <div class="ac-col-cards" id="kanbanVerified">
+
+          <div class="ac-card" data-owner="RK" data-cat="Labor" onclick="showScreen('scorecard',null,'ROI Proof')">
+            <div class="ac-card-top">
+              <span class="ac-card-dot ac-dot-green"></span>
+              <span class="op-ava">RK</span>
+              <span class="ac-card-amt ac-amt-green">$97</span>
+            </div>
+            <div class="ac-card-title">Server step-down protocol</div>
+            <div class="ac-card-ctx">Oakland · Tue · 28d clean ✓</div>
+            <div class="prog-bar"><div class="prog-fill ac-fill-green" style="width:100%"></div></div>
+          </div>
+
+          <div class="ac-card ac-card-muted" data-owner="MS" data-cat="Menu" onclick="showScreen('scorecard',null,'ROI Proof')">
+            <div class="ac-card-top">
+              <span class="ac-card-dot ac-dot-green"></span>
+              <span class="op-ava">MS</span>
+              <span class="ac-card-amt ac-card-amt-none">—</span>
+            </div>
+            <div class="ac-card-title">Menu reprint</div>
+            <div class="ac-card-ctx">All locations · closed</div>
+          </div>
+
         </div>
       </div>
-    </div>
 
-    <!-- ══ TAB: COMPLETED ═══════════════════════════════ -->
-    <div class="skc-panel" data-tab="execution-completed">
-      <div id="ex-tab-completed-container" class="ex-rendered-tab">
-        <div class="ac-empty-state">
-          <div class="ac-empty-icon">✓</div>
-          <div class="ac-empty-title">Verified wins and closed actions appear here.</div>
-          <div class="ac-empty-body">Verified actions count toward ROI. Rejected actions show why guardrails failed.</div>
-          <button class="btn btn-ghost btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">View ROI Proof →</button>
+    </div><!-- /ac-board -->
+
+    <!-- ── PROOF — verified savings ───────────────────────────────────────── -->
+    <div class="ac-proof" id="ac-proof">
+      <div class="ac-proof-eyebrow"><span class="ac-step-num">3</span> The Proof · Verified Savings</div>
+
+      <div class="ac-proof-sum">
+        <div class="ac-proof-sum-amt"><span id="acProofTotal">$1,847</span><span class="ac-proof-sum-tag">[VERIFIED]</span></div>
+        <div class="ac-proof-sum-body">
+          <div class="ac-proof-sum-banked" id="acProofBanked">24 actions banked</div>
+          <div class="ac-proof-sum-meta" id="acProofMeta">since Dec 2025 · 86% verify rate · $97/wk added this period</div>
         </div>
       </div>
-    </div>
 
-    <!-- ══ TAB: HISTORY ════════════════════════════════ -->
-    <div class="skc-panel" data-tab="execution-timeline">
-      <div class="section-hd mb-12">
-        <span class="section-title">Action History</span>
-        <span style="font-size:12px;color:var(--t3);margin-left:8px">Full audit trail of all actions, detections, and verifications</span>
-      </div>
-      <div class="flex gap-8 mb-16" style="flex-wrap:wrap" id="tlFiltersExec">
-        <button class="btn btn-secondary btn-sm tl-filter-btn active" onclick="tlSetFilter('all',this)">All</button>
-        <button class="btn btn-ghost btn-sm tl-filter-btn" onclick="tlSetFilter('verified',this)">Verified Wins</button>
-        <button class="btn btn-ghost btn-sm tl-filter-btn" onclick="tlSetFilter('action',this)">Actions</button>
-        <button class="btn btn-ghost btn-sm tl-filter-btn" onclick="tlSetFilter('flag',this)">Detections</button>
-      </div>
-      <div id="tlListExec" class="tl-list"></div>
-    </div>
-
-    </div><!-- /ac-subpage-overview (legacy content wrapper) -->
-
-    <!-- ══ (v28) Subpage: PENDING DECISIONS ══════════════════════════ -->
-    <!-- Consolidated work queue — the 4 lifecycle stages in one subpage with a toggle -->
-    <div class="ac-subpage" id="ac-subpage-queue">
-      <div class="ac-queue-toggle" role="group" aria-label="Queue stage">
-        <button type="button" class="ac-qt-btn is-active" data-queue-btn="pending" onclick="acQueueShow('pending')">Pending Decisions</button>
-        <button type="button" class="ac-qt-btn" data-queue-btn="active" onclick="acQueueShow('active')">Active Recovery</button>
-        <button type="button" class="ac-qt-btn" data-queue-btn="ready" onclick="acQueueShow('ready')">Ready to Verify</button>
-        <button type="button" class="ac-qt-btn" data-queue-btn="blocked" onclick="acQueueShow('blocked')">Blocked</button>
-      </div>
-    <div class="ac-queue-view active" id="ac-queue-pending">
-      <div class="sp-shell">
-        <div class="page-hdr">
-          <div class="page-hdr-left">
-            <div class="page-hdr-title">Pending Decisions</div>
-            <div class="page-hdr-sub">Awaiting operator approval. Items here are <strong style="color:var(--amber)">[EST · not guaranteed]</strong> opportunity. Approval moves them into Active Recovery for monitoring — not into Verified Savings.</div>
+      <div class="ac-proof-list">
+        <div class="ac-proof-row" onclick="showScreen('scorecard',null,'ROI Proof')">
+          <span class="ac-card-dot ac-dot-green"></span>
+          <div class="ac-proof-row-main">
+            <div class="ac-proof-row-title">Server step-down · Oakland Tue dinner</div>
+            <div class="ac-proof-row-sub">Labor · Jun 2 · 28d clean</div>
           </div>
-          <div class="page-hdr-right">
-            <button class="btn btn-secondary btn-sm" onclick="showActionsSubpage('active')">Open Active Recovery</button>
-            <button class="btn btn-ghost btn-sm" onclick="showActionsSubpage('evidence')">Open Evidence</button>
-          </div>
+          <div class="ac-proof-row-amt">$97 <span class="ac-proof-row-tag">[VER]</span></div>
         </div>
-        <div class="sp-body">
-          <div class="sp-strip">
-            <div class="sp-strip-cell is-warn"><div class="sp-strip-k">Pending count</div><div class="sp-strip-v">2</div><div class="sp-strip-sub">Awaiting decision</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Oldest pending</div><div class="sp-strip-v">6h</div><div class="sp-strip-sub">Oakland Tue dinner</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Total est. opportunity</div><div class="sp-strip-v">$1,250</div><div class="sp-strip-sub" style="color:var(--amber)">/wk [EST · not guaranteed]</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Monthly run-rate</div><div class="sp-strip-v">~$5,413</div><div class="sp-strip-sub" style="color:var(--amber)">/mo · projection</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Median age</div><div class="sp-strip-v">4h</div><div class="sp-strip-sub">in queue</div></div>
+        <div class="ac-proof-row" onclick="showScreen('scorecard',null,'ROI Proof')">
+          <span class="ac-card-dot ac-dot-green"></span>
+          <div class="ac-proof-row-main">
+            <div class="ac-proof-row-title">Lunch host scheduling · Oakland</div>
+            <div class="ac-proof-row-sub">Labor · May 18 · 28d clean</div>
           </div>
-
-          <div class="ac-pl-list">
-            <div class="ac-pl-list-head">
-              <span>Action</span>
-              <span>Category</span>
-              <span>Location · Service</span>
-              <span>Status</span>
-              <span>Est. opportunity</span>
-              <span>Owner</span>
-              <span>Action</span>
-            </div>
-            <div class="ac-pl-row" onclick="openCA('leak1')" role="button" tabindex="0">
-              <span><div class="ac-pl-title">Remove one 5–10 PM FOH server · Oakland Tue dinner</div><div class="ac-pl-sub">RPLH below normal 6/6 comparable services · GM approval required</div></span>
-              <span><span class="ac-pl-chip ac-pl-chip-cat">Labor</span></span>
-              <span><strong>Oakland</strong><br><span style="font-size:10.5px;color:var(--t3)">Tue · Dinner</span></span>
-              <span><span class="ac-pl-chip ac-pl-chip-pending">PENDING</span></span>
-              <span><span class="ac-pl-val-est">$370/wk</span><br><span style="font-size:10px;color:var(--amber)">[EST · not guaranteed]</span></span>
-              <span>Sarah C.</span>
-              <span><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openCA('leak1')">Review</button></span>
-            </div>
-            <div class="ac-pl-row" onclick="showDemoToast('Walnut Creek bar staffing · awaiting GM decision','amber')" role="button" tabindex="0">
-              <span><div class="ac-pl-title">Reduce bar staffing −1 · Walnut Creek Wed dinner</div><div class="ac-pl-sub">Slow bar service · low cover count · 4-week trend</div></span>
-              <span><span class="ac-pl-chip ac-pl-chip-cat">Labor</span></span>
-              <span><strong>Walnut Creek</strong><br><span style="font-size:10.5px;color:var(--t3)">Wed · Dinner</span></span>
-              <span><span class="ac-pl-chip ac-pl-chip-pending">PENDING</span></span>
-              <span><span class="ac-pl-val-est">$189/wk</span><br><span style="font-size:10px;color:var(--amber)">[EST · not guaranteed]</span></span>
-              <span>Marcus L.</span>
-              <span><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();showDemoToast('Pending review opened','blue')">Review</button></span>
-            </div>
+          <div class="ac-proof-row-amt">$142 <span class="ac-proof-row-tag">[VER]</span></div>
+        </div>
+        <div class="ac-proof-row" onclick="showScreen('scorecard',null,'ROI Proof')">
+          <span class="ac-card-dot ac-dot-green"></span>
+          <div class="ac-proof-row-main">
+            <div class="ac-proof-row-title">Truffle Fries reprice +$0.75 · Oakland</div>
+            <div class="ac-proof-row-sub">Menu · May 4 · 28d clean</div>
           </div>
+          <div class="ac-proof-row-amt">$210 <span class="ac-proof-row-tag">[VER]</span></div>
         </div>
       </div>
-    </div>
+    </div><!-- /ac-proof -->
 
-    <!-- ══ (v28) Subpage: ACTIVE RECOVERY ════════════════════════════ -->
-    <div class="ac-queue-view" id="ac-queue-active">
-      <div class="sp-shell">
-        <div class="page-hdr">
-          <div class="page-hdr-left">
-            <div class="page-hdr-title">Active Recovery</div>
-            <div class="page-hdr-sub">Implemented and currently monitoring. Items here are <strong style="color:var(--blue)">[ACT · in monitoring]</strong> — they do <strong>not</strong> count as Verified Savings until the monitoring window closes and guardrails pass.</div>
-          </div>
-          <div class="page-hdr-right">
-            <button class="btn btn-secondary btn-sm" onclick="showActionsSubpage('ready')">Ready to Verify</button>
-            <button class="btn btn-ghost btn-sm" onclick="showActionsSubpage('evidence')">Open Evidence</button>
-          </div>
+    <!-- ── CONDENSED DOCTRINE — verification + label rules ────────────────── -->
+    <details class="ac-doctrine" id="ac-doctrine">
+      <summary class="ac-doctrine-sum">How verification works — only Verified actions count toward ROI</summary>
+      <div class="ac-doctrine-body">
+        <div class="ac-doctrine-col">
+          <div class="ac-doctrine-h">Verification logic</div>
+          <p>An action becomes <strong style="color:var(--green)">Verified</strong> only when <strong>all</strong> hold: monitoring window complete (default 28 days), every guardrail held the full window, source data is fresh, and the owner signs off in ROI Proof. Until then its value is <strong>in play</strong> — never counted as saved.</p>
         </div>
-        <div class="sp-body">
-          <div class="sp-strip">
-            <div class="sp-strip-cell is-blue"><div class="sp-strip-k">In monitoring</div><div class="sp-strip-v">3</div><div class="sp-strip-sub">Across 2 locations</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Avg monitor window</div><div class="sp-strip-v">28d</div><div class="sp-strip-sub">Standard</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Tracked opportunity</div><div class="sp-strip-v">$3,128</div><div class="sp-strip-sub" style="color:var(--blue)">/wk · tracking</div></div>
-            <div class="sp-strip-cell is-good"><div class="sp-strip-k">Guardrails OK</div><div class="sp-strip-v">3/3</div><div class="sp-strip-sub">Holding</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Days to close</div><div class="sp-strip-v">6</div><div class="sp-strip-sub">Soonest</div></div>
-          </div>
-
-          <div class="ac-pl-list">
-            <div class="ac-pl-list-head">
-              <span>Action</span>
-              <span>Category</span>
-              <span>Location · Service</span>
-              <span>Window</span>
-              <span>Tracked / wk</span>
-              <span>Guardrails</span>
-              <span>Action</span>
-            </div>
-            <div class="ac-pl-row" onclick="showDemoToast('Tuesday lunch labor · 22 of 28 days monitored','blue')" role="button" tabindex="0">
-              <span><div class="ac-pl-title">Tuesday lunch labor reduction · Oakland</div><div class="ac-pl-sub">−1 FOH server · 4-week window</div></span>
-              <span><span class="ac-pl-chip ac-pl-chip-cat">Labor</span></span>
-              <span><strong>Oakland</strong><br><span style="font-size:10.5px;color:var(--t3)">Tue · Lunch</span></span>
-              <span><span class="ac-pl-chip ac-pl-chip-active">22/28 d</span></span>
-              <span><span class="ac-pl-val">$340</span><br><span style="font-size:10px;color:var(--blue)">tracking</span></span>
-              <span><span class="ac-pl-chip ac-pl-chip-ready">3/3 OK</span></span>
-              <span><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();showActionsSubpage('ready')">View</button></span>
-            </div>
-            <div class="ac-pl-row" onclick="showDemoToast('Friday dinner table-turn · guardrails stable','blue')" role="button" tabindex="0">
-              <span><div class="ac-pl-title">Friday dinner table-turn playbook · Oakland</div><div class="ac-pl-sub">FOH check-back cadence + dessert lead</div></span>
-              <span><span class="ac-pl-chip ac-pl-chip-cat">Table Turns</span></span>
-              <span><strong>Oakland</strong><br><span style="font-size:10.5px;color:var(--t3)">Fri · Dinner</span></span>
-              <span><span class="ac-pl-chip ac-pl-chip-active">19/28 d</span></span>
-              <span><span class="ac-pl-val">~$680</span><br><span style="font-size:10px;color:var(--blue)">tracking</span></span>
-              <span><span class="ac-pl-chip ac-pl-chip-ready">3/3 OK</span></span>
-              <span><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();showDemoToast('Action detail opened','blue')">View</button></span>
-            </div>
-            <div class="ac-pl-row" onclick="showDemoToast('Berkeley menu mix · 25 of 28 days','blue')" role="button" tabindex="0">
-              <span><div class="ac-pl-title">Menu mix rebalance · Berkeley</div><div class="ac-pl-sub">Promote Risotto · de-emphasize Crispy</div></span>
-              <span><span class="ac-pl-chip ac-pl-chip-cat">Menu</span></span>
-              <span><strong>Berkeley</strong><br><span style="font-size:10.5px;color:var(--t3)">All services</span></span>
-              <span><span class="ac-pl-chip ac-pl-chip-active">25/28 d</span></span>
-              <span><span class="ac-pl-val">$2,176</span><br><span style="font-size:10px;color:var(--blue)">tracking</span></span>
-              <span><span class="ac-pl-chip ac-pl-chip-ready">3/3 OK</span></span>
-              <span><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();showDemoToast('Action detail opened','blue')">View</button></span>
-            </div>
-          </div>
+        <div class="ac-doctrine-col">
+          <div class="ac-doctrine-h">Financial label rules</div>
+          <div class="ac-doctrine-row"><span style="color:var(--amber)">in play</span><span>Pre-verification estimate · not guaranteed</span></div>
+          <div class="ac-doctrine-row"><span style="color:var(--blue)">Monitoring</span><span>Active Recovery · tracking, not yet counted</span></div>
+          <div class="ac-doctrine-row"><span style="color:var(--green)">[VER]</span><span>Verified · counts toward ROI</span></div>
+          <div class="ac-doctrine-row"><span style="color:var(--red)">Blocked</span><span>Excluded from all counts until cleared</span></div>
         </div>
       </div>
-    </div>
-
-    <!-- ══ (v28) Subpage: READY TO VERIFY ════════════════════════════ -->
-    <div class="ac-queue-view" id="ac-queue-ready">
-      <div class="sp-shell">
-        <div class="page-hdr">
-          <div class="page-hdr-left">
-            <div class="page-hdr-title">Ready to Verify</div>
-            <div class="page-hdr-sub">Monitoring window complete, guardrails passed. These can move to <strong style="color:var(--green)">[VER · counted]</strong> in ROI Proof on owner review. Until verified, they remain Active Recovery for ROI counting.</div>
-          </div>
-          <div class="page-hdr-right">
-            <button class="btn btn-primary btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">Open ROI Proof</button>
-            <button class="btn btn-ghost btn-sm" onclick="showActionsSubpage('evidence')">Open Evidence</button>
-          </div>
-        </div>
-        <div class="sp-body">
-          <div class="sp-strip">
-            <div class="sp-strip-cell is-good"><div class="sp-strip-k">Ready count</div><div class="sp-strip-v">3</div><div class="sp-strip-sub">Eligible for verification</div></div>
-            <div class="sp-strip-cell is-good"><div class="sp-strip-k">Guardrails passed</div><div class="sp-strip-v">3/3</div><div class="sp-strip-sub">All 3 actions</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Combined / wk</div><div class="sp-strip-v">$1,141</div><div class="sp-strip-sub">Pending verification</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Monthly projection</div><div class="sp-strip-v">~$4,941</div><div class="sp-strip-sub">If verified</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Awaiting owner</div><div class="sp-strip-v">3</div><div class="sp-strip-sub">Review queue</div></div>
-          </div>
-
-          <div class="ac-pl-list">
-            <div class="ac-pl-list-head">
-              <span>Action</span>
-              <span>Category</span>
-              <span>Location · Service</span>
-              <span>Status</span>
-              <span>Tracked / wk</span>
-              <span>Guardrails</span>
-              <span>Action</span>
-            </div>
-            <div class="ac-pl-row" onclick="showScreen('scorecard',null,'ROI Proof')" role="button" tabindex="0">
-              <span><div class="ac-pl-title">Tuesday lunch labor reduction · Oakland</div><div class="ac-pl-sub">28/28 days complete · ticket time stable · sentiment stable</div></span>
-              <span><span class="ac-pl-chip ac-pl-chip-cat">Labor</span></span>
-              <span><strong>Oakland</strong><br><span style="font-size:10.5px;color:var(--t3)">Tue · Lunch</span></span>
-              <span><span class="ac-pl-chip ac-pl-chip-ready">READY</span></span>
-              <span><span class="ac-pl-val">$340</span><br><span style="font-size:10px;color:var(--green);font-weight:600">READY · not yet counted</span></span>
-              <span><span class="ac-pl-chip ac-pl-chip-ready">3/3 ✓</span></span>
-              <span><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();showScreen('scorecard',null,'ROI Proof')">Verify</button></span>
-            </div>
-            <div class="ac-pl-row" onclick="showScreen('scorecard',null,'ROI Proof')" role="button" tabindex="0">
-              <span><div class="ac-pl-title">Friday dinner table-turn playbook · Oakland</div><div class="ac-pl-sub">28/28 days · avg check stable · sentiment stable</div></span>
-              <span><span class="ac-pl-chip ac-pl-chip-cat">Table Turns</span></span>
-              <span><strong>Oakland</strong><br><span style="font-size:10.5px;color:var(--t3)">Fri · Dinner</span></span>
-              <span><span class="ac-pl-chip ac-pl-chip-ready">READY</span></span>
-              <span><span class="ac-pl-val">~$680</span><br><span style="font-size:10px;color:var(--green);font-weight:600">READY · not yet counted</span></span>
-              <span><span class="ac-pl-chip ac-pl-chip-ready">3/3 ✓</span></span>
-              <span><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();showScreen('scorecard',null,'ROI Proof')">Verify</button></span>
-            </div>
-            <div class="ac-pl-row" onclick="showScreen('scorecard',null,'ROI Proof')" role="button" tabindex="0">
-              <span><div class="ac-pl-title">Menu mix rebalance · Berkeley</div><div class="ac-pl-sub">28/28 days · CM lift confirmed · waste flat</div></span>
-              <span><span class="ac-pl-chip ac-pl-chip-cat">Menu</span></span>
-              <span><strong>Berkeley</strong><br><span style="font-size:10.5px;color:var(--t3)">All services</span></span>
-              <span><span class="ac-pl-chip ac-pl-chip-ready">READY</span></span>
-              <span><span class="ac-pl-val">$189</span><br><span style="font-size:10px;color:var(--green);font-weight:600">READY · not yet counted</span></span>
-              <span><span class="ac-pl-chip ac-pl-chip-ready">3/3 ✓</span></span>
-              <span><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();showScreen('scorecard',null,'ROI Proof')">Verify</button></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ (v28) Subpage: BLOCKED ════════════════════════════════════ -->
-    <div class="ac-queue-view" id="ac-queue-blocked">
-      <div class="sp-shell">
-        <div class="page-hdr">
-          <div class="page-hdr-left">
-            <div class="page-hdr-title">Blocked Actions</div>
-            <div class="page-hdr-sub">Cannot proceed until the listed blocker is resolved. Items here are <strong style="color:var(--red)">[BLOCKED]</strong> and excluded from ROI counting. Resolving the blocker moves them back into Pending or Active state.</div>
-          </div>
-          <div class="page-hdr-right">
-            <button class="btn btn-secondary btn-sm" onclick="showScreen('settings',null,'Data Quality')">Open Data Quality</button>
-            <button class="btn btn-ghost btn-sm" onclick="showActionsSubpage('evidence')">Open Evidence</button>
-          </div>
-        </div>
-        <div class="sp-body">
-          <div class="sp-strip">
-            <div class="sp-strip-cell is-bad"><div class="sp-strip-k">Blocked count</div><div class="sp-strip-v">2</div><div class="sp-strip-sub">Cannot proceed</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">By data quality</div><div class="sp-strip-v">1</div><div class="sp-strip-sub">Recipe cost stale</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">By approval</div><div class="sp-strip-v">1</div><div class="sp-strip-sub">Owner sign-off</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Blocked value</div><div class="sp-strip-v">$684</div><div class="sp-strip-sub" style="color:var(--red)">/wk · NOT COUNTED</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Oldest block</div><div class="sp-strip-v">4d</div><div class="sp-strip-sub">Recipe upload</div></div>
-          </div>
-
-          <div class="ac-bk-grid">
-            <div class="ac-bk-panel">
-              <div class="ac-bk-panel-h">Blocked by Data Quality (1)</div>
-              <div class="ac-bk-list">
-                <div class="item-card is-blocked">
-                  <div class="item-card-t">Salmon reprice $24 → $27 · All locations</div>
-                  <div class="item-card-sub">Menu margin verification requires fresh food cost. Recipe cost file is stale 18d — confidence reduced from 81% to 71%, cannot move to Active Recovery.</div>
-                  <div class="item-card-meta">
-                    <span class="ac-pl-chip ac-pl-chip-blocked">RECIPE COST STALE 18d</span>
-                    <span>$519/wk · <span style="color:var(--red)">NOT COUNTED</span></span>
-                  </div>
-                  <div class="item-card-cta">
-                    <button class="btn btn-primary btn-sm" onclick="showScreen('settings',null,'Data Quality')">Resolve in Data Quality</button>
-                    <button class="btn btn-ghost btn-sm" onclick="showActionsSubpage('evidence')">Why blocked?</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="ac-bk-panel">
-              <div class="ac-bk-panel-h">Blocked by Approval (1)</div>
-              <div class="ac-bk-list">
-                <div class="item-card is-blocked" style="border-left-color:var(--amber)">
-                  <div class="item-card-t">Crispy Chicken reprice +$1.00 · All locations</div>
-                  <div class="item-card-sub">Cross-location price change requires owner approval before pilot. Simulated lift $300/28d — not counted until approval and monitoring complete.</div>
-                  <div class="item-card-meta">
-                    <span class="ac-pl-chip ac-pl-chip-blocked" style="background:var(--amber-d);color:var(--amber);border-color:var(--amber-b)">OWNER APPROVAL</span>
-                    <span>$165/wk · <span style="color:var(--amber)">[SIM · what-if]</span></span>
-                  </div>
-                  <div class="item-card-cta">
-                    <button class="btn btn-primary btn-sm" onclick="showDemoToast('Owner approval request sent','blue')">Request approval</button>
-                    <button class="btn btn-ghost btn-sm" onclick="showActionsSubpage('evidence')">Why blocked?</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ (v28) Subpage: HISTORY ════════════════════════════════════ -->
-    </div><!-- /ac-subpage-queue -->
-
-    <div class="ac-subpage" id="ac-subpage-history">
-      <div class="sp-shell">
-        <div class="page-hdr">
-          <div class="page-hdr-left">
-            <div class="page-hdr-title">Action History</div>
-            <div class="page-hdr-sub">Completed actions — verified, rejected, or guardrail-failed. Verified items appear in ROI Proof. Rejected and failed items remain visible here for retrospective review and pattern learning.</div>
-          </div>
-          <div class="page-hdr-right">
-            <button class="btn btn-secondary btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">Open ROI Proof</button>
-            <button class="btn btn-ghost btn-sm" onclick="showActionsSubpage('evidence')">Open Evidence</button>
-          </div>
-        </div>
-        <div class="sp-body">
-          <div class="sp-strip">
-            <div class="sp-strip-cell is-good"><div class="sp-strip-k">Verified · 90d</div><div class="sp-strip-v">8</div><div class="sp-strip-sub">In ROI Proof</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Rejected</div><div class="sp-strip-v">2</div><div class="sp-strip-sub">Operator declined</div></div>
-            <div class="sp-strip-cell is-bad"><div class="sp-strip-k">Guardrail-failed</div><div class="sp-strip-v">1</div><div class="sp-strip-sub">Sentiment dropped</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Verified value · 90d</div><div class="sp-strip-v">$11.2k</div><div class="sp-strip-sub" style="color:var(--green)">[VER · counted]</div></div>
-            <div class="sp-strip-cell"><div class="sp-strip-k">Verification rate</div><div class="sp-strip-v">73%</div><div class="sp-strip-sub">8 of 11 completed</div></div>
-          </div>
-
-          <div class="ac-pl-list">
-            <div class="ac-pl-list-head">
-              <span>Action</span>
-              <span>Category</span>
-              <span>Closed</span>
-              <span>Outcome</span>
-              <span>Final value</span>
-              <span>Location</span>
-              <span>Action</span>
-            </div>
-            <div class="ac-pl-row" onclick="showScreen('scorecard',null,'ROI Proof')" role="button" tabindex="0">
-              <span><div class="ac-pl-title">Walnut Creek bar staffing reduction</div><div class="ac-pl-sub">−1 bar · Wed dinner · 28d monitor passed</div></span>
-              <span><span class="ac-pl-chip ac-pl-chip-cat">Labor</span></span>
-              <span class="mono">Apr 12</span>
-              <span><span class="ac-pl-chip ac-pl-chip-verified">VERIFIED</span></span>
-              <span><span class="ac-pl-val-ver">$189/wk</span></span>
-              <span><strong>Walnut Creek</strong></span>
-              <span><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();showScreen('scorecard',null,'ROI Proof')">View</button></span>
-            </div>
-            <div class="ac-pl-row" onclick="showScreen('scorecard',null,'ROI Proof')" role="button" tabindex="0">
-              <span><div class="ac-pl-title">Berkeley Mon lunch labor reduction</div><div class="ac-pl-sub">−1 BOH · 28d monitor passed · ticket times stable</div></span>
-              <span><span class="ac-pl-chip ac-pl-chip-cat">Labor</span></span>
-              <span class="mono">Mar 28</span>
-              <span><span class="ac-pl-chip ac-pl-chip-verified">VERIFIED</span></span>
-              <span><span class="ac-pl-val-ver">$415/wk</span></span>
-              <span><strong>Berkeley</strong></span>
-              <span><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();showScreen('scorecard',null,'ROI Proof')">View</button></span>
-            </div>
-            <div class="ac-pl-row" onclick="showDemoToast('Action rejected · operator declined','amber')" role="button" tabindex="0">
-              <span><div class="ac-pl-title">Berkeley dessert promo</div><div class="ac-pl-sub">Operator declined · seasonal menu in flux</div></span>
-              <span><span class="ac-pl-chip ac-pl-chip-cat">Menu</span></span>
-              <span class="mono">Apr 02</span>
-              <span><span class="ac-pl-chip ac-pl-chip-rejected">REJECTED</span></span>
-              <span style="color:var(--t3)">—</span>
-              <span><strong>Berkeley</strong></span>
-              <span><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();showDemoToast('Rejection notes opened','blue')">Notes</button></span>
-            </div>
-            <div class="ac-pl-row" onclick="showDemoToast('Guardrail failure · sentiment dropped','red')" role="button" tabindex="0">
-              <span><div class="ac-pl-title">Oakland Sat dinner host reduction</div><div class="ac-pl-sub">Sentiment dropped · guardrail tripped at day 14 · reverted</div></span>
-              <span><span class="ac-pl-chip ac-pl-chip-cat">Labor</span></span>
-              <span class="mono">Mar 10</span>
-              <span><span class="ac-pl-chip ac-pl-chip-blocked">GUARDRAIL FAIL</span></span>
-              <span style="color:var(--red)">−$0</span>
-              <span><strong>Oakland</strong></span>
-              <span><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();showDemoToast('Postmortem opened','blue')">Postmortem</button></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ (v28) Subpage: EVIDENCE ═══════════════════════════════════ -->
-    <div class="ac-subpage" id="ac-subpage-evidence">
-      <div class="sp-shell">
-        <div class="page-hdr">
-          <div class="page-hdr-left">
-            <div class="page-hdr-title">Action Evidence</div>
-            <div class="page-hdr-sub">Status rules, verification logic, guardrails, and workflow definitions. This page defines how actions move between Pending, Active Recovery, Ready to Verify, Blocked, and Verified — and what blocks each transition.</div>
-          </div>
-          <div class="page-hdr-right">
-            <button class="btn btn-secondary btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">Open ROI Proof</button>
-            <button class="btn btn-ghost btn-sm" onclick="showScreen('settings',null,'Data Quality')">Data Quality</button>
-          </div>
-        </div>
-        <div class="sp-body">
-          <div class="ac-ev-grid">
-            <div class="ac-ev-card">
-              <div class="ac-ev-h">Status definitions</div>
-              <div class="ac-ev-body">
-                <div class="ac-ev-row"><span><span class="ac-pl-chip ac-pl-chip-pending">PENDING</span></span><strong>Awaiting decision</strong></div>
-                <div class="ac-ev-row"><span><span class="ac-pl-chip ac-pl-chip-active">ASSIGNED</span></span><strong>Owner assigned, not implemented</strong></div>
-                <div class="ac-ev-row"><span><span class="ac-pl-chip ac-pl-chip-active">IMPLEMENTED</span></span><strong>Operating change in place, day 0</strong></div>
-                <div class="ac-ev-row"><span><span class="ac-pl-chip ac-pl-chip-active">MONITORING</span></span><strong>In window, guardrails tracked</strong></div>
-                <div class="ac-ev-row"><span><span class="ac-pl-chip ac-pl-chip-ready">READY</span></span><strong>Window complete, guardrails pass</strong></div>
-                <div class="ac-ev-row"><span><span class="ac-pl-chip ac-pl-chip-verified">VERIFIED</span></span><strong>In ROI Proof, counted</strong></div>
-                <div class="ac-ev-row"><span><span class="ac-pl-chip ac-pl-chip-blocked">BLOCKED</span></span><strong>Cannot proceed (DQ/approval)</strong></div>
-                <div class="ac-ev-row"><span><span class="ac-pl-chip ac-pl-chip-rejected">REJECTED</span></span><strong>Operator declined</strong></div>
-              </div>
-            </div>
-
-            <div class="ac-ev-card">
-              <div class="ac-ev-h">Verification logic</div>
-              <div class="ac-ev-body">
-                <p style="margin:0 0 8px">An action moves to <strong style="color:var(--green)">VERIFIED</strong> only when <strong>all</strong> of the following hold:</p>
-                <div class="ac-ev-rule"><strong>1.</strong> Monitoring window complete (default 28 days · category-specific).</div>
-                <div class="ac-ev-rule"><strong>2.</strong> All guardrails hold for the full window — no breaches.</div>
-                <div class="ac-ev-rule"><strong>3.</strong> Source data is fresh (no stale-source confidence penalty active).</div>
-                <div class="ac-ev-rule"><strong>4.</strong> Owner review/sign-off completed in ROI Proof.</div>
-                <p style="margin:10px 0 0;font-style:italic;color:var(--t3);font-size:10.5px">Until all 4 conditions are met, the action's value is <strong>[ACT · in monitoring]</strong> or <strong>[EST · not guaranteed]</strong> — never counted as Verified Savings.</p>
-              </div>
-            </div>
-
-            <div class="ac-ev-card">
-              <div class="ac-ev-h">Guardrails (default)</div>
-              <div class="ac-ev-body">
-                <div class="ac-ev-rule"><strong>Labor</strong> — Ticket time must not worsen. Guest sentiment must not drop. Sales/throughput must not fall.</div>
-                <div class="ac-ev-rule"><strong>Menu</strong> — Unit decline ≤ 7%. Sentiment stable. Refund rate stable.</div>
-                <div class="ac-ev-rule"><strong>Table Turns</strong> — Avg check stable. Sentiment stable. Faster turns not counted if either degrades.</div>
-                <div class="ac-ev-rule"><strong>Manager override</strong> — Allowed at any point. Override pauses the monitoring window; reset on resume.</div>
-              </div>
-            </div>
-
-            <div class="ac-ev-card">
-              <div class="ac-ev-h">Financial label rules</div>
-              <div class="ac-ev-body">
-                <div class="ac-ev-row"><span style="color:var(--amber)">[EST · not guaranteed]</span><strong>Pre-implementation projection</strong></div>
-                <div class="ac-ev-row"><span style="color:var(--amber)">[SIM · what-if]</span><strong>Modeled lift, not yet attempted</strong></div>
-                <div class="ac-ev-row"><span style="color:var(--blue)">[ACT · in monitoring]</span><strong>Tracking in monitoring window</strong></div>
-                <div class="ac-ev-row"><span style="color:var(--green)">[VER · counted]</span><strong>Counted in ROI Proof</strong></div>
-                <div class="ac-ev-row"><span style="color:var(--red)">[BLOCKED]</span><strong>Excluded from all counts</strong></div>
-                <p style="margin:8px 0 0;font-style:italic;color:var(--t3);font-size:10.5px">Every dollar value carries time basis, output type, and a derivation link to evidence. Never "saved" or "recovered" until all 4 verification conditions hold.</p>
-              </div>
-            </div>
-
-            <div class="ac-ev-card">
-              <div class="ac-ev-h">Workflow transitions</div>
-              <div class="ac-ev-body">
-                <span class="mono">Detected (Profit Recovery) → Pending</span>
-                <span class="mono">Pending + Operator approval → Assigned</span>
-                <span class="mono">Assigned + Implemented → Monitoring</span>
-                <span class="mono">Monitoring (window complete + guardrails OK) → Ready</span>
-                <span class="mono">Ready + Owner verification → Verified (ROI Proof)</span>
-                <span class="mono">Any state + DQ failure or approval gate → Blocked</span>
-                <span class="mono">Any state + Guardrail breach → Reverted / Failed</span>
-              </div>
-            </div>
-
-            <div class="ac-ev-card">
-              <div class="ac-ev-h">LLM restrictions</div>
-              <div class="ac-ev-body">
-                <p style="margin:0 0 8px">Claude (Sonnet) generates action recommendations and rationale, but is <strong>not permitted</strong> to:</p>
-                <div class="ac-ev-rule"><strong>—</strong> Set status to Verified. Verification is rule-driven, not LLM-driven.</div>
-                <div class="ac-ev-rule"><strong>—</strong> Override guardrails. Manager override only.</div>
-                <div class="ac-ev-rule"><strong>—</strong> Call estimated/simulated values "saved" or "recovered" in any output.</div>
-                <div class="ac-ev-rule"><strong>—</strong> Skip the monitoring window or shorten it without operator approval.</div>
-                <p style="margin:8px 0 0;font-style:italic;color:var(--t3);font-size:10.5px">All financial outputs are decision-support only; the operator is the final authority.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </details>
 
   </div><!-- /screen-actions -->

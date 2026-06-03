@@ -59,3 +59,49 @@ These dollar values appear in multiple screens and must stay consistent. If you 
 | Selected location in demo | All Locations |
 | Operator | Sarah Chen, General Manager |
 | Pilot day | 15 (of 30) |
+
+## Actions board (v33)
+
+The consolidated **Actions** board (`screens/actions.html`) introduces its own
+aggregates, **registered as canonical** — the constants live in `shared/core.js`
+(`RUN_RATE_IN_PLAY`, `PROOF_LIFETIME`) and are bound into the DOM by
+`acInitActionsPage()`. They are **distinct metrics from** the portfolio numbers
+above; do **not** reconcile them to each other.
+
+| Metric | Value | Where | Notes |
+|---|---|---|---|
+| **In play** (hero) | **$1,229 / wk** | Actions hero | Sum of the Ready + Monitoring board cards (370 + 150 + 180 + 340 + 189). A *different scope* from the $1,243/wk Open Exposure (detected leaks, not actions being worked). Shown **without** an `[EST]` chip — the word "in play" plus the "estimated run-rate · not yet verified" subcaption carry the honesty. |
+| **Verified — lifetime** | **$1,847** | Actions Proof header | Cumulative verified savings (run-rate equivalent) since Dec 2025. Distinct from the current `$420/mo · $97/wk` verified line — this is the all-time bank. |
+| Actions banked | 24 | Actions Proof header | Lifetime count of verified actions. |
+| Verify rate | 86 % | Actions Proof header | Share of completed actions that verified. |
+| Added this period | $97 / wk | Actions Proof header | **==** the canonical `$97/wk` verified line (current period). |
+
+### Board cards (demo line items)
+
+Canonical where a real action exists; the rest are new illustrative demo cards.
+
+| Card | Value | Column | Owner | Canonical? |
+|---|---|---|---|---|
+| Remove one 5–10 PM FOH server · Oakland Tue Dinner | $370/wk | Ready | SC | ✓ canonical labor |
+| Trim prep labor 2h · Oakland | $150/wk | Ready | MS | new |
+| Lunch RPLH staffing tweak · Oakland Tue Lunch | $180/wk | Monitoring | RK | new |
+| Friday lunch queue coaching · Berkeley | $340/wk | Monitoring | CJT | new |
+| Reduce bar staffing −1 · Walnut Creek | $189/wk | Monitoring | ML | ✓ canonical (A005) |
+| Approve salmon reprice $24→$27 | $519/wk | Blocked | MS | ✓ canonical salmon |
+| Crispy Chicken reprice +$1.00 | $165/wk | Blocked | CJT | new (≈ sim lift) |
+| Server step-down protocol · Oakland Tue | $97/wk | Verified | RK | ✓ == canonical $97/wk verified |
+| Menu reprint | — | Verified | MS | new (valueless / closed) |
+
+### Proof history rows
+
+| Action | Category | Date | Value |
+|---|---|---|---|
+| Server step-down · Oakland Tue dinner | Labor | Jun 2 | $97 |
+| Lunch host scheduling · Oakland | Labor | May 18 | $142 |
+| Truffle Fries reprice +$0.75 · Oakland | Menu | May 4 | $210 |
+
+### Owner personas (Actions avatars)
+
+`SC` = Sarah Chen (existing GM). `RK` = Riley K., `ML` = Mia L., `MS` = Morgan S.,
+`CJT` = C.J. Tran are **new demo personas** introduced with the board — confirm
+names against the reference comps if they matter for the demo.

@@ -3021,6 +3021,97 @@ function getPortfolioTruth() {
   };
 }
 
+// ═══════════════════════════════════════════════════════════════
+// (v33) ACTIONS — centralized board page (Hero · Kanban · Proof)
+// Replaces the v28 four-subpage Actions tree with one scrollable board.
+//
+// Canonical demo aggregates (also recorded in docs/canonical-numbers.md):
+//   RUN_RATE_IN_PLAY — hero "$/wk in play" = sum of the Ready + Monitoring
+//     board cards (370 + 150 + 180 + 340 + 189 = 1,229). DISTINCT from the
+//     $1,243/wk Open Exposure portfolio sum (getPortfolioTruth) — different
+//     scope: "in play" = actions actively being worked, not detected leaks.
+//   PROOF_LIFETIME — cumulative Verified Savings shown in the Proof block.
+//     $1,847 since Dec 2025 · 24 actions banked · 86% verify rate. The
+//     "$97/wk added this period" line == the canonical current $97/wk verified.
+// Cards are NOT draggable; column membership reflects a card's status only.
+// ═══════════════════════════════════════════════════════════════
+const RUN_RATE_IN_PLAY = 1229;   // $/wk · Ready + Monitoring board sum
+const PROOF_LIFETIME = {
+  verified_total:        1847,   // $ cumulative verified, run-rate equivalent
+  actions_banked:        24,
+  since:                 'Dec 2025',
+  verify_rate:           0.86,   // 86%
+  added_this_period_wk:  97,     // $/wk added this period (== canonical $97/wk)
+};
+
+// Toggle the Filter popover anchored under the Filter button.
+function acToggleFilter(event){
+  if (event) event.stopPropagation();
+  const pop = document.getElementById('acFilterPop');
+  if (!pop) return;
+  const willOpen = !pop.classList.contains('open');
+  pop.classList.toggle('open', willOpen);
+  if (willOpen) setTimeout(() => document.addEventListener('mousedown', acFilterOutside), 0);
+  else document.removeEventListener('mousedown', acFilterOutside);
+}
+function acFilterOutside(e){
+  const wrap = document.getElementById('acFilterWrap');
+  if (wrap && wrap.contains(e.target)) return;   // click inside wrap — keep open
+  const pop = document.getElementById('acFilterPop');
+  if (pop) pop.classList.remove('open');
+  document.removeEventListener('mousedown', acFilterOutside);
+}
+
+// Apply the Assignee × Category filter (both combinable) to the board.
+// Empty group = no constraint from that group; groups AND together.
+function acApplyFilter(){
+  const owners = Array.from(document.querySelectorAll('#acFilterPop input[data-filter="owner"]:checked')).map(c => c.value);
+  const cats   = Array.from(document.querySelectorAll('#acFilterPop input[data-filter="cat"]:checked')).map(c => c.value);
+  document.querySelectorAll('#screen-actions .ac-card').forEach(card => {
+    const okOwner = owners.length === 0 || owners.includes(card.getAttribute('data-owner'));
+    const okCat   = cats.length   === 0 || cats.includes(card.getAttribute('data-cat'));
+    card.style.display = (okOwner && okCat) ? '' : 'none';
+  });
+  acUpdateColumnCounts();
+  const active = owners.length + cats.length;
+  const dot = document.getElementById('acFilterDot');
+  if (dot) dot.style.display = active ? 'inline-block' : 'none';
+}
+
+function acClearFilter(){
+  document.querySelectorAll('#acFilterPop input[type="checkbox"]').forEach(c => { c.checked = false; });
+  acApplyFilter();
+}
+
+// Recount visible cards per column into each column's count badge.
+function acUpdateColumnCounts(){
+  document.querySelectorAll('#screen-actions .ac-col').forEach(col => {
+    let n = 0;
+    col.querySelectorAll('.ac-card').forEach(c => { if (c.style.display !== 'none') n++; });
+    const badge = col.querySelector('.ac-col-count');
+    if (badge) badge.textContent = n;
+  });
+}
+
+// Undo — stub for v33. Column state is backend-driven, so a real revert
+// belongs in the product; here we acknowledge the intent. (See handoff v33.)
+function acUndo(){
+  showDemoToast('Last change reverted', 'blue');
+}
+
+// Init when the Actions screen is shown: bind canonical numbers (data → render),
+// close any open popover, and sync per-column counts.
+function acInitActionsPage(){
+  const pop = document.getElementById('acFilterPop');
+  if (pop) pop.classList.remove('open');
+  const setT = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+  setT('acInPlay', '$' + RUN_RATE_IN_PLAY.toLocaleString());
+  setT('acProofTotal', '$' + PROOF_LIFETIME.verified_total.toLocaleString());
+  setT('acProofBanked', PROOF_LIFETIME.actions_banked + ' actions banked');
+  setT('acProofMeta', 'since ' + PROOF_LIFETIME.since + ' · ' + Math.round(PROOF_LIFETIME.verify_rate * 100) + '% verify rate · $' + PROOF_LIFETIME.added_this_period_wk + '/wk added this period');
+  acUpdateColumnCounts();
+}
+
 // ── getVerifiedTruth() — what is actually confirmed ───────────────────────────
 //  "Verified this week" = confirmed during this review period.
 //  It does NOT mean $420 was recovered during this specific calendar week.
@@ -4145,6 +4236,16 @@ function drMarkAll() {
 }
 
 // hide timeline on load until first entry
+// ── Topbar live date + clock (single source of truth; replaces per-page clocks) ──
+function tbTickClock() {
+  const now = new Date();
+  const dEl = document.getElementById('tbClockDate');
+  const tEl = document.getElementById('tbClockTime');
+  if (dEl) dEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  if (tEl) tEl.textContent = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+}
+document.addEventListener('DOMContentLoaded', () => { tbTickClock(); setInterval(tbTickClock, 1000 * 15); });
+
 document.addEventListener('DOMContentLoaded', () => {
   const wrap = document.getElementById('drTimeline');
   if (wrap) wrap.style.display = 'none';
@@ -4221,9 +4322,9 @@ function showScreen(id, navEl, title) {
       if (src && dst && !dst.children.length) dst.innerHTML = src.innerHTML;
     }, 80);
   }
-  // If navigating to actions screen, render all tabs
+  // (v33) If navigating to the Actions board, init it (bind numbers + counts)
   if (id === 'actions') {
-    setTimeout(populateActionTabs, 50);
+    setTimeout(acInitActionsPage, 50);
   }
   // (v27) If navigating to Menu Optimization, ensure a subpage is active
   if (id === 'menu') {
@@ -4244,23 +4345,8 @@ function showScreen(id, navEl, title) {
     if (mp) mp.classList.remove('parent-active');
     document.querySelectorAll('#navMenuChildren .nav-child').forEach(c => c.classList.remove('active'));
   }
-  // (v28) If navigating to Actions, ensure a subpage is active and nav syncs
-  if (id === 'actions') {
-    setTimeout(() => {
-      const anyActive = document.querySelector('#screen-actions .ac-subpage.active');
-      if (!anyActive) {
-        showActionsSubpage('overview');
-      } else {
-        const activeId = anyActive.id.replace('ac-subpage-','');
-        _actionsUpdateNav(activeId);
-      }
-    }, 20);
-  } else {
-    // Leaving Actions: clear Actions parent active state
-    const ap = document.getElementById('navActionsParent');
-    if (ap) ap.classList.remove('parent-active');
-    document.querySelectorAll('#navActionsChildren .nav-child').forEach(c => c.classList.remove('active'));
-  }
+  // (v33) Actions is a single flat board now — no subpages/children to sync.
+  // The sidebar item auto-highlights via the onclick-match logic above.
   // (v28b) If navigating to Labor Efficiency, ensure a subpage is active and nav syncs
   if (id === 'labor-efficiency') {
     setTimeout(() => {
@@ -7189,8 +7275,7 @@ const TOUR_STEPS = [
     target: '#demo-target-action-row',
     action: () => {
       closeCA(); closeEvDrawer(); closeDrawer();
-      tourSeedState();
-      switchTab('execution', 'queue');
+      tourSeedState();   // (v33) board is flat — no execution tab to switch
     },
   },
 
@@ -7986,17 +8071,17 @@ function closeCA() {
 
 function submitCA() {
   if (!CA_CURRENT) return;
-  const def   = CA_DEFS[CA_CURRENT];
+  const key   = CA_CURRENT;            // (v33) capture before closeCA() nulls CA_CURRENT
   const owner = document.getElementById('caOwner').value;
   const due   = document.getElementById('caDue').value;
   const notes = document.getElementById('caNotes').value;
-  CA_STATE[CA_CURRENT] = { status: 'open', owner, due, notes };
+  CA_STATE[key] = { status: 'open', owner, due, notes };
   closeCA();
-  injectKanbanCard(CA_CURRENT);
+  injectKanbanCard(key);              // drops a real card into the Ready column (#kanbanOpen)
   showDemoToast(`Recovery action assigned · ${owner.split('—')[0].trim()} · Due ${due}`, 'green');
-  // (v28) Deep-link to Pending Decisions subpage — the new card lives there as a draft.
-  showScreen('actions', null, ACTIONS_SUBPAGE_TITLES.pending);
-  setTimeout(() => showActionsSubpage('pending'), 30);
+  // (v33) The new card lives in Ready on the consolidated board.
+  showScreen('actions', null, 'Actions');
+  setTimeout(() => showActionsSubpage('overview'), 30);
 }
 
 
@@ -8011,38 +8096,42 @@ function injectKanbanCard(leakKey) {
   const def = CA_DEFS[leakKey];
   const st  = CA_STATE[leakKey];
   if (!def || !st) return;
+
+  // v33 board: 'open' (just-assigned) lands in Ready; monitoring/verified map across.
+  const colMap = { open: 'kanbanOpen', inprogress: 'kanbanMonitoring', monitoring: 'kanbanMonitoring', verified: 'kanbanVerified' };
+  const col = document.getElementById(colMap[st.status] || 'kanbanOpen');
+  if (!col) return;
+
   const cardId = 'ca-card-' + leakKey;
   const existing = document.getElementById(cardId);
   if (existing) existing.remove();
 
-  const colMap = { open: 'kanbanOpen', inprogress: 'kanbanInProgress', monitoring: 'kanbanMonitoring', verified: 'kanbanVerified' };
-  const col = document.getElementById(colMap[st.status] || 'kanbanOpen');
-  if (!col) return;
+  const ownerName = (st.owner || '').split('—')[0].trim();
+  const initials  = (ownerName.split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase()) || '–';
+  const cat       = def.category || 'Labor';
+  const dotCls    = st.status === 'verified' ? 'ac-dot-green' : (st.status === 'open' ? 'ac-dot-amber' : 'ac-dot-blue');
+  const amtCls    = st.status === 'verified' ? 'ac-amt-green' : (st.status === 'open' ? 'ac-amt-amber' : 'ac-amt-blue');
 
-  const grHtml = def.guardrails.map(g => {
-    const icon = g.st === 'pass' ? '✓' : g.st === 'watch' ? '~' : '✗';
-    const col  = { pass: 'var(--green)', watch: 'var(--amber)', fail: 'var(--red)' }[g.st];
-    return `<span style="font-size:9.5px;color:${col}">${icon} ${g.name}</span>`;
-  }).join(' ');
-
-  const statusLabel = { open: 'Open', inprogress: 'In Progress', monitoring: 'Monitoring', verified: 'Verified Win' }[st.status];
   const card = document.createElement('div');
   card.id = cardId;
-  card.className = 'action-card';
+  card.className = 'ac-card';
+  card.setAttribute('data-owner', initials);
+  card.setAttribute('data-cat', cat);
   card.onclick = () => openActionDrawer(leakKey);
-  card.innerHTML = `
-    <div class="ac-id">${def.id} · ${def.category} · <span style="color:var(--green)">${statusLabel}</span></div>
-    <div class="ac-title">${def.title}</div>
-    <div class="ac-meta">
-      <div class="ac-row"><span class="ac-row-l">Owner</span><span class="ac-row-r">${st.owner.split('—')[0].trim()}</span></div>
-      <div class="ac-row"><span class="ac-row-l">Due</span><span class="ac-row-r">${st.due}</span></div>
-      <div class="ac-row"><span class="ac-row-l">Impact</span><span class="ac-impact">${def.impact}</span></div>
-      <div class="ac-row"><span class="ac-row-l">Confidence</span><span><span class="badge ${def.confCls}">${def.conf}</span></span></div>
-      <div class="ac-row"><span class="ac-row-l">Guardrails</span><span style="display:flex;flex-wrap:wrap;gap:3px">${grHtml}</span></div>
-    </div>
-    ${st.status !== 'open' ? `<div class="prog-bar"><div class="prog-fill" style="width:${{inprogress:45,monitoring:75,verified:100}[st.status]||0}%"></div></div>` : ''}`;
+  card.innerHTML =
+    '<div class="ac-card-top">' +
+      '<span class="ac-card-dot ' + dotCls + '"></span>' +
+      '<span class="op-ava">' + initials + '</span>' +
+      '<span class="ac-card-amt ' + amtCls + '">' + (def.impact || '') + '</span>' +
+    '</div>' +
+    '<div class="ac-card-title">' + def.title + '</div>' +
+    '<div class="ac-card-ctx">' + (def.location || '') + '</div>' +
+    '<div class="ac-card-cta">' +
+      '<span class="ac-pl-chip ac-pl-chip-pending">PENDING</span>' +
+      '<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openActionDrawer(\'' + leakKey + '\')">Evidence</button>' +
+    '</div>';
   col.appendChild(card);
-  updateKanbanCounts();
+  acUpdateColumnCounts();
 }
 
 function updateKanbanCounts() {
