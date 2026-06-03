@@ -1,270 +1,515 @@
-  <div class="screen" id="screen-actions">
+<div class="screen" id="screen-actions">
+  <!-- ══ (v33) ACTIONS — single board: LIVE · Hero · Kanban · Proof ══════ -->
 
-    <!-- ══ (v33) ACTIONS — single board: LIVE · Hero · Kanban · Proof ══════ -->
+  <!-- ── HERO — weekly run-rate in play ─────────────────────────────────── -->
+  <div class="ac-hero-rr">
+    <div class="ac-hero-rr-num">
+      <span id="acInPlay">$1,229</span
+      ><span class="ac-hero-rr-unit">/wk in play</span>
+    </div>
+    <div class="ac-hero-rr-sub">estimated run-rate · not yet verified</div>
+  </div>
 
-    <!-- ── HERO — weekly run-rate in play ─────────────────────────────────── -->
-    <div class="ac-hero-rr">
-      <div class="ac-hero-rr-num"><span id="acInPlay">$1,229</span><span class="ac-hero-rr-unit">/wk in play</span></div>
-      <div class="ac-hero-rr-sub">estimated run-rate · not yet verified</div>
+  <!-- ── ACTION BAR — Undo · Filter · New action ────────────────────────── -->
+  <div class="ac-actionbar">
+    <div class="ac-actionbar-eyebrow">The Board</div>
+    <div class="ac-actionbar-ctrls">
+      <button class="btn btn-ghost btn-sm" onclick="acUndo()">↩</button>
+
+      <div class="ac-filter-wrap" id="acFilterWrap">
+        <button
+          class="btn btn-secondary btn-sm"
+          id="acFilterBtn"
+          onclick="acToggleFilter(event)"
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+          </svg>
+          Filter <span class="ac-filter-dot" id="acFilterDot"></span>
+        </button>
+        <div class="ac-filter-pop" id="acFilterPop">
+          <div class="ac-filter-grp">
+            <div class="ac-filter-grp-h">Assignee</div>
+            <label class="ac-filter-opt"
+              ><input
+                type="checkbox"
+                data-filter="owner"
+                value="SC"
+                onchange="acApplyFilter()"
+              />
+              <span class="op-ava">SC</span> Sarah Chen</label
+            >
+            <label class="ac-filter-opt"
+              ><input
+                type="checkbox"
+                data-filter="owner"
+                value="RK"
+                onchange="acApplyFilter()"
+              />
+              <span class="op-ava">RK</span> Riley K.</label
+            >
+            <label class="ac-filter-opt"
+              ><input
+                type="checkbox"
+                data-filter="owner"
+                value="ML"
+                onchange="acApplyFilter()"
+              />
+              <span class="op-ava">ML</span> Mia L.</label
+            >
+            <label class="ac-filter-opt"
+              ><input
+                type="checkbox"
+                data-filter="owner"
+                value="MS"
+                onchange="acApplyFilter()"
+              />
+              <span class="op-ava">MS</span> Morgan S.</label
+            >
+            <label class="ac-filter-opt"
+              ><input
+                type="checkbox"
+                data-filter="owner"
+                value="CJT"
+                onchange="acApplyFilter()"
+              />
+              <span class="op-ava">CJT</span> C.J. Tran</label
+            >
+          </div>
+          <div class="ac-filter-grp">
+            <div class="ac-filter-grp-h">Category</div>
+            <label class="ac-filter-opt"
+              ><input
+                type="checkbox"
+                data-filter="cat"
+                value="Labor"
+                onchange="acApplyFilter()"
+              />
+              Labor</label
+            >
+            <label class="ac-filter-opt"
+              ><input
+                type="checkbox"
+                data-filter="cat"
+                value="Menu"
+                onchange="acApplyFilter()"
+              />
+              Menu</label
+            >
+          </div>
+          <div class="ac-filter-foot">
+            <button class="btn btn-ghost btn-sm" onclick="acClearFilter()">
+              Clear
+            </button>
+            <span class="ac-filter-note">Assignee × Category · combinable</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-sm" onclick="openCA('leak1')">
+        + New action
+      </button>
+    </div>
+  </div>
+
+  <!-- ── KANBAN BOARD — Blocked → Ready → Monitoring → Verified ─────────── -->
+  <div class="ac-board" id="ac-board">
+    <!-- ── Column: BLOCKED ── -->
+    <div class="ac-col ac-col-blocked">
+      <div class="ac-col-head">
+        <span class="ac-card-dot ac-dot-red"></span>
+        <span class="ac-col-label">Blocked</span>
+        <span class="ac-col-count">2</span>
+      </div>
+      <div class="ac-col-cards">
+        <div
+          class="ac-card"
+          data-owner="MS"
+          data-cat="Menu"
+          onclick="showScreen('settings', null, 'Data Quality')"
+        >
+          <div class="ac-card-top">
+            <span class="ac-card-dot ac-dot-red"></span>
+            <span class="op-ava">MS</span>
+            <span class="ac-card-amt ac-amt-red">$519</span>
+          </div>
+          <div class="ac-card-title">Approve salmon reprice $24 → $27</div>
+          <div class="ac-card-ctx">All locations · Menu</div>
+          <div class="ac-card-block">
+            <span class="ac-pl-chip ac-pl-chip-blocked"
+              >RECIPE COST STALE 18d</span
+            >
+          </div>
+          <div class="ac-card-cta">
+            <button
+              class="btn btn-secondary btn-sm"
+              onclick="
+                event.stopPropagation();
+                showScreen('settings', null, 'Data Quality');
+              "
+            >
+              Resolve
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="ac-card"
+          data-owner="CJT"
+          data-cat="Menu"
+          onclick="showDemoToast('Owner approval requested', 'blue')"
+        >
+          <div class="ac-card-top">
+            <span class="ac-card-dot ac-dot-amber"></span>
+            <span class="op-ava">CJT</span>
+            <span class="ac-card-amt ac-amt-amber">$165</span>
+          </div>
+          <div class="ac-card-title">Crispy Chicken reprice +$1.00</div>
+          <div class="ac-card-ctx">All locations · Menu</div>
+          <div class="ac-card-block">
+            <span
+              class="ac-pl-chip ac-pl-chip-blocked"
+              style="
+                background: var(--amber-d);
+                color: var(--amber);
+                border-color: var(--amber-b);
+              "
+              >OWNER APPROVAL</span
+            >
+          </div>
+          <div class="ac-card-cta">
+            <button
+              class="btn btn-secondary btn-sm"
+              onclick="
+                event.stopPropagation();
+                showDemoToast('Owner approval request sent', 'blue');
+              "
+            >
+              Request
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- ── ACTION BAR — Undo · Filter · New action ────────────────────────── -->
-    <div class="ac-actionbar">
-      <div class="ac-actionbar-eyebrow"><span class="ac-step-num">2</span> The Board</div>
-      <div class="ac-actionbar-ctrls">
-        <button class="btn btn-ghost btn-sm" onclick="acUndo()">↩ Undo</button>
-
-        <div class="ac-filter-wrap" id="acFilterWrap">
-          <button class="btn btn-secondary btn-sm" id="acFilterBtn" onclick="acToggleFilter(event)">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-            Filter <span class="ac-filter-dot" id="acFilterDot"></span>
-          </button>
-          <div class="ac-filter-pop" id="acFilterPop">
-            <div class="ac-filter-grp">
-              <div class="ac-filter-grp-h">Assignee</div>
-              <label class="ac-filter-opt"><input type="checkbox" data-filter="owner" value="SC" onchange="acApplyFilter()"> <span class="op-ava">SC</span> Sarah Chen</label>
-              <label class="ac-filter-opt"><input type="checkbox" data-filter="owner" value="RK" onchange="acApplyFilter()"> <span class="op-ava">RK</span> Riley K.</label>
-              <label class="ac-filter-opt"><input type="checkbox" data-filter="owner" value="ML" onchange="acApplyFilter()"> <span class="op-ava">ML</span> Mia L.</label>
-              <label class="ac-filter-opt"><input type="checkbox" data-filter="owner" value="MS" onchange="acApplyFilter()"> <span class="op-ava">MS</span> Morgan S.</label>
-              <label class="ac-filter-opt"><input type="checkbox" data-filter="owner" value="CJT" onchange="acApplyFilter()"> <span class="op-ava">CJT</span> C.J. Tran</label>
-            </div>
-            <div class="ac-filter-grp">
-              <div class="ac-filter-grp-h">Category</div>
-              <label class="ac-filter-opt"><input type="checkbox" data-filter="cat" value="Labor" onchange="acApplyFilter()"> Labor</label>
-              <label class="ac-filter-opt"><input type="checkbox" data-filter="cat" value="Menu" onchange="acApplyFilter()"> Menu</label>
-            </div>
-            <div class="ac-filter-foot">
-              <button class="btn btn-ghost btn-sm" onclick="acClearFilter()">Clear</button>
-              <span class="ac-filter-note">Assignee × Category · combinable</span>
-            </div>
+    <!-- ── Column: READY (new "open" cards land here via injectKanbanCard) ── -->
+    <div class="ac-col ac-col-ready">
+      <div class="ac-col-head">
+        <span class="ac-card-dot ac-dot-amber"></span>
+        <span class="ac-col-label">Ready</span>
+        <span class="ac-col-count" id="kanbanOpenCt">2</span>
+      </div>
+      <div class="ac-col-cards" id="kanbanOpen">
+        <div
+          class="ac-card ac-card-priority"
+          id="demo-target-action-row"
+          data-owner="SC"
+          data-cat="Labor"
+          onclick="openActionDrawer('leak1')"
+        >
+          <div class="ac-card-top">
+            <span class="ac-card-dot ac-dot-amber"></span>
+            <span class="op-ava">SC</span>
+            <span class="ac-card-amt ac-amt-amber">$370</span>
+          </div>
+          <div class="ac-card-title">Remove one 5–10 PM FOH server</div>
+          <div class="ac-card-ctx">Oakland · Tue · Dinner</div>
+          <div class="ac-card-note">
+            RPLH below normal band · 6/6 comparable services · GM approval
+            required
+          </div>
+          <div class="ac-card-cta">
+            <span class="ac-pl-chip ac-pl-chip-pending">PENDING</span>
+            <button
+              class="btn btn-primary btn-sm"
+              onclick="
+                event.stopPropagation();
+                showDemoToast(
+                  'A006 approved · monitoring starts tonight',
+                  'green',
+                );
+              "
+            >
+              Approve
+            </button>
+            <button
+              class="btn btn-secondary btn-sm"
+              onclick="
+                event.stopPropagation();
+                openActionDrawer('leak1');
+              "
+            >
+              Evidence
+            </button>
           </div>
         </div>
 
-        <button class="btn btn-primary btn-sm" onclick="openCA('leak1')">+ New action</button>
+        <div
+          class="ac-card"
+          data-owner="MS"
+          data-cat="Labor"
+          onclick="openActionDrawer('leak1')"
+        >
+          <div class="ac-card-top">
+            <span class="ac-card-dot ac-dot-amber"></span>
+            <span class="op-ava">MS</span>
+            <span class="ac-card-amt ac-amt-amber">$150</span>
+          </div>
+          <div class="ac-card-title">Trim prep labor 2h</div>
+          <div class="ac-card-ctx">Oakland · Daily prep</div>
+          <div class="ac-card-cta">
+            <span class="ac-pl-chip ac-pl-chip-pending">PENDING</span>
+            <button
+              class="btn btn-secondary btn-sm"
+              onclick="
+                event.stopPropagation();
+                showDemoToast('Evidence opened', 'blue');
+              "
+            >
+              Evidence
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- ── KANBAN BOARD — Blocked → Ready → Monitoring → Verified ─────────── -->
-    <div class="ac-board" id="ac-board">
-
-      <!-- ── Column: BLOCKED ── -->
-      <div class="ac-col ac-col-blocked">
-        <div class="ac-col-head">
-          <span class="ac-card-dot ac-dot-red"></span>
-          <span class="ac-col-label">Blocked</span>
-          <span class="ac-col-count">2</span>
+    <!-- ── Column: MONITORING (Active Recovery) ── -->
+    <div class="ac-col ac-col-monitoring">
+      <div class="ac-col-head">
+        <span class="ac-card-dot ac-dot-blue"></span>
+        <span class="ac-col-label">Monitoring</span>
+        <span class="ac-col-count">3</span>
+      </div>
+      <div class="ac-col-cards" id="kanbanMonitoring">
+        <div
+          class="ac-card"
+          data-owner="RK"
+          data-cat="Labor"
+          onclick="
+            showDemoToast(
+              'Lunch RPLH staffing tweak · 20/28 days monitored',
+              'blue',
+            )
+          "
+        >
+          <div class="ac-card-top">
+            <span class="ac-card-dot ac-dot-blue"></span>
+            <span class="op-ava">RK</span>
+            <span class="ac-card-amt ac-amt-blue">$180</span>
+          </div>
+          <div class="ac-card-title">Lunch RPLH staffing tweak</div>
+          <div class="ac-card-ctx">Oakland · Tue · Lunch · 20/28d</div>
+          <div class="prog-bar">
+            <div class="prog-fill" style="width: 71%"></div>
+          </div>
         </div>
-        <div class="ac-col-cards">
 
-          <div class="ac-card" data-owner="MS" data-cat="Menu" onclick="showScreen('settings',null,'Data Quality')">
-            <div class="ac-card-top">
-              <span class="ac-card-dot ac-dot-red"></span>
-              <span class="op-ava">MS</span>
-              <span class="ac-card-amt ac-amt-red">$519</span>
-            </div>
-            <div class="ac-card-title">Approve salmon reprice $24 → $27</div>
-            <div class="ac-card-ctx">All locations · Menu</div>
-            <div class="ac-card-block"><span class="ac-pl-chip ac-pl-chip-blocked">RECIPE COST STALE 18d</span></div>
-            <div class="ac-card-cta">
-              <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();showScreen('settings',null,'Data Quality')">Resolve</button>
-            </div>
+        <div
+          class="ac-card"
+          data-owner="CJT"
+          data-cat="Labor"
+          onclick="
+            showDemoToast(
+              'Friday lunch queue coaching · 13/28 days monitored',
+              'blue',
+            )
+          "
+        >
+          <div class="ac-card-top">
+            <span class="ac-card-dot ac-dot-blue"></span>
+            <span class="op-ava">CJT</span>
+            <span class="ac-card-amt ac-amt-blue">$340</span>
           </div>
-
-          <div class="ac-card" data-owner="CJT" data-cat="Menu" onclick="showDemoToast('Owner approval requested','blue')">
-            <div class="ac-card-top">
-              <span class="ac-card-dot ac-dot-amber"></span>
-              <span class="op-ava">CJT</span>
-              <span class="ac-card-amt ac-amt-amber">$165</span>
-            </div>
-            <div class="ac-card-title">Crispy Chicken reprice +$1.00</div>
-            <div class="ac-card-ctx">All locations · Menu</div>
-            <div class="ac-card-block"><span class="ac-pl-chip ac-pl-chip-blocked" style="background:var(--amber-d);color:var(--amber);border-color:var(--amber-b)">OWNER APPROVAL</span></div>
-            <div class="ac-card-cta">
-              <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();showDemoToast('Owner approval request sent','blue')">Request</button>
-            </div>
+          <div class="ac-card-title">Friday lunch queue coaching</div>
+          <div class="ac-card-ctx">Berkeley · Fri · Lunch · 13/28d</div>
+          <div class="prog-bar">
+            <div class="prog-fill" style="width: 46%"></div>
           </div>
+        </div>
 
+        <div
+          class="ac-card"
+          data-owner="ML"
+          data-cat="Labor"
+          onclick="
+            showDemoToast(
+              'Reduce bar staffing −1 · 8/28 days monitored',
+              'blue',
+            )
+          "
+        >
+          <div class="ac-card-top">
+            <span class="ac-card-dot ac-dot-blue"></span>
+            <span class="op-ava">ML</span>
+            <span class="ac-card-amt ac-amt-blue">$189</span>
+          </div>
+          <div class="ac-card-title">Reduce bar staffing −1</div>
+          <div class="ac-card-ctx">Walnut Creek · Wed · Dinner · 8/28d</div>
+          <div class="prog-bar">
+            <div class="prog-fill" style="width: 29%"></div>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- ── Column: READY (new "open" cards land here via injectKanbanCard) ── -->
-      <div class="ac-col ac-col-ready">
-        <div class="ac-col-head">
-          <span class="ac-card-dot ac-dot-amber"></span>
-          <span class="ac-col-label">Ready</span>
-          <span class="ac-col-count" id="kanbanOpenCt">2</span>
+    <!-- ── Column: VERIFIED (counts toward ROI) ── -->
+    <div class="ac-col ac-col-verified">
+      <div class="ac-col-head">
+        <span class="ac-card-dot ac-dot-green"></span>
+        <span class="ac-col-label">Verified</span>
+        <span class="ac-col-count">2</span>
+      </div>
+      <div class="ac-col-cards" id="kanbanVerified">
+        <div
+          class="ac-card"
+          data-owner="RK"
+          data-cat="Labor"
+          onclick="showScreen('scorecard', null, 'ROI Proof')"
+        >
+          <div class="ac-card-top">
+            <span class="ac-card-dot ac-dot-green"></span>
+            <span class="op-ava">RK</span>
+            <span class="ac-card-amt ac-amt-green">$97</span>
+          </div>
+          <div class="ac-card-title">Server step-down protocol</div>
+          <div class="ac-card-ctx">Oakland · Tue · 28d clean ✓</div>
+          <div class="prog-bar">
+            <div class="prog-fill ac-fill-green" style="width: 100%"></div>
+          </div>
         </div>
-        <div class="ac-col-cards" id="kanbanOpen">
 
-          <div class="ac-card ac-card-priority" id="demo-target-action-row" data-owner="SC" data-cat="Labor" onclick="openActionDrawer('leak1')">
-            <div class="ac-card-top">
-              <span class="ac-card-dot ac-dot-amber"></span>
-              <span class="op-ava">SC</span>
-              <span class="ac-card-amt ac-amt-amber">$370</span>
-            </div>
-            <div class="ac-card-title">Remove one 5–10 PM FOH server</div>
-            <div class="ac-card-ctx">Oakland · Tue · Dinner</div>
-            <div class="ac-card-note">RPLH below normal band · 6/6 comparable services · GM approval required</div>
-            <div class="ac-card-cta">
-              <span class="ac-pl-chip ac-pl-chip-pending">PENDING</span>
-              <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();showDemoToast('A006 approved · monitoring starts tonight','green')">Approve</button>
-              <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();openActionDrawer('leak1')">Evidence</button>
-            </div>
+        <div
+          class="ac-card ac-card-muted"
+          data-owner="MS"
+          data-cat="Menu"
+          onclick="showScreen('scorecard', null, 'ROI Proof')"
+        >
+          <div class="ac-card-top">
+            <span class="ac-card-dot ac-dot-green"></span>
+            <span class="op-ava">MS</span>
+            <span class="ac-card-amt ac-card-amt-none">—</span>
           </div>
-
-          <div class="ac-card" data-owner="MS" data-cat="Labor" onclick="openActionDrawer('leak1')">
-            <div class="ac-card-top">
-              <span class="ac-card-dot ac-dot-amber"></span>
-              <span class="op-ava">MS</span>
-              <span class="ac-card-amt ac-amt-amber">$150</span>
-            </div>
-            <div class="ac-card-title">Trim prep labor 2h</div>
-            <div class="ac-card-ctx">Oakland · Daily prep</div>
-            <div class="ac-card-cta">
-              <span class="ac-pl-chip ac-pl-chip-pending">PENDING</span>
-              <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();showDemoToast('Evidence opened','blue')">Evidence</button>
-            </div>
-          </div>
-
+          <div class="ac-card-title">Menu reprint</div>
+          <div class="ac-card-ctx">All locations · closed</div>
         </div>
       </div>
+    </div>
+  </div>
+  <!-- /ac-board -->
 
-      <!-- ── Column: MONITORING (Active Recovery) ── -->
-      <div class="ac-col ac-col-monitoring">
-        <div class="ac-col-head">
-          <span class="ac-card-dot ac-dot-blue"></span>
-          <span class="ac-col-label">Monitoring</span>
-          <span class="ac-col-count">3</span>
+  <!-- ── PROOF — verified savings ───────────────────────────────────────── -->
+  <div class="ac-proof" id="ac-proof">
+    <div class="ac-proof-eyebrow">The Proof</div>
+
+    <div class="ac-proof-sum">
+      <div class="ac-proof-sum-amt">
+        <span id="acProofTotal">$1,847</span
+        ><span class="ac-proof-sum-tag">[VERIFIED]</span>
+      </div>
+      <div class="ac-proof-sum-body">
+        <div class="ac-proof-sum-banked" id="acProofBanked">
+          24 actions banked
         </div>
-        <div class="ac-col-cards" id="kanbanMonitoring">
-
-          <div class="ac-card" data-owner="RK" data-cat="Labor" onclick="showDemoToast('Lunch RPLH staffing tweak · 20/28 days monitored','blue')">
-            <div class="ac-card-top">
-              <span class="ac-card-dot ac-dot-blue"></span>
-              <span class="op-ava">RK</span>
-              <span class="ac-card-amt ac-amt-blue">$180</span>
-            </div>
-            <div class="ac-card-title">Lunch RPLH staffing tweak</div>
-            <div class="ac-card-ctx">Oakland · Tue · Lunch · 20/28d</div>
-            <div class="prog-bar"><div class="prog-fill" style="width:71%"></div></div>
-          </div>
-
-          <div class="ac-card" data-owner="CJT" data-cat="Labor" onclick="showDemoToast('Friday lunch queue coaching · 13/28 days monitored','blue')">
-            <div class="ac-card-top">
-              <span class="ac-card-dot ac-dot-blue"></span>
-              <span class="op-ava">CJT</span>
-              <span class="ac-card-amt ac-amt-blue">$340</span>
-            </div>
-            <div class="ac-card-title">Friday lunch queue coaching</div>
-            <div class="ac-card-ctx">Berkeley · Fri · Lunch · 13/28d</div>
-            <div class="prog-bar"><div class="prog-fill" style="width:46%"></div></div>
-          </div>
-
-          <div class="ac-card" data-owner="ML" data-cat="Labor" onclick="showDemoToast('Reduce bar staffing −1 · 8/28 days monitored','blue')">
-            <div class="ac-card-top">
-              <span class="ac-card-dot ac-dot-blue"></span>
-              <span class="op-ava">ML</span>
-              <span class="ac-card-amt ac-amt-blue">$189</span>
-            </div>
-            <div class="ac-card-title">Reduce bar staffing −1</div>
-            <div class="ac-card-ctx">Walnut Creek · Wed · Dinner · 8/28d</div>
-            <div class="prog-bar"><div class="prog-fill" style="width:29%"></div></div>
-          </div>
-
+        <div class="ac-proof-sum-meta" id="acProofMeta">
+          since Dec 2025 · 86% verify rate · $97/wk added this period
         </div>
       </div>
+    </div>
 
-      <!-- ── Column: VERIFIED (counts toward ROI) ── -->
-      <div class="ac-col ac-col-verified">
-        <div class="ac-col-head">
-          <span class="ac-card-dot ac-dot-green"></span>
-          <span class="ac-col-label">Verified</span>
-          <span class="ac-col-count">2</span>
+    <div class="ac-proof-list">
+      <div
+        class="ac-proof-row"
+        onclick="showScreen('scorecard', null, 'ROI Proof')"
+      >
+        <span class="ac-card-dot ac-dot-green"></span>
+        <div class="ac-proof-row-main">
+          <div class="ac-proof-row-title">
+            Server step-down · Oakland Tue dinner
+          </div>
+          <div class="ac-proof-row-sub">Labor · Jun 2 · 28d clean</div>
         </div>
-        <div class="ac-col-cards" id="kanbanVerified">
-
-          <div class="ac-card" data-owner="RK" data-cat="Labor" onclick="showScreen('scorecard',null,'ROI Proof')">
-            <div class="ac-card-top">
-              <span class="ac-card-dot ac-dot-green"></span>
-              <span class="op-ava">RK</span>
-              <span class="ac-card-amt ac-amt-green">$97</span>
-            </div>
-            <div class="ac-card-title">Server step-down protocol</div>
-            <div class="ac-card-ctx">Oakland · Tue · 28d clean ✓</div>
-            <div class="prog-bar"><div class="prog-fill ac-fill-green" style="width:100%"></div></div>
-          </div>
-
-          <div class="ac-card ac-card-muted" data-owner="MS" data-cat="Menu" onclick="showScreen('scorecard',null,'ROI Proof')">
-            <div class="ac-card-top">
-              <span class="ac-card-dot ac-dot-green"></span>
-              <span class="op-ava">MS</span>
-              <span class="ac-card-amt ac-card-amt-none">—</span>
-            </div>
-            <div class="ac-card-title">Menu reprint</div>
-            <div class="ac-card-ctx">All locations · closed</div>
-          </div>
-
+        <div class="ac-proof-row-amt">
+          $97 <span class="ac-proof-row-tag">[VER]</span>
         </div>
       </div>
-
-    </div><!-- /ac-board -->
-
-    <!-- ── PROOF — verified savings ───────────────────────────────────────── -->
-    <div class="ac-proof" id="ac-proof">
-      <div class="ac-proof-eyebrow"><span class="ac-step-num">3</span> The Proof · Verified Savings</div>
-
-      <div class="ac-proof-sum">
-        <div class="ac-proof-sum-amt"><span id="acProofTotal">$1,847</span><span class="ac-proof-sum-tag">[VERIFIED]</span></div>
-        <div class="ac-proof-sum-body">
-          <div class="ac-proof-sum-banked" id="acProofBanked">24 actions banked</div>
-          <div class="ac-proof-sum-meta" id="acProofMeta">since Dec 2025 · 86% verify rate · $97/wk added this period</div>
+      <div
+        class="ac-proof-row"
+        onclick="showScreen('scorecard', null, 'ROI Proof')"
+      >
+        <span class="ac-card-dot ac-dot-green"></span>
+        <div class="ac-proof-row-main">
+          <div class="ac-proof-row-title">Lunch host scheduling · Oakland</div>
+          <div class="ac-proof-row-sub">Labor · May 18 · 28d clean</div>
+        </div>
+        <div class="ac-proof-row-amt">
+          $142 <span class="ac-proof-row-tag">[VER]</span>
         </div>
       </div>
-
-      <div class="ac-proof-list">
-        <div class="ac-proof-row" onclick="showScreen('scorecard',null,'ROI Proof')">
-          <span class="ac-card-dot ac-dot-green"></span>
-          <div class="ac-proof-row-main">
-            <div class="ac-proof-row-title">Server step-down · Oakland Tue dinner</div>
-            <div class="ac-proof-row-sub">Labor · Jun 2 · 28d clean</div>
+      <div
+        class="ac-proof-row"
+        onclick="showScreen('scorecard', null, 'ROI Proof')"
+      >
+        <span class="ac-card-dot ac-dot-green"></span>
+        <div class="ac-proof-row-main">
+          <div class="ac-proof-row-title">
+            Truffle Fries reprice +$0.75 · Oakland
           </div>
-          <div class="ac-proof-row-amt">$97 <span class="ac-proof-row-tag">[VER]</span></div>
+          <div class="ac-proof-row-sub">Menu · May 4 · 28d clean</div>
         </div>
-        <div class="ac-proof-row" onclick="showScreen('scorecard',null,'ROI Proof')">
-          <span class="ac-card-dot ac-dot-green"></span>
-          <div class="ac-proof-row-main">
-            <div class="ac-proof-row-title">Lunch host scheduling · Oakland</div>
-            <div class="ac-proof-row-sub">Labor · May 18 · 28d clean</div>
-          </div>
-          <div class="ac-proof-row-amt">$142 <span class="ac-proof-row-tag">[VER]</span></div>
-        </div>
-        <div class="ac-proof-row" onclick="showScreen('scorecard',null,'ROI Proof')">
-          <span class="ac-card-dot ac-dot-green"></span>
-          <div class="ac-proof-row-main">
-            <div class="ac-proof-row-title">Truffle Fries reprice +$0.75 · Oakland</div>
-            <div class="ac-proof-row-sub">Menu · May 4 · 28d clean</div>
-          </div>
-          <div class="ac-proof-row-amt">$210 <span class="ac-proof-row-tag">[VER]</span></div>
+        <div class="ac-proof-row-amt">
+          $210 <span class="ac-proof-row-tag">[VER]</span>
         </div>
       </div>
-    </div><!-- /ac-proof -->
+    </div>
+  </div>
+  <!-- /ac-proof -->
 
-    <!-- ── CONDENSED DOCTRINE — verification + label rules ────────────────── -->
-    <details class="ac-doctrine" id="ac-doctrine">
-      <summary class="ac-doctrine-sum">How verification works — only Verified actions count toward ROI</summary>
-      <div class="ac-doctrine-body">
-        <div class="ac-doctrine-col">
-          <div class="ac-doctrine-h">Verification logic</div>
-          <p>An action becomes <strong style="color:var(--green)">Verified</strong> only when <strong>all</strong> hold: monitoring window complete (default 28 days), every guardrail held the full window, source data is fresh, and the owner signs off in ROI Proof. Until then its value is <strong>in play</strong> — never counted as saved.</p>
+  <!-- ── CONDENSED DOCTRINE — verification + label rules ────────────────── -->
+  <details class="ac-doctrine" id="ac-doctrine">
+    <summary class="ac-doctrine-sum">
+      How verification works — only Verified actions count toward ROI
+    </summary>
+    <div class="ac-doctrine-body">
+      <div class="ac-doctrine-col">
+        <div class="ac-doctrine-h">Verification logic</div>
+        <p>
+          An action becomes
+          <strong style="color: var(--green)">Verified</strong> only when
+          <strong>all</strong> hold: monitoring window complete (default 28
+          days), every guardrail held the full window, source data is fresh, and
+          the owner signs off in ROI Proof. Until then its value is
+          <strong>in play</strong> — never counted as saved.
+        </p>
+      </div>
+      <div class="ac-doctrine-col">
+        <div class="ac-doctrine-h">Financial label rules</div>
+        <div class="ac-doctrine-row">
+          <span style="color: var(--amber)">in play</span
+          ><span>Pre-verification estimate · not guaranteed</span>
         </div>
-        <div class="ac-doctrine-col">
-          <div class="ac-doctrine-h">Financial label rules</div>
-          <div class="ac-doctrine-row"><span style="color:var(--amber)">in play</span><span>Pre-verification estimate · not guaranteed</span></div>
-          <div class="ac-doctrine-row"><span style="color:var(--blue)">Monitoring</span><span>Active Recovery · tracking, not yet counted</span></div>
-          <div class="ac-doctrine-row"><span style="color:var(--green)">[VER]</span><span>Verified · counts toward ROI</span></div>
-          <div class="ac-doctrine-row"><span style="color:var(--red)">Blocked</span><span>Excluded from all counts until cleared</span></div>
+        <div class="ac-doctrine-row">
+          <span style="color: var(--blue)">Monitoring</span
+          ><span>Active Recovery · tracking, not yet counted</span>
+        </div>
+        <div class="ac-doctrine-row">
+          <span style="color: var(--green)">[VER]</span
+          ><span>Verified · counts toward ROI</span>
+        </div>
+        <div class="ac-doctrine-row">
+          <span style="color: var(--red)">Blocked</span
+          ><span>Excluded from all counts until cleared</span>
         </div>
       </div>
-    </details>
-
-  </div><!-- /screen-actions -->
+    </div>
+  </details>
+</div>
+<!-- /screen-actions -->
