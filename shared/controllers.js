@@ -34,6 +34,9 @@ function showMenuSubpage(sub) {
   // Update sidebar nav
   _menuUpdateNav(sub);
 
+  // Remember subpage for refresh-resume (overwrites showScreen's sub:null)
+  saveLastView({ screen: 'menu', sub, title: MENU_SUBPAGE_TITLES[sub] });
+
   // First-time render of items table
   if (sub === 'items') {
     renderMenuItemsTable();
@@ -117,6 +120,7 @@ function showActionsSubpage(sub) {
     const view = (sub === 'queue') ? 'pending' : sub;
     if (typeof acQueueShow === 'function') acQueueShow(view);
     _actionsUpdateNav('queue');
+    saveLastView({ screen: 'actions', sub, title: ACTIONS_SUBPAGE_TITLES[sub] || 'Actions' });
     return;
   }
 
@@ -126,6 +130,7 @@ function showActionsSubpage(sub) {
   const tb = document.getElementById('tbTitle');
   if (tb) tb.textContent = ACTIONS_SUBPAGE_TITLES[sub];
   _actionsUpdateNav(sub);
+  saveLastView({ screen: 'actions', sub, title: ACTIONS_SUBPAGE_TITLES[sub] });
 }
 
 
@@ -197,6 +202,7 @@ function showLaborSubpage(sub) {
   if (tb) tb.textContent = LABOR_SUBPAGE_TITLES[sub];
 
   _laborUpdateNav(sub);
+  saveLastView({ screen: 'labor-efficiency', sub, title: LABOR_SUBPAGE_TITLES[sub] });
 }
 
 
@@ -271,6 +277,7 @@ function showTtSubpage(sub) {
   if (tb) tb.textContent = TT_SUBPAGE_TITLES[sub];
 
   _ttUpdateNav(sub);
+  saveLastView({ screen: 'table-turns', sub, title: TT_SUBPAGE_TITLES[sub] });
 
   // Re-sync the Watch day switcher with the current sidebar location
   if (sub === 'overview' && typeof window.ttApplyLocation === 'function') {

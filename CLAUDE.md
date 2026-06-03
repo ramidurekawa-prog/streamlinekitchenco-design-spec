@@ -55,8 +55,14 @@ is fetched at runtime:
 - `shared/server-coaching.js`, `shared/tooltips.js` — feature-specific.
 - `shared/styles.css` — all CSS (concatenated from the original 5 `<style>` blocks).
 - `components/*.html` — sidebar, topbar, ask-panel, drawers (all overlays/modals).
-- `screens/*.html` — one file per screen, 13 total. `screen-config` is genuinely
-  nested inside `screen-settings`, so `settings.html` carries both.
+- `screens/*.html` — one file per screen, 14 total. `screen-config` is genuinely
+  nested inside `screen-settings`, so `settings.html` carries both. Note the two
+  "home" ids: `home-dashboard.html` holds **`screen-dashboard`** (the **Home**
+  landing surface — a 6-metric KPI dashboard, and the boot screen via
+  `showScreen('dashboard', null, 'Home')`), while `today.html` holds
+  `screen-home` (the **Today** operate screen). The six Home cards deep-link to
+  ROI Proof, Profit Recovery, Labor Efficiency, Table Turns, and Menu Item
+  Economics; styles are the `.dash-*` block at the end of `styles.css`.
 
 A typical edit touches one screen file (≤1,400 lines) plus maybe one shared file.
 
@@ -87,6 +93,24 @@ Seven sources (Toast, 7shifts, KDS, Recipe cost, Reviews, Accounting, Inventory)
 determine whether a metric is measured vs. modeled, what approval an action needs,
 and ROI eligibility. Registry: `SKC_STATE.data_quality.sources`. Details incl. the
 Server Coaching axis-state model: [docs/data-sources.md](docs/data-sources.md).
+
+## Voice & user-facing copy
+
+All text the user sees in the product (card captions, labels, headlines, tooltips,
+empty states, button copy) should read as **professional, polished, and confident**.
+Favor measured, sophisticated language over terse or casual phrasing.
+
+- **Tone is optimistic and assured, never apologetic or scarcity-driven.** Frame
+  value in terms of what the operator gains ("a clear return on your investment"),
+  not what they barely avoid losing or "just cover." Never imply the user is
+  scraping by or making a marginal call.
+- **Don't surface the platform's price point in value copy.** Convey that the
+  operator is getting their money's worth through outcomes and ROI language —
+  don't anchor the reader on the subscription cost (e.g. avoid "covers your
+  $349/mo"). The honesty doctrine still holds: ranges stay ranges, modeled stays
+  modeled — be optimistic, not overpromising.
+- Keep the doctrine's honesty intact while elevating the register: "a grounded
+  range, not a promise" is good; "even the low end covers your cost" is not.
 
 ## Conventions
 

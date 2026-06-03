@@ -3376,10 +3376,11 @@ function renderTimeBasisNote(opp) {
 const SKC_STATE = {
 
   // ─── 0. (v26 · Fixes 8 + 11) Demo state for role + pilot phase ──
-  //  viewer_role: 'gm' | 'owner' | 'both'  · controls which audience badges dim
+  //  viewer_role: LOCKED to 'owner' — the GM/Owner role switch was retired; the
+  //               product shows the Owner view only. (Was 'gm' | 'owner' | 'both'.)
   //  account_phase: 'pilot' | 'paying'     · controls Pilot expectations card on ROI Proof
   //  pilot_day: 0-30                       · for the Day 0/15/30 toggle
-  viewer_role:   'gm',
+  viewer_role:   'owner',
   account_phase: 'pilot',
   pilot_day:     15,
 
@@ -4170,6 +4171,25 @@ function toggleCG(id) {
 
 // ─── NAV ─────────────────────────────────────────────────
 let currentNavItem = null; // set on DOMContentLoaded
+
+// Remember the last-visited view so a page refresh resumes where the operator
+// left off instead of always landing on Home. Stored as {screen, sub, title}.
+// Wrapped in try/catch because localStorage can be unavailable (private mode,
+// some file:// contexts) — persistence is best-effort and never blocks nav.
+const SKC_LAST_VIEW_KEY = 'skc:lastView';
+function loadLastView() {
+  try {
+    const raw = localStorage.getItem(SKC_LAST_VIEW_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+function saveLastView(patch) {
+  try {
+    const cur = loadLastView() || {};
+    localStorage.setItem(SKC_LAST_VIEW_KEY, JSON.stringify(Object.assign(cur, patch)));
+  } catch (e) { /* storage unavailable — skip persistence */ }
+}
+
 function showScreen(id, navEl, title) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -4275,6 +4295,9 @@ function showScreen(id, navEl, title) {
     if (tp) tp.classList.remove('parent-active');
     document.querySelectorAll('#navTtChildren .nav-child').forEach(c => c.classList.remove('active'));
   }
+  // Persist this view for refresh-resume. sub:null clears any prior subpage;
+  // subpage screens immediately overwrite it via their own saveLastView call.
+  saveLastView({ screen: id, sub: null, title: displayTitle });
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -4739,24 +4762,20 @@ document.addEventListener('keydown', e => {
 });
 
 // ─── THEME ───────────────────────────────────────────────
-let light = false;
+let light = true;
 function toggleTheme() {
   light = !light;
   document.body.classList.toggle('light', light);
   document.querySelector('.theme-toggle').textContent = light ? '☾' : '☀';
 }
 
-// ── (Taya #1/#2/#6) Executive vs Expanded detail mode ──────────────
-// One top-level body class hides everything marked .skc-detail. Default is
-// Executive (set statically on <body> in index.html). No per-screen rebuild —
-// progressive disclosure via a single CSS class, exactly like the theme toggle.
-let skcMode = 'exec';
-function setSkcMode(mode) {
-  skcMode = (mode === 'expanded') ? 'expanded' : 'exec';
-  document.body.classList.toggle('skc-exec', skcMode === 'exec');
-  document.querySelectorAll('[data-skc-mode-btn]').forEach(b => {
-    b.classList.toggle('is-active', b.getAttribute('data-skc-mode-btn') === skcMode);
-  });
+// ── Detail mode — RETIRED, locked to Expanded ──────────────────────
+// The Executive/Expanded topbar toggle was removed: the product shows a single
+// fixed view. body never carries `skc-exec`, so everything marked .skc-detail
+// stays visible. Kept as a hard-locked no-op so any legacy caller can't re-hide
+// detail. (Was: Taya #1/#2/#6 progressive disclosure.)
+function setSkcMode() {
+  document.body.classList.remove('skc-exec'); // always Expanded
 }
 
 // ── (Taya #13) Today on-track / off-track status — stated threshold rule ──────
@@ -4776,18 +4795,14 @@ function renderTodayStatus(laborPct = 31.4, targetPct = 29.3, salesPacePct = 100
 }
 document.addEventListener('DOMContentLoaded', () => renderTodayStatus());
 
-// ── (User-view) GM ⇄ Owner role lens — primary axis is WHO you are ────────────
-// GM sees the daily decision + safety + who; Owner sees money saved / in testing /
-// available + whether it pays for itself. Drives body.skc-role-gm / .skc-role-owner;
-// .skc-gm-only / .skc-owner-only elements show/hide. Default GM (set on <body>).
-let skcRole = 'gm';
-function setSkcRole(role) {
-  skcRole = (role === 'owner') ? 'owner' : 'gm';
-  document.body.classList.toggle('skc-role-gm', skcRole === 'gm');
-  document.body.classList.toggle('skc-role-owner', skcRole === 'owner');
-  document.querySelectorAll('[data-skc-role-btn]').forEach(b => {
-    b.classList.toggle('is-active', b.getAttribute('data-skc-role-btn') === skcRole);
-  });
+// ── Role lens — RETIRED, locked to Owner ─────────────────────────────────────
+// The GM/Owner topbar toggle was removed: the product shows the Owner view only.
+// body carries `skc-role-owner` (set on <body> in index.html), so .skc-owner-only
+// shows and .skc-gm-only hides. Kept as a hard-locked no-op so any legacy caller
+// can't flip back to GM. (Was: the primary "who are you" axis.)
+function setSkcRole() {
+  document.body.classList.remove('skc-role-gm');
+  document.body.classList.add('skc-role-owner'); // always Owner
 }
 
 // ── (Consolidated Actions queue) The four lifecycle stages live in one
@@ -4824,6 +4839,268 @@ function renderTodayMonth(savedThisMonth, paidThisMonth) {
   if (note) note.textContent = '$' + savedThisMonth.toLocaleString() + ' saved · $' + paidThisMonth.toLocaleString() + ' you pay';
 }
 document.addEventListener('DOMContentLoaded', function () { try { renderTodayMonth(); } catch (e) {} });
+
+// ══════════════════════════════════════════════════════════════════════
+// (v33) TODAY — action-first daily checklist behavior.
+//
+// The page is a priority checklist of today's fixes. Each .td-item carries
+// its lifecycle state in data-state plus data-weekly ($/wk) and data-conf (%):
+//
+//   PENDING ──[Complete]──▶ MONITORING ··(backend · end-of-day data)··▶ VERIFIED
+//      ▲────────[Reopen]────────┘
+//
+// Verification is automatic: once end-of-day data is ingested the backend AI
+// confirms the fix saved money and flips MONITORING → VERIFIED. The user can
+// complete and reopen, but never marks a fix verified themselves.
+//
+// Complete unlocks only once every checklist step is done; "Automate" checks
+// the whole checklist off (design stub for a future automation service) and
+// grays out while there is nothing left to do. These states drive the per-row
+// gap gauge, the day-readiness meter, the money-at-stake bar, and the doctrine
+// output badge (via getOutputLabel). State flows data → render — presentation
+// never upgrades a type, and only VERIFIED counts toward ROI (green segment).
+// ══════════════════════════════════════════════════════════════════════
+
+// state → doctrine output-type key (see OUTPUT_TYPES / STATUS_TO_OUTPUT_TYPE)
+function tdStateToOutput(state) {
+  if (state === 'verified') return 'verified';
+  if (state === 'monitoring') return 'active_recovery';
+  return 'open_opportunity';   // pending (blocked is handled separately)
+}
+
+// doctrine badge for a row — reuses getOutputLabel(...).chip where possible
+function tdBadgeHtml(state, conf) {
+  if (state === 'blocked') {
+    return '<span class="output-chip" title="Blocked — a data source degraded; verification limited" ' +
+      'style="background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b)">BLOCKED</span>';
+  }
+  if (typeof getOutputLabel === 'function') {
+    return getOutputLabel(tdStateToOutput(state), conf != null ? conf : null).chip;
+  }
+  return '';
+}
+
+// Position the current-vs-target gap gauge from its data-attributes.
+// dir="up"  → higher is better (RPLH, margin): bad on the left up to the
+//             floor, good to the right. dir="down" → lower is better
+//             (ticket time): good on the left up to the target, bad to the right.
+function tdInitGauges() {
+  document.querySelectorAll('#screen-home .td-gauge').forEach(function (g) {
+    var min = parseFloat(g.dataset.min), max = parseFloat(g.dataset.max),
+        floor = parseFloat(g.dataset.floor), cur = parseFloat(g.dataset.current),
+        dir = g.dataset.dir || 'up';
+    if (!(max > min)) return;
+    var pct = function (v) { return Math.max(0, Math.min(100, (v - min) / (max - min) * 100)); };
+    var fp = pct(floor), cp = pct(cur);
+    var bad = g.querySelector('.dash-gauge-bad'),
+        good = g.querySelector('.dash-gauge-good'),
+        fl = g.querySelector('.dash-gauge-floor'),
+        mk = g.querySelector('.dash-gauge-mark');
+    if (!bad || !good || !fl || !mk) return;
+    if (dir === 'down') {            // lower is better
+      good.style.left = '0';  good.style.width = fp + '%';        good.style.borderRadius = '5px 0 0 5px';
+      bad.style.left = fp + '%'; bad.style.width = (100 - fp) + '%'; bad.style.borderRadius = '0 5px 5px 0';
+    } else {                         // higher is better
+      bad.style.left = '0';   bad.style.width = fp + '%';         bad.style.borderRadius = '5px 0 0 5px';
+      good.style.left = fp + '%'; good.style.width = (100 - fp) + '%'; good.style.borderRadius = '0 5px 5px 0';
+    }
+    fl.style.left = fp + '%';
+    mk.style.left = cp + '%';
+    var onGood = dir === 'down' ? (cur <= floor) : (cur >= floor);
+    mk.style.background = onGood ? 'var(--green)' : 'var(--red)';
+    mk.style.boxShadow = '0 0 0 1px ' + (onGood ? 'var(--green)' : 'var(--red)');
+  });
+}
+
+// How many of a row's playbook steps are checked.
+function tdStepStatus(item) {
+  var total = item.querySelectorAll('.td-step').length;
+  var done = item.querySelectorAll('.td-step.td-step-done').length;
+  return { done: done, total: total, all: total > 0 && done === total };
+}
+
+// Sync the per-row controls that depend on step progress + state:
+//   • progress counter ("2/3 done")
+//   • Automate — enabled only in PENDING and only while ≥1 step is unchecked
+//                (so checking everything manually grays it too; un-checking re-enables it)
+//   • Complete — enabled only in PENDING and only when every step is checked
+function tdSyncItemControls(item) {
+  var s = tdStepStatus(item);
+  var state = item.dataset.state || 'pending';
+  var prog = item.querySelector('.td-steps-prog');
+  if (prog) prog.textContent = s.done + '/' + s.total + ' done';
+  var auto = item.querySelector('.td-btn-automate');
+  if (auto) auto.disabled = (state !== 'pending') || s.all;
+  var comp = item.querySelector('.td-btn-complete');
+  if (comp) comp.disabled = (state !== 'pending') || !s.all;
+}
+
+// Apply a row's lifecycle state: doctrine badge, which controls are shown,
+// and the status note. Owner already shows in the row subtitle, so the CTA
+// is just a reversible Complete (pending) → Advance/Reopen (monitoring/verified).
+function tdApplyItemState(item) {
+  var state = item.dataset.state || 'pending';
+  var conf = item.dataset.conf ? parseInt(item.dataset.conf, 10) : null;
+  var badge = item.querySelector('[data-badge]');
+  if (badge) badge.innerHTML = tdBadgeHtml(state, conf);
+
+  var show = function (sel, on) {
+    var el = item.querySelector(sel);
+    if (el) el.hidden = !on;
+  };
+  show('.td-btn-complete', state === 'pending');
+  show('.td-btn-reopen', state === 'monitoring');   // reverse own Complete; verification is backend-only
+
+  var note = item.querySelector('.td-item-status-note');
+  if (note) {
+    if (state === 'monitoring') {
+      note.hidden = false; note.className = 'td-item-status-note is-mon';
+      note.textContent = '◐ ' + (item.dataset.monNote || 'In monitoring · not counted until guardrails pass');
+    } else if (state === 'verified') {
+      note.hidden = false; note.className = 'td-item-status-note is-ver';
+      note.textContent = '✓ Verified by SKC · counts toward your return';
+    } else if (state === 'blocked') {
+      note.hidden = false; note.className = 'td-item-status-note is-blk';
+      note.textContent = '⚠ Blocked — reconnect the source to resume';
+    } else {
+      note.hidden = true; note.className = 'td-item-status-note'; note.textContent = '';
+    }
+  }
+  tdSyncItemControls(item);
+}
+
+// Recompute the readiness meter + money-at-stake bar from every row's state.
+function tdRecompute() {
+  var items = Array.prototype.slice.call(document.querySelectorAll('#screen-home .td-item'));
+  if (!items.length) return;
+  var $done = 0, $assigned = 0, $open = 0, nDone = 0, nAssigned = 0;
+  items.forEach(function (it) {
+    var wk = parseFloat(it.dataset.weekly) || 0, st = it.dataset.state || 'open';
+    if (st === 'verified') { $done += wk; nDone++; }
+    else if (st === 'monitoring') { $assigned += wk; nAssigned++; }   // seg "assigned" renders as "In monitoring"
+    else { $open += wk; }                       // pending + blocked stay "still open"
+    tdApplyItemState(it);
+  });
+  var total = $done + $assigned + $open || 1;
+  var setW = function (seg, val) {
+    var el = document.querySelector('#tdStakeBar .dash-stack-seg[data-seg=' + seg + ']');
+    if (el) el.style.width = (val / total * 100) + '%';
+    var amt = document.querySelector('#tdStakeLegend [data-amt=' + seg + ']');
+    if (amt) amt.textContent = '$' + Math.round(val).toLocaleString();
+  };
+  setW('done', $done); setW('assigned', $assigned); setW('open', $open);
+  var totalEl = document.getElementById('tdStakeTotal');
+  if (totalEl) totalEl.textContent = '$' + Math.round(total).toLocaleString();
+
+  // readiness — "acted on" = assigned + verified
+  var handled = nDone + nAssigned, n = items.length;
+  var doneEl = document.getElementById('tdReadyDone'), totEl = document.getElementById('tdReadyTotal');
+  if (doneEl) doneEl.textContent = handled;
+  if (totEl) totEl.textContent = n;
+  var dots = document.getElementById('tdReadyDots');
+  if (dots) {
+    dots.innerHTML = '';
+    for (var i = 0; i < n; i++) {
+      var d = document.createElement('i');
+      d.className = 'td-dot' + (i < nDone ? ' is-done' : i < nDone + nAssigned ? ' is-assigned' : '');
+      dots.appendChild(d);
+    }
+  }
+  var note = document.getElementById('tdReadyNote');
+  if (note) {
+    note.textContent = handled === 0
+      ? 'Complete each fix to start its monitoring window before tonight.'
+      : handled < n
+        ? (handled + ' of ' + n + ' handled — complete the rest before service to protect tonight.')
+        : 'Every fix is handled. SKC is watching the monitoring windows now.';
+  }
+}
+
+// Expand / collapse a checklist row.
+function tdToggleRow(btn) {
+  var item = btn.closest('.td-item');
+  if (!item) return;
+  var open = item.classList.toggle('td-item-open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+// Check off a playbook step (manual). Locked once the fix leaves PENDING.
+function tdToggleStep(el) {
+  var item = el.closest('.td-item');
+  if (item && (item.dataset.state || 'pending') !== 'pending') return;   // steps lock after Complete
+  el.classList.toggle('td-step-done');
+  if (item) tdSyncItemControls(item);
+}
+
+// "Automate" — design stub for a future service that runs the checklist for
+// the user. For now it simply checks every step off, then grays out (nothing
+// left to automate). Only meaningful while the fix is still PENDING.
+function tdAutomate(btn) {
+  var item = btn.closest('.td-item');
+  if (!item || (item.dataset.state || 'pending') !== 'pending') return;
+  item.querySelectorAll('.td-step').forEach(function (s) { s.classList.add('td-step-done'); });
+  tdSyncItemControls(item);
+  if (typeof showDemoToast === 'function') showDemoToast('SKC automated the checklist');
+}
+
+// Complete — enabled only when every step is done. Closes the fix and moves
+// it into MONITORING (in place). Reversible via Reopen.
+function tdComplete(btn) {
+  var item = btn.closest('.td-item');
+  if (!item || !tdStepStatus(item).all) return;
+  item.dataset.state = 'monitoring';
+  tdApplyItemState(item);
+  tdRecompute();
+  if (typeof showDemoToast === 'function') showDemoToast('Completed · now monitoring tonight');
+}
+
+// Verification is NOT a user action — it happens in the backend once end-of-day
+// data is ingested and the AI confirms the fix saved money. This QA-only stub
+// simulates that ingestion: every fix currently in MONITORING flips to VERIFIED.
+function tdSimulateVerify() {
+  var changed = 0;
+  document.querySelectorAll('#screen-home .td-item').forEach(function (it) {
+    if (it.dataset.state === 'monitoring') { it.dataset.state = 'verified'; changed++; }
+  });
+  tdRecompute();
+  if (typeof showDemoToast === 'function') {
+    showDemoToast(changed
+      ? 'End-of-day data in — ' + changed + ' fix' + (changed > 1 ? 'es' : '') + ' verified'
+      : 'No fixes in monitoring to verify');
+  }
+}
+
+// Reopen — lets the user reverse their own Complete (monitoring → pending) if
+// they didn't actually finish. Verified is backend-confirmed and not reversible
+// from the UI, so Reopen is offered only while monitoring. Steps stay checked.
+function tdReopen(btn) {
+  var item = btn.closest('.td-item');
+  if (!item || item.dataset.state !== 'monitoring') return;
+  item.dataset.state = 'pending';
+  tdApplyItemState(item);
+  tdRecompute();
+}
+
+// QA-only: reset the whole day's checklist back to its starting state.
+function tdDemoReset() {
+  document.querySelectorAll('#screen-home .td-item').forEach(function (it) {
+    it.dataset.state = 'pending';
+    it.classList.remove('td-item-open');
+    var row = it.querySelector('.td-item-row');
+    if (row) row.setAttribute('aria-expanded', 'false');
+    it.querySelectorAll('.td-step.td-step-done').forEach(function (s) { s.classList.remove('td-step-done'); });
+  });
+  tdRecompute();
+}
+
+// Init — gauges + badges + header. Re-fired after fragments land (loader
+// re-queues DOMContentLoaded handlers), so the DOM is populated by now.
+function tdInitToday() {
+  if (!document.getElementById('tdList')) return;
+  tdInitGauges();
+  tdRecompute();
+}
+document.addEventListener('DOMContentLoaded', function () { try { tdInitToday(); } catch (e) {} });
 
 // ─── DRAWER ──────────────────────────────────────────────
 const drawerData = {
@@ -7399,13 +7676,14 @@ function qa(action) {
   if (action !== 'reset' && action !== 'tour') toggleQA();
 }
 
-// ── (v26 · Fix 8) Viewer role helpers ──────────────────────
-function setViewerRole(role) {
-  SKC_STATE.viewer_role = role;
-  document.body.classList.remove('skc-role-gm','skc-role-owner','skc-role-both');
-  document.body.classList.add('skc-role-' + role);
-  const labelMap = { gm:'GM view active · Owner badges dimmed', owner:'Owner view active · GM badges dimmed', both:'Both audiences shown (default)' };
-  showDemoToast('Role: ' + labelMap[role], role === 'gm' ? 'blue' : role === 'owner' ? 'green' : 'blue');
+// ── (v26 · Fix 8) Viewer role — RETIRED, locked to Owner ───────────────────
+// The role switch was removed; the product shows the Owner view only. This is a
+// hard-locked no-op (ignores its argument) so the QA panel or any legacy caller
+// can't flip the view back to GM/Both.
+function setViewerRole() {
+  SKC_STATE.viewer_role = 'owner';
+  document.body.classList.remove('skc-role-gm','skc-role-both');
+  document.body.classList.add('skc-role-owner');
 }
 
 // ── (v26 · Fix 11) Pilot phase helpers ─────────────────────
@@ -7440,10 +7718,13 @@ function renderPilotExpectations() {
   }
 }
 
-// ── (v26) Apply initial role + phase body classes on load ──
+// ── (v26) Apply initial phase body class on load + enforce the Owner lock ──
 (function applyInitialDemoClasses(){
   if (typeof SKC_STATE === 'undefined') return;
-  document.body.classList.add('skc-role-' + (SKC_STATE.viewer_role || 'gm'));
+  // Role is locked to Owner (the GM/Owner switch was retired). Strip any stray
+  // gm/both class and ensure skc-role-owner, regardless of state.
+  document.body.classList.remove('skc-role-gm','skc-role-both');
+  document.body.classList.add('skc-role-owner');
   document.body.classList.add('skc-phase-' + (SKC_STATE.account_phase || 'pilot'));
   // Defer render until DOM is ready
   if (document.readyState === 'loading') {

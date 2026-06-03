@@ -26,11 +26,21 @@
   <!-- Nav -->
   <div class="sb-nav-scroll">
 
+    <!-- ── HOME ────────────────────────────────────── -->
+    <div class="sb-group">
+      <div class="sb-group-label">Home</div>
+
+      <div class="nav-item active" onclick="showScreen('dashboard',this,'Home')">
+        <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Home
+      </div>
+    </div>
+
     <!-- ── OPERATE ─────────────────────────────────── -->
     <div class="sb-group">
       <div class="sb-group-label">Operate</div>
 
-      <div class="nav-item active" onclick="showScreen('home',this,'Today')">
+      <div class="nav-item" onclick="showScreen('home',this,'Today')">
         <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         Today
       </div>

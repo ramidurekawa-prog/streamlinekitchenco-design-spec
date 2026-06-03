@@ -1,15 +1,9 @@
     <span class="tb-title" id="tbTitle">Today</span>
     <div class="tb-right">
-      <!-- (User-view) GM vs Owner role lens — primary axis: who you are -->
-      <div class="tb-role" role="group" aria-label="View as">
-        <button type="button" class="tb-role-btn is-active" data-skc-role-btn="gm" onclick="setSkcRole('gm')" title="GM view — the daily decision, who owns it, is it safe">GM</button>
-        <button type="button" class="tb-role-btn" data-skc-role-btn="owner" onclick="setSkcRole('owner')" title="Owner view — money saved, in testing, available, and whether it pays for itself">Owner</button>
-      </div>
-      <!-- (Taya #1/#2/#6) Executive vs Expanded detail mode — hides .skc-detail -->
-      <div class="tb-mode" role="group" aria-label="Detail level">
-        <button type="button" class="tb-mode-btn is-active" data-skc-mode-btn="exec" onclick="setSkcMode('exec')" title="Executive — diagnosis, dollar impact, recommended action only">Executive</button>
-        <button type="button" class="tb-mode-btn" data-skc-mode-btn="expanded" onclick="setSkcMode('expanded')" title="Expanded — charts, breakdowns, supporting detail">Expanded</button>
-      </div>
+      <!-- Role lens (GM/Owner) and detail mode (Executive/Expanded) toggles were
+           removed: the product now shows a single fixed view — Owner + Expanded.
+           The lock lives on the body class in index.html (skc-role-owner, no
+           skc-exec); setSkcRole/setSkcMode in core.js are hard-locked no-ops. -->
       <div class="tb-health" onclick="showScreen('settings',null,'Data Quality')" title="Data Quality">
         <div class="tb-health-dot"></div>
         <span class="tb-health-label">Synced <span class="tb-health-time">4m ago</span></span>
@@ -20,5 +14,5 @@
       </button>
       <button class="btn btn-primary btn-sm" style="font-size:11.5px;padding:4px 12px" onclick="SKCDemoController.start()">▶ Demo</button>
       <button class="tb-icon-btn" id="qaToggleBtn" onclick="toggleQA()" title="Demo QA (Ctrl+Shift+D)">QA</button>
-      <button class="tb-icon-btn theme-toggle" onclick="toggleTheme()" title="Toggle theme">☀</button>
+      <button class="tb-icon-btn theme-toggle" onclick="toggleTheme()" title="Toggle theme">☾</button>
     </div>

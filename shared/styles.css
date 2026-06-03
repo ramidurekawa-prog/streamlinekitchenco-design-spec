@@ -14,6 +14,7 @@ input,select,textarea{font-family:inherit}
 
 /* ── TOKENS ─────────────────────────────────────────── */
 :root{
+  color-scheme:dark;
   --bg:#09090B;--surface:#111113;--card:#18181B;--hover:#1F1F23;
   --border:#27272A;--border-s:#3F3F46;
   --t1:#FAFAFA;--t2:#A1A1AA;--t3:#71717A;
@@ -26,6 +27,7 @@ input,select,textarea{font-family:inherit}
   --sw:210px;--th:52px;
 }
 .light{
+  color-scheme:light;
   --bg:#F7F8FA;--surface:#FFFFFF;--card:#FFFFFF;--hover:#F3F4F6;
   --border:#E5E7EB;--border-s:#D1D5DB;
   --t1:#111827;--t2:#6B7280;--t3:#9CA3AF;
@@ -4129,6 +4131,16 @@ details[open] .ac-playbook-summary::before{transform:rotate(90deg)}
   box-shadow:-8px 0 32px rgba(0,0,0,.35);
 }
 .ev-drawer.open{transform:translateX(0)}
+
+/* Off-screen right-edge drawers slide away via translateX(100%) but stay in the
+   render tree, so their leftward box-shadow (negative X offset) bleeds back into
+   the viewport's right edge. Invisible in dark mode; a black sliver in light mode.
+   Suppress the shadow while each drawer is closed — it reappears once open. */
+.ev-drawer:not(.open),
+.le-drawer:not(.le-drawer-open),
+.os-drawer:not(.os-open),
+.tt-drawer:not(.tt-open){box-shadow:none}
+
 .ev-summary-strip{
   display:grid;grid-template-columns:2fr 1fr 1fr;
   gap:0;border-bottom:1px solid var(--border);
@@ -7579,7 +7591,11 @@ body.skc-phase-paying .rp-pilot-card{display:none}
 /* === STYLE BLOCK 2 (source lines 13006-13398, mid-screens) === */
 #screen-operating-system{font-family:var(--sans)}
 
-/* ── (v26 · Fix 8) Global audience badges — used across all screens ─ */
+/* ── Audience badges — the redundant per-screen "GM view / Owner view / Both"
+   header pills were removed when the role lens was retired. These styles remain
+   for the only surviving use: the Operating System "Who uses what" matrix, where
+   GM/Owner are descriptive content, not a view indicator. (No role-dimming rule —
+   the view is locked to Owner, so dimming would just fade that real content.) ── */
 .aud-badge{
   display:inline-flex;align-items:center;gap:5px;
   font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
@@ -7589,9 +7605,6 @@ body.skc-phase-paying .rp-pilot-card{display:none}
 .aud-gm{background:var(--blue-d);color:var(--blue);border:1px solid var(--blue-b)}
 .aud-owner{background:var(--green-d);color:var(--green);border:1px solid var(--green-b)}
 .aud-both{background:rgba(161,161,170,.08);color:var(--t2);border:1px solid var(--border)}
-/* When the QA role override is in play, dim badges that don't match the current role */
-body.skc-role-gm    .aud-owner{opacity:.45}
-body.skc-role-owner .aud-gm{opacity:.45}
 
 /* ── (v26 · Fix 9) "What's live · what's roadmap" disclosure banner ─ */
 .os-disclosure-banner{
@@ -10799,17 +10812,12 @@ details.ev-card[open] .ev-card-chev{
 }
 
 /* ════════════════════════════════════════════════════════════════════
-   (Taya #1/#2/#6) Executive vs Expanded detail mode
-   One top-level class on <body> hides anything marked .skc-detail.
-   Default is Executive (body.skc-exec). Toggle lives in the topbar.
+   Detail mode — RETIRED. The Executive/Expanded toggle was removed; the view
+   is locked to Expanded (body never carries skc-exec). This rule is kept inert
+   so the .skc-detail authoring convention still has defined behavior if the
+   class is ever re-applied. The .tb-mode segmented control CSS was removed.
    ════════════════════════════════════════════════════════════════════ */
 body.skc-exec .skc-detail { display: none; }
-
-/* Topbar segmented mode control */
-.tb-mode { display:inline-flex; background:var(--hover); border:1px solid var(--border); border-radius:var(--r); padding:2px; gap:2px; flex-shrink:0; }
-.tb-mode-btn { background:transparent; border:none; cursor:pointer; font-size:11px; font-weight:500; color:var(--t3); padding:3px 9px; border-radius:4px; transition:all .15s; white-space:nowrap; }
-.tb-mode-btn:hover { color:var(--t1); }
-.tb-mode-btn.is-active { background:var(--card); color:var(--t1); box-shadow:0 1px 2px rgba(0,0,0,.15); }
 
 /* ════════════════════════════════════════════════════════════════════
    (Taya #13) Today on-track / off-track status banner
@@ -10901,12 +10909,12 @@ body.skc-exec .skc-detail { display: none; }
 .menu-alcohol-note { display:flex; align-items:center; gap:10px; margin-top:10px; padding:10px 14px; background:rgba(148,163,184,.10); border:1px solid rgba(148,163,184,.28); border-radius:var(--r); font-size:11px; color:var(--t2); line-height:1.5; }
 
 /* ════════════════════════════════════════════════════════════════════
-   (User-view) GM / Owner role lens — primary "who are you" axis
+   Role lens — RETIRED. The GM/Owner toggle was removed; the view is locked to
+   Owner (body.skc-role-owner, set in index.html). The first rule never matches
+   now and is kept only for symmetry; the second is load-bearing — it hides all
+   .skc-gm-only content under the locked Owner view. The .tb-role segmented
+   control CSS was removed.
    ════════════════════════════════════════════════════════════════════ */
-.tb-role { display:inline-flex; background:var(--hover); border:1px solid var(--border); border-radius:var(--r); padding:2px; gap:2px; flex-shrink:0; }
-.tb-role-btn { background:transparent; border:none; cursor:pointer; font-size:11px; font-weight:600; color:var(--t3); padding:3px 10px; border-radius:4px; transition:all .15s; white-space:nowrap; }
-.tb-role-btn:hover { color:var(--t1); }
-.tb-role-btn.is-active { background:var(--card); color:var(--t1); box-shadow:0 1px 2px rgba(0,0,0,.15); }
 body.skc-role-gm .skc-owner-only { display:none; }
 body.skc-role-owner .skc-gm-only { display:none; }
 
@@ -10956,3 +10964,339 @@ body.skc-role-owner .skc-gm-only { display:none; }
 .td-kpi-month-down { background:var(--red-d);   border-color:var(--red-b); }
 .td-kpi-testing    { background:var(--blue-d);  border-color:var(--blue-b); }
 .td-kpi-proj       { background:var(--amber-d); border-color:var(--amber-b); }
+
+/* ════════════════════════════════════════════════════════════════════
+   HOME DASHBOARD (screen-dashboard) — 6-metric landing surface.
+   Doctrine-quiet, 5-second read: big number first, small chart below,
+   colour-coded accent for instant good/bad triage. Static (does not
+   adapt to GM/Owner or Exec/Expanded toggles by design).
+   ════════════════════════════════════════════════════════════════════ */
+
+/* one-liner hero */
+.dash-hero{margin:0 0 22px}
+.dash-hero-eyebrow{font-size:11px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--t3);margin-bottom:8px}
+.dash-hero-headline{font-family:var(--display);font-size:34px;line-height:1.2;font-weight:700;letter-spacing:-.6px;color:var(--t1);max-width:820px}
+.dash-hl-green{color:var(--green)}
+.dash-hl-amber{color:var(--amber)}
+.dash-hero-sub{margin-top:8px;font-size:13px;color:var(--t2);max-width:680px;line-height:1.5}
+
+/* grid — 3 across, collapses to 2 then 1 */
+.dash-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:880px){.dash-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.dash-grid{grid-template-columns:1fr}}
+
+/* card shell */
+.dash-card{
+  position:relative;display:flex;flex-direction:column;
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:16px 16px 14px;cursor:pointer;overflow:hidden;
+  transition:border-color .14s,transform .14s,box-shadow .14s;
+}
+.dash-card:hover{border-color:var(--border-s);transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,0,0,.18)}
+.dash-card:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+/* left accent stripe — the instant good/bad signal */
+.dash-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.dash-accent-green::before{background:var(--green)}
+.dash-accent-amber::before{background:var(--amber)}
+.dash-accent-blue::before {background:var(--blue)}
+.dash-accent-red::before  {background:var(--red)}
+
+.dash-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.dash-card-label{font-size:11.5px;font-weight:600;letter-spacing:.01em;color:var(--t2);text-transform:uppercase;line-height:1.3}
+.dash-chip{font-size:9.5px;font-weight:600;font-family:var(--mono);padding:2px 6px;border-radius:9px;white-space:nowrap;flex-shrink:0;line-height:1.5}
+.dash-chip-green{background:var(--green-d);color:var(--green);border:1px solid var(--green-b)}
+.dash-chip-amber{background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b)}
+.dash-chip-blue {background:var(--blue-d); color:var(--blue); border:1px solid var(--blue-b)}
+.dash-chip-red  {background:var(--red-d);  color:var(--red);  border:1px solid var(--red-b)}
+
+/* the big number */
+.dash-num-row{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.dash-num{font-family:var(--display);font-size:38px;font-weight:700;letter-spacing:-1.2px;line-height:1;font-variant-numeric:tabular-nums}
+.dash-num-green{color:var(--green)}
+.dash-num-amber{color:var(--amber)}
+.dash-num-blue {color:var(--blue)}
+.dash-num-red  {color:var(--red)}
+.dash-num-sep{margin:0 1px;font-weight:500;color:var(--t3)}
+.dash-unit{font-size:12px;color:var(--t3);font-weight:500}
+
+/* generic viz wrapper — grows to fill the space the sub-caption used to take,
+   keeping its chart vertically centred in the card */
+.dash-viz{flex:1;display:flex;flex-direction:column;justify-content:center;margin-bottom:14px}
+.dash-viz-cap{margin-top:8px;font-size:10px;color:var(--t3)}
+
+/* (1) sparkline */
+.dash-spark{display:block;width:100%;height:72px}
+
+/* (2) stacked exposure bar */
+.dash-stack{display:flex;height:18px;border-radius:9px;overflow:hidden;background:var(--hover)}
+.dash-stack-seg{height:100%}
+.dash-stack-seg+.dash-stack-seg{border-left:1.5px solid var(--card)}
+.dash-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:12px}
+.dash-leg-item{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--t2);font-variant-numeric:tabular-nums}
+.dash-leg-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+
+/* (3) projection range band */
+.dash-range{position:relative;height:20px;border-radius:10px;background:var(--hover);margin-top:6px;margin-bottom:16px}
+.dash-range-band{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,var(--blue-b),var(--blue));border-radius:10px;opacity:.85}
+.dash-range-cost{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--t1);transform:translateX(-1px)}
+.dash-range-cap{position:absolute;top:25px;font-size:9.5px;color:var(--t2);white-space:nowrap;transform:translateX(-50%);font-variant-numeric:tabular-nums}
+.dash-range-cap-cost{color:var(--t1);font-weight:600}
+
+/* (4) RPLH gauge */
+.dash-gauge{position:relative;height:18px;border-radius:9px;overflow:visible;background:var(--hover)}
+.dash-gauge-bad{position:absolute;top:0;bottom:0;left:0;background:var(--red);opacity:.32;border-radius:9px 0 0 9px}
+.dash-gauge-good{position:absolute;top:0;bottom:0;background:var(--green);opacity:.32;border-radius:0 9px 9px 0}
+.dash-gauge-floor{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--t2);transform:translateX(-1px)}
+.dash-gauge-mark{position:absolute;top:50%;width:15px;height:15px;border-radius:50%;background:var(--red);border:2px solid var(--card);transform:translate(-50%,-50%);box-shadow:0 0 0 1px var(--red)}
+.dash-gauge-labels{display:flex;justify-content:space-between;margin-top:12px;font-size:10.5px;color:var(--t3);font-variant-numeric:tabular-nums}
+.dash-gauge-floor-lab{color:var(--t2)}
+
+/* (5) — table-turns card now reuses the stacked bar + legend (see card 2);
+   its old actual-vs-target bar styles were retired with the money redesign. */
+
+/* (6) portion-cost headroom — per-dish bullet bars on a shared CM axis.
+   Solid = current CM, amber = headroom up to the $8.75 threshold line. */
+.dash-pf{display:flex;flex-direction:column;gap:10px}
+.dash-pf-note{font-size:10.5px;color:var(--t2);line-height:1.35;margin-bottom:2px}
+.dash-pf-row{display:flex;flex-direction:column;gap:5px}
+.dash-pf-meta{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.dash-pf-name{font-size:11px;font-weight:600;color:var(--t1)}
+.dash-pf-cm-lab{font-size:9.5px;font-weight:500;color:var(--t3);margin-left:6px;font-variant-numeric:tabular-nums}
+.dash-pf-val{font-size:11.5px;font-weight:700;color:var(--amber);flex-shrink:0;font-variant-numeric:tabular-nums}
+.dash-pf-track{position:relative;height:11px;border-radius:6px;background:var(--hover)}
+.dash-pf-cm{position:absolute;left:0;top:0;bottom:0;background:var(--t3);opacity:.5;border-radius:6px 0 0 6px}
+.dash-pf-gap{position:absolute;top:0;bottom:0;background:var(--amber);opacity:.9}
+.dash-pf-line{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--t1);transform:translateX(-1px)}
+
+/* deep-link affordance */
+.dash-card-go{font-size:11.5px;font-weight:600;color:var(--t2);display:flex;align-items:center;gap:5px;margin-top:auto;padding-top:4px}
+.dash-card:hover .dash-card-go{color:var(--t1)}
+.dash-go-arrow{transition:transform .14s}
+.dash-card:hover .dash-go-arrow{transform:translateX(3px)}
+
+/* footer doctrine line */
+.dash-foot{margin-top:18px;font-size:11px;color:var(--t3);line-height:1.5;text-align:center}
+.dash-foot strong{color:var(--t2);font-weight:600}
+
+/* ══════════════════════════════════════════════════════════════════════
+   TODAY — action-first daily operate surface (v33 revamp)
+   A priority checklist where each row carries a current-vs-target gap
+   gauge, framed by a day-readiness + money-at-stake header and a
+   multi-day monitoring strip. Refined-utilitarian: calm neutral surface,
+   monospaced numerals, doctrine colors as sharp accents. Reuses
+   .dash-gauge (gap bars) and .dash-stack (at-stake bar).
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* staggered load reveal — one orchestrated entrance, scoped to the screen */
+@keyframes tdRise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#screen-home.active .td-day,
+#screen-home.active .td-list .td-group,
+#screen-home.active .td-watch,
+#screen-home.active .td-third-fold{animation:tdRise .42s cubic-bezier(.2,.7,.2,1) both}
+#screen-home.active .td-list .td-group:nth-child(1){animation-delay:.06s}
+#screen-home.active .td-list .td-group:nth-child(2){animation-delay:.12s}
+#screen-home.active .td-watch{animation-delay:.16s}
+#screen-home.active .td-third-fold{animation-delay:.2s}
+@media(prefers-reduced-motion:reduce){
+  #screen-home.active .td-day,#screen-home.active .td-list .td-group,
+  #screen-home.active .td-watch,#screen-home.active .td-third-fold{animation:none}
+}
+
+/* ── 1 · DAY HEADER ─────────────────────────────────────────── */
+.td-day{padding:28px 0 0;margin-bottom:26px;border-bottom:1px solid var(--border);padding-bottom:26px}
+.td-day-top{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:22px}
+.td-day-eyebrow{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);margin-bottom:10px}
+.td-day-title{font-size:34px;font-weight:800;color:var(--t1);line-height:1.08;letter-spacing:-.8px;margin:0 0 10px}
+.td-day-sub{font-size:15px;font-weight:500;color:var(--t2);margin:0 0 12px;line-height:1.4}
+.td-day-momentum{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--t3);line-height:1.4}
+.td-day-momentum-amt{color:var(--green);font-weight:700;font-family:var(--mono)}
+.td-day-chk{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--green-d);border:1px solid var(--green-b);color:var(--green);font-size:10px;font-weight:700;flex-shrink:0}
+
+/* countdown clock */
+.td-clock{flex-shrink:0;text-align:right;background:var(--red-d);border:1px solid var(--red-b);border-radius:var(--r-lg);padding:12px 18px;min-width:150px}
+.td-clock-k{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:4px}
+.td-clock-v{font-size:26px;font-weight:700;font-family:var(--mono);color:var(--red);line-height:1}
+.td-clock-note{font-size:10.5px;color:var(--t3);margin-top:5px}
+
+/* readiness + stake grid */
+.td-day-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:16px}
+.td-ready,.td-stake{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 20px}
+.td-ready-head,.td-stake-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:14px}
+.td-ready-k,.td-stake-k{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3)}
+.td-ready-count{font-size:13px;color:var(--t2);font-variant-numeric:tabular-nums}
+.td-ready-count strong{font-size:18px;color:var(--t1);font-family:var(--mono)}
+.td-ready-dots{display:flex;gap:8px;margin-bottom:12px}
+.td-dot{width:100%;height:8px;border-radius:5px;background:var(--hover);border:1px solid var(--border);transition:background .25s,border-color .25s}
+.td-dot.is-assigned{background:var(--blue);border-color:var(--blue)}
+.td-dot.is-done{background:var(--green);border-color:var(--green)}
+.td-ready-note{font-size:11.5px;color:var(--t3);line-height:1.45}
+
+.td-stake-v{font-size:24px;font-weight:700;font-family:var(--mono);color:var(--t1);line-height:1}
+.td-stake-per{font-size:13px;font-weight:500;color:var(--t2)}
+.td-stake-bar{margin-bottom:0}
+.td-stake-bar .dash-stack-seg[data-seg=done]{background:var(--green)}
+.td-stake-bar .dash-stack-seg[data-seg=assigned]{background:var(--blue)}
+.td-stake-bar .dash-stack-seg[data-seg=open]{background:var(--amber)}
+.td-stake-legend .dash-leg-dot[data-seg=done]{background:var(--green)}
+.td-stake-legend .dash-leg-dot[data-seg=assigned]{background:var(--blue)}
+.td-stake-legend .dash-leg-dot[data-seg=open]{background:var(--amber)}
+.td-stake-legend b{font-family:var(--mono);color:var(--t1);font-weight:700}
+.td-stake-foot{font-size:10.5px;color:var(--t3);line-height:1.45;margin-top:12px;padding-top:11px;border-top:1px solid var(--border)}
+
+/* ── 2 · CHECKLIST ──────────────────────────────────────────── */
+.td-list{display:flex;flex-direction:column;gap:22px;margin-bottom:26px}
+.td-group{display:flex;flex-direction:column;gap:10px}
+.td-group-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:0 2px}
+.td-group-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--t2)}
+.td-group-meta{font-size:11px;color:var(--t3)}
+.td-group-peek{opacity:.92}
+
+.td-item{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--border-s);border-radius:var(--r-lg);overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.td-item:hover{border-color:var(--border-s);box-shadow:0 1px 0 var(--border)}
+.td-item-urgent{border-left-color:var(--red)}
+.td-item[data-state=assigned],.td-item[data-state=monitoring]{border-left-color:var(--blue)}
+.td-item[data-state=verified]{border-left-color:var(--green)}
+.td-item[data-state=blocked]{border-left-color:var(--amber)}
+
+.td-item-row{width:100%;display:grid;grid-template-columns:26px minmax(0,1fr) minmax(160px,220px) auto;gap:18px;align-items:center;padding:16px 18px;background:none;border:0;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.td-item-row:hover{background:var(--hover)}
+
+/* state glyph */
+.td-item-state{display:flex;align-items:center;justify-content:center}
+.td-state-ic{width:18px;height:18px;border-radius:50%;border:2px solid var(--t3);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+.td-item-urgent .td-state-ic{border-color:var(--red)}
+.td-item[data-state=assigned] .td-state-ic,.td-item[data-state=monitoring] .td-state-ic{border-color:var(--blue);background:radial-gradient(circle at 50% 50%,var(--blue) 0 55%,transparent 56%)}
+.td-item[data-state=verified] .td-state-ic{border-color:var(--green);background:var(--green)}
+.td-item[data-state=verified] .td-state-ic::after{content:"✓";color:#fff;font-size:11px;font-weight:800;line-height:1}
+.td-item[data-state=blocked] .td-state-ic{border-color:var(--amber)}
+.td-item[data-state=blocked] .td-state-ic::after{content:"!";color:var(--amber);font-size:12px;font-weight:800;line-height:1}
+
+/* main column */
+.td-item-main{min-width:0}
+.td-item-title{display:block;font-size:15.5px;font-weight:700;color:var(--t1);line-height:1.3;letter-spacing:-.2px;margin-bottom:7px}
+.td-item[data-state=verified] .td-item-title,.td-item[data-state=monitoring] .td-item-title{text-decoration:line-through;text-decoration-color:var(--border-s);color:var(--t2)}
+.td-item-tags{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--t3)}
+.td-item-loc{color:var(--t3)}
+.td-item-due{color:var(--t2)}
+.td-item-due.td-due{color:var(--red);font-weight:600}
+.td-item-owner{color:var(--t3)}
+.td-item-owner strong{color:var(--t2);font-weight:600}
+
+/* gauge column */
+.td-item-gauge{display:flex;flex-direction:column;gap:6px;min-width:0}
+.td-gauge{height:9px;border-radius:5px}
+.td-gauge .dash-gauge-floor{top:-3px;bottom:-3px}
+.td-gauge .dash-gauge-mark{width:13px;height:13px;border-width:2px}
+.td-gauge-cap{font-size:10px;color:var(--t3);font-variant-numeric:tabular-nums;line-height:1.3}
+.td-gauge-cap b{font-family:var(--mono);color:var(--t2);font-weight:700}
+
+/* money column */
+.td-item-money{display:flex;align-items:center;gap:12px;justify-self:end}
+.td-item-amtwrap{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.td-item-amt{font-size:21px;font-weight:700;font-family:var(--mono);color:var(--amber);line-height:1;white-space:nowrap}
+.td-item-amt span{font-size:12px;font-weight:500;color:var(--t3)}
+.td-item-amt-sub{font-size:10px;color:var(--t3);font-family:var(--mono);font-weight:600;white-space:nowrap}
+.td-item[data-state=verified] .td-item-amt{color:var(--green)}
+.td-item-chevron{font-size:18px;color:var(--t3);transition:transform .2s;line-height:1}
+.td-item-open .td-item-chevron{transform:rotate(180deg)}
+
+/* expandable detail */
+.td-item-detail{display:none;padding:4px 18px 18px;border-top:1px solid var(--border);background:var(--surface)}
+.td-item-open .td-item-detail{display:block}
+.td-detail-grid{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:24px;padding-top:16px}
+.td-detail-reason{font-size:13px;color:var(--t2);line-height:1.6;margin:0 0 16px}
+.td-detail-reason strong{color:var(--t1);font-weight:700}
+
+/* checkable playbook steps */
+.td-steps{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:14px}
+.td-steps-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--t3);margin-bottom:10px}
+.td-steps-prog{font-family:var(--mono);color:var(--t2);font-weight:700;letter-spacing:0;text-transform:none}
+.td-steps-right{display:flex;align-items:center;gap:10px}
+.td-btn-automate{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;letter-spacing:.02em;text-transform:none;color:var(--blue);background:var(--blue-d);border:1px solid var(--blue-b);border-radius:999px;padding:4px 10px;cursor:pointer;transition:filter .15s,opacity .15s}
+.td-btn-automate:hover:not(:disabled){filter:brightness(1.06)}
+.td-btn-automate:disabled{opacity:.5;cursor:default;color:var(--t3);background:var(--hover);border-color:var(--border)}
+.td-btn-automate svg{flex-shrink:0}
+.td-step{display:flex;align-items:flex-start;gap:10px;width:100%;text-align:left;background:none;border:0;padding:7px 0;font:inherit;font-size:12.5px;color:var(--t2);cursor:pointer;line-height:1.45;border-top:1px solid var(--border)}
+.td-step:first-of-type{border-top:0}
+.td-step:hover{color:var(--t1)}
+.td-step-box{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border-s);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:background .15s,border-color .15s}
+.td-step-done .td-step-box{background:var(--green);border-color:var(--green)}
+.td-step-done .td-step-box::after{content:"✓";color:#fff;font-size:11px;font-weight:800;line-height:1}
+.td-step-done{color:var(--t3);text-decoration:line-through;text-decoration-color:var(--border-s)}
+
+/* secondary lever (portion-before-price fallback) */
+.td-fallback{display:flex;gap:8px;flex-wrap:wrap;align-items:baseline;background:var(--hover);border:1px dashed var(--border-s);border-radius:var(--r);padding:9px 12px;margin-bottom:14px}
+.td-fallback-k{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--t2);flex-shrink:0}
+.td-fallback-b{font-size:11.5px;color:var(--t3);line-height:1.45}
+
+.td-detail-conf{margin-bottom:0}
+
+/* detail side value panel */
+.td-detail-side{display:flex;flex-direction:column}
+.td-detail-value{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;text-align:right}
+.td-detail-value-k{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);margin-bottom:5px}
+.td-detail-value-v{font-size:32px;font-weight:700;font-family:var(--mono);color:var(--amber);line-height:1}
+.td-detail-value-v span{font-size:13px;font-weight:500;color:var(--t3)}
+.td-detail-value-b{font-size:10.5px;color:var(--t3);font-family:var(--mono);margin-top:6px;line-height:1.4}
+.td-detail-value-roi{font-size:10px;font-weight:600;color:var(--amber);margin-top:7px;letter-spacing:.02em}
+
+/* CTAs */
+.td-item-cta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:16px}
+.td-item-cta .btn-primary{font-size:13px;padding:9px 18px}
+/* the [hidden] attribute must beat .btn's display:inline-flex */
+.td-item-cta [hidden]{display:none}
+.td-item-status-note{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;line-height:1.4}
+.td-item-status-note.is-mon{color:var(--blue)}
+.td-item-status-note.is-ver{color:var(--green)}
+.td-item-status-note.is-blk{color:var(--amber)}
+.td-btn-complete:disabled{opacity:.5;cursor:not-allowed}
+.td-item:not([data-state=pending]) .td-item-due{display:none}
+
+/* ── 3 · WATCHING (monitoring strip) ────────────────────────── */
+.td-watch{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px 20px 14px;margin-bottom:26px}
+.td-watch-head{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
+.td-watch-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--t2)}
+.td-watch-meta{font-size:11px;color:var(--t3)}
+.td-watch-scale{display:grid;grid-template-columns:200px 1fr;gap:16px;margin-bottom:10px}
+.td-watch-spacer{display:block}
+.td-watch-days{display:grid;grid-template-columns:repeat(6,1fr)}
+.td-watch-day{font-size:10px;color:var(--t3);text-align:center;font-variant-numeric:tabular-nums;position:relative;padding-bottom:2px}
+.td-watch-day.is-now{color:var(--t1);font-weight:700}
+.td-watch-day i{display:block;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--blue);font-style:normal;margin-top:1px}
+.td-watch-row{display:grid;grid-template-columns:200px 1fr;gap:16px;align-items:center;padding:9px 0;border-top:1px solid var(--border)}
+.td-watch-label{min-width:0}
+.td-watch-name{font-size:12.5px;font-weight:600;color:var(--t1);line-height:1.3;margin-bottom:3px}
+.td-watch-sub{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:10.5px;color:var(--t3)}
+.td-watch-prog-k{font-family:var(--mono);color:var(--t2);font-weight:600}
+.td-watch-ok{color:var(--green);font-weight:600}
+.td-watch-toward{color:var(--blue);font-weight:600}
+.td-watch-track{position:relative;height:22px;display:flex;align-items:center}
+.td-watch-bar{position:relative;flex:1;height:8px;border-radius:5px;background:var(--hover);overflow:hidden}
+.td-watch-bar>span{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--blue-b),var(--blue));opacity:.8;border-radius:5px}
+.td-watch-now-line{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--blue);transform:translateX(-1px);z-index:2}
+.td-watch-now-line::after{content:"";position:absolute;top:-3px;left:50%;width:7px;height:7px;border-radius:50%;background:var(--blue);transform:translateX(-50%);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 22%,transparent)}
+.td-watch-flag{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:9.5px;font-weight:600;color:var(--amber);white-space:nowrap;display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1}
+.td-watch-flag i{font-style:normal;font-size:11px}
+.td-watch-flag-soft{color:var(--t3)}
+.td-watch-amt{margin-left:14px;font-size:13px;font-weight:700;font-family:var(--mono);color:var(--blue);flex-shrink:0;white-space:nowrap}
+.td-watch-foot{font-size:10.5px;color:var(--t3);line-height:1.45;margin-top:12px;padding-top:11px;border-top:1px solid var(--border)}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media(max-width:860px){
+  .td-day-title{font-size:28px}
+  .td-day-grid{grid-template-columns:1fr}
+  .td-item-row{grid-template-columns:22px minmax(0,1fr) auto;gap:12px}
+  .td-item-gauge{grid-column:2 / -1;order:3;flex-direction:row;align-items:center;gap:10px;margin-top:4px}
+  .td-gauge{flex:1}
+  .td-detail-grid{grid-template-columns:1fr}
+  .td-detail-value{text-align:left}
+  .td-watch-scale,.td-watch-row{grid-template-columns:1fr}
+  .td-watch-scale .td-watch-spacer{display:none}
+  .td-watch-label{margin-bottom:6px}
+}
+@media(max-width:560px){
+  .td-day-top{flex-direction:column}
+  .td-clock{text-align:left;align-self:stretch}
+  .td-item-money{flex-direction:row-reverse;gap:8px}
+  .td-item-amt{font-size:18px}
+}

@@ -8,7 +8,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared/styles.css?v=3">
 </head>
-<body class="skc-exec skc-role-gm">
+<!-- View is locked to Owner + Expanded (role/mode toggles removed):
+     skc-role-owner shows .skc-owner-only and hides .skc-gm-only; the absence of
+     skc-exec keeps all .skc-detail content visible (Expanded). -->
+<body class="skc-role-owner light">
 
   <!-- Overlays, drawers, modals, ask panel — fetched by loader -->
   <div id="layout-drawers"></div>

@@ -36,12 +36,13 @@
     ['components/drawers.html',   'layout-drawers',   'replace'],
   ];
 
-  // 13 screens — note that screen-config (the "Settings/workspace" page)
+  // 14 screens — note that screen-config (the "Settings/workspace" page)
   // is genuinely nested inside screen-settings (the "Data Quality" page)
   // in the source HTML, so it ships as part of screens/settings.html and
-  // doesn't get its own fragment.
+  // doesn't get its own fragment. home-dashboard.html holds screen-dashboard,
+  // the Home landing surface (distinct from screen-home, which is Today).
   const SCREENS = [
-    'today', 'profit-recovery', 'actions', 'action-detail',
+    'home-dashboard', 'today', 'profit-recovery', 'actions', 'action-detail',
     'recovery-detail', 'labor-efficiency', 'roi-proof', 'reports',
     'operating-system', 'settings', 'menu-optimization',
     'kitchen-speed', 'table-turns',
@@ -126,10 +127,33 @@
       }
     }
 
-    // 5) Route to the default screen.
+    // 5) Route to the last-visited view (refresh-resume), falling back to the
+    //    Home dashboard. saveLastView/loadLastView live in core.js; the four
+    //    subpage screens replay through their own controller so the correct
+    //    child subpage and nav highlight are restored, not just the parent.
     if (typeof showScreen === 'function') {
-      try { showScreen('home'); }
-      catch (err) { console.warn('[loader] showScreen(home) threw:', err); }
+      const last = (typeof loadLastView === 'function') ? loadLastView() : null;
+      const SUBPAGE_FNS = {
+        'menu':             'showMenuSubpage',
+        'actions':          'showActionsSubpage',
+        'labor-efficiency': 'showLaborSubpage',
+        'table-turns':      'showTtSubpage',
+      };
+      try {
+        if (last && last.screen && document.getElementById('screen-' + last.screen)) {
+          const subFn = SUBPAGE_FNS[last.screen];
+          if (last.sub && subFn && typeof window[subFn] === 'function') {
+            window[subFn](last.sub);
+          } else {
+            showScreen(last.screen, null, last.title);
+          }
+        } else {
+          showScreen('dashboard', null, 'Home');
+        }
+      } catch (err) {
+        console.warn('[loader] restore failed, defaulting to Home:', err);
+        try { showScreen('dashboard', null, 'Home'); } catch (e2) {}
+      }
     }
   }
 

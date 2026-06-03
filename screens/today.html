@@ -1,317 +1,899 @@
-  <div class="screen active" id="screen-home">
-    <div id="preBaselineBanner" class="pbb">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <div class="pbb-left">
-        <div class="pbb-title">Building your baseline — <span id="baselineDaysRemaining">11</span> days to first recommendations</div>
-        <div class="pbb-body">SKC needs 14 days of data before it can detect leaks. In the meantime, your KPIs are shown against industry benchmarks. <span style="color:var(--t3)">[INDUSTRY BENCHMARK]</span></div>
+<div class="screen active" id="screen-home">
+  <div id="preBaselineBanner" class="pbb">
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--blue)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      style="flex-shrink: 0"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="8" x2="12" y2="12" />
+      <line x1="12" y1="16" x2="12.01" y2="16" />
+    </svg>
+    <div class="pbb-left">
+      <div class="pbb-title">
+        Building your baseline — <span id="baselineDaysRemaining">11</span> days
+        to first recommendations
       </div>
-      <div class="pbb-right">
-        <div class="pbb-bar-track">
-          <div class="pbb-bar-fill"></div>
-        </div>
-        <div class="pbb-day">Day 3 of 14</div>
-      </div>
-    </div>
-
-    <!-- DQ banner — only for true blocked source failures -->
-    <div id="dq-today-banner" style="display:none;margin:0 0 16px"></div>
-
-    <!-- (v28) Today-page DQ banner removed by request — DQ surface remains on Data Quality screen -->
-
-    <!-- (Fix 1) SKC Trust onboarding overlay — replaces home content when active -->
-    <div id="skc-tr-onboarding"></div>
-
-    <!-- ══ TAB: PRIORITY ══════════════════════════════════════ -->
-
-    <!-- ══ FIRST FOLD ══════════════════════════════════════════════ -->
-    <div class="td-first-fold">
-
-      <!-- (User-view) Owner money summary — shows in Owner role only -->
-      <div class="td-owner-summary skc-owner-only">
-        <div class="td-os-eyebrow">Rosewood Group · 4 restaurants · this week</div>
-        <div class="td-os-row">
-          <div class="td-os-cell td-os-proven"><div class="td-os-v">$97<span>/wk</span></div><div class="td-os-k">Proven saved</div></div>
-          <div class="td-os-cell"><div class="td-os-v">$189<span>/wk</span></div><div class="td-os-k">Fix in testing</div></div>
-          <div class="td-os-cell"><div class="td-os-v">$1,243<span>/wk</span></div><div class="td-os-k">Still on the table</div></div>
-          <div class="td-os-cell"><div class="td-os-v">1.2×</div><div class="td-os-k">Covers your $349/mo</div></div>
-        </div>
-        <div class="td-os-foot">Your GM has 1 fix ready to assign today. <button class="btn btn-ghost btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">See the proof →</button></div>
-      </div>
-
-      <!-- (Taya #13) Big on-track / off-track status — driven by a stated threshold rule.
-           Rule: ON TRACK when projected labor % <= peer target (29.3%) AND sales pace >= plan;
-           OFF TRACK if either breaches. Today: labor +2.1 pts over target -> off track.
-           Markup defaults to the computed (off) state; renderTodayStatus() makes it data-driven. -->
-      <div class="td-status td-status-off skc-gm-only" id="todayStatus" role="status">
-        <div class="td-status-dot"></div>
-        <div class="td-status-body">
-          <div class="td-status-headline">Off track today</div>
-          <div class="td-status-sub">You're staffed heavier than tonight's sales pace supports. <strong>The fix below puts you back on track and saves about $370/wk.</strong><span class="skc-detail"> Off track = projected labor % above your 29.3% target, or sales pace below plan.</span></div>
-        </div>
-        <div class="td-status-metric">
-          <div class="td-status-metric-v">31.4%</div>
-          <div class="td-status-metric-k">labor · target 29.3%</div>
-        </div>
-      </div>
-
-      <!-- Hero: action-first, spacious, doctrine-quiet -->
-      <div class="td-hero">
-        <div class="td-hero-meta">Rosewood Group · Tuesday, May 19 · <span class="aud-badge aud-gm" title="Today is the GM's daily decision surface">GM view</span> · <span style="color:var(--amber);font-weight:600">1 decision ready</span></div>
-        <h1 class="td-hero-headline">Today's highest-value recovery decision is ready.</h1>
-        <p class="td-hero-sub">SKC found 1 profit recovery decision today.</p>
-        <p class="td-hero-doctrine">Toast records what happened. SKC decides what to fix and proves whether it worked.</p>
-      </div>
-
-      <!-- Primary decision card -->
-      <div class="td-card" id="demo-target-today-priority">
-
-        <!-- Card header: category + location -->
-        <div class="td-card-header">
-          <div class="td-card-flag">
-            <span class="td-flag-dot"></span>
-            <span class="td-flag-label">Priority Action</span>
-          </div>
-          <div class="td-card-loc">Oakland · Tuesday Dinner · Labor</div>
-        </div>
-
-        <!-- Card body: decision + value -->
-        <div class="td-card-body">
-
-          <!-- Left: decision -->
-          <div class="td-card-left">
-            <div class="td-decision">Remove one 5&ndash;10 PM FOH server from Oakland Tuesday dinner.</div>
-            <div class="td-reason">Sales haven't kept up with the staffing for 6 Tuesday dinners running — you're paying for hours the volume doesn't support.</div>
-
-            <!-- Owner + due -->
-            <div class="td-meta-row">
-              <span class="td-meta-item">Owner: <strong>Sarah C.</strong></span>
-              <span class="td-meta-sep">·</span>
-              <span class="td-meta-item td-due">Due before 3 PM</span>
-            </div>
-
-            <!-- Confidence strip -->
-            <div class="td-conf-strip">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              <span class="td-conf-val" data-skc="conf-labor">78%</span> confidence
-              <span class="td-conf-sep">·</span>
-              <span class="td-conf-note">scheduling data is ~18h old, so the exact dollars aren't locked yet</span>
-              <span class="td-conf-sep">·</span>
-              <span class="td-conf-action">safe to act now</span>
-            </div>
-
-            <!-- CTAs -->
-            <div class="td-cta-row">
-              <button class="btn btn-primary td-btn-primary" onclick="openCA('leak1')">Assign before 3 PM</button>
-              <button class="btn btn-secondary td-btn-secondary" onclick="openEvDrawer('leak1')">See full math</button>
-              <button class="ask-why-btn" onclick="askPanelQ('Why is this today\'s top priority?')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Ask SKC why</button>
-            </div>
-          </div>
-
-          <!-- Right: value -->
-          <div class="td-card-right">
-            <div class="td-value-label">Money on the table this week</div>
-            <div class="td-value-main">$370<span class="td-value-period">/wk</span></div>
-            <div class="td-value-basis">$185 a service · 2 services a week</div>
-            <div class="td-value-roi">Estimate — not proven yet</div>
-          </div>
-
-        </div><!-- /td-card-body -->
-
-        <!-- Compact proof strip: pattern + confidence only -->
-        <!-- (Taya #1/#2) supporting detail — first-pass .skc-detail tag for Ramidu review -->
-        <div class="td-proof-strip skc-detail">
-          <div class="td-proof-item">
-            <span class="td-proof-label">Pattern</span>
-            <span class="td-proof-val">6 of 6 comparable services</span>
-          </div>
-          <div class="td-proof-div"></div>
-          <div class="td-proof-item">
-            <span class="td-proof-label">Confidence</span>
-            <span class="td-proof-val"><span data-skc="conf-labor">78%</span></span>
-          </div>
-          <div class="td-proof-div"></div>
-          <div class="td-proof-item td-proof-warn">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
-            <span>7shifts stale · verification limited</span>
-          </div>
-        </div>
-
-      </div><!-- /td-card -->
-
-    </div><!-- /td-first-fold -->
-
-    <!-- ══ POST-ACTION STATES ════════════════════════════════════════ -->
-    <!-- State: Not Assigned (pre-assign hint) -->
-    <div id="home-pre-assign-hint" class="today-state-panel today-state-pre">
-      <strong>No actions assigned yet.</strong> Assign this action before tonight's service to start the monitoring window.
-    </div>
-
-    <!-- State: Assigned -->
-    <div id="home-action-state" class="today-state-panel today-state-assigned" style="display:none">
-      <div class="today-state-eyebrow">Action Assigned</div>
-      <div class="today-state-headline" id="home-state-headline">Today's priority is assigned. Sarah owns this.</div>
-      <div class="today-state-body" id="home-state-body">Due before 3 PM · SKC will monitor tonight's dinner service · Next checkpoint: 8:30 PM</div>
-      <div class="today-state-ctas">
-        <button class="btn btn-primary btn-sm" onclick="showScreen('actions',null,'Actions')">View execution workflow</button>
-        <button class="btn btn-secondary btn-sm" onclick="switchTab('recovery','guardrails');showScreen('leaks',null,'Profit Recovery')">Show guardrails</button>
-        <span class="today-state-badge today-badge-blue">Assigned</span>
-        <span class="today-state-badge today-badge-amber">Not counted yet</span>
+      <div class="pbb-body">
+        SKC needs 14 days of data before it can detect leaks. In the meantime,
+        your KPIs are shown against industry benchmarks.
+        <span style="color: var(--t3)">[INDUSTRY BENCHMARK]</span>
       </div>
     </div>
-
-    <!-- State: Monitoring -->
-    <div id="home-monitoring-state" class="today-state-panel today-state-monitoring" style="display:none">
-      <div class="today-state-eyebrow">Monitoring · Dinner service in progress</div>
-      <div class="today-state-headline">Dinner service complete. Waiting for Toast + labor sync.</div>
-      <div class="today-state-body">Guardrails under review — RPLH, table turns, avg check, and ticket time checked against thresholds.</div>
-      <div class="today-state-ctas">
-        <span class="today-state-badge today-badge-blue">Monitoring</span>
-        <span class="today-state-badge today-badge-amber">Active Recovery · not counted yet</span>
+    <div class="pbb-right">
+      <div class="pbb-bar-track">
+        <div class="pbb-bar-fill"></div>
       </div>
+      <div class="pbb-day">Day 3 of 14</div>
     </div>
-
-    <!-- State: Verified -->
-    <div id="home-verified-state" class="today-state-panel today-state-verified" style="display:none">
-      <div class="today-state-eyebrow">Verified Savings</div>
-      <div class="today-state-headline">This action counted as Verified Savings after guardrails passed.</div>
-      <div class="today-state-body">All counter-metrics held across the monitoring window.</div>
-      <div class="today-state-ctas">
-        <button class="btn btn-primary btn-sm" onclick="showScreen('scorecard',null,'ROI Proof')">View verified proof</button>
-        <span class="today-state-badge today-badge-green">Verified</span>
-        <span class="today-state-badge today-badge-green">Counts toward ROI</span>
-      </div>
-    </div>
-
-    <!-- State: Rejected -->
-    <div id="home-rejected-state" class="today-state-panel today-state-rejected" style="display:none">
-      <div class="today-state-eyebrow">Guardrail Failed · Not Counted</div>
-      <div class="today-state-headline">RPLH improved, but dining duration exceeded guardrail. Not counted in ROI.</div>
-      <div class="today-state-body">SKC does not count this as a win unless all counter-metrics stay within guardrail thresholds.</div>
-      <div class="today-state-ctas">
-        <button class="btn btn-secondary btn-sm" onclick="showScreen('leaks',null,'Profit Recovery')">Review in Profit Recovery</button>
-        <span class="today-state-badge today-badge-red">Rejected</span>
-        <span class="today-state-badge today-badge-red">$0 counted</span>
-      </div>
-    </div>
-
-    <!-- State: Blocked -->
-    <div id="home-blocked-state" class="today-state-panel today-state-blocked" style="display:none">
-      <div class="today-state-eyebrow">Verification Blocked</div>
-      <div class="today-state-headline">ROI verification blocked until 7shifts refreshes.</div>
-      <div class="today-state-body">Action can proceed with GM approval. Verification and ROI counting resume when labor data syncs.</div>
-      <div class="today-state-ctas">
-        <button class="btn btn-secondary btn-sm" onclick="showScreen('settings',null,'Data Quality')">Reconnect 7shifts</button>
-        <span class="today-state-badge today-badge-amber">Blocked</span>
-        <span class="today-state-badge today-badge-amber">Verification limited</span>
-      </div>
-    </div>
-
-    <!-- Demo controls — QA mode only, never shown to client -->
-    <div class="today-qa-controls" id="home-state-demo-controls" data-qa-only="true">
-      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('home-action-state').style.display='block';document.getElementById('home-monitoring-state').style.display='none'">Demo: Assigned</button>
-      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('home-monitoring-state').style.display='block';document.getElementById('home-action-state').style.display='none'">Demo: Monitoring</button>
-      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('home-verified-state').style.display='block';document.getElementById('home-action-state').style.display='none'">Demo: Verified</button>
-      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('home-rejected-state').style.display='block'">Demo: Rejected</button>
-      <button class="btn btn-ghost btn-sm" onclick="['home-action-state','home-monitoring-state','home-verified-state','home-rejected-state','home-blocked-state'].forEach(id=>document.getElementById(id).style.display='none')">Reset</button>
-    </div>
-
-    <!-- ══ SECOND FOLD ═══════════════════════════════════════════════ -->
-    <div class="td-second-fold">
-
-      <!-- KPI strip: money saved this month (big arrow), pipeline, projection -->
-      <div class="td-kpi-strip">
-        <!-- (1) Big saved-or-lost-this-month arrow — replaces the verified-savings number -->
-        <div class="td-kpi-card td-kpi-month td-kpi-month-up" id="tdMonthCard" onclick="showScreen('scorecard',null,'ROI Proof')">
-          <div class="td-kpi-label">Net this month</div>
-          <div class="td-kpi-month-row">
-            <span class="td-kpi-arrow">▲</span>
-            <span class="td-kpi-month-val">$71</span>
-            <span class="td-kpi-month-dir">ahead</span>
-          </div>
-          <div class="td-kpi-note">$420 saved · $349 you pay</div>
-        </div>
-        <div class="td-kpi-card td-kpi-testing" onclick="showActionsSubpage('active')">
-          <div class="td-kpi-label">Fix in testing</div>
-          <div class="td-kpi-val td-kpi-blue-val">$189<span class="td-kpi-period">/wk</span></div>
-          <div class="td-kpi-note">Being tested · not proven yet</div>
-        </div>
-        <!-- (2) Projection — the renewal-decision number -->
-        <div class="td-kpi-card td-kpi-proj" onclick="showScreen('scorecard',null,'ROI Proof')">
-          <div class="td-kpi-label">Projected · next 30 days <span class="tag-mod tag-pill">MODELED</span></div>
-          <div class="td-kpi-val td-kpi-amber-val">~$420–$1,240</div>
-          <div class="td-kpi-note">proven pace → if the fix in testing verifies · covers your $349</div>
-        </div>
-      </div><!-- /td-kpi-strip -->
-
-      <!-- Last verified win -->
-      <div class="td-win" onclick="switchTab('roi','verified');showScreen('scorecard',null,'ROI Proof')">
-        <div class="td-win-check">✓</div>
-        <div class="td-win-body">
-          <div class="td-win-label">Last verified win</div>
-          <div class="td-win-headline">Risotto removal recovered $97/wk equiv. after a 4-week monitoring window.</div>
-          <div class="td-win-sub">Counted only after guardrails held and the monitoring window closed.</div>
-        </div>
-        <div class="td-win-cta">View verified proof →</div>
-      </div>
-
-    </div><!-- /td-second-fold -->
-
-    <!-- ══ THIRD FOLD ════════════════════════════════════════════════ -->
-    <!-- (Taya #1/#2) supporting detail — first-pass .skc-detail tag for Ramidu review -->
-    <div class="td-third-fold skc-detail">
-
-      <!-- Today's operating loop -->
-      <div class="td-loop">
-        <div class="td-loop-title" style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap">
-          <span>Today's operating loop</span>
-          <button type="button" class="btn btn-ghost btn-sm" onclick="showScreen('operating-system',null,'Operating System')" style="font-size:11px">See full retention loop →</button>
-        </div>
-        <div class="td-loop-steps">
-          <div class="td-loop-step">
-            <div class="td-loop-num">1</div>
-            <div class="td-loop-step-label">Detect</div>
-            <div class="td-loop-step-desc">Pattern repeated across comparable services.</div>
-          </div>
-          <div class="td-loop-arrow">→</div>
-          <div class="td-loop-step">
-            <div class="td-loop-num">2</div>
-            <div class="td-loop-step-label">Assign</div>
-            <div class="td-loop-step-desc">Owner and deadline set before service.</div>
-          </div>
-          <div class="td-loop-arrow">→</div>
-          <div class="td-loop-step">
-            <div class="td-loop-num">3</div>
-            <div class="td-loop-step-label">Monitor</div>
-            <div class="td-loop-step-desc">Guardrails watched during and after service.</div>
-          </div>
-          <div class="td-loop-arrow">→</div>
-          <div class="td-loop-step">
-            <div class="td-loop-num">4</div>
-            <div class="td-loop-step-label">Verify</div>
-            <div class="td-loop-step-desc">Only guardrail-safe recovery counts.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ask SKC row -->
-      <div class="td-ask">
-        <div class="td-ask-label">Ask SKC</div>
-        <div class="td-ask-inner">
-          <div class="td-ask-input" onclick="toggleAskPanel()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;color:var(--t3)"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            <span class="td-ask-placeholder">Ask about evidence, calculations, guardrails, or what to tell the team →</span>
-          </div>
-          <div class="td-ask-chips">
-            <div class="td-ask-chip" onclick="askPanelQ('Why is this the top priority?')">Why is this the top priority?</div>
-            <div class="td-ask-chip" onclick="askPanelQ('Show me the calculation.')">Show me the calculation.</div>
-            <div class="td-ask-chip" onclick="askPanelQ('What should I tell Sarah?')">What should I tell Sarah?</div>
-            <div class="td-ask-chip" onclick="askPanelQ('When does this count as verified ROI?')">When does this count as verified ROI?</div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /td-third-fold -->
-
-
-
   </div>
+
+  <!-- DQ banner — only for true blocked source failures -->
+  <div id="dq-today-banner" style="display: none; margin: 0 0 16px"></div>
+
+  <!-- (v28) Today-page DQ banner removed by request — DQ surface remains on Data Quality screen -->
+
+  <!-- (Fix 1) SKC Trust onboarding overlay — replaces home content when active -->
+  <div id="skc-tr-onboarding"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       1 · DAY HEADER — readiness meter + money at stake.
+       The 5-second read: what day it is, how much of today's recoverable
+       money is still on the table, how far before service, and how many
+       fixes are handled. Merged view (no role toggle) — money context and
+       actions sit together. Frames the checklist below; never links away.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="td-day" id="tdDay">
+    <div class="td-day-top">
+      <div class="td-day-meta">
+        <div class="td-day-eyebrow">Rosewood Group · All locations</div>
+        <h1 class="td-day-title">Tuesday, May 19</h1>
+        <p class="td-day-sub">
+          Clear today's fixes before service to protect tonight's revenue.
+        </p>
+      </div>
+
+      <!-- Countdown to next service — the urgency for today-due items -->
+      <div class="td-clock" id="tdClock">
+        <div class="td-clock-k">To dinner service</div>
+        <div class="td-clock-v" id="tdCountdown">4h 12m</div>
+        <div class="td-clock-note">1 fix due before 3 PM</div>
+      </div>
+    </div>
+
+    <div class="td-day-grid">
+      <!-- Readiness meter — handled / total across the day's checklist -->
+      <div class="td-ready" id="tdReady">
+        <div class="td-ready-head">
+          <span class="td-ready-k">Fixes acted on today</span>
+          <span class="td-ready-count">
+            <strong id="tdReadyDone">0</strong> of
+            <span id="tdReadyTotal">3</span>
+          </span>
+        </div>
+        <div class="td-ready-dots" id="tdReadyDots"></div>
+        <div class="td-ready-note" id="tdReadyNote">
+          Complete each fix to start its monitoring window before tonight.
+        </div>
+      </div>
+
+      <!-- Money at stake today — segmented Verified / In monitoring / Still open.
+           Bar + total use weekly run-rates and sum to the canonical $1,243/wk
+           open exposure (labor $370 + salmon $519 + throughput $354). Reuses
+           .dash-stack. (Per-row headlines may show a per-occurrence figure —
+           e.g. the labor fix shows $185 for one dinner — with the weekly
+           run-rate as context.) -->
+      <div class="td-stake" id="tdStake">
+        <div class="td-stake-head">
+          <span class="td-stake-k">On the table this week</span>
+          <span class="td-stake-v"
+            ><span id="tdStakeTotal">$1,243</span
+            ><span class="td-stake-per">/wk</span></span
+          >
+        </div>
+        <div class="dash-stack td-stake-bar" id="tdStakeBar">
+          <div class="dash-stack-seg" data-seg="done" style="width: 0%"></div>
+          <div
+            class="dash-stack-seg"
+            data-seg="assigned"
+            style="width: 0%"
+          ></div>
+          <div class="dash-stack-seg" data-seg="open" style="width: 100%"></div>
+        </div>
+        <div class="dash-legend td-stake-legend" id="tdStakeLegend">
+          <span class="dash-leg-item"
+            ><i class="dash-leg-dot" data-seg="done"></i>Verified
+            <b data-amt="done">$0</b></span
+          >
+          <span class="dash-leg-item"
+            ><i class="dash-leg-dot" data-seg="assigned"></i>In monitoring
+            <b data-amt="assigned">$0</b></span
+          >
+          <span class="dash-leg-item"
+            ><i class="dash-leg-dot" data-seg="open"></i>Still open
+            <b data-amt="open">$1,243</b></span
+          >
+        </div>
+        <div class="td-stake-foot">
+          Only verified savings count toward your return — completing a fix
+          starts its monitoring window.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       2 · THE CHECKLIST — every issue/fix for today, acted on inline.
+       Today-deadline item leads (urgency beats raw $); the rest is a
+       this-week peek ranked by weekly $. Each row carries a current-vs-
+       target gap gauge (reused .dash-gauge) so the leak being closed is
+       visible at a glance.
+
+       Per-item lifecycle (in place): the AI creates assignments in PENDING.
+       The user does the checklist (or hits Automate) and clicks [Complete] to
+       move it to MONITORING. It then waits there until end-of-day data is
+       ingested and the backend confirms the fix saved money → VERIFIED. The
+       user CANNOT mark a fix verified — verification is automatic. Complete
+       unlocks only when every step is done and is reversible via [Reopen] while
+       monitoring. "Automate" checks off the whole checklist (design stub for a
+       future automation service) and grays out while there's nothing left.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="td-list" id="tdList">
+    <!-- ── Group: due before tonight's service ───────────────────────── -->
+    <div class="td-group">
+      <div class="td-group-head">
+        <span class="td-group-title">Before tonight's service</span>
+        <span class="td-group-meta">1 fix · due before 3 PM</span>
+      </div>
+
+      <!-- ITEM · Labor — today's deadline -->
+      <article
+        class="td-item td-item-urgent"
+        data-item="labor"
+        data-state="pending"
+        data-weekly="370"
+        data-conf="78"
+        data-mon-note="SKC verifies tonight's dinner automatically once the data's in · not counted yet"
+        id="demo-target-today-priority"
+      >
+        <button
+          type="button"
+          class="td-item-row"
+          onclick="tdToggleRow(this)"
+          aria-expanded="false"
+        >
+          <span class="td-item-state"><i class="td-state-ic"></i></span>
+          <span class="td-item-main">
+            <span class="td-item-title"
+              >Remove one 5&ndash;10 PM server · Oakland Tuesday dinner</span
+            >
+            <span class="td-item-tags">
+              <span class="td-item-loc">Oakland · Tue dinner · Labor</span>
+              <span class="td-item-badge" data-badge></span>
+              <span class="td-item-due td-due">Due 3 PM</span>
+              <span class="td-item-owner"
+                >Owner: <strong>Sarah C.</strong></span
+              >
+            </span>
+          </span>
+          <span class="td-item-gauge">
+            <span
+              class="dash-gauge td-gauge"
+              data-min="28"
+              data-max="42"
+              data-floor="36.5"
+              data-current="31.4"
+              data-dir="up"
+            >
+              <span class="dash-gauge-bad"></span>
+              <span class="dash-gauge-good"></span>
+              <span class="dash-gauge-floor"></span>
+              <span class="dash-gauge-mark"></span>
+            </span>
+            <span class="td-gauge-cap"
+              ><b>$31.40</b> RPLH now · floor <b>$36.50</b></span
+            >
+          </span>
+          <span class="td-item-money">
+            <span class="td-item-amtwrap">
+              <span class="td-item-amt">$185<span>/night</span></span>
+              <span class="td-item-amt-sub">$370/wk run-rate</span>
+            </span>
+            <span class="td-item-chevron" aria-hidden="true">⌄</span>
+          </span>
+        </button>
+
+        <div class="td-item-detail">
+          <div class="td-detail-grid">
+            <div class="td-detail-main">
+              <p class="td-detail-reason">
+                Sales haven't kept up with the staffing for 6 Tuesday dinners
+                running — you're paying for hours the volume doesn't support.
+                Removing one server brings RPLH back above the $36.50 floor
+                without touching table turns or check average.
+              </p>
+
+              <div class="td-steps">
+                <div class="td-steps-head">
+                  <span>Do this before 3 PM</span>
+                  <span class="td-steps-right">
+                    <span class="td-steps-prog">0/3 done</span>
+                    <button
+                      type="button"
+                      class="td-btn-automate"
+                      onclick="tdAutomate(this)"
+                    >
+                      <svg
+                        width="11"
+                        height="11"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <polygon
+                          points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+                        />
+                      </svg>
+                      Automate
+                    </button>
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  class="td-step"
+                  onclick="tdToggleStep(this)"
+                >
+                  <i class="td-step-box"></i>Open 7shifts → Oakland → Tue dinner
+                </button>
+                <button
+                  type="button"
+                  class="td-step"
+                  onclick="tdToggleStep(this)"
+                >
+                  <i class="td-step-box"></i>Drop one 5&ndash;10 PM FOH server
+                  from the schedule
+                </button>
+                <button
+                  type="button"
+                  class="td-step"
+                  onclick="tdToggleStep(this)"
+                >
+                  <i class="td-step-box"></i>Confirm the section map covers the
+                  floor, then publish
+                </button>
+              </div>
+
+              <div class="td-conf-strip td-detail-conf">
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <span class="td-conf-val">78%</span> confidence
+                <span class="td-conf-sep">·</span>
+                <span class="td-conf-note"
+                  >7shifts synced ~18h ago, so the exact dollars aren't locked
+                  yet — safe to act now</span
+                >
+              </div>
+            </div>
+
+            <div class="td-detail-side">
+              <div class="td-detail-value">
+                <div class="td-detail-value-k">Money on the table</div>
+                <div class="td-detail-value-v">$185<span>/night</span></div>
+                <div class="td-detail-value-b">
+                  one dinner · $370/wk run-rate
+                </div>
+                <div class="td-detail-value-roi">Estimate — not proven yet</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="td-item-cta">
+            <button
+              class="btn btn-primary td-btn-complete"
+              onclick="tdComplete(this)"
+              disabled
+            >
+              Complete
+            </button>
+            <button
+              class="btn btn-ghost btn-sm td-btn-reopen"
+              onclick="tdReopen(this)"
+              hidden
+            >
+              Reopen
+            </button>
+            <button class="btn btn-secondary" onclick="openEvDrawer('leak1')">
+              See full math
+            </button>
+            <button
+              class="ask-why-btn"
+              onclick="askPanelQ('Why is removing a server tonight the right call?')"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                /></svg
+              >Ask SKC why
+            </button>
+            <span class="td-item-status-note" hidden></span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- ── Group: later this week (peek), ranked by weekly $ ─────────── -->
+    <div class="td-group td-group-peek">
+      <div class="td-group-head">
+        <span class="td-group-title">Later this week</span>
+        <span class="td-group-meta">2 fixes · get ahead of them</span>
+      </div>
+
+      <!-- ITEM · Salmon — PORTION FIRST, price only as fallback -->
+      <article
+        class="td-item"
+        data-item="salmon"
+        data-state="pending"
+        data-weekly="519"
+        data-conf="71"
+        data-mon-note="SKC verifies margin &amp; covers automatically once the data's in · not counted yet"
+      >
+        <button
+          type="button"
+          class="td-item-row"
+          onclick="tdToggleRow(this)"
+          aria-expanded="false"
+        >
+          <span class="td-item-state"><i class="td-state-ic"></i></span>
+          <span class="td-item-main">
+            <span class="td-item-title"
+              >Resize the Grilled Salmon portion to restore margin</span
+            >
+            <span class="td-item-tags">
+              <span class="td-item-loc">Oakland · Dinner · Menu</span>
+              <span class="td-item-badge" data-badge></span>
+              <span class="td-item-due">Fri, May 22</span>
+              <span class="td-item-owner"
+                >Owner: <strong>Marcus R.</strong></span
+              >
+            </span>
+          </span>
+          <span class="td-item-gauge">
+            <span
+              class="dash-gauge td-gauge"
+              data-min="7"
+              data-max="14"
+              data-floor="12.2"
+              data-current="9.2"
+              data-dir="up"
+            >
+              <span class="dash-gauge-bad"></span>
+              <span class="dash-gauge-good"></span>
+              <span class="dash-gauge-floor"></span>
+              <span class="dash-gauge-mark"></span>
+            </span>
+            <span class="td-gauge-cap"
+              ><b>$9.20</b> margin now · target <b>$12.20</b></span
+            >
+          </span>
+          <span class="td-item-money">
+            <span class="td-item-amtwrap">
+              <span class="td-item-amt">$519<span>/wk</span></span>
+            </span>
+            <span class="td-item-chevron" aria-hidden="true">⌄</span>
+          </span>
+        </button>
+
+        <div class="td-item-detail">
+          <div class="td-detail-grid">
+            <div class="td-detail-main">
+              <p class="td-detail-reason">
+                Supplier cost rose 12% in January and the plate cost climbed
+                with it — every salmon sold earns less margin than it should.
+                <strong
+                  >The fix is to bring the plate cost back down by resizing the
+                  portion — not to raise the price.</strong
+                >
+                A right-sized portion restores margin while the menu price holds
+                at $24.
+              </p>
+
+              <div class="td-steps">
+                <div class="td-steps-head">
+                  <span>Portion-first playbook</span>
+                  <span class="td-steps-right">
+                    <span class="td-steps-prog">0/3 done</span>
+                    <button
+                      type="button"
+                      class="td-btn-automate"
+                      onclick="tdAutomate(this)"
+                    >
+                      <svg
+                        width="11"
+                        height="11"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <polygon
+                          points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+                        />
+                      </svg>
+                      Automate
+                    </button>
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  class="td-step"
+                  onclick="tdToggleStep(this)"
+                >
+                  <i class="td-step-box"></i>Re-weigh the salmon spec → target
+                  plate cost ~$11.80
+                </button>
+                <button
+                  type="button"
+                  class="td-step"
+                  onclick="tdToggleStep(this)"
+                >
+                  <i class="td-step-box"></i>Update the recipe card &amp; line
+                  build sheet; brief the line
+                </button>
+                <button
+                  type="button"
+                  class="td-step"
+                  onclick="tdToggleStep(this)"
+                >
+                  <i class="td-step-box"></i>Plate-check 5 covers Fri to confirm
+                  guests don't notice
+                </button>
+              </div>
+
+              <!-- Secondary lever — only if a portion trim can't close the gap -->
+              <div class="td-fallback">
+                <span class="td-fallback-k">Can't trim further?</span>
+                <span class="td-fallback-b"
+                  >A $24 → $27 reprice closes the rest — but try the portion
+                  first; price changes are harder to land.</span
+                >
+              </div>
+
+              <div class="td-conf-strip td-detail-conf">
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <span class="td-conf-val">71%</span> confidence
+                <span class="td-conf-sep">·</span>
+                <span class="td-conf-note"
+                  >recipe-cost file is 18 days old — refresh to lock the plate
+                  cost</span
+                >
+              </div>
+            </div>
+
+            <div class="td-detail-side">
+              <div class="td-detail-value">
+                <div class="td-detail-value-k">Money on the table</div>
+                <div class="td-detail-value-v">$519<span>/wk</span></div>
+                <div class="td-detail-value-b">margin recovered per cover</div>
+                <div class="td-detail-value-roi">Estimate — not proven yet</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="td-item-cta">
+            <button
+              class="btn btn-primary td-btn-complete"
+              onclick="tdComplete(this)"
+              disabled
+            >
+              Complete
+            </button>
+            <button
+              class="btn btn-ghost btn-sm td-btn-reopen"
+              onclick="tdReopen(this)"
+              hidden
+            >
+              Reopen
+            </button>
+            <button class="btn btn-secondary" onclick="openEvDrawer('leak2')">
+              See full math
+            </button>
+            <button
+              class="ask-why-btn"
+              onclick="askPanelQ('Why trim the salmon portion instead of raising the price?')"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                /></svg
+              >Ask SKC why
+            </button>
+            <span class="td-item-status-note" hidden></span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ITEM · Throughput -->
+      <article
+        class="td-item"
+        data-item="throughput"
+        data-state="pending"
+        data-weekly="354"
+        data-conf="64"
+        data-mon-note="SKC verifies ticket time &amp; turns automatically once the data's in · not counted yet"
+      >
+        <button
+          type="button"
+          class="td-item-row"
+          onclick="tdToggleRow(this)"
+          aria-expanded="false"
+        >
+          <span class="td-item-state"><i class="td-state-ic"></i></span>
+          <span class="td-item-main">
+            <span class="td-item-title"
+              >Friday lunch line review · Berkeley kitchen</span
+            >
+            <span class="td-item-tags">
+              <span class="td-item-loc">Berkeley · Fri lunch · Throughput</span>
+              <span class="td-item-badge" data-badge></span>
+              <span class="td-item-due">Fri, May 22 · 10:30 AM</span>
+              <span class="td-item-owner"
+                >Owner: <strong>Jamie L.</strong></span
+              >
+            </span>
+          </span>
+          <span class="td-item-gauge">
+            <span
+              class="dash-gauge td-gauge"
+              data-min="10"
+              data-max="16"
+              data-floor="11.8"
+              data-current="14.2"
+              data-dir="down"
+            >
+              <span class="dash-gauge-bad"></span>
+              <span class="dash-gauge-good"></span>
+              <span class="dash-gauge-floor"></span>
+              <span class="dash-gauge-mark"></span>
+            </span>
+            <span class="td-gauge-cap"
+              ><b>14.2 min</b> tickets · target <b>11.8 min</b></span
+            >
+          </span>
+          <span class="td-item-money">
+            <span class="td-item-amtwrap">
+              <span class="td-item-amt">$354<span>/wk</span></span>
+            </span>
+            <span class="td-item-chevron" aria-hidden="true">⌄</span>
+          </span>
+        </button>
+
+        <div class="td-item-detail">
+          <div class="td-detail-grid">
+            <div class="td-detail-main">
+              <p class="td-detail-reason">
+                Friday lunch ticket times have climbed for 5 weeks straight — a
+                process bottleneck, not a demand spike. Slower tickets cost you
+                a seating each turn. Walk the line Friday before the rush to
+                find where it's backing up.
+              </p>
+
+              <div class="td-steps">
+                <div class="td-steps-head">
+                  <span>Friday pre-rush walk</span>
+                  <span class="td-steps-right">
+                    <span class="td-steps-prog">0/3 done</span>
+                    <button
+                      type="button"
+                      class="td-btn-automate"
+                      onclick="tdAutomate(this)"
+                    >
+                      <svg
+                        width="11"
+                        height="11"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <polygon
+                          points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+                        />
+                      </svg>
+                      Automate
+                    </button>
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  class="td-step"
+                  onclick="tdToggleStep(this)"
+                >
+                  <i class="td-step-box"></i>Time 10 tickets at the pass against
+                  the 11.8-min target
+                </button>
+                <button
+                  type="button"
+                  class="td-step"
+                  onclick="tdToggleStep(this)"
+                >
+                  <i class="td-step-box"></i>Check the expo &amp; mid-line
+                  hand-off for the choke point
+                </button>
+                <button
+                  type="button"
+                  class="td-step"
+                  onclick="tdToggleStep(this)"
+                >
+                  <i class="td-step-box"></i>Re-sequence prep or stations; brief
+                  the crew before open
+                </button>
+              </div>
+
+              <div class="td-conf-strip td-detail-conf">
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <span class="td-conf-val">64%</span> confidence
+                <span class="td-conf-sep">·</span>
+                <span class="td-conf-note"
+                  >KDS feed is partial — confirm at the pass before you commit
+                  the change</span
+                >
+              </div>
+            </div>
+
+            <div class="td-detail-side">
+              <div class="td-detail-value">
+                <div class="td-detail-value-k">Money on the table</div>
+                <div class="td-detail-value-v">$354<span>/wk</span></div>
+                <div class="td-detail-value-b">
+                  one seating per Friday lunch
+                </div>
+                <div class="td-detail-value-roi">Estimate — not proven yet</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="td-item-cta">
+            <button
+              class="btn btn-primary td-btn-complete"
+              onclick="tdComplete(this)"
+              disabled
+            >
+              Complete
+            </button>
+            <button
+              class="btn btn-ghost btn-sm td-btn-reopen"
+              onclick="tdReopen(this)"
+              hidden
+            >
+              Reopen
+            </button>
+            <button class="btn btn-secondary" onclick="openEvDrawer('leak3')">
+              See full math
+            </button>
+            <button
+              class="ask-why-btn"
+              onclick="askPanelQ('What is slowing Friday lunch tickets?')"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                /></svg
+              >Ask SKC why
+            </button>
+            <span class="td-item-status-note" hidden></span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       3 · WATCHING — fixes already in their monitoring window, tracked
+       across the next several days. The "now" marker sits on today; each
+       row shows where its checkpoints land and how far the window has run.
+       Active recovery is never counted toward ROI until guardrails pass.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="td-watch" id="tdWatch">
+    <div class="td-watch-head">
+      <span class="td-watch-title">Watching</span>
+      <span class="td-watch-meta">2 fixes in their monitoring window</span>
+    </div>
+
+    <!-- Shared day scale · Tue (now) → Sun -->
+    <div class="td-watch-scale" aria-hidden="true">
+      <span class="td-watch-spacer"></span>
+      <span class="td-watch-days">
+        <span class="td-watch-day is-now">Tue 19<i>now</i></span>
+        <span class="td-watch-day">Wed 20</span>
+        <span class="td-watch-day">Thu 21</span>
+        <span class="td-watch-day">Fri 22</span>
+        <span class="td-watch-day">Sat 23</span>
+        <span class="td-watch-day">Sun 24</span>
+      </span>
+    </div>
+
+    <!-- A005 · Walnut Creek bar -->
+    <div class="td-watch-row">
+      <div class="td-watch-label">
+        <div class="td-watch-name">Bar staffing −1 · Walnut Creek</div>
+        <div class="td-watch-sub">
+          <span class="td-watch-prog-k">Week 3 of 4</span>
+          <span class="td-watch-ok">● on track</span>
+        </div>
+      </div>
+      <div class="td-watch-track">
+        <span class="td-watch-bar"><span style="width: 75%"></span></span>
+        <span class="td-watch-now-line" style="left: 8.33%"></span>
+        <span class="td-watch-flag" style="left: 91.67%"
+          ><i>⚑</i>closes Sun</span
+        >
+        <span class="td-watch-amt">$189/wk</span>
+      </div>
+    </div>
+
+    <!-- Oakland Tuesday lunch · toward verified -->
+    <div class="td-watch-row">
+      <div class="td-watch-label">
+        <div class="td-watch-name">Tuesday lunch labor · Oakland</div>
+        <div class="td-watch-sub">
+          <span class="td-watch-prog-k">Day 22 of 28</span>
+          <span class="td-watch-toward">toward verified</span>
+        </div>
+      </div>
+      <div class="td-watch-track">
+        <span class="td-watch-bar"><span style="width: 79%"></span></span>
+        <span class="td-watch-now-line" style="left: 8.33%"></span>
+        <span class="td-watch-flag td-watch-flag-soft" style="left: 91.67%"
+          ><i>→</i>next Tue</span
+        >
+        <span class="td-watch-amt">$97/wk</span>
+      </div>
+    </div>
+
+    <div class="td-watch-foot">
+      Active recovery is monitored, not yet counted — each fix counts toward
+      your return only after its guardrails hold through the full window.
+    </div>
+  </section>
+
+  <!-- Demo controls — QA only, never shown to the client. The user drives the
+       lifecycle up to MONITORING (Complete / Reopen); VERIFICATION is automatic
+       in the backend once end-of-day data is ingested, so there is no user-facing
+       verify button. This QA stub simulates that backend ingestion for the demo. -->
+  <div
+    class="today-qa-controls"
+    id="home-state-demo-controls"
+    data-qa-only="true"
+  >
+    <button class="btn btn-ghost btn-sm" onclick="tdSimulateVerify()">
+      Demo: end-of-day data → verify
+    </button>
+    <button class="btn btn-ghost btn-sm" onclick="tdDemoReset()">
+      Reset day (demo)
+    </button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       4 · ASK SKC — same panel wiring, day-oriented prompts.
+       ═══════════════════════════════════════════════════════════════════ -->
+  <section class="td-third-fold">
+    <div class="td-ask">
+      <div class="td-ask-label">Ask SKC</div>
+      <div class="td-ask-inner">
+        <div class="td-ask-input" onclick="toggleAskPanel()">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            style="flex-shrink: 0; color: var(--t3)"
+          >
+            <path
+              d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+            />
+          </svg>
+          <span class="td-ask-placeholder"
+            >Ask about today's fixes, the math behind a gap, or what to tell the
+            team →</span
+          >
+        </div>
+        <div class="td-ask-chips">
+          <div
+            class="td-ask-chip"
+            onclick="askPanelQ('What must I clear before tonight\'s service?')"
+          >
+            What must I clear before service?
+          </div>
+          <div
+            class="td-ask-chip"
+            onclick="askPanelQ('Show me the math behind the labor gap.')"
+          >
+            Show the gap math.
+          </div>
+          <div
+            class="td-ask-chip"
+            onclick="askPanelQ('What is still being watched and when does it close?')"
+          >
+            What's still being watched?
+          </div>
+          <div
+            class="td-ask-chip"
+            onclick="askPanelQ('When does a fix start counting toward my return?')"
+          >
+            When does a fix start counting?
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

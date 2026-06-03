@@ -1,0 +1,374 @@
+<div class="screen" id="screen-dashboard">
+  <!-- ══ ONE-LINER HERO ════════════════════════════════════════════
+         The 5-second read: what's working, what's still on the table,
+         and where to start. Plain operator language; no doctrine jargon. -->
+  <div class="dash-hero">
+    <div class="dash-hero-eyebrow">Rosewood Group · 4 restaurants</div>
+    <h1 class="dash-hero-headline">
+      You've proven <span class="dash-hl-green">$420/mo</span> in savings — and
+      there's <span class="dash-hl-amber">$5,386/mo</span> still on the table.
+    </h1>
+    <p class="dash-hero-sub">
+      Verified profit recovery for restaurant operators
+    </p>
+  </div>
+
+  <!-- ══ SIX-CARD DASHBOARD GRID ═══════════════════════════════════
+         Row 1 — the money headlines (proven / exposure / forecast).
+         Row 2 — the operational drivers (RPLH / table turns / items).
+         Each: big number first, then a chart that fills the card, deep-link. -->
+  <div class="dash-grid">
+    <!-- 1 · VERIFIED SAVINGS → ROI Proof -->
+    <div
+      class="dash-card dash-accent-green"
+      role="button"
+      tabindex="0"
+      onclick="showScreen('scorecard', null, 'ROI Proof')"
+      onkeydown="
+        if (event.key === 'Enter' || event.key === ' ') {
+          showScreen('scorecard', null, 'ROI Proof');
+        }
+      "
+    >
+      <div class="dash-card-top">
+        <span class="dash-card-label">Verified savings</span>
+        <span class="dash-chip dash-chip-green">Counts toward ROI</span>
+      </div>
+      <div class="dash-num-row">
+        <span class="dash-num dash-num-green">$420</span>
+        <span class="dash-unit">/mo equiv.</span>
+      </div>
+      <!-- rolling 4-week verified-$ trend (cumulative, rising) -->
+      <div class="dash-viz">
+        <svg viewBox="0 0 200 40" preserveAspectRatio="none" class="dash-spark">
+          <defs>
+            <linearGradient id="dashGreenFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--green)" stop-opacity="0.28" />
+              <stop offset="100%" stop-color="var(--green)" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M0,36 L40,34 L80,30 L120,24 L160,16 L200,8 L200,40 L0,40 Z"
+            fill="url(#dashGreenFill)"
+          />
+          <polyline
+            points="0,36 40,34 80,30 120,24 160,16 200,8"
+            fill="none"
+            stroke="var(--green)"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <circle cx="200" cy="8" r="3" fill="var(--green)" />
+        </svg>
+        <div class="dash-viz-cap">Trailing 4 weeks · trending up</div>
+      </div>
+      <div class="dash-card-go">
+        Open ROI Proof <span class="dash-go-arrow">→</span>
+      </div>
+    </div>
+
+    <!-- 2 · OPEN EXPOSURE → Profit Recovery -->
+    <div
+      class="dash-card dash-accent-amber"
+      role="button"
+      tabindex="0"
+      onclick="showScreen('leaks', null, 'Profit Recovery')"
+      onkeydown="
+        if (event.key === 'Enter' || event.key === ' ') {
+          showScreen('leaks', null, 'Profit Recovery');
+        }
+      "
+    >
+      <div class="dash-card-top">
+        <span class="dash-card-label">Open exposure</span>
+        <span class="dash-chip dash-chip-amber">Not recovered yet</span>
+      </div>
+      <div class="dash-num-row">
+        <span class="dash-num dash-num-amber">$5,386</span>
+        <span class="dash-unit">/mo</span>
+      </div>
+      <!-- stacked split — sums exactly to $5,386 ($1,243/wk canonical × 4.333) -->
+      <div class="dash-viz">
+        <div class="dash-stack">
+          <div
+            class="dash-stack-seg"
+            style="width: 41.75%; background: var(--amber)"
+          ></div>
+          <div
+            class="dash-stack-seg"
+            style="width: 29.77%; background: var(--amber); opacity: 0.62"
+          ></div>
+          <div
+            class="dash-stack-seg"
+            style="width: 28.48%; background: var(--amber); opacity: 0.34"
+          ></div>
+        </div>
+        <div class="dash-legend">
+          <span class="dash-leg-item"
+            ><i class="dash-leg-dot" style="background: var(--amber)"></i>Menu
+            $2,249</span
+          >
+          <span class="dash-leg-item"
+            ><i
+              class="dash-leg-dot"
+              style="background: var(--amber); opacity: 0.62"
+            ></i
+            >Labor $1,603</span
+          >
+          <span class="dash-leg-item"
+            ><i
+              class="dash-leg-dot"
+              style="background: var(--amber); opacity: 0.34"
+            ></i
+            >Throughput $1,534</span
+          >
+        </div>
+      </div>
+      <div class="dash-card-go">
+        Open Profit Recovery <span class="dash-go-arrow">→</span>
+      </div>
+    </div>
+
+    <!-- 3 · PROJECTED SAVE (next 30 days) → ROI Proof -->
+    <div
+      class="dash-card dash-accent-blue"
+      role="button"
+      tabindex="0"
+      onclick="showScreen('scorecard', null, 'ROI Proof')"
+      onkeydown="
+        if (event.key === 'Enter' || event.key === ' ') {
+          showScreen('scorecard', null, 'ROI Proof');
+        }
+      "
+    >
+      <div class="dash-card-top">
+        <span class="dash-card-label">Projected save · next 30 days</span>
+        <span class="dash-chip dash-chip-blue">Modeled</span>
+      </div>
+      <div class="dash-num-row">
+        <span class="dash-num dash-num-blue"
+          >$420<span class="dash-num-sep">–</span>$1,240</span
+        >
+      </div>
+      <!-- honest range band; the whole band clears the $349/mo cost line -->
+      <div class="dash-viz">
+        <div class="dash-range">
+          <div class="dash-range-band" style="left: 32.3%; width: 63.1%"></div>
+          <div class="dash-range-cost" style="left: 26.85%"></div>
+          <div class="dash-range-cap dash-range-cap-cost" style="left: 26.85%">
+            $349 cost
+          </div>
+        </div>
+        <div class="dash-viz-cap">
+          Proven pace → high end if the fix in testing verifies
+        </div>
+      </div>
+      <div class="dash-card-go">
+        See the proof <span class="dash-go-arrow">→</span>
+      </div>
+    </div>
+
+    <!-- 4 · REVENUE PER LABOR HOUR → Labor Efficiency -->
+    <div
+      class="dash-card dash-accent-red"
+      role="button"
+      tabindex="0"
+      onclick="
+        showScreen('labor-efficiency', null, 'Labor Efficiency');
+        showLaborSubpage('overview');
+      "
+      onkeydown="
+        if (event.key === 'Enter' || event.key === ' ') {
+          showScreen('labor-efficiency', null, 'Labor Efficiency');
+          showLaborSubpage('overview');
+        }
+      "
+    >
+      <div class="dash-card-top">
+        <span class="dash-card-label">Revenue per labor hour</span>
+        <span class="dash-chip dash-chip-red">Below floor</span>
+      </div>
+      <div class="dash-num-row">
+        <span class="dash-num dash-num-red">$31.40</span>
+        <span class="dash-unit">/hr</span>
+      </div>
+      <!-- gauge: red below the $36.50 floor, green above; marker at current -->
+      <div class="dash-viz">
+        <div class="dash-gauge">
+          <div class="dash-gauge-bad" style="width: 60.7%"></div>
+          <div class="dash-gauge-good" style="left: 60.7%; width: 39.3%"></div>
+          <div class="dash-gauge-floor" style="left: 60.7%"></div>
+          <div class="dash-gauge-mark" style="left: 24.3%"></div>
+        </div>
+        <div class="dash-gauge-labels">
+          <span>current $31.40</span>
+          <span class="dash-gauge-floor-lab">floor $36.50</span>
+        </div>
+      </div>
+      <div class="dash-card-go">
+        Open Labor Efficiency <span class="dash-go-arrow">→</span>
+      </div>
+    </div>
+
+    <!-- 5 · TABLE TURNS · revenue left on the table → Table Turns -->
+    <div
+      class="dash-card dash-accent-amber"
+      role="button"
+      tabindex="0"
+      onclick="
+        showScreen('table-turns', null, 'Table Turns');
+        showTtSubpage('overview');
+      "
+      onkeydown="
+        if (event.key === 'Enter' || event.key === ' ') {
+          showScreen('table-turns', null, 'Table Turns');
+          showTtSubpage('overview');
+        }
+      "
+    >
+      <div class="dash-card-top">
+        <span class="dash-card-label">Table turns · Oakland Fri dinner</span>
+        <span class="dash-chip dash-chip-amber">Estimate</span>
+      </div>
+      <div class="dash-num-row">
+        <span class="dash-num dash-num-amber">$2,947</span>
+        <span class="dash-unit">/mo left on table</span>
+      </div>
+      <!-- captured vs left-on-the-table, rolled up to a month (~4.33 Fri dinners).
+           Per Friday: 2.55 turns × 42 seats = 107 covers × $76 ≈ $8,130/wk seated,
+           9 covers missed × $76 ≈ $680/wk. Monthly (× 4.333): ~$35,230 seated +
+           ~$2,947 missed (39 covers) = ~$38,177 realistic potential. -->
+      <div class="dash-viz">
+        <div class="dash-stack">
+          <div
+            class="dash-stack-seg"
+            style="width: 92.3%; background: var(--t3); opacity: 0.45"
+          ></div>
+          <div
+            class="dash-stack-seg"
+            style="width: 7.7%; background: var(--amber)"
+          ></div>
+        </div>
+        <div class="dash-legend">
+          <span class="dash-leg-item"
+            ><i
+              class="dash-leg-dot"
+              style="background: var(--t3); opacity: 0.45"
+            ></i
+            >Seated $35,230</span
+          >
+          <span class="dash-leg-item"
+            ><i class="dash-leg-dot" style="background: var(--amber)"></i>Missed
+            $2,947</span
+          >
+        </div>
+        <div class="dash-viz-cap">39 covers missed · $76 avg check</div>
+      </div>
+      <div class="dash-card-go">
+        Open Table Turns <span class="dash-go-arrow">→</span>
+      </div>
+    </div>
+
+    <!-- 6 · ITEM ECONOMICS · portion-cost headroom → Menu Optimization · Item Economics -->
+    <div
+      class="dash-card dash-accent-amber"
+      role="button"
+      tabindex="0"
+      onclick="
+        showScreen('menu', null, 'Menu Optimization');
+        showMenuSubpage('items');
+      "
+      onkeydown="
+        if (event.key === 'Enter' || event.key === ' ') {
+          showScreen('menu', null, 'Menu Optimization');
+          showMenuSubpage('items');
+        }
+      "
+    >
+      <div class="dash-card-top">
+        <span class="dash-card-label">Item economics · Oakland dinner</span>
+        <span class="dash-chip dash-chip-amber">Estimate</span>
+      </div>
+      <div class="dash-num-row">
+        <span class="dash-num dash-num-amber">$2,030</span>
+        <span class="dash-unit">/mo recoverable</span>
+      </div>
+      <!-- portion-cost headroom: of 9 dinner dishes, 5 sell below the $8.75 CM
+           threshold. The 3 high-volume plowhorses are plotted on a shared CM
+           axis (max $10 → $8.75 line at 87.5%); solid = current CM, amber =
+           headroom to the line. Recoverable $ = CM gap × 28-day units, summing
+           to ~$2,030/mo: Crispy $2.95×373=$1,100 · Burger $2.35×240=$564 ·
+           Fries $1.15×317=$365. Lever is portion/recipe cost, not price. -->
+      <div class="dash-viz">
+        <div class="dash-pf-note">
+          5 of 9 dishes below $8.75 — trim portion, not price
+        </div>
+        <div class="dash-pf">
+          <div class="dash-pf-row">
+            <div class="dash-pf-meta">
+              <span class="dash-pf-name"
+                >Crispy Chicken<span class="dash-pf-cm-lab">$5.80→$8.75</span></span
+              >
+              <span class="dash-pf-val">+$1,100</span>
+            </div>
+            <span class="dash-pf-track">
+              <span class="dash-pf-cm" style="width: 58%"></span>
+              <span class="dash-pf-gap" style="left: 58%; width: 29.5%"></span>
+              <span class="dash-pf-line" style="left: 87.5%"></span>
+            </span>
+          </div>
+          <div class="dash-pf-row">
+            <div class="dash-pf-meta">
+              <span class="dash-pf-name"
+                >Burger<span class="dash-pf-cm-lab">$6.40→$8.75</span></span
+              >
+              <span class="dash-pf-val">+$564</span>
+            </div>
+            <span class="dash-pf-track">
+              <span class="dash-pf-cm" style="width: 64%"></span>
+              <span class="dash-pf-gap" style="left: 64%; width: 23.5%"></span>
+              <span class="dash-pf-line" style="left: 87.5%"></span>
+            </span>
+          </div>
+          <div class="dash-pf-row">
+            <div class="dash-pf-meta">
+              <span class="dash-pf-name"
+                >Truffle Fries<span class="dash-pf-cm-lab">$7.60→$8.75</span></span
+              >
+              <span class="dash-pf-val">+$365</span>
+            </div>
+            <span class="dash-pf-track">
+              <span class="dash-pf-cm" style="width: 76%"></span>
+              <span class="dash-pf-gap" style="left: 76%; width: 11.5%"></span>
+              <span class="dash-pf-line" style="left: 87.5%"></span>
+            </span>
+          </div>
+        </div>
+        <div class="dash-legend">
+          <span class="dash-leg-item"
+            ><i
+              class="dash-leg-dot"
+              style="background: var(--t3); opacity: 0.5"
+            ></i
+            >Current CM</span
+          >
+          <span class="dash-leg-item"
+            ><i class="dash-leg-dot" style="background: var(--amber)"></i>Portion
+            headroom</span
+          >
+        </div>
+      </div>
+      <div class="dash-card-go">
+        Open Item Economics <span class="dash-go-arrow">→</span>
+      </div>
+    </div>
+  </div>
+  <!-- /dash-grid -->
+
+  <div class="dash-foot">
+    All figures from connected Toast, 7shifts, KDS &amp; recipe-cost data. Only
+    <strong>Verified savings</strong> counts toward ROI — exposure and
+    projections are not yet proven.
+  </div>
+</div>
