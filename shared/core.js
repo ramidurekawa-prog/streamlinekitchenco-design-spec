@@ -4310,9 +4310,10 @@ function showScreen(id, navEl, title) {
   // Scroll to top
   const ct = document.getElementById('content');
   if (ct) ct.scrollTop = 0;
-  // Doctrine bar: only show on core workspace screens
+  // Doctrine bar: only show on core workspace screens (Profit Recovery opts
+  // out — it carries its own minimal doctrine line at the foot of the page)
   const bar = document.getElementById('daBar');
-  const withDoctrine = ['leaks','actions','scorecard','reports','config'];
+  const withDoctrine = ['actions','scorecard','reports','config'];
   if (bar) bar.style.display = withDoctrine.includes(id) ? 'flex' : 'none';
   // If navigating to reports screen, populate timeline
   if (id === 'reports') {

@@ -1096,3 +1096,206 @@ function toggleWatchStageView(mode) {
   });
 })();
 
+
+/* ════════════════════════════════════════════════════════════════════
+   PROFIT RECOVERY — single location filter (segmented pill).
+   Scopes the value map to one location: the focal fix + each value-bar
+   row carry data-pr-opp + data-loc. Menu-wide opportunities
+   (data-loc="all") show under every location. The hero number stays
+   portfolio-level. Pure presentation — no data/output-type/ROI logic.
+   ════════════════════════════════════════════════════════════════════ */
+function prFilterLoc(btn, loc) {
+  // Active pill
+  document.querySelectorAll('.pr-loc-filter .pr-loc')
+    .forEach(b => b.classList.toggle('active', b === btn));
+
+  // Scope the findings to one location. A card matches when filtering "all",
+  // the finding is menu-wide (data-loc="all"), or its data-loc is the location.
+  let shown = 0;
+  document.querySelectorAll('#pr-finds [data-pr-opp]').forEach(el => {
+    const cl = (el.getAttribute('data-loc') || 'all').toLowerCase();
+    const match = loc === 'all' || cl === 'all' || cl.split(/\s+/).includes(loc);
+    el.style.display = match ? '' : 'none';
+    if (match) shown++;
+  });
+
+  // Empty state when this location has nothing to decide
+  const empty = document.getElementById('pr-queue-empty');
+  if (empty) empty.style.display = shown === 0 ? '' : 'none';
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   PROFIT RECOVERY — unfold a finding to show WHY SKC flagged it. The
+   signature interaction of the page (this is the "why" surface, not a
+   task board). Pure presentation.
+   ════════════════════════════════════════════════════════════════════ */
+function prToggleWhy(btn) {
+  const card = btn.closest('.pr-find');
+  if (!card) return;
+  const open = card.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  // Draw the evidence chart the first time this finding is opened
+  if (open) card.querySelectorAll('.pr-viz-chart').forEach(prRenderViz);
+}
+
+/* Render a finding's evidence visual — dispatched by data-viz to the graphic
+   that fits the issue. Each returns SVG markup drawn in its own viewBox.
+   Pure presentation; no data/output-type/ROI logic is touched. */
+function prRenderViz(chart) {
+  if (!chart || chart.dataset.rendered) return;
+  const svg = chart.querySelector('svg');
+  if (!svg) return;
+  const fns = { timeline: prVizTimeline, margin: prVizMargin, trend: prVizTrend, mix: prVizMix, band: prVizBand };
+  const fn = fns[chart.dataset.viz];
+  if (!fn) return;
+  try { svg.innerHTML = fn(chart); chart.dataset.rendered = '1'; }
+  catch (e) { console.warn('prRenderViz', chart.dataset.viz, e); }
+}
+const _prEsc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+
+/* Stage timeline — two stacked bars (baseline vs now); the highlighted stage
+   (data-hl) is amber so its growth is the story. */
+function prVizTimeline(chart) {
+  const stages = chart.dataset.stages.split(',').map(s => { const p = s.split(':'); return { base: +p[1], now: +p[2] }; });
+  const hl = +chart.dataset.hl;
+  const W = 320, x0 = 66, barW = W - x0 - 4, bh = 20;
+  const baseTot = stages.reduce((a, s) => a + s.base, 0);
+  const nowTot = stages.reduce((a, s) => a + s.now, 0);
+  const sc = barW / Math.max(baseTot, nowTot);
+  let out = '';
+  [{ k: 'base', y: 18, tot: baseTot, lab: 'Baseline ' + baseTot + 'm' },
+   { k: 'now', y: 54, tot: nowTot, lab: 'Now ' + nowTot + 'm' }].forEach(r => {
+    out += '<text x="0" y="' + (r.y + bh / 2 + 3) + '" class="pr-viz-rowlab">' + r.lab + '</text>';
+    let cx = x0;
+    stages.forEach((st, i) => {
+      const w = st[r.k] * sc;
+      const cls = i === hl ? 'pr-viz-bad' : (i % 2 ? 'pr-viz-mut' : 'pr-viz-mut2');
+      out += '<rect x="' + cx.toFixed(1) + '" y="' + r.y + '" width="' + Math.max(0, w - 1.5).toFixed(1) + '" height="' + bh + '" rx="2" class="' + cls + '"/>';
+      cx += w;
+    });
+  });
+  out += '<rect x="' + x0 + '" y="84" width="9" height="9" rx="2" class="pr-viz-bad"/>' +
+         '<text x="' + (x0 + 13) + '" y="92" class="pr-viz-txt">check → paid · 4 → 13 min</text>';
+  return out;
+}
+
+/* Margin breakdown — two vertical bars (Target vs Now), each = the $24 plate,
+   split into cost (top, muted) + margin (bottom). Now's margin is amber and
+   sits below the dashed target-margin line. */
+function prVizMargin(chart) {
+  const price = +chart.dataset.price, mb = +chart.dataset.marginBase, mn = +chart.dataset.marginNow;
+  const top = 12, baseY = 100, fullH = baseY - top, sc = fullH / price;
+  const bw = 60, x1 = 60, x2 = x1 + bw + 70;
+  const bar = (x, m, label, amber) => {
+    const mH = m * sc, cH = (price - m) * sc;
+    return '<rect x="' + x + '" y="' + top + '" width="' + bw + '" height="' + cH.toFixed(1) + '" class="pr-viz-mut2"/>' +
+      '<rect x="' + x + '" y="' + (top + cH).toFixed(1) + '" width="' + bw + '" height="' + mH.toFixed(1) + '" rx="0" class="' + (amber ? 'pr-viz-bad' : 'pr-viz-mut') + '"/>' +
+      '<text x="' + (x + bw / 2) + '" y="' + (top + cH + mH / 2 + 3).toFixed(1) + '" text-anchor="middle" class="pr-viz-txt-b">$' + m.toFixed(2) + '</text>' +
+      '<text x="' + (x + bw / 2) + '" y="' + (top + cH / 2 + 3).toFixed(1) + '" text-anchor="middle" class="pr-viz-txt">cost</text>' +
+      '<text x="' + (x + bw / 2) + '" y="' + (baseY + 13) + '" text-anchor="middle" class="pr-viz-rowlab">' + label + '</text>';
+  };
+  const ty = (top + (price - mb) * sc).toFixed(1);
+  return bar(x1, mb, 'Target', false) + bar(x2, mn, 'Now', true) +
+    '<line x1="' + (x1 - 6) + '" y1="' + ty + '" x2="' + (x2 + bw + 6) + '" y2="' + ty + '" class="pr-viz-thr"/>' +
+    '<text x="' + (x2 + bw + 10) + '" y="' + (+ty + 3) + '" class="pr-viz-txt">target margin</text>' +
+    '<text x="' + (x1 - 6) + '" y="9" class="pr-viz-txt">$' + price + ' menu price</text>';
+}
+
+/* Trend line — area + line climbing across the dashed target; points over
+   target are amber, the last one labelled. */
+function prVizTrend(chart) {
+  const s = chart.dataset.series.split(',').map(parseFloat), thr = +chart.dataset.threshold;
+  const W = 320, H = 84, padT = 14, padB = 16, x0 = 6, x1 = W - 6, n = s.length;
+  let lo = Math.min(thr, ...s), hi = Math.max(thr, ...s); const sp = (hi - lo) || 1; lo -= sp * 0.25; hi += sp * 0.2;
+  const rng = hi - lo, X = i => x0 + (x1 - x0) * (i / (n - 1)), Y = v => padT + (H - padT - padB) * (1 - (v - lo) / rng);
+  const pts = s.map((v, i) => X(i).toFixed(1) + ',' + Y(v).toFixed(1)).join(' ');
+  const ty = Y(thr).toFixed(1);
+  let out = '<polygon points="' + X(0).toFixed(1) + ',' + (H - padB) + ' ' + pts + ' ' + X(n - 1).toFixed(1) + ',' + (H - padB) + '" class="pr-viz-area"/>';
+  out += '<line x1="0" y1="' + ty + '" x2="' + W + '" y2="' + ty + '" class="pr-viz-thr"/>';
+  out += '<text x="' + (W - 2) + '" y="' + (+ty - 4) + '" text-anchor="end" class="pr-viz-txt">target ' + thr + '</text>';
+  out += '<polyline points="' + pts + '" class="pr-viz-line"/>';
+  s.forEach((v, i) => { out += '<circle cx="' + X(i).toFixed(1) + '" cy="' + Y(v).toFixed(1) + '" r="' + (i === n - 1 ? 3.6 : 2.2) + '" class="' + (v > thr ? 'pr-viz-dot-bad' : 'pr-viz-dot') + '"/>'; });
+  out += '<text x="' + X(n - 1).toFixed(1) + '" y="' + (Y(s[n - 1]) - 7).toFixed(1) + '" text-anchor="end" class="pr-viz-txt-b">' + s[n - 1] + '</text>';
+  return out;
+}
+
+/* Mix shift — two 100% stacked bars (baseline vs now); the last tier
+   (low-margin) is amber and visibly grows. */
+function prVizMix(chart) {
+  const base = chart.dataset.base.split(',').map(Number), now = chart.dataset.now.split(',').map(Number);
+  const labels = (chart.dataset.labels || '').split(',');
+  const W = 320, x0 = 66, barW = W - x0 - 4, bh = 20, fills = ['pr-viz-mut2', 'pr-viz-mut', 'pr-viz-bad'];
+  const row = (arr, y, lab) => {
+    let g = '<text x="0" y="' + (y + bh / 2 + 3) + '" class="pr-viz-rowlab">' + lab + '</text>';
+    const tot = arr.reduce((a, b) => a + b, 0); let cx = x0;
+    arr.forEach((v, i) => { const w = barW * (v / tot); g += '<rect x="' + cx.toFixed(1) + '" y="' + y + '" width="' + Math.max(0, w - 1.5).toFixed(1) + '" height="' + bh + '" rx="2" class="' + (fills[i] || 'pr-viz-mut') + '"/>'; cx += w; });
+    return g;
+  };
+  const li = base.length - 1;
+  return row(base, 16, 'Baseline') + row(now, 50, 'Now') +
+    '<rect x="' + x0 + '" y="84" width="9" height="9" rx="2" class="pr-viz-bad"/>' +
+    '<text x="' + (x0 + 13) + '" y="92" class="pr-viz-txt">' + _prEsc(labels[li] || 'low margin') + ' · ' + base[li] + '% → ' + now[li] + '%</text>';
+}
+
+/* Range + dots — a shaded normal range and a dashed floor; one dot per
+   Tuesday, the ones below the floor amber. Conveys mild / intermittent. */
+function prVizBand(chart) {
+  const s = chart.dataset.series.split(',').map(parseFloat), floor = +chart.dataset.floor, low = +chart.dataset.low, high = +chart.dataset.high;
+  const W = 320, H = 80, padT = 12, padB = 18, x0 = 14, x1 = W - 10, n = s.length;
+  let lo = Math.min(floor, low, ...s), hi = Math.max(high, ...s); const sp = (hi - lo) || 1; lo -= sp * 0.14; hi += sp * 0.14;
+  const rng = hi - lo, X = i => x0 + (x1 - x0) * ((i + 0.5) / n), Y = v => padT + (H - padT - padB) * (1 - (v - lo) / rng);
+  let out = '<rect x="0" y="' + Y(high).toFixed(1) + '" width="' + W + '" height="' + (Y(low) - Y(high)).toFixed(1) + '" class="pr-viz-band"/>';
+  out += '<text x="2" y="' + (Y(high) - 3).toFixed(1) + '" class="pr-viz-txt">normal range</text>';
+  const fy = Y(floor).toFixed(1);
+  out += '<line x1="0" y1="' + fy + '" x2="' + W + '" y2="' + fy + '" class="pr-viz-thr"/>';
+  out += '<text x="' + (W - 2) + '" y="' + (+fy + 11) + '" text-anchor="end" class="pr-viz-txt">floor $' + floor + '</text>';
+  s.forEach((v, i) => { out += '<circle cx="' + X(i).toFixed(1) + '" cy="' + Y(v).toFixed(1) + '" r="3.4" class="' + (v < floor ? 'pr-viz-dot-bad' : 'pr-viz-dot') + '"/>'; });
+  return out;
+}
+
+/* PROFIT RECOVERY — decide on a finding to clear it. Commit hands it to
+   Actions (the DO half of the pair); Not now snoozes; Dismiss drops it
+   (SKC re-raises only if it worsens). The funnel spine reflects each
+   decision. No data/output-type/ROI logic is touched. */
+function prDecide(btn, action) {
+  const card = btn.closest('.pr-find');
+  if (!card) return;
+  if (window.prInActions == null) window.prInActions = 2;
+
+  let msg, tone;
+  if (action === 'commit') {
+    window.prInActions++;
+    msg = 'Committed — moved to Actions. Assign an owner & due there.'; tone = 'green';
+  } else if (action === 'snooze') {
+    msg = 'Snoozed — SKC will resurface this next week.'; tone = 'blue';
+  } else {
+    msg = 'Dismissed — SKC re-raises it only if the pattern worsens.'; tone = 'blue';
+  }
+
+  // Animate the card out, then drop it and refresh the spine / empty state
+  card.style.opacity = '0';
+  card.style.transform = 'translateX(10px)';
+  if (typeof showDemoToast === 'function') showDemoToast(msg, tone);
+  setTimeout(function () {
+    card.remove();
+    prUpdateSpine();
+    prCheckQueueEmpty();
+  }, 170);
+}
+
+function prUpdateSpine() {
+  const d = document.getElementById('pr-spine-decide');
+  if (d) d.textContent = document.querySelectorAll('#pr-finds .pr-find').length;
+  const a = document.getElementById('pr-spine-actions');
+  if (a && window.prInActions != null) a.textContent = window.prInActions;
+}
+
+function prCheckQueueEmpty() {
+  const n = document.querySelectorAll('#pr-finds .pr-find').length;
+  const empty = document.getElementById('pr-queue-empty');
+  if (empty) {
+    empty.style.display = n === 0 ? '' : 'none';
+    if (n === 0) empty.innerHTML =
+      'All clear — you’ve decided on every finding. Committed work is now in <b>Actions</b>.';
+  }
+}

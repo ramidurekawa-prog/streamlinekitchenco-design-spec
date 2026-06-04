@@ -6007,6 +6007,175 @@ button:focus-visible{outline:2px solid var(--green);outline-offset:2px}
 }
 .pr-list-footer-note{font-size:11.5px;color:var(--t3)}
 
+/* ── (redesign) THE "WHY" SURFACE ─────────────────────────────
+   Profit Recovery is the explainability + decide half of a pair
+   with Actions (the do half). Deliberately the OPPOSITE of Actions'
+   workflow board: calm, editorial, no status chips / owners / due
+   dates / tabs / kanban. Each finding unfolds in place to show
+   exactly why SKC flagged it; you decide from inside that panel. */
+
+/* Editorial hero + shared funnel spine (the visible handoff) */
+.pr-ehero{display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap;margin:0 0 22px}
+.pr-ehero-main{flex:1 1 360px;min-width:0}
+.pr-ehero-head{font-family:var(--display);font-size:40px;font-weight:800;letter-spacing:-1px;line-height:1.14;color:var(--t1);max-width:600px}
+.pr-ehero-head b{color:var(--amber);font-weight:800}
+
+/* Hero donut — share of the total on the table, by finding. Slices are amber
+   at descending opacity (keeps "amber = leak", no decorative colour). */
+.pr-ehero-chart{display:flex;align-items:center;gap:22px;flex-shrink:0}
+.pr-donut{width:138px;height:138px;flex-shrink:0}
+.pr-donut-c1{font-family:var(--mono);font-size:15px;font-weight:700;fill:var(--t1)}
+/* The five issues, right by the circle — names readable, numbers BIG */
+.pr-donut-legend{display:flex;flex-direction:column;gap:11px;min-width:172px}
+.pr-leg{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;color:var(--t2);white-space:nowrap;line-height:1}
+.pr-leg i{width:11px;height:11px;border-radius:3px;flex-shrink:0;background:var(--amber)}
+.pr-leg span{flex:1;min-width:0}
+.pr-leg b{margin-left:auto;padding-left:16px;font-family:var(--mono);font-size:19px;font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums}
+.pr-ehero-sub{margin-top:9px;font-size:13px;color:var(--t2);max-width:640px;line-height:1.5}
+/* Funnel spine as a 3-stop route: connected pills, current stop tinted,
+   the other two clearly tappable (they navigate to Actions / ROI Proof). */
+.pr-spine{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:16px}
+.pr-spine-seg{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;font-size:12px;color:var(--t3);border:1px solid transparent;transition:background .1s,border-color .1s,color .1s}
+.pr-spine-seg b{font-family:var(--mono);font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums}
+.pr-spine-seg.is-now{background:var(--amber-d);border-color:var(--amber-b)}
+.pr-spine-seg.is-now b{color:var(--amber)}
+.pr-spine-link{cursor:pointer;border-color:var(--border)}
+.pr-spine-link:hover{background:var(--hover);border-color:var(--border-s);color:var(--t1)}
+.pr-spine-link:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.pr-spine-arrow{color:var(--t3);opacity:.45;font-size:13px;margin:0 1px}
+
+/* Location filter — segmented pill. Neutral on purpose: filtering is
+   navigation, not a leak signal, so it never uses amber (color discipline). */
+.pr-loc-filter{display:flex;gap:4px;flex-wrap:wrap;margin:0 0 16px}
+.pr-loc{
+  font-size:11px;font-weight:600;font-family:var(--mono);
+  padding:5px 11px;border-radius:999px;white-space:nowrap;
+  background:transparent;color:var(--t3);
+  border:1px solid var(--border);cursor:pointer;
+  transition:color .1s,border-color .1s,background .1s;
+}
+.pr-loc:hover{color:var(--t1);border-color:var(--border-s)}
+.pr-loc.active{background:var(--hover);color:var(--t1);border-color:var(--t3)}
+.pr-loc:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* Findings — quiet collapsed cards that unfold the WHY */
+.pr-finds{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.pr-find{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r-lg);overflow:hidden;
+  transition:border-color .12s,opacity .16s ease,transform .16s ease;
+}
+.pr-find:hover{border-color:var(--border-s)}
+.pr-find-head{display:flex;align-items:flex-start;gap:16px;padding:20px 22px 18px}
+/* Category icon — by SHAPE, not colour (keeps amber = leak only). Lets you
+   scan Labor / Menu / Throughput at a glance. */
+.pr-find-icon{
+  flex-shrink:0;width:34px;height:34px;border-radius:9px;margin-top:2px;
+  background:var(--hover);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;color:var(--t2);
+}
+.pr-find-icon svg{width:18px;height:18px}
+/* Left: the unfold-the-why button. Right: value + Commit, so committing is
+   one click and the unfold click is only ever "show me why". */
+.pr-find-toggle{
+  display:flex;flex-direction:column;align-items:flex-start;min-width:0;flex:1;
+  background:none;border:none;font:inherit;text-align:left;cursor:pointer;padding:0;
+}
+.pr-find-toggle:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px}
+.pr-find-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:7px}
+.pr-find-title{font-size:18.5px;font-weight:600;color:var(--t1);line-height:1.34;max-width:620px}
+.pr-find-toggle:hover .pr-find-title{color:var(--t1);text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--border-s)}
+.pr-find-why{display:inline-flex;align-items:center;gap:6px;margin-top:11px;font-size:12.5px;font-weight:600;color:var(--blue)}
+.pr-find-why svg{transition:transform .2s ease}
+.pr-find.open .pr-find-why svg{transform:rotate(180deg)}
+.pr-find-right{display:flex;flex-direction:column;align-items:flex-end;gap:11px;flex-shrink:0}
+.pr-find-val{font-family:var(--mono);font-size:25px;font-weight:700;color:var(--amber);line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap;padding-top:2px}
+.pr-find-per{font-size:13px;font-weight:500;color:var(--t3)}
+/* Quiet Commit — calm outline that fills on hover (not a loud green block).
+   Keeps it one-click without turning the right rail into a wall of CTAs. */
+.pr-find-commit{
+  white-space:nowrap;font-weight:600;
+  background:transparent;color:var(--t1);border:1px solid var(--border-s);
+}
+.pr-find-commit:hover{background:var(--hover);border-color:var(--t3);color:var(--t1)}
+.pr-find-commit:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* The evidence panel — collapsed by default, unfolds to a CHART on click */
+.pr-find-why-panel{max-height:0;overflow:hidden;transition:max-height .26s ease}
+.pr-find.open .pr-find-why-panel{max-height:820px}
+.pr-why{padding:2px 22px 20px;border-top:1px solid var(--border)}
+.pr-why-k{font-size:10px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--t3);margin:16px 0 13px}
+
+/* Visual evidence — a per-service bar chart against the threshold line. Bars
+   that breach the line (amber) ARE the repeating pattern that triggered the
+   flag; the last bar is current vs target. Rendered by prRenderViz(). */
+.pr-why-viz{margin:0}
+.pr-viz-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.pr-viz-label{font-size:11.5px;font-weight:600;color:var(--t2)}
+.pr-viz-legend{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;color:var(--t3);white-space:nowrap}
+.pr-viz-legend i{width:9px;height:9px;border-radius:2px;background:var(--amber);flex-shrink:0}
+.pr-viz-svg{display:block;width:100%;height:auto;max-width:480px}
+.pr-viz-thr{stroke:var(--t2);stroke-width:1.2;stroke-dasharray:3 3;opacity:.55}
+.pr-viz-bad{fill:var(--amber)}
+.pr-viz-ok{fill:var(--t3);opacity:.26}
+.pr-viz-mut{fill:var(--t3);opacity:.34}
+.pr-viz-mut2{fill:var(--t3);opacity:.18}
+.pr-viz-band{fill:var(--t3);opacity:.10}
+.pr-viz-line{fill:none;stroke:var(--amber);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.pr-viz-area{fill:var(--amber);opacity:.10}
+.pr-viz-dot{fill:var(--t3)}
+.pr-viz-dot-bad{fill:var(--amber)}
+.pr-viz-txt{fill:var(--t3);font-size:8.5px;font-family:var(--mono)}
+.pr-viz-txt-b{fill:var(--t1);font-size:9.5px;font-weight:700;font-family:var(--mono)}
+.pr-viz-rowlab{fill:var(--t2);font-size:8.5px;font-weight:600}
+.pr-viz-cap{font-size:13px;color:var(--t2);line-height:1.5;margin-top:12px}
+.pr-viz-cap b{color:var(--t1);font-weight:700}
+
+/* Sources + confidence — compact, visual */
+.pr-why-meta{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.pr-why-meta-l{display:flex;align-items:center;gap:13px;flex-wrap:wrap}
+.pr-why-meta-k{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.pr-src{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-size:12px;color:var(--t2)}
+.pr-src-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.pr-why-conf{display:flex;align-items:center;gap:9px}
+.pr-conf-meter{width:66px;height:6px;border-radius:3px;background:var(--hover);overflow:hidden}
+.pr-conf-meter i{display:block;height:100%;border-radius:3px;background:var(--t2)}
+.pr-conf-num{font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--t2);font-variant-numeric:tabular-nums}
+
+.pr-why-note{margin-top:14px;font-size:12px;color:var(--t3);font-style:italic;line-height:1.5}
+.pr-why-cta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:16px}
+.pr-find-dismiss{
+  background:none;border:none;cursor:pointer;
+  font-size:12px;font-weight:600;color:var(--t3);
+  padding:6px 4px;transition:color .1s;
+}
+.pr-find-dismiss:hover{color:var(--red)}
+.pr-why-math{
+  background:none;border:none;cursor:pointer;margin-left:auto;
+  font-size:12px;font-weight:600;color:var(--t3);padding:6px 4px;transition:color .1s;
+}
+.pr-why-math:hover{color:var(--t1)}
+
+/* Cleared-to-zero / filtered-empty state */
+.pr-feed-empty{
+  background:var(--card);border:1px dashed var(--border);
+  border-radius:var(--r-lg);padding:22px 18px;
+  font-size:12.5px;color:var(--t3);line-height:1.6;text-align:center;
+  margin-bottom:18px;
+}
+.pr-feed-empty b{color:var(--t1)}
+
+/* Minimal doctrine line */
+.pr-foot-min{font-size:11px;color:var(--t3);border-top:1px solid var(--border);padding-top:12px}
+
+@media (max-width:600px){
+  .pr-ehero-head{font-size:26px}
+  .pr-find-title{font-size:16.5px}
+  .pr-find-val{font-size:22px}
+  .pr-why-meta{align-items:flex-start}
+  .pr-why-math{margin-left:0}
+}
+
 /* ── Deep section ─────────────────────────────────────────── */
 .pr-deep-section{
   border-top:2px solid var(--border);
