@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --input-type=module -e ' *)",
+      "Bash(echo \"served fresh: $\\(curl -s http://localhost:8000/shared/data.js)",
+      "Bash(echo \"  CSS .tt-w-range: $\\(curl -s http://localhost:8000/shared/styles.css)",
+      "Bash(echo \"served: $\\(curl -s http://localhost:8000/shared/controllers.js)",
+      "Bash(node -c shared/controllers.js)"
+    ]
+  }
+}

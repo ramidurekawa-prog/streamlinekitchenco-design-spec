@@ -850,10 +850,10 @@ function toggleWatchStageView(mode) {
   function $(id){ return document.getElementById(id); }
 
   // Which location each service day belongs to (all Oakland for now)
-  var DAY_LOCATION = { friday: 'Oakland', saturday: 'Oakland', sunday: 'Oakland' };
-  var DAY_LABEL    = { friday: 'Friday Dinner', saturday: 'Saturday Dinner', sunday: 'Sunday Dinner' };
-  var ALL_DAYS     = ['friday', 'saturday', 'sunday'];
+  var DAY_LOCATION = { monday:'Oakland', tuesday:'Oakland', wednesday:'Oakland', thursday:'Oakland', friday:'Oakland', saturday:'Oakland', sunday:'Oakland' };
+  var ALL_DAYS     = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
   var currentDay   = 'friday';
+  var currentMealLabel = 'Dinner';
 
   // ── Render helpers (reproduce the Friday static layout from data) ──
   function pct(min, total){ return (min / total * 100).toFixed(2); }
@@ -869,219 +869,155 @@ function toggleWatchStageView(mode) {
 
   function ttRenderDay(s){
     var sb = s.stageBreakdown;
-    var total = sb.actualTotalMin;
+    var actual = sb.actualTotalMin, target = sb.targetTotalMin, over = sb.overTargetMin;
     var bn = sb.stages.filter(function(x){ return x.status === 'bottleneck'; })[0] || sb.stages[sb.stages.length - 1];
     var f = s.formula.values;
-    var rev = Math.round(f.missedRevenue);
+    var dp = s.diagnosisPanel;
+    var rev = dp.estimatedWeeklyRevenue, missed = f.missedTables, conf = s.heroInsight.patternConfidence;
+    var revLow = dp.revLow, revHigh = dp.revHigh; // honest band on the one modeled number
+    var patternNote = (s.summaryCards[3] && s.summaryCards[3].subtext) || (conf + '% pattern');
+    var hist = s.forecastHistWeeks || Math.max(8, Math.round(conf / 7));
+    var recurr = patternNote.charAt(0).toLowerCase() + patternNote.slice(1); // "seen 3 of last 4 Wednesdays" — keep day capitalized
 
-    // 1 · headline
-    var headline =
-      '<div style="padding:14px 16px;margin-bottom:12px;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:6px;font-size:13.5px;line-height:1.55;color:var(--t2)">' +
-        boldFirst(s.heroInsight.message) +
+    // 1 · VERDICT HERO — money-first · expected = AI forecast from this service's own history
+    var hero =
+      '<div class="tt-w-hero">' +
+        '<div class="tt-w-eyebrow">' + s.day + ' ' + s.service + ' · ' + s.location + ' · ' + s.timeWindow + '</div>' +
+        '<h1 class="tt-w-head">' + s.day + ' ' + s.service.toLowerCase() + ' is leaving <b>~$' + rev + '/wk</b> on the table.</h1>' +
+        '<div class="tt-w-range"><span class="tt-w-range-k">grounded range</span><b>$' + revLow + '–$' + revHigh + '</b><span class="tt-w-range-u">/wk</span></div>' +
+        '<p class="tt-w-sub">Tables run about <b>' + over + ' min</b> over the <b>~' + target + '-min</b> expected for a ' + s.day + ' ' + s.service.toLowerCase() + ' — about <b>' + missed + ' seats</b> you couldn’t fill in a typical week. The lag is almost entirely in <b>Stage ' + bn.id + ' · ' + bn.name + '</b>.</p>' +
+        '<div class="tt-w-stats">' +
+          '<div class="tt-w-stat"><span class="tt-w-stat-v">' + actual + ' → ' + target + '</span><span class="tt-w-stat-l">min · actual vs expected</span></div>' +
+          '<div class="tt-w-stat"><span class="tt-w-stat-v">' + missed + '</span><span class="tt-w-stat-l">tables missed / wk</span></div>' +
+          '<div class="tt-w-stat"><span class="tt-w-stat-v">' + conf + '%</span><span class="tt-w-stat-l">forecast confidence</span></div>' +
+        '</div>' +
+        '<div class="tt-w-prov"><span class="tt-w-prov-pill">forecast</span><span><b>' + hist + ' weeks</b> of history · ' + recurr + '</span></div>' +
+        ttMathHTML(s) +
       '</div>';
 
-    // 2 · 4-cell strip
-    var strip = '<div class="sp-strip" style="grid-template-columns:repeat(4,1fr)">' +
-      s.summaryCards.map(function(c){
-        var subColor = (c.status === 'warning' || c.status === 'danger') ? 'color:var(--amber)' : '';
-        return '<div class="sp-strip-cell ' + stripClass(c.status) + '"><div class="sp-strip-k">' + c.label +
-          '</div><div class="sp-strip-v">' + c.value +
-          '</div><div class="sp-strip-sub" style="' + subColor + '">' + c.subtext + '</div></div>';
-      }).join('') +
-    '</div>';
+    // 2 · WHERE THE TIME GOES — one tile per stage: icon + big minutes + ✓/⚠ status
+    var bnIdx = sb.stages.indexOf(bn);
+    var STAGE_ICON = { Seat: '🪑', Order: '📝', Eat: '🍽️', Pay: '💳', Reset: '🔄' };
+    var okCount = sb.stages.filter(function(x){ return x.status !== 'bottleneck'; }).length;
+    var steps = sb.stages.map(function(x, i){
+      var isBn = x.status === 'bottleneck', sym, txt, cls;
+      if (isBn) { sym = '⚠'; txt = '+' + x.delta + ' over'; cls = 'is-over'; }
+      else if (x.status === 'on_target') { sym = '✓'; txt = 'on time'; cls = 'is-ok'; }
+      else { sym = '✓'; txt = '+' + x.delta + ' min'; cls = 'is-ok'; }
+      return '<button type="button" class="tt-w-step' + (isBn ? ' is-bn' : '') + (i === bnIdx ? ' is-active' : '') + '" data-si="' + i + '" onclick="ttSelectStage(this)">' +
+        '<span class="tt-w-step-ico" aria-hidden="true">' + (STAGE_ICON[x.name] || '•') + '</span>' +
+        '<span class="tt-w-step-name">' + x.id + ' · ' + x.name + '</span>' +
+        '<span class="tt-w-step-min">' + x.actualMin + '<small>min</small></span>' +
+        '<span class="tt-w-step-status ' + cls + '">' + sym + ' ' + txt + '</span>' +
+      '</button>';
+    }).join('<span class="tt-w-step-arr" aria-hidden="true">→</span>');
+    var stage =
+      '<div class="tt-w-card">' +
+        '<div class="tt-w-card-h"><span>Where the time goes</span><span class="tt-w-card-meta">a table’s ' + sb.stages.length + ' stages · ' + actual + ' min vs ~' + target + ' min expected</span></div>' +
+        '<div class="tt-w-lead"><b>' + okCount + ' of ' + sb.stages.length + ' stages are on time.</b> The hold-up is <b class="tt-w-amber">Stage ' + bn.id + ' · ' + bn.name + '</b>, running <b class="tt-w-amber">+' + bn.delta + ' min</b> over.</div>' +
+        '<div class="tt-w-steps">' + steps + '</div>' +
+        '<div class="tt-w-stage-detail">' + ttStageDetailHTML(bn) + '</div>' +
+        '<div class="tt-w-stage-hint">Tap a stage for its detail.</div>' +
+      '</div>';
 
-    // 3a · LEFT panel — Why <day> is slow
-    var dp = s.diagnosisPanel;
-    var left =
-      '<div class="tt-ov-panel"><div class="tt-ov-panel-h"><span>' + dp.eyebrow + '</span><span class="tag-kds tag-pill">' + dp.badge + '</span></div>' +
-      '<div class="tt-ov-body"><div class="hero-card">' +
-        '<div class="hero-title">' + dp.headline + '</div>' +
-        '<div class="hero-sub">' + dp.body + '</div>' +
-        '<div class="hero-value-block"><span class="hero-value-num">~$' + dp.estimatedWeeklyRevenue + '</span>' +
-          '<span class="hero-value-period">/wk · estimated, not guaranteed</span></div>' +
-        '<div style="font-size:11.5px;color:var(--t2);line-height:1.6;margin-top:8px">' + dp.explanation + '</div>' +
-        '<details style="margin-top:8px;font-size:10.5px;color:var(--t3)">' +
-          '<summary style="cursor:pointer;color:var(--blue);user-select:none">Show the formula</summary>' +
-          '<div style="margin-top:6px;padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px;font-family:var(--mono);line-height:1.7">' +
-            f.missedTables + ' tables × $' + f.averageCheck + ' avg check = ~$' + rev + '/wk<br>' +
-            '~$' + rev + ' × 4.33 weeks = ~$' + dp.monthlyPace + '/mo<br>' +
-            'Tables-missed always rounded <em>down</em>, never up.<br>' +
-            'Confidence in the pattern: ' + s.heroInsight.patternConfidence + '% · in the dollar amount: medium' +
-          '</div></details>' +
-        '<div class="hero-ctas">' +
-          '<button class="btn btn-primary btn-sm" onclick="showTtSubpage(\'playbooks\')">See what to do</button>' +
-          '<button class="btn btn-secondary btn-sm" onclick="showTtSubpage(\'evidence\')">See full math</button>' +
-        '</div></div></div></div>';
 
-    // 3b · CENTER panel — Where the time goes
-    var targetSegs = sb.stages.filter(function(x){ return x.targetMin > 0; }).map(function(x, i){
-      return '<div style="width:' + pct(x.targetMin, total) + '%;background:rgba(161,161,170,' + GREY[i % 5] + ');border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9.5px;color:var(--t2);font-family:var(--mono);font-weight:700">' + x.targetMin + '</div>';
+    // 4 · HOUR BY HOUR — bar = minutes OVER target; big +N number + ✓/⚠ per hour
+    var maxOver = Math.max.apply(null, s.hourlyRows.map(function(h){ return h.overTargetMin; })) || 1;
+    var worstHi = 0, worstV = -1;
+    s.hourlyRows.forEach(function(h, i){ if (h.overTargetMin > worstV){ worstV = h.overTargetMin; worstHi = i; } });
+    var hourBars = s.hourlyRows.map(function(h, i){
+      var over = h.overTargetMin;
+      var barH = over <= 0 ? 3 : Math.max(10, over / maxOver * 100);
+      var oc = h.severity === 'red' ? 'var(--red)' : h.severity === 'amber' ? 'var(--amber)' : 'var(--green)';
+      var numCls = h.severity === 'red' ? 'is-bad' : h.severity === 'amber' ? 'is-warn' : 'is-ok';
+      var sym = h.severity === 'green' ? '✓' : '⚠';
+      return '<button type="button" class="tt-w-hour' + (i === worstHi ? ' is-active' : '') + '" data-hi="' + i + '" onclick="ttSelectHour(this)">' +
+        '<span class="tt-w-hour-over ' + numCls + '">' + (over > 0 ? '+' + over : '0') + '</span>' +
+        '<span class="tt-w-hbar"><i style="height:' + barH.toFixed(1) + '%;background:' + oc + '"></i></span>' +
+        '<span class="tt-w-hour-h">' + h.hour.replace(' PM', 'p').replace(' AM', 'a') + ' <span class="tt-w-hour-sym ' + numCls + '">' + sym + '</span></span>' +
+      '</button>';
     }).join('');
-    var actualSegs = sb.stages.map(function(x, i){
-      if (x.status === 'bottleneck'){
-        var out = '';
-        if (x.targetMin > 0){
-          out += '<div style="width:' + pct(x.targetMin, total) + '%;background:rgba(161,161,170,' + GREY[i % 5] + ');border-right:1px solid var(--amber);display:flex;align-items:center;justify-content:center;font-size:9.5px;color:var(--t1);font-family:var(--mono);font-weight:700">' + x.targetMin + '</div>';
-        }
-        out += '<div style="width:' + pct(x.delta, total) + '%;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:9.5px;color:#fff;font-family:var(--mono);font-weight:700">+' + x.delta + '</div>';
-        return out;
-      }
-      return '<div style="width:' + pct(x.actualMin, total) + '%;background:rgba(161,161,170,' + GREY[i % 5] + ');border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--t1);font-family:var(--mono);font-weight:700">' + x.actualMin + '</div>';
-    }).join('');
-    var stageLabels = sb.stages.map(function(x){
-      var isBn = x.status === 'bottleneck';
-      return '<div style="width:' + pct(x.actualMin, total) + '%;font-size:9px;color:' + (isBn ? 'var(--amber)' : 'var(--t3)') + ';text-align:center;line-height:1.2' + (isBn ? ';font-weight:700' : '') + '">' + x.id + ' · ' + x.name + (isBn ? ' ⚠' : '') + '</div>';
-    }).join('');
-    var stageCards = sb.stages.map(function(x){
-      var isBn = x.status === 'bottleneck';
-      var statusText = isBn ? 'bottleneck' : (x.status === 'on_target' ? 'on target' : 'in tolerance');
-      return '<div style="padding:6px 8px;background:' + (isBn ? 'var(--amber-d)' : 'var(--card)') + ';border:1px solid ' + (isBn ? 'var(--amber-b)' : 'var(--border)') + ';border-radius:4px;text-align:center">' +
-        '<div style="font-size:8.5px;color:' + (isBn ? 'var(--amber)' : 'var(--t3)') + ';font-weight:700;letter-spacing:.04em;text-transform:uppercase">Stage ' + x.id + (isBn ? ' ⚠' : '') + '</div>' +
-        '<div style="font-family:var(--mono);font-size:' + (isBn ? '12' : '11') + 'px;color:' + (isBn ? 'var(--amber)' : 'var(--t2)') + ';font-weight:700;margin-top:2px">' + (x.delta > 0 ? '+' : '') + x.delta + '</div>' +
-        '<div style="font-size:8px;color:' + (isBn ? 'var(--amber)' : 'var(--t3)') + ';margin-top:1px' + (isBn ? ';font-weight:600' : '') + '">' + statusText + '</div></div>';
-    }).join('');
-    var center =
-      '<div class="tt-ov-panel"><div class="tt-ov-panel-h"><span>Where the time goes · ' + sb.stageCount + ' stages</span></div>' +
-      '<div class="tt-ov-body"><div>' +
-        '<div style="display:flex;align-items:flex-end;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)">' +
-          '<div><div style="font-family:var(--mono);font-size:30px;font-weight:700;color:var(--amber);line-height:1">' + total + '<span style="font-size:14px;color:var(--t3);font-weight:500;margin-left:3px">min</span></div>' +
-            '<div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:3px">Actual · this week</div></div>' +
-          '<div style="font-family:var(--mono);font-size:18px;color:var(--t3);padding-bottom:4px">vs</div>' +
-          '<div><div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--t2);line-height:1">' + sb.targetTotalMin + '<span style="font-size:13px;color:var(--t3);font-weight:500;margin-left:3px">min</span></div>' +
-            '<div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:3px">Your target</div></div>' +
-          '<div style="margin-left:auto;text-align:right"><div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--amber);line-height:1">+' + sb.overTargetMin + ' min</div>' +
-            '<div style="font-size:9.5px;color:var(--t3);margin-top:3px;line-height:1.4">' + bn.delta + ' of ' + sb.overTargetMin + ' are in<br><strong style="color:var(--amber)">Stage ' + bn.id + ' alone</strong></div></div>' +
-        '</div>' +
-        '<div style="margin-bottom:14px">' +
-          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">' +
-            '<div style="font-size:9.5px;color:var(--t3);width:50px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0">Target</div>' +
-            '<div style="flex:1;display:flex;height:24px;border-radius:3px;background:var(--surface);border:1px solid var(--border);overflow:hidden">' + targetSegs + '</div>' +
-            '<div style="font-size:11px;color:var(--t2);font-family:var(--mono);font-weight:700;width:36px;text-align:right;flex-shrink:0">' + sb.targetTotalMin + '</div>' +
-          '</div>' +
-          '<div style="display:flex;align-items:center;gap:8px">' +
-            '<div style="font-size:9.5px;color:var(--t1);width:50px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0">Actual</div>' +
-            '<div style="flex:1;display:flex;height:24px;border-radius:3px;background:var(--surface);border:1px solid var(--border);overflow:hidden">' + actualSegs + '</div>' +
-            '<div style="font-size:11px;color:var(--amber);font-family:var(--mono);font-weight:700;width:36px;text-align:right;flex-shrink:0">' + total + '</div>' +
-          '</div>' +
-          '<div style="display:flex;gap:0;margin-top:6px;padding-left:58px;padding-right:44px">' + stageLabels + '</div>' +
-        '</div>' +
-        '<div style="display:grid;grid-template-columns:repeat(' + sb.stageCount + ',1fr);gap:4px;margin-bottom:12px">' + stageCards + '</div>' +
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
-          '<div style="padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:3px">Total now</div><div style="font-size:14px;color:var(--amber);font-family:var(--mono);font-weight:700">' + total + ' min</div></div>' +
-          '<div style="padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:3px">Your target</div><div style="font-size:14px;color:var(--t1);font-family:var(--mono);font-weight:700">' + sb.targetTotalMin + ' min</div></div>' +
-        '</div>' +
-      '</div></div></div>';
+    var hours =
+      '<div class="tt-w-card">' +
+        '<div class="tt-w-card-h"><span>Hour by hour</span><span class="tt-w-card-meta">minutes a table runs <b class="tt-w-amber">over expected</b>, by hour</span></div>' +
+        '<div class="tt-w-hours">' + hourBars + '</div>' +
+        '<div class="tt-w-hour-detail">' + ttHourDetailHTML(s.hourlyRows[worstHi]) + '</div>' +
+        '<div class="tt-w-hours-cap">' + s.worstStretch.message + '</div>' +
+      '</div>';
 
-    // 3c · RIGHT panel — What to do / is it safe
-    var rec = s.recommendedActionCard;
-    var sg = s.serviceGuardrails;
-    var checks = sg.checks.map(function(c){
-      var mono = /\$|%/.test(c.current) ? ';font-family:var(--mono)' : '';
-      return '<div style="display:flex;justify-content:space-between"><span>' + c.label + '</span><strong style="color:var(--green)' + mono + '">' + c.current + '</strong></div>';
-    }).join('');
-    var right =
-      '<div class="tt-ov-panel"><div class="tt-ov-panel-h">What to do · is it safe?</div><div class="tt-ov-body">' +
-        '<div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:4px;padding:11px 13px;margin-bottom:8px">' +
-          '<div style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--blue);margin-bottom:4px">Recommended action</div>' +
-          '<div style="font-size:12px;color:var(--t1);font-weight:600;line-height:1.4">' + rec.action + '</div>' +
-          '<div style="font-size:10.5px;color:var(--t3);margin-top:4px;line-height:1.5">' + rec.description + '</div>' +
-          '<div style="margin-top:8px;display:flex;gap:6px"><button class="btn btn-primary btn-sm" onclick="showTtSubpage(\'playbooks\')">Turn into Action</button></div>' +
-        '</div>' +
-        '<div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:4px;padding:11px 13px;margin-bottom:8px">' +
-          '<div style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--green);margin-bottom:4px">Will it hurt service?</div>' +
-          '<div style="font-size:12px;color:var(--t1);font-weight:600;line-height:1.4">' + sg.summary + '</div>' +
-          '<div style="font-size:10.5px;color:var(--t3);margin-top:6px;line-height:1.7">' + checks + '</div>' +
-          '<div style="font-size:10px;color:var(--t3);margin-top:8px;padding-top:7px;border-top:1px dashed var(--border);font-style:italic;line-height:1.5">' + sg.warning + '</div>' +
-        '</div>' +
-      '</div></div>';
-
-    // 4 · Hour-by-hour
-    var rows = s.hourlyRows.map(function(h){
-      var col = sevColor(h.severity);
-      var bg;
-      if (h.severity === 'green'){
-        bg = 'rgba(34,197,94,.18)';
-      } else {
-        var greenPct = Math.max(0, 100 - (h.overTargetMin / h.totalMin * 100)).toFixed(0);
-        bg = 'linear-gradient(90deg,rgba(34,197,94,.18) ' + greenPct + '%,' + sevBg(h.severity) + ' ' + greenPct + '%)';
-      }
-      return '<div style="color:var(--t3);font-weight:700">' + h.hour + '</div>' +
-        '<div style="background:' + bg + ';height:22px;border-radius:3px;display:flex;align-items:center;padding:0 8px;color:' + col + ';font-size:10px;font-family:var(--sans)">' + h.label + '</div>' +
-        '<div style="color:' + col + ';font-weight:700">' + h.totalMin + 'm</div>';
-    }).join('');
-    var hourly =
-      '<div class="tt-ov-panel" style="margin-top:12px"><div class="tt-ov-panel-h"><span>Hour-by-hour · ' + s.day + ' ' + s.service.toLowerCase() + ' ' + s.timeWindow + '</span></div>' +
-      '<div class="tt-ov-body"><div>' +
-        '<div style="font-size:11px;color:var(--t3);margin-bottom:8px;line-height:1.5">Each row is one hour of ' + s.day + ' ' + s.service.toLowerCase() + ' service. The <strong style="color:var(--amber)">amber section</strong> shows where Stage ' + bn.id + ' (' + bn.name + ') is running over target.</div>' +
-        '<div style="display:grid;grid-template-columns:auto 1fr auto;gap:8px 10px;font-size:11px;font-family:var(--mono);align-items:center">' + rows + '</div>' +
-        '<div style="margin-top:10px;padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px;font-size:10.5px;color:var(--t3);line-height:1.5">' + s.worstStretch.message + '</div>' +
-      '</div></div></div>';
-
-    return headline + strip + '<div class="tt-ov-grid">' + left + center + right + '</div>' + hourly;
+    // Split so the toggles can sit between the verdict hero and the visuals.
+    return { hero: hero, body: stage + hours };
   }
 
-  // Inject the generated Saturday / Sunday markup into their containers.
-  // Idempotent: runs once, but safe to call repeatedly (e.g. lazily on first
-  // switch) so it self-heals regardless of init timing.
-  var generatedBuilt = false;
-  function ttBuildGeneratedDays(){
-    if (generatedBuilt) return;
-    var scenarios = (typeof TT_WATCH_SCENARIOS !== 'undefined') ? TT_WATCH_SCENARIOS
-                  : (window.TT_WATCH_SCENARIOS || null);
-    if (!scenarios) return;
-    var any = false;
-    Object.keys(scenarios).forEach(function(key){
-      var el = $('ttDay-' + key);
-      if (!el) return;
-      try { el.innerHTML = ttRenderDay(scenarios[key]); any = true; }
-      catch (err){ console.warn('[table_turns] render failed for ' + key + ':', err); }
-    });
-    if (any) generatedBuilt = true;
+  function _ttDays(){ return (typeof TT_WATCH_DAYS !== 'undefined') ? TT_WATCH_DAYS : (window.TT_WATCH_DAYS || {}); }
+  function _ttScn(){ return (typeof TT_WATCH_SCENARIOS !== 'undefined') ? TT_WATCH_SCENARIOS : (window.TT_WATCH_SCENARIOS || {}); }
+
+  // Render one day+meal service into the single #ttServiceView container.
+  // data-svc-key lets the interactive handlers resolve the right service's data.
+  function ttRenderService(svcKey){
+    var heroEl = $('ttServiceHero'), bodyEl = $('ttServiceBody');
+    if (!heroEl || !bodyEl) return;
+    var s = _ttScn()[svcKey];
+    if (!s){ heroEl.innerHTML = ''; bodyEl.innerHTML = '<div class="tt-w-empty">No service data for this selection.</div>'; return; }
+    try {
+      var parts = ttRenderDay(s);
+      heroEl.innerHTML = '<div class="tt-w">' + parts.hero + '</div>';
+      bodyEl.innerHTML = '<section class="tt-w-svc" data-svc-key="' + svcKey + '"><div class="tt-w">' + parts.body + '</div></section>';
+    } catch (err){ console.warn('[table_turns] render failed for ' + svcKey + ':', err); }
   }
 
-  // Show one day view, hide the rest. Unknown / no-data → #ttDay-empty.
+  // Build the meal pills for a day and mark the active one.
+  function ttBuildMealPills(dayKey, activeKey){
+    var wrap = $('ttMealPills'); if (!wrap) return;
+    var day = _ttDays()[dayKey];
+    if (!day){ wrap.innerHTML = ''; return; }
+    wrap.innerHTML = day.meals.map(function(m){
+      return '<button type="button" class="tt-day-pill tt-meal-pill' + (m.key === activeKey ? ' active' : '') +
+        '" data-svc-key="' + m.key + '" onclick="ttSwitchMeal(\'' + m.key + '\',\'' + m.label + '\')">' + m.label + '</button>';
+    }).join('');
+  }
+
+  // Pick a day: rebuild its meal pills, keep the same meal label if available
+  // (else default to the day's last meal = Dinner), and render.
   window.ttSwitchDay = function(key){
-    ttBuildGeneratedDays(); // lazy safety net — build generated days if not yet built
-    var views = document.querySelectorAll('#tt-subpage-overview .tt-day-view');
-    if (!views.length) return;
-    views.forEach(function(v){ v.style.display = 'none'; });
-    var target = $('ttDay-' + key);
-    if (target){
-      target.style.display = '';
-      currentDay = key;
-    } else {
-      var empty = $('ttDay-empty');
-      if (empty) empty.style.display = '';
-    }
-    var sel = $('ttDaySel');
-    if (sel && key !== '__none__' && sel.value !== key) sel.value = key;
-  };
-
-  // Filter the header day dropdown to the chosen sidebar location, then
-  // select a sensible default and render it.
-  window.ttApplyLocation = function(loc){
-    var sel = $('ttDaySel');
-    if (!sel) return; // not on the Table Turns screen yet
-    var visible = ALL_DAYS.filter(function(d){
-      if (!loc || loc === 'All Locations') return true;
-      return DAY_LOCATION[d] === loc;
-    });
-    sel.innerHTML = '';
-    visible.forEach(function(d){
-      var o = document.createElement('option');
-      o.value = d;
-      o.textContent = DAY_LABEL[d];
-      sel.appendChild(o);
-    });
-    if (visible.length === 0){
-      sel.disabled = true;
-      ttSwitchDay('__none__'); // → empty state
+    var day = _ttDays()[key];
+    if (!day){
+      var v = $('ttServiceView'); if (v) v.innerHTML = '<div class="tt-w-empty">No Table Turns data for this location yet.</div>';
+      var mp = $('ttMealPills'); if (mp) mp.innerHTML = '';
       return;
     }
-    sel.disabled = false;
-    var pick = visible.indexOf(currentDay) !== -1 ? currentDay : visible[0];
-    sel.value = pick;
-    ttSwitchDay(pick);
+    currentDay = key;
+    var meal = day.meals.filter(function(m){ return m.label === currentMealLabel; })[0] || day.meals[day.meals.length - 1];
+    currentMealLabel = meal.label;
+    ttBuildMealPills(key, meal.key);
+    ttRenderService(meal.key);
+    document.querySelectorAll('.tt-day-pills .tt-day-pill[data-day]').forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-day') === key);
+    });
+  };
+
+  // Pick a meal within the current day.
+  window.ttSwitchMeal = function(svcKey, label){
+    currentMealLabel = label;
+    ttRenderService(svcKey);
+    document.querySelectorAll('#ttMealPills .tt-meal-pill').forEach(function(p){
+      p.classList.toggle('active', p.getAttribute('data-svc-key') === svcKey);
+    });
+  };
+
+  // Show the day pills available for the chosen location, pick a default, render.
+  window.ttApplyLocation = function(loc){
+    var pills = document.querySelectorAll('.tt-day-pills .tt-day-pill[data-day]');
+    if (!pills.length) return; // not on the Table Turns screen yet
+    var visible = [];
+    pills.forEach(function(p){
+      var d = p.getAttribute('data-day');
+      var show = !loc || loc === 'All Locations' || DAY_LOCATION[d] === loc;
+      p.style.display = show ? '' : 'none';
+      if (show) visible.push(d);
+    });
+    if (!visible.length){ ttSwitchDay('__none__'); return; }
+    ttSwitchDay(visible.indexOf(currentDay) !== -1 ? currentDay : visible[0]);
   };
 
   // Sidebar location selector calls this.
@@ -1091,11 +1027,83 @@ function toggleWatchStageView(mode) {
   };
 
   document.addEventListener('DOMContentLoaded', function(){
-    ttBuildGeneratedDays();
     ttApplyLocation(window.SKC_LOCATION || 'All Locations');
   });
 })();
 
+
+/* ════════════════════════════════════════════════════════════════════
+   TABLE TURNS · WATCH — interactive stage + hour visuals. Click a stage
+   segment / axis label / hour bar to select it; the visual highlights and a
+   live detail line updates. Defaults to the bottleneck stage / worst hour.
+   These are global so the inline onclick (and ttRenderDay's defaults) reach
+   them; they read window.TT_WATCH_SCENARIOS. Pure presentation.
+   ════════════════════════════════════════════════════════════════════ */
+function ttStageDetailHTML(st){
+  var rel = st.status === 'bottleneck'
+      ? 'the main lag — <span class="tt-w-amber">+' + st.delta + ' min over</span>, targeted by the recommended fix'
+    : st.status === 'on_target' ? 'right at the expected pace'
+    : '+' + st.delta + ' min over — within tolerance';
+  return '<b>Stage ' + st.id + ' · ' + st.name + '</b> · ' + st.actualMin + ' min vs ~' + st.targetMin + ' expected · ' + rel;
+}
+function ttHourDetailHTML(h){
+  return '<b>' + h.hour + '</b> · ' + h.totalMin + ' min · ' + h.label;
+}
+// "Show the math" — the live throughput derivation, read straight from formula.trace.
+// Written for an owner who wants to see where the headline number comes from: every
+// step is narrated in plain language (what we're doing, where the input came from),
+// then the actual arithmetic. Numbers and doctrine are unchanged — realization is
+// still the one modeled term, covers are floored, the band stays a band.
+function ttMathHTML(s){
+  var t = s.formula && s.formula.trace; if (!t) return '';
+  var dp = s.diagnosisPanel, chk = s.formula.values.averageCheck;
+  var pct = Math.round(t.realization * 100);
+  var rows = [
+    ['A seat should turn',  '(' + t.serviceHours + 'h × 60) ÷ ' + t.expectedMin + ' min = <b>' + t.theoTurns.toFixed(2) + '</b>/seat'],
+    ['It actually turns',   '(' + t.serviceHours + 'h × 60) ÷ ' + t.actualMin + ' min = <b>' + t.actTurns.toFixed(2) + '</b>/seat'],
+    ['Seats you miss',      t.deltaTurns.toFixed(2) + '/seat × ' + t.seats + ' seats ≈ <b>' + t.theoLost.toFixed(1) + '</b> covers'],
+    ['That fill <i>(est.)</i>', 'round down ' + t.theoLost.toFixed(1) + ' × ' + pct + '% = <b>' + t.lostCovers + '</b> covers'],
+    ['What it’s worth',     t.lostCovers + ' × $' + chk + ' = <b>$' + dp.estimatedWeeklyRevenue + '/wk</b>'],
+    ['Range',               '±' + t.spreadPct + '% = <b>$' + t.revLow + '–$' + t.revHigh + '</b>/wk']
+  ];
+  return '<details class="tt-w-math">' +
+    '<summary>Where does this number come from?</summary>' +
+    '<div class="tt-w-math-body">' +
+      rows.map(function(r){
+        return '<div class="tt-w-math-row"><span class="tt-w-math-k">' + r[0] + '</span><span class="tt-w-math-v">' + r[1] + '</span></div>';
+      }).join('') +
+      '<div class="tt-w-math-note">Only <b>the fill rate</b> is estimated — always rounded down. Everything else is your own POS data. Counts toward ROI once we confirm the freed seats filled.</div>' +
+    '</div>' +
+  '</details>';
+}
+function _ttServiceFor(el){
+  var v = el.closest && el.closest('[data-svc-key]');
+  if (!v) return null;
+  return (window.TT_WATCH_SCENARIOS || {})[v.getAttribute('data-svc-key')] || null;
+}
+window.ttSelectStage = function(el){
+  var sc = _ttServiceFor(el); if (!sc) return;
+  var idx = +el.getAttribute('data-si');
+  var st = sc.stageBreakdown.stages[idx]; if (!st) return;
+  var card = el.closest('.tt-w-card'); if (!card) return;
+  card.querySelectorAll('[data-si]').forEach(function(n){ n.classList.toggle('is-active', +n.getAttribute('data-si') === idx); });
+  var d = card.querySelector('.tt-w-stage-detail'); if (d) d.innerHTML = ttStageDetailHTML(st);
+};
+window.ttSelectHour = function(el){
+  var sc = _ttServiceFor(el); if (!sc) return;
+  var idx = +el.getAttribute('data-hi');
+  var h = sc.hourlyRows[idx]; if (!h) return;
+  var card = el.closest('.tt-w-card'); if (!card) return;
+  card.querySelectorAll('[data-hi]').forEach(function(n){ n.classList.toggle('is-active', +n.getAttribute('data-hi') === idx); });
+  var d = card.querySelector('.tt-w-hour-detail'); if (d) d.innerHTML = ttHourDetailHTML(h);
+};
+document.addEventListener('keydown', function(e){
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  var t = e.target;
+  if (!t || !t.hasAttribute) return;
+  if (t.hasAttribute('data-si')){ e.preventDefault(); window.ttSelectStage(t); }
+  else if (t.hasAttribute('data-hi')){ e.preventDefault(); window.ttSelectHour(t); }
+});
 
 /* ════════════════════════════════════════════════════════════════════
    PROFIT RECOVERY — single location filter (segmented pill).

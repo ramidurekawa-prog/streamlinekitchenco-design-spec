@@ -270,114 +270,105 @@ const MENU_SIM_SCENARIOS = {
 // by ttRenderDay() in controllers.js. Only the fields the Watch view renders are
 // kept here (aiResolution / kitchenEvidence belong to Decide / Evidence).
 // ════════════════════════════════════════════════════════════════════
-const TT_WATCH_SCENARIOS = {
-  saturday: {
-    id: 'saturday', day: 'Saturday', service: 'Dinner', timeWindow: '6–10 PM',
-    location: 'Oakland', status: 'Watch',
-    heroInsight: {
-      message: "Saturday dinner at Oakland is running 11 minutes long, but the issue is not guest linger. Tables are taking too long to reset and reseat after guests leave. That's about 7 tables you couldn't seat this week — roughly ~$615 in revenue missed. The pattern has shown up 2 of the last 4 Saturdays, mostly between 7–9 PM.",
-      patternConfidence: 68
-    },
-    summaryCards: [
-      { label: 'HOW LONG TABLES SIT', value: '87 min', subtext: '11 min over your 76-min target', status: 'warning' },
-      { label: 'TABLES YOU MISSED', value: '7', subtext: "/wk · seats you couldn't fill", status: 'warning' },
-      { label: 'REVENUE LEFT ON TABLE', value: '~$615', subtext: '/wk · estimate, not guaranteed', status: 'warning' },
-      { label: 'IS IT A REAL PATTERN?', value: '68%', subtext: 'Seen 2 of last 4 Saturdays', status: 'watch' }
-    ],
-    diagnosisPanel: {
-      eyebrow: 'WHY SATURDAY IS SLOW', badge: 'HOST + BUS',
-      headline: 'Tables are not being reset and reseated fast enough after guests leave',
-      body: 'Guests are finishing at a normal pace, but tables are taking too long to become guest-ready and too long to be reseated once ready. The biggest delay is between payment, bussing, reset, host awareness, and reseating. During 7–9 PM, this creates a front-door bottleneck where guests wait while revenue-capable tables sit idle.',
-      estimatedWeeklyRevenue: 615, monthlyPace: 2665,
-      explanation: "That's 7 tables a week you could have seated but didn't, at an average check of $87.90. About $2,665/month at this pace."
-    },
-    stageBreakdown: {
-      actualTotalMin: 87, targetTotalMin: 76, overTargetMin: 11, stageCount: 5,
-      stages: [
-        { id: 1, name: 'Seat', targetMin: 8, actualMin: 9, delta: 1, status: 'in_tolerance' },
-        { id: 2, name: 'Order', targetMin: 20, actualMin: 20, delta: 0, status: 'on_target' },
-        { id: 3, name: 'Eat', targetMin: 36, actualMin: 37, delta: 1, status: 'in_tolerance' },
-        { id: 4, name: 'Pay', targetMin: 12, actualMin: 12, delta: 0, status: 'on_target' },
-        { id: 5, name: 'Reset', targetMin: 0, actualMin: 9, delta: 9, status: 'bottleneck' }
-      ]
-    },
-    recommendedActionCard: {
-      action: 'Add a 7–9 PM reset captain and table-ready host signal',
-      description: 'Assign one support person to own table reset visibility during the Saturday rush. Host should receive a table-ready signal immediately after reset instead of waiting for visual confirmation.'
-    },
-    serviceGuardrails: {
-      summary: 'No guest-facing quality drop detected — the issue happens after guests leave, not during the meal.',
-      checks: [
-        { label: 'Guest spend', current: '$88.10', baseline: '$87.70', status: 'Holding' },
-        { label: 'Reviews mention rushing?', current: 'No', baseline: 'No', status: 'Pass' },
-        { label: 'Complaints per 100 guests', current: '1.1', baseline: '1.3', status: 'Steady' }
-      ],
-      warning: 'If complaints rise or reviews mention rushed service, the savings should not count.'
-    },
-    hourlyRows: [
-      { hour: '6 PM', label: 'In target · early dinner flow stable', totalMin: 78, overTargetMin: 2, severity: 'green' },
-      { hour: '7 PM', label: '+9 min over · reset delay starts', totalMin: 85, overTargetMin: 9, severity: 'amber' },
-      { hour: '8 PM', label: '+18 min over · host stand backlog + reset lag', totalMin: 94, overTargetMin: 18, severity: 'red' },
-      { hour: '9 PM', label: '+13 min over · late recovery, table-ready signal still slow', totalMin: 89, overTargetMin: 13, severity: 'amber' },
-      { hour: '10 PM', label: '+4 min over · rush clears', totalMin: 80, overTargetMin: 4, severity: 'green' }
-    ],
-    worstStretch: { message: '8 PM is your worst stretch. Total overage peaks at +18 min, with most of the delay happening after payment when tables should be reset and reseated.' },
-    formula: { values: { averageCheck: 87.9, missedTables: 7, missedRevenue: 615.3 } }
-  },
+const TT_SVC_HOURS = {
+  Lunch:  ['11 AM','12 PM','1 PM','2 PM'],
+  Dinner: ['5 PM','6 PM','7 PM','8 PM','9 PM'],
+  Brunch: ['10 AM','11 AM','12 PM','1 PM','2 PM']
+};
+// Oakland dining-room seat capacity — a measured constant (POS table map), not a guess.
+var TT_SEATS = 42;
 
-  sunday: {
-    id: 'sunday', day: 'Sunday', service: 'Dinner', timeWindow: '5–9 PM',
-    location: 'Oakland', status: 'Action Needed',
-    heroInsight: {
-      message: "Sunday dinner at Oakland is running 16 minutes long, but the delay is not at the check. Entree ticket time is stretching the meal by about 12 minutes per table — roughly 8 tables missed and ~$590 in weekly revenue at risk. This has shown up 4 of the last 5 Sundays.",
-      patternConfidence: 82
-    },
-    summaryCards: [
-      { label: 'HOW LONG TABLES SIT', value: '92 min', subtext: '16 min over your 76-min target', status: 'danger' },
-      { label: 'TABLES YOU MISSED', value: '8', subtext: "/wk · seats you couldn't fill", status: 'danger' },
-      { label: 'REVENUE LEFT ON TABLE', value: '~$590', subtext: '/wk · estimate, not guaranteed', status: 'warning' },
-      { label: 'IS IT A REAL PATTERN?', value: '82%', subtext: 'Seen 4 of last 5 Sundays', status: 'strong' }
-    ],
-    diagnosisPanel: {
-      eyebrow: 'WHY SUNDAY IS SLOW', badge: 'KDS',
-      headline: 'Tables sit too long because entree pacing is stretching the meal, not because guests are delaying payment',
-      body: 'The front-of-house flow is mostly inside target. Seating, ordering, dessert, and payment are stable. The delay is concentrated in the entree window, where kitchen ticket times stretch during the 6–8 PM rush. This causes tables to stay occupied longer even though servers are moving guests through the experience normally.',
-      estimatedWeeklyRevenue: 590, monthlyPace: 2557,
-      explanation: "That's 8 tables a week you could have seated but didn't, at an average check of $73.80. About $2,557/month at this pace."
-    },
-    stageBreakdown: {
-      actualTotalMin: 92, targetTotalMin: 76, overTargetMin: 16, stageCount: 4,
-      stages: [
-        { id: 1, name: 'Seat', targetMin: 8, actualMin: 8, delta: 0, status: 'on_target' },
-        { id: 2, name: 'Order', targetMin: 20, actualMin: 22, delta: 2, status: 'in_tolerance' },
-        { id: 3, name: 'Eat', targetMin: 36, actualMin: 50, delta: 14, status: 'bottleneck' },
-        { id: 4, name: 'Pay', targetMin: 12, actualMin: 12, delta: 0, status: 'on_target' }
-      ]
-    },
-    recommendedActionCard: {
-      action: 'Move prep earlier and add Sunday 6–8 PM sauté support',
-      description: 'Pre-portion Sunday sauté mise en place before 5 PM and add one support person to cover garnish, pasta drops, and pan resets during the 6–8 PM push. This targets entree ticket time without pressuring servers to rush guests.'
-    },
-    serviceGuardrails: {
-      summary: 'This action is safe only if food quality and remake rates hold. Savings should be blocked if faster ticket times cause complaints, remakes, or comps.',
-      checks: [
-        { label: 'Guest spend', current: '$73.80', baseline: '$74.10', status: 'Holding' },
-        { label: 'Food remake rate', current: '2.4%', baseline: '1.8%', status: 'Watch' },
-        { label: 'Complaints per 100 guests', current: '1.9', baseline: '1.5', status: 'Watch' }
-      ],
-      warning: 'Because remake rate is slightly elevated, this should start as Monitoring, not Verified Savings.'
-    },
-    hourlyRows: [
-      { hour: '5 PM', label: 'In target · early tables moving normally', totalMin: 77, overTargetMin: 1, severity: 'green' },
-      { hour: '6 PM', label: '+12 min over · entree ticket time begins drifting', totalMin: 88, overTargetMin: 12, severity: 'amber' },
-      { hour: '7 PM', label: '+26 min over · sauté station bottleneck', totalMin: 102, overTargetMin: 26, severity: 'red' },
-      { hour: '8 PM', label: '+19 min over · delayed entrees, recovery begins', totalMin: 95, overTargetMin: 19, severity: 'amber' },
-      { hour: '9 PM', label: '+4 min over · kitchen clears backlog', totalMin: 80, overTargetMin: 4, severity: 'green' }
-    ],
-    worstStretch: { message: '7 PM is your worst stretch. Total overage peaks at +26 min, with the majority of delay coming from entree ticket time, especially sauté-heavy menu items.' },
-    formula: { values: { averageCheck: 73.8, missedTables: 8, missedRevenue: 590.4 } }
-  }
+// Build a full Watch service scenario from a compact config.
+// Every headline number below is COMPUTED from the throughput model the Evidence
+// subpage documents — none are hand-asserted. Inputs (durations, seats, avg check)
+// stand in for measured feeds; `realization` is the one forecast/estimated term.
+function ttMkSvc(p){
+  var stages = p.stages.map(function(s,i){ return {id:i+1,name:s[0],targetMin:s[1],actualMin:s[2],delta:s[2]-s[1],status:'in_tolerance'}; });
+  var maxD = Math.max.apply(null, stages.map(function(s){return s.delta;}));
+  stages.forEach(function(s){ s.status = (s.delta===maxD && maxD>0) ? 'bottleneck' : (s.delta<=0 ? 'on_target' : 'in_tolerance'); });
+  var actual=0,expected=0; stages.forEach(function(s){ actual+=s.actualMin; expected+=s.targetMin; });
+  var over=actual-expected;
+
+  // ── Throughput model — DERIVE lost covers + revenue (arithmetic on measured inputs) ──
+  var hrs=TT_SVC_HOURS[p.meal]||[], n=hrs.length;
+  var serviceHours = Math.max(1, n-1);                       // span between first & last hour label
+  var seats        = p.seats || TT_SEATS;
+  var realization  = (p.realization != null ? p.realization : 0.36); // forecast fill rate (the EST term)
+  var theoTurns    = serviceHours*60/expected;               // turns/seat at the expected pace
+  var actTurns     = serviceHours*60/actual;                 // turns/seat at the measured pace
+  var deltaTurns   = theoTurns - actTurns;                   // turns/seat lost to slow turns
+  var theoLost     = deltaTurns*seats;                       // gross covers lost / service
+  var lostCovers   = Math.floor(theoLost*realization);       // realized covers — always FLOORED (conservative)
+  var revExact     = lostCovers*p.chk;                       // covers × avg check
+  var revWeekly    = Math.floor(revExact/10)*10;             // floor to $10 — no false precision, matches floor doctrine
+  var monthly      = Math.round(revWeekly*4.33);
+
+  // ── Confidence band on the recoverable $ — the one modeled number gets an honest range ──
+  // Width is DERIVED from the two on-page trust signals: pattern confidence + history depth.
+  // Lower confidence or thinner history ⇒ wider band; more weeks of history tightens it.
+  var histWeeks  = Math.max(8, Math.round(p.conf/7));
+  var spreadRel  = 0.45 * (1 - p.conf/100) / Math.sqrt(histWeeks/8);  // ≈10% at 74% conf · 11 wks
+  var revLow     = Math.floor(revWeekly*(1-spreadRel)/10)*10;         // floor the low — conservative
+  var revHigh    = Math.ceil (revWeekly*(1+spreadRel)/10)*10;         // ceil the high — honest about upside
+
+  // ── Hourly overage — demand-weighted so the cover-weighted mean ≡ headline `over` ──
+  // o_h = over·d_h·(Σd/Σd²) makes Σ(d_h·o_h)/Σd_h === over exactly (cover-weighted reconciliation).
+  var pk=(p.peak!=null?p.peak:Math.floor(n/2)), sigma=1.25;
+  var dem = hrs.map(function(_,i){ return Math.exp(-0.5*Math.pow((i-pk)/sigma,2)); }); // demand bell, peak at pk
+  var sumD=0,sumD2=0; dem.forEach(function(d){ sumD+=d; sumD2+=d*d; });
+  var kScale = sumD2>0 ? sumD/sumD2 : 1;
+  var rows=hrs.map(function(hr,i){
+    var ov=Math.round(over*dem[i]*kScale);
+    var sev = ov<=2 ? 'green' : (i===pk ? 'red' : 'amber');
+    return { hour:hr, label:(ov<=2?'On pace':'+'+ov+' min over')+(i===pk?' · worst hour':''), totalMin:expected+ov, overTargetMin:ov, severity:sev };
+  });
+
+  return {
+    id:(p.day+'-'+p.meal).toLowerCase(), day:p.day, service:p.meal, timeWindow:p.win, location:'Oakland', status:'Watch',
+    heroInsight:{ message:'', patternConfidence:p.conf },
+    forecastHistWeeks: histWeeks,
+    summaryCards:[{},{},{},{subtext:p.note}],
+    diagnosisPanel:{ estimatedWeeklyRevenue:revWeekly, revLow:revLow, revHigh:revHigh, monthlyPace:monthly },
+    stageBreakdown:{ actualTotalMin:actual, targetTotalMin:expected, overTargetMin:over, stageCount:stages.length, stages:stages },
+    recommendedActionCard:{ action:p.action },
+    hourlyRows:rows,
+    worstStretch:{ message: hrs[pk] + ' is your worst stretch — ' + (p.bnNote||'the bottleneck stage runs well past its expected pace') + '.' },
+    formula:{ values:{ averageCheck:p.chk, missedTables:lostCovers, missedRevenue:revWeekly },
+              trace:{ serviceHours:serviceHours, seats:seats, expectedMin:expected, actualMin:actual,
+                      theoTurns:+theoTurns.toFixed(2), actTurns:+actTurns.toFixed(2), deltaTurns:+deltaTurns.toFixed(2),
+                      theoLost:+theoLost.toFixed(1), realization:realization, lostCovers:lostCovers, revExact:revExact,
+                      spreadPct:+(spreadRel*100).toFixed(1), revLow:revLow, revHigh:revHigh } }
+  };
+}
+// Each day's services (illustrative). Lunch+Dinner on weekdays; Brunch+Dinner on weekends.
+const TT_WATCH_SCENARIOS = {};
+[
+  { day:'Monday',   meal:'Lunch',  win:'11 AM–2 PM', conf:60, chk:26, realization:0.28, peak:2, note:'Seen 2 of last 4 Mondays',   action:'Add a second register at the noon counter rush',        bnNote:'ordering backs up at the counter', stages:[['Seat',6,6],['Order',12,17],['Eat',20,21],['Pay',6,6]] },
+  { day:'Tuesday',  meal:'Lunch',  win:'11 AM–2 PM', conf:63, chk:27, realization:0.28, peak:1, note:'Seen 3 of last 5 Tuesdays',  action:'Pre-fire the top three lunch mains before the rush',     bnNote:'the kitchen falls behind on mains', stages:[['Seat',6,7],['Order',12,13],['Eat',21,25],['Pay',6,6]] },
+  { day:'Wednesday',meal:'Lunch',  win:'11 AM–2 PM', conf:65, chk:29, realization:0.3, peak:2, note:'Seen 3 of last 4 Wednesdays',action:'Drop checks proactively at the 35-minute mark',          bnNote:'guests wait on the check', stages:[['Seat',6,6],['Order',12,13],['Eat',21,21],['Pay',6,12]] },
+  { day:'Thursday', meal:'Lunch',  win:'11 AM–2 PM', conf:66, chk:28, realization:0.3, peak:1, note:'Seen 3 of last 4 Thursdays', action:'Take orders tableside within 3 minutes of seating',      bnNote:'ordering is slow to start', stages:[['Seat',6,7],['Order',13,18],['Eat',21,21],['Pay',6,6]] },
+  { day:'Friday',   meal:'Lunch',  win:'11 AM–2 PM', conf:67, chk:28, realization:0.34, peak:2, note:'Seen 3 of last 4 Fridays',   action:'Take orders tableside within 3 minutes of seating at lunch', bnNote:'ordering backs up during the midday rush', stages:[['Seat',6,7],['Order',13,18],['Eat',22,21],['Pay',6,6]] },
+  { day:'Monday',   meal:'Dinner', win:'5–9 PM',     conf:64, chk:58, realization:0.3, peak:2, note:'Seen 2 of last 4 Mondays',   action:'Present the dessert menu at the 55-minute mark',         bnNote:'guests linger before paying', stages:[['Seat',8,9],['Order',20,21],['Eat',34,37],['Pay',12,18]] },
+  { day:'Tuesday',  meal:'Dinner', win:'5–9 PM',     conf:66, chk:60, realization:0.32, peak:2, note:'Seen 4 of last 5 Tuesdays',  action:'Add sauté support during the 6–8 PM push',     bnNote:'entrée ticket time stretches', stages:[['Seat',8,8],['Order',20,22],['Eat',35,48],['Pay',12,12]] },
+  { day:'Wednesday',meal:'Dinner', win:'5–9 PM',     conf:62, chk:56, realization:0.3, peak:2, note:'Seen 3 of last 5 Wednesdays',action:'Pre-drop checks during the entrée clear',          bnNote:'the check stage drags', stages:[['Seat',8,9],['Order',20,21],['Eat',33,38],['Pay',12,19]] },
+  { day:'Thursday', meal:'Dinner', win:'5–9 PM',     conf:71, chk:66, realization:0.34, peak:3, note:'Seen 4 of last 5 Thursdays', action:'Servers present the dessert menu at the 60-minute mark', bnNote:'dessert-to-check runs long', stages:[['Seat',8,10],['Order',20,22],['Eat',38,40],['Pay',12,20]] },
+  { day:'Friday',   meal:'Dinner', win:'5–9 PM',     conf:74, chk:76, realization:0.36, peak:3, note:'Seen 3 of last 4 Fridays',   action:'Servers present the dessert menu at the 60-minute mark', bnNote:'guests linger between dessert and the check', stages:[['Seat',8,10],['Order',20,22],['Eat',36,40],['Pay',12,22]] },
+  { day:'Saturday', meal:'Brunch', win:'10 AM–2 PM', conf:69, chk:42, realization:0.36, peak:2, note:'Seen 3 of last 4 Saturdays', action:'Stagger reservations and add a host runner for the 11–1 wave', bnNote:'the host stand backs up as the wave arrives', stages:[['Seat',8,16],['Order',16,17],['Eat',28,29],['Pay',8,8]] },
+  { day:'Sunday',   meal:'Brunch', win:'10 AM–2 PM', conf:72, chk:44, realization:0.26, peak:3, note:'Seen 4 of last 5 Sundays',   action:'Add a second host and pre-bus during the brunch rush',  bnNote:'guests wait while tables sit unseated', stages:[['Seat',8,18],['Order',16,17],['Eat',26,30],['Pay',8,8]] },
+  { day:'Saturday', meal:'Dinner', win:'6–10 PM',    conf:68, chk:88, realization:0.38, peak:3, note:'Seen 2 of last 4 Saturdays', action:'Add a 7–9 PM reset captain and table-ready host signal', bnNote:'tables are slow to reset and reseat', stages:[['Seat',8,9],['Order',20,20],['Eat',37,37],['Pay',12,12],['Reset',0,9]] },
+  { day:'Sunday',   meal:'Dinner', win:'5–9 PM',     conf:82, chk:74, realization:0.38, peak:2, note:'Seen 4 of last 5 Sundays',   action:'Move prep earlier and add Sunday 6–8 PM sauté support', bnNote:'entrée ticket time stretches the meal', stages:[['Seat',8,8],['Order',20,22],['Eat',40,50],['Pay',12,12]] }
+].forEach(function(c){ TT_WATCH_SCENARIOS[(c.day+'-'+c.meal).toLowerCase()] = ttMkSvc(c); });
+
+// Day -> ordered meal services. Sidebar location filters which days show.
+const TT_WATCH_DAYS = {
+  monday:    { day:'Monday',    location:'Oakland', meals:[{key:'monday-lunch',label:'Lunch'},      {key:'monday-dinner',label:'Dinner'}] },
+  tuesday:   { day:'Tuesday',   location:'Oakland', meals:[{key:'tuesday-lunch',label:'Lunch'},     {key:'tuesday-dinner',label:'Dinner'}] },
+  wednesday: { day:'Wednesday', location:'Oakland', meals:[{key:'wednesday-lunch',label:'Lunch'},   {key:'wednesday-dinner',label:'Dinner'}] },
+  thursday:  { day:'Thursday',  location:'Oakland', meals:[{key:'thursday-lunch',label:'Lunch'},    {key:'thursday-dinner',label:'Dinner'}] },
+  friday:    { day:'Friday',    location:'Oakland', meals:[{key:'friday-lunch',label:'Lunch'},      {key:'friday-dinner',label:'Dinner'}] },
+  saturday:  { day:'Saturday',  location:'Oakland', meals:[{key:'saturday-brunch',label:'Brunch'},  {key:'saturday-dinner',label:'Dinner'}] },
+  sunday:    { day:'Sunday',    location:'Oakland', meals:[{key:'sunday-brunch',label:'Brunch'},    {key:'sunday-dinner',label:'Dinner'}] }
 };
 
-// Expose for cross-file access (controllers.js render + window fallback)
 if (typeof window !== "undefined") window.TT_WATCH_SCENARIOS = TT_WATCH_SCENARIOS;
+if (typeof window !== "undefined") window.TT_WATCH_DAYS = TT_WATCH_DAYS;

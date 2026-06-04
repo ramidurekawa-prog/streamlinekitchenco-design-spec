@@ -10190,7 +10190,7 @@ details.ev-card[open] .ev-card-chev{
   display:flex;flex-direction:column;
   overflow:hidden;min-width:0;
 }
-#screen-table-turns .page-hdr{flex-shrink:0;padding:0 0 14px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:14px}
+#screen-table-turns .page-hdr{flex-shrink:0;padding:0 0 16px;border-bottom:1px solid var(--border);margin-bottom:24px;display:flex;justify-content:space-between;align-items:flex-end;gap:14px}
 #screen-table-turns .page-hdr-left{min-width:0}
 #screen-table-turns .page-hdr-title{font-size:18px;font-weight:700;color:var(--t1);letter-spacing:-.01em;line-height:1.2}
 #screen-table-turns .page-hdr-sub{font-size:11.5px;color:var(--t3);margin-top:4px;line-height:1.5;max-width:720px}
@@ -11573,4 +11573,173 @@ body.skc-role-owner .skc-gm-only { display:none; }
   .td-clock{text-align:left;align-self:stretch}
   .td-item-money{flex-direction:row-reverse;gap:8px}
   .td-item-amt{font-size:18px}
+}
+
+/* ══ TABLE TURNS · WATCH (clean redesign) ══════════════════════════════
+   The editorial Watch landing rendered by ttRenderDay(). TT-scoped classes +
+   reused tokens; does NOT touch the shared sp-*/ev-*/item-card used by Labor
+   & Menu. Amber = the over/bottleneck only; data-driven widths are inline. */
+.tt-w{display:flex;flex-direction:column;gap:34px;padding-top:8px}
+
+/* Day + meal toggles — sit below the verdict hero, above the visuals */
+.tt-toggles{display:flex;flex-direction:column;gap:8px;margin:22px 0 26px}
+.tt-day-pills{display:flex;gap:4px;flex-wrap:wrap}
+.tt-meal-pills{display:flex;gap:4px;flex-wrap:wrap;min-height:28px}
+.tt-meal-pill{font-size:11px;padding:5px 13px;border-style:dashed}
+.tt-meal-pill.active{border-style:solid}
+.tt-day-pill{font-size:12px;font-weight:600;font-family:var(--mono);padding:6px 15px;border-radius:999px;white-space:nowrap;background:transparent;color:var(--t3);border:1px solid var(--border);cursor:pointer;transition:color .1s,border-color .1s,background .1s}
+.tt-day-pill:hover{color:var(--t1);border-color:var(--border-s)}
+.tt-day-pill.active{background:var(--hover);color:var(--t1);border-color:var(--t3)}
+.tt-day-pill:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* A day stacks all its meals; each meal behind a heading, clearly separated */
+.tt-w-day{display:flex;flex-direction:column}
+.tt-w-svc + .tt-w-svc{margin-top:48px;padding-top:44px;border-top:1px solid var(--border)}
+.tt-w-svc-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.tt-w-svc-meal{font-family:var(--display);font-size:20px;font-weight:800;color:var(--t1);letter-spacing:-.3px}
+.tt-w-svc-win{font-size:12px;color:var(--t3);font-family:var(--mono)}
+.tt-w-eyebrow{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:8px}
+.tt-w-head{font-family:var(--display);font-size:30px;font-weight:800;letter-spacing:-.6px;line-height:1.18;color:var(--t1);max-width:760px}
+.tt-w-head b{color:var(--amber);font-weight:800}
+.tt-w-sub{margin-top:11px;font-size:13.5px;color:var(--t2);line-height:1.55;max-width:680px}
+.tt-w-sub b{color:var(--t1);font-weight:600}
+/* honest confidence band on the recoverable $ — quiet, sits under the headline; neutral mono so amber stays on the point estimate */
+.tt-w-range{display:flex;align-items:baseline;gap:9px;margin-top:10px}
+.tt-w-range-k{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--t3)}
+.tt-w-range b{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--t2);font-variant-numeric:tabular-nums;letter-spacing:-.2px}
+.tt-w-range-u{font-size:11.5px;color:var(--t3)}
+/* supporting stats — value-over-label cells with hairline dividers (no boxes) */
+.tt-w-stats{display:flex;flex-wrap:wrap;row-gap:14px;margin-top:24px}
+.tt-w-stat{display:flex;flex-direction:column;gap:5px;padding:1px 24px}
+.tt-w-stat:first-child{padding-left:0}
+.tt-w-stat + .tt-w-stat{border-left:1px solid var(--border)}
+.tt-w-stat-v{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;line-height:1.05;letter-spacing:-.2px}
+.tt-w-stat-l{font-size:11px;color:var(--t3);line-height:1.3}
+/* forecast provenance — quiet evidence line beneath the stats */
+.tt-w-prov{display:flex;align-items:center;gap:9px;margin-top:18px;font-size:11.5px;color:var(--t3);line-height:1.5}
+.tt-w-prov b{color:var(--t2);font-weight:600;font-variant-numeric:tabular-nums}
+.tt-w-prov-pill{font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);background:rgba(59,130,246,.10);border:1px solid rgba(59,130,246,.30);border-radius:4px;padding:2px 6px;flex-shrink:0}
+.tt-w-math{margin-top:11px;font-size:11px}
+.tt-w-math summary{cursor:pointer;color:var(--blue);font-weight:600;user-select:none;width:fit-content}
+.tt-w-math summary::marker{color:var(--t3)}
+.tt-w-math[open] summary{margin-bottom:2px}
+.tt-w-math-body{margin-top:7px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:6px}
+.tt-w-math-row{display:flex;gap:12px;align-items:baseline}
+.tt-w-math-row + .tt-w-math-row{margin-top:5px}
+.tt-w-math-k{flex:0 0 92px;font-size:10px;font-weight:600;color:var(--t2)}
+.tt-w-math-k i{font-style:normal;color:var(--t3);font-weight:500}
+.tt-w-math-v{flex:1;min-width:0;font-family:var(--mono);font-size:10px;color:var(--t3)}
+.tt-w-math-v b{color:var(--t1);font-weight:700}
+.tt-w-math-note{margin-top:11px;padding-top:9px;border-top:1px dashed var(--border);font-size:9.5px;line-height:1.55;color:var(--t3)}
+.tt-w-math-note b{color:var(--t2);font-weight:700}
+
+.tt-w-grid{display:grid;grid-template-columns:1fr 322px;gap:14px;align-items:start}
+@media (max-width:900px){.tt-w-grid{grid-template-columns:1fr}}
+.tt-w-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 26px}
+/* ~1 inch between the verdict hero (…min table time) and the first visual card */
+.tt-w-hero + .tt-w-card{margin-top:64px}
+/* match the toggles→first-card gap (≈46px): 34px .tt-w flex-gap + 12px = 46 */
+.tt-w-card + .tt-w-card{margin-top:12px}
+.tt-w-card-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:22px}
+.tt-w-card-h>span:first-child{font-size:13px;font-weight:700;color:var(--t1)}
+.tt-w-card-meta{font-size:11px;color:var(--t3);font-variant-numeric:tabular-nums}
+.tt-w-amber{color:var(--amber)}
+/* small "illustrative" tag — per-stage timing isn't measured (no KDS feed) */
+.tt-w-ill{font-size:8.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);background:var(--hover);border:1px solid var(--border);border-radius:4px;padding:1px 5px;margin-left:7px;vertical-align:middle}
+
+/* Top fix — slim one-line bridge to Decide (sits right under the verdict) */
+.tt-w-topfix{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:var(--r-lg);padding:15px 18px}
+.tt-w-topfix-l{min-width:0;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.tt-w-topfix-k{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);flex-shrink:0}
+.tt-w-topfix-t{font-size:13px;font-weight:600;color:var(--t1);line-height:1.4}
+.tt-w-topfix-cta{display:flex;gap:8px;flex-shrink:0}
+
+/* stage visual — Target vs Actual stacked bars; bottleneck overage amber */
+.tt-w-stage-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.tt-w-stage-lab{width:46px;flex-shrink:0;font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--t3)}
+.tt-w-stage-track{flex:1;display:flex;height:26px;border-radius:5px;background:var(--hover);overflow:hidden}
+.tt-w-seg{display:flex;align-items:center;justify-content:center;min-width:0;background:rgba(148,163,184,.20);font-family:var(--mono);font-size:10px;font-weight:700;color:var(--t2);overflow:hidden}
+.tt-w-seg + .tt-w-seg{border-left:1.5px solid var(--card)}
+.tt-w-seg-over{background:var(--amber);color:#1a1206}
+.tt-w-stage-tot{width:34px;flex-shrink:0;text-align:right;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--t2);font-variant-numeric:tabular-nums}
+.tt-w-axis{display:flex;margin-top:6px;padding-left:56px;padding-right:44px}
+.tt-w-axis-i{font-size:9px;color:var(--t3);text-align:center;line-height:1.2;min-width:0;overflow:hidden;white-space:nowrap}
+.tt-w-axis-i.is-bn{color:var(--amber);font-weight:700}
+.tt-w-stage-cap{margin-top:16px;font-size:12px;color:var(--t2);line-height:1.55}
+.tt-w-stage-cap b{color:var(--t1);font-weight:600}
+
+/* recommended fix + is-it-safe side column */
+.tt-w-side{display:flex;flex-direction:column;gap:14px}
+.tt-w-rec{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:var(--r-lg);padding:14px 16px}
+.tt-w-rec-k{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.tt-w-rec-title{font-size:13.5px;font-weight:600;color:var(--t1);line-height:1.4}
+.tt-w-rec-body{font-size:11.5px;color:var(--t3);line-height:1.55;margin-top:6px}
+.tt-w-rec-cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.tt-w-safe{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:var(--r-lg);padding:14px 16px}
+.tt-w-safe-k{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.tt-w-safe-sum{font-size:12px;color:var(--t1);font-weight:500;line-height:1.45}
+.tt-w-checks{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.tt-w-check{display:flex;align-items:center;gap:8px;font-size:11.5px}
+.tt-w-check-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.tt-w-check-dot.is-ok{background:var(--green)}
+.tt-w-check-dot.is-watch{background:var(--amber)}
+.tt-w-check-l{color:var(--t3)}
+.tt-w-check-v{margin-left:auto;font-family:var(--mono);font-weight:700;color:var(--t2);font-variant-numeric:tabular-nums}
+.tt-w-safe-warn{margin-top:10px;padding-top:9px;border-top:1px dashed var(--border);font-size:10.5px;color:var(--t3);font-style:italic;line-height:1.5}
+
+/* hour-by-hour — vertical bars, green base = in-target, coloured cap = overage */
+/* lead-in sentence above the stage tiles */
+.tt-w-lead{margin-bottom:18px;font-size:13.5px;color:var(--t2);line-height:1.55}
+.tt-w-lead b{color:var(--t1);font-weight:700}
+.tt-w-lead b.tt-w-amber{color:var(--amber)}
+
+/* stage tiles — one per stage: icon + big minutes + ✓/⚠ status */
+.tt-w-steps{display:flex;align-items:stretch;gap:2px;flex-wrap:wrap}
+.tt-w-step{flex:1 1 100px;min-width:96px;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:16px 10px;cursor:pointer;font:inherit;transition:border-color .12s,background .12s,box-shadow .12s}
+.tt-w-step:hover{border-color:var(--border-s);background:var(--hover)}
+.tt-w-step.is-bn{background:var(--amber-d);border-color:var(--amber-b)}
+.tt-w-step.is-active{box-shadow:0 0 0 2px var(--blue)}
+/* bottleneck tile is already amber — its selection ring is amber too, not a clashing blue */
+.tt-w-step.is-bn.is-active{box-shadow:0 0 0 2px var(--amber-b)}
+.tt-w-step:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.tt-w-step-ico{font-size:24px;line-height:1}
+.tt-w-step-name{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--t3)}
+.tt-w-step-min{font-family:var(--mono);font-size:23px;font-weight:700;color:var(--t1);line-height:1;font-variant-numeric:tabular-nums}
+.tt-w-step-min small{font-size:11px;font-weight:500;color:var(--t3);margin-left:2px}
+.tt-w-step.is-bn .tt-w-step-min{color:var(--amber)}
+.tt-w-step-status{font-size:11px;font-weight:700}
+.tt-w-step-status.is-ok{color:var(--green)}
+.tt-w-step-status.is-over{color:var(--amber)}
+.tt-w-step-arr{display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:15px;padding:0 4px;flex:0 0 auto}
+
+/* hour bars — bar height = minutes OVER target; big +N number + ✓/⚠ symbol */
+.tt-w-hours{display:flex;align-items:stretch;gap:14px;height:150px;margin-bottom:18px}
+.tt-w-hour{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;background:none;border:none;cursor:pointer;font:inherit;padding:0;transition:filter .1s}
+.tt-w-hour:hover{filter:brightness(1.12)}
+.tt-w-hour:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:6px}
+.tt-w-hour-over{font-family:var(--mono);font-size:18px;font-weight:700;line-height:1;color:var(--t3);font-variant-numeric:tabular-nums}
+.tt-w-hour-over.is-ok{color:var(--green)}
+.tt-w-hour-over.is-warn{color:var(--amber)}
+.tt-w-hour-over.is-bad{color:var(--red)}
+.tt-w-hbar{flex:1;width:100%;max-width:54px;display:flex;flex-direction:column-reverse;border-radius:5px 5px 0 0;overflow:hidden;background:var(--hover)}
+.tt-w-hbar>i{display:block;width:100%;border-radius:5px 5px 0 0;transition:height .25s ease}
+.tt-w-hour.is-active .tt-w-hbar{outline:2px solid var(--blue);outline-offset:2px}
+.tt-w-hour-h{font-size:11px;color:var(--t3);font-family:var(--mono);display:flex;align-items:center;gap:4px;white-space:nowrap}
+.tt-w-hour.is-active .tt-w-hour-h{color:var(--t1);font-weight:700}
+.tt-w-hour-sym{font-size:11px}
+.tt-w-hour-sym.is-ok{color:var(--green)}
+.tt-w-hour-sym.is-warn{color:var(--amber)}
+.tt-w-hour-sym.is-bad{color:var(--red)}
+.tt-w-hours-cap{font-size:11.5px;color:var(--t3);line-height:1.55}
+
+/* live detail lines (replace the old static stage caption) */
+.tt-w-stage-detail{margin-top:16px;font-size:12.5px;color:var(--t2);line-height:1.55}
+.tt-w-stage-detail b{color:var(--t1);font-weight:700}
+.tt-w-stage-hint{margin-top:6px;font-size:10.5px;color:var(--t3);font-style:italic}
+.tt-w-hour-detail{margin:2px 0 8px;font-size:12.5px;color:var(--t2);line-height:1.5}
+.tt-w-hour-detail b{color:var(--t1);font-weight:700}
+
+@media (max-width:600px){
+  .tt-w-head{font-size:24px}
+  .tt-w-axis{padding-left:56px;padding-right:34px}
 }

@@ -1,12 +1,5 @@
 <div class="screen" id="screen-table-turns">
 
-  <!-- (Taya NOT-INCLUDED) Stage-level + KDS/station breakdowns need data SKC does not yet ingest.
-       Relabelled as an explicit Illustrative preview using the `illustrative` output type. -->
-  <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;margin:0 0 10px;background:rgba(148,163,184,.10);border:1px solid rgba(148,163,184,.28);border-radius:8px">
-    <span class="tag-ill tag-pill">ILLUSTRATIVE</span>
-    <span style="font-size:11.5px;color:var(--t2);line-height:1.5"><strong style="color:var(--t1)">Illustrative preview.</strong> Per-stage timing (seat → order → food → pay) and station/KDS breakdowns shown here require KDS + station-level data SKC does not yet ingest. Figures are illustrative, not measured — not eligible for ROI.</span>
-  </div>
-
   <!-- ══════════════════════════════════════════════════════════════════════
        WATCH · id: overview (kept for routing compatibility)
        The daily landing page. Answers: what's wrong, where's the time going,
@@ -20,253 +13,34 @@
           <div class="page-hdr-title">Table Turns · Watch</div>
         </div>
         <div class="page-hdr-right">
-          <select id="ttDaySel" class="le-filter-select" style="margin-right:8px" onchange="ttSwitchDay(this.value)" aria-label="Service day">
-            <option value="friday">Friday Dinner</option>
-            <option value="saturday">Saturday Dinner</option>
-            <option value="sunday">Sunday Dinner</option>
-          </select>
           <button class="btn btn-secondary btn-sm" onclick="showTtSubpage('playbooks')">Decide</button>
           <button class="btn btn-ghost btn-sm" onclick="showTtSubpage('evidence')">Evidence</button>
         </div>
       </div>
       <div class="sp-body" style="flex:initial;overflow:visible">
 
-        <!-- ═══ FRIDAY · Oakland — real, hand-built layout (unchanged) ═══ -->
-        <div id="ttDay-friday" class="tt-day-view">
+        <!-- Verdict hero (per service) -->
+        <div id="ttServiceHero"></div>
 
-        <!-- Plain-English headline: the whole story in one sentence -->
-        <div style="padding:14px 16px;margin-bottom:12px;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:6px;font-size:13.5px;line-height:1.55;color:var(--t2)">
-          <strong style="color:var(--t1)">Friday dinner at Oakland is running 18 minutes long.</strong> That's about <strong style="color:var(--t1)">9 tables you couldn't seat this week</strong> — roughly <strong style="color:var(--amber)">~$680</strong> in revenue missed. The pattern has shown up 3 of the last 4 Fridays, and service quality is still holding steady.
+        <!-- Day + meal toggles — sit below the verdict, above the visuals -->
+        <div class="tt-toggles" role="group" aria-label="Service day and meal">
+          <div class="tt-day-pills" role="group" aria-label="Service day">
+            <button type="button" class="tt-day-pill" data-day="monday" onclick="ttSwitchDay('monday')">Mon</button>
+            <button type="button" class="tt-day-pill" data-day="tuesday" onclick="ttSwitchDay('tuesday')">Tue</button>
+            <button type="button" class="tt-day-pill" data-day="wednesday" onclick="ttSwitchDay('wednesday')">Wed</button>
+            <button type="button" class="tt-day-pill" data-day="thursday" onclick="ttSwitchDay('thursday')">Thu</button>
+            <button type="button" class="tt-day-pill" data-day="friday" onclick="ttSwitchDay('friday')">Fri</button>
+            <button type="button" class="tt-day-pill" data-day="saturday" onclick="ttSwitchDay('saturday')">Sat</button>
+            <button type="button" class="tt-day-pill" data-day="sunday" onclick="ttSwitchDay('sunday')">Sun</button>
+          </div>
+          <div class="tt-meal-pills" id="ttMealPills" role="group" aria-label="Meal"></div>
         </div>
 
-        <!-- 4-cell strip on Watch (Service quality cell dropped per user) -->
-        <div class="sp-strip" style="grid-template-columns:repeat(4,1fr)">
-          <div class="sp-strip-cell is-warn"><div class="sp-strip-k">How long tables sit</div><div class="sp-strip-v">94 min</div><div class="sp-strip-sub" style="color:var(--amber)">18 min over your 76-min target</div></div>
-          <div class="sp-strip-cell is-warn"><div class="sp-strip-k">Tables you missed</div><div class="sp-strip-v">9</div><div class="sp-strip-sub">/wk · seats you couldn't fill</div></div>
-          <div class="sp-strip-cell is-warn"><div class="sp-strip-k">Revenue left on table</div><div class="sp-strip-v">~$680</div><div class="sp-strip-sub" style="color:var(--amber)">/wk · estimate, not guaranteed</div></div>
-          <div class="sp-strip-cell"><div class="sp-strip-k">Is it a real pattern?</div><div class="sp-strip-v">74%</div><div class="sp-strip-sub">Seen 3 of last 4 Fridays</div></div>
-        </div>
-
-        <!-- 3-panel grid: Why slow / Where time goes / What to do · Is it safe -->
-        <div class="tt-ov-grid">
-
-          <!-- LEFT · Why Friday is slow -->
-          <div class="tt-ov-panel">
-            <div class="tt-ov-panel-h"><span>Why Friday is slow</span><span class="tag-kds tag-pill">KDS</span></div>
-            <div class="tt-ov-body">
-              <div class="hero-card">
-                <div class="hero-title">Tables sit about 18 minutes too long, mostly between dessert and the check</div>
-                <div class="hero-sub">Guests linger 22 minutes between finishing dinner and paying — your target is 12. That extra 10 minutes per table compounds across the 5–9 PM service. The other stages (seating, ordering, food delivery) are inside their targets.</div>
-                <div class="hero-value-block">
-                  <span class="hero-value-num">~$680</span>
-                  <span class="hero-value-period">/wk · estimated, not guaranteed</span>
-                </div>
-                <div style="font-size:11.5px;color:var(--t2);line-height:1.6;margin-top:8px">
-                  That's 9 tables a week you could have seated but didn't, at an average check of $76. About <strong>$2,944/month</strong> at this pace.
-                </div>
-                <details style="margin-top:8px;font-size:10.5px;color:var(--t3)">
-                  <summary style="cursor:pointer;color:var(--blue);user-select:none">Show the formula</summary>
-                  <div style="margin-top:6px;padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px;font-family:var(--mono);line-height:1.7">
-                    9 tables × $76 avg check = ~$680/wk<br>
-                    $680 × 4.33 weeks = ~$2,944/mo<br>
-                    Tables-missed always rounded <em>down</em>, never up.<br>
-                    Confidence in the pattern: 74% · in the dollar amount: medium
-                  </div>
-                </details>
-                <div class="hero-ctas">
-                  <button class="btn btn-primary btn-sm" onclick="showTtSubpage('playbooks')">See what to do</button>
-                  <button class="btn btn-secondary btn-sm" onclick="showTtSubpage('evidence')">See full math</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- CENTER 1 · Where the time goes · 4 stages (always visible) -->
-          <div class="tt-ov-panel skc-detail">
-            <div class="tt-ov-panel-h"><span>Where the time goes · 4 stages</span></div>
-            <div class="tt-ov-body">
-
-              <!-- 4-stage view -->
-              <div id="watchStageView4">
-
-                <!-- Lead: the headline numbers (Actual vs Target vs Overage) -->
-                <div style="display:flex;align-items:flex-end;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)">
-                  <div>
-                    <div style="font-family:var(--mono);font-size:30px;font-weight:700;color:var(--amber);line-height:1">94<span style="font-size:14px;color:var(--t3);font-weight:500;margin-left:3px">min</span></div>
-                    <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:3px">Actual · this week</div>
-                  </div>
-                  <div style="font-family:var(--mono);font-size:18px;color:var(--t3);padding-bottom:4px">vs</div>
-                  <div>
-                    <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--t2);line-height:1">76<span style="font-size:13px;color:var(--t3);font-weight:500;margin-left:3px">min</span></div>
-                    <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:3px">Your target</div>
-                  </div>
-                  <div style="margin-left:auto;text-align:right">
-                    <div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--amber);line-height:1">+18 min</div>
-                    <div style="font-size:9.5px;color:var(--t3);margin-top:3px;line-height:1.4">10 of 18 are in<br><strong style="color:var(--amber)">Stage 4 alone</strong></div>
-                  </div>
-                </div>
-
-                <!-- Proportional bars · same horizontal scale (94 min = 100% of track) -->
-                <div style="margin-bottom:14px">
-
-                  <!-- Target bar (stops at 76m / 80.85%) -->
-                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-                    <div style="font-size:9.5px;color:var(--t3);width:50px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0">Target</div>
-                    <div style="flex:1;display:flex;height:24px;border-radius:3px;background:var(--surface);border:1px solid var(--border);overflow:hidden">
-                      <div style="width:8.51%;background:rgba(161,161,170,.28);border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--t2);font-family:var(--mono);font-weight:700">8</div>
-                      <div style="width:21.28%;background:rgba(161,161,170,.18);border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9.5px;color:var(--t2);font-family:var(--mono);font-weight:700">20</div>
-                      <div style="width:38.30%;background:rgba(161,161,170,.24);border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9.5px;color:var(--t2);font-family:var(--mono);font-weight:700">36</div>
-                      <div style="width:12.77%;background:rgba(161,161,170,.18);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--t2);font-family:var(--mono);font-weight:700">12</div>
-                    </div>
-                    <div style="font-size:11px;color:var(--t2);font-family:var(--mono);font-weight:700;width:36px;text-align:right;flex-shrink:0">76</div>
-                  </div>
-
-                  <!-- Actual bar · fills 100% · Stage 4 split: 12 within-target + 10 over -->
-                  <div style="display:flex;align-items:center;gap:8px">
-                    <div style="font-size:9.5px;color:var(--t1);width:50px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0">Actual</div>
-                    <div style="flex:1;display:flex;height:24px;border-radius:3px;background:var(--surface);border:1px solid var(--border);overflow:hidden">
-                      <div style="width:10.64%;background:rgba(161,161,170,.28);border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9.5px;color:var(--t1);font-family:var(--mono);font-weight:700">10</div>
-                      <div style="width:23.40%;background:rgba(161,161,170,.18);border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--t1);font-family:var(--mono);font-weight:700">22</div>
-                      <div style="width:42.55%;background:rgba(161,161,170,.24);border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--t1);font-family:var(--mono);font-weight:700">40</div>
-                      <!-- Stage 4 · target portion (12) -->
-                      <div style="width:12.77%;background:rgba(161,161,170,.18);border-right:1px solid var(--amber);display:flex;align-items:center;justify-content:center;font-size:9.5px;color:var(--t1);font-family:var(--mono);font-weight:700">12</div>
-                      <!-- Stage 4 · over portion (10) -->
-                      <div style="width:10.63%;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:9.5px;color:#fff;font-family:var(--mono);font-weight:700">+10</div>
-                    </div>
-                    <div style="font-size:11px;color:var(--amber);font-family:var(--mono);font-weight:700;width:36px;text-align:right;flex-shrink:0">94</div>
-                  </div>
-
-                  <!-- Stage labels under the bars · aligned to Actual columns -->
-                  <div style="display:flex;gap:0;margin-top:6px;padding-left:58px;padding-right:44px">
-                    <div style="width:10.64%;font-size:9px;color:var(--t3);text-align:center;line-height:1.2">1 · Seat</div>
-                    <div style="width:23.40%;font-size:9px;color:var(--t3);text-align:center;line-height:1.2">2 · Order</div>
-                    <div style="width:42.55%;font-size:9px;color:var(--t3);text-align:center;line-height:1.2">3 · Eat</div>
-                    <div style="width:23.40%;font-size:9px;color:var(--amber);text-align:center;line-height:1.2;font-weight:700">4 · Pay  ⚠</div>
-                  </div>
-                </div>
-
-                <!-- Per-stage overage · 4 compact cards · Stage 4 highlighted as the bottleneck -->
-                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:12px">
-                  <div style="padding:6px 8px;background:var(--card);border:1px solid var(--border);border-radius:4px;text-align:center">
-                    <div style="font-size:8.5px;color:var(--t3);font-weight:700;letter-spacing:.04em;text-transform:uppercase">Stage 1</div>
-                    <div style="font-family:var(--mono);font-size:11px;color:var(--t2);font-weight:700;margin-top:2px">+2</div>
-                    <div style="font-size:8px;color:var(--t3);margin-top:1px">in tolerance</div>
-                  </div>
-                  <div style="padding:6px 8px;background:var(--card);border:1px solid var(--border);border-radius:4px;text-align:center">
-                    <div style="font-size:8.5px;color:var(--t3);font-weight:700;letter-spacing:.04em;text-transform:uppercase">Stage 2</div>
-                    <div style="font-family:var(--mono);font-size:11px;color:var(--t2);font-weight:700;margin-top:2px">+2</div>
-                    <div style="font-size:8px;color:var(--t3);margin-top:1px">in tolerance</div>
-                  </div>
-                  <div style="padding:6px 8px;background:var(--card);border:1px solid var(--border);border-radius:4px;text-align:center">
-                    <div style="font-size:8.5px;color:var(--t3);font-weight:700;letter-spacing:.04em;text-transform:uppercase">Stage 3</div>
-                    <div style="font-family:var(--mono);font-size:11px;color:var(--t2);font-weight:700;margin-top:2px">+4</div>
-                    <div style="font-size:8px;color:var(--t3);margin-top:1px">in tolerance</div>
-                  </div>
-                  <div style="padding:6px 8px;background:var(--amber-d);border:1px solid var(--amber-b);border-radius:4px;text-align:center">
-                    <div style="font-size:8.5px;color:var(--amber);font-weight:700;letter-spacing:.04em;text-transform:uppercase">Stage 4 ⚠</div>
-                    <div style="font-family:var(--mono);font-size:12px;color:var(--amber);font-weight:700;margin-top:2px">+10</div>
-                    <div style="font-size:8px;color:var(--amber);margin-top:1px;font-weight:600">bottleneck</div>
-                  </div>
-                </div>
-
-                <!-- Total now / Your target — kept per user request -->
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-                  <div style="padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px">
-                    <div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:3px">Total now</div>
-                    <div style="font-size:14px;color:var(--amber);font-family:var(--mono);font-weight:700">94 min</div>
-                  </div>
-                  <div style="padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px">
-                    <div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:3px">Your target</div>
-                    <div style="font-size:14px;color:var(--t1);font-family:var(--mono);font-weight:700">76 min</div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- RIGHT · What to do · is it safe? -->
-          <div class="tt-ov-panel">
-            <div class="tt-ov-panel-h">What to do · is it safe?</div>
-            <div class="tt-ov-body">
-              <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:4px;padding:11px 13px;margin-bottom:8px">
-                <div style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--blue);margin-bottom:4px">Recommended action</div>
-                <div style="font-size:12px;color:var(--t1);font-weight:600;line-height:1.4">Servers present the dessert menu at the 60-minute mark</div>
-                <div style="font-size:10.5px;color:var(--t3);margin-top:4px;line-height:1.5">Instead of waiting for guests to ask, the server brings out the dessert menu at minute 60. This pulls the dessert-to-check stage back inside its 12-minute target.</div>
-                <div style="margin-top:8px;display:flex;gap:6px">
-                  <button class="btn btn-primary btn-sm" onclick="showTtSubpage('playbooks')">Turn into Action</button>
-                </div>
-              </div>
-              <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:4px;padding:11px 13px;margin-bottom:8px">
-                <div style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--green);margin-bottom:4px">Will it hurt service?</div>
-                <div style="font-size:12px;color:var(--t1);font-weight:600;line-height:1.4">No signs of trouble yet — all three checks are holding</div>
-                <div style="font-size:10.5px;color:var(--t3);margin-top:6px;line-height:1.7">
-                  <div style="display:flex;justify-content:space-between"><span>Guests spending the same</span><strong style="color:var(--green);font-family:var(--mono)">$75.40 vs $75.50</strong></div>
-                  <div style="display:flex;justify-content:space-between"><span>Reviews mention rushing?</span><strong style="color:var(--green)">No</strong></div>
-                  <div style="display:flex;justify-content:space-between"><span>Complaints per 100 guests</span><strong style="color:var(--green)">Steady</strong></div>
-                </div>
-                <div style="font-size:10px;color:var(--t3);margin-top:8px;padding-top:7px;border-top:1px dashed var(--border);font-style:italic;line-height:1.5">If any of these worsen after a change, the savings <strong style="color:var(--t2)">don't count</strong>.</div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- ROW 2 · Hour-by-hour · full-width below the 3-col grid -->
-        <div class="tt-ov-panel skc-detail" style="margin-top:12px">
-          <div class="tt-ov-panel-h"><span>Hour-by-hour · Friday dinner 5–9 PM</span></div>
-          <div class="tt-ov-body">
-            <div id="watchStageViewHourly">
-              <div style="font-size:11px;color:var(--t3);margin-bottom:8px;line-height:1.5">Each row is one hour of Friday dinner service. The <strong style="color:var(--amber)">amber section</strong> shows where Stage 4 (Dessert→Check) is running over its 12-minute target.</div>
-              <div style="display:grid;grid-template-columns:auto 1fr auto;gap:8px 10px;font-size:11px;font-family:var(--mono);align-items:center">
-                <div style="color:var(--t3);font-weight:700">5 PM</div>
-                <div style="background:rgba(34,197,94,.18);height:22px;border-radius:3px;display:flex;align-items:center;padding:0 8px;color:var(--green);font-size:10px;font-family:var(--sans)">In target · all stages fine</div>
-                <div style="color:var(--green);font-weight:700">76m</div>
-                <div style="color:var(--t3);font-weight:700">6 PM</div>
-                <div style="background:linear-gradient(90deg,rgba(34,197,94,.18) 65%,rgba(245,158,11,.30) 65%);height:22px;border-radius:3px;display:flex;align-items:center;padding:0 8px;color:var(--amber);font-size:10px;font-family:var(--sans)">+12 min over · Stage 4 starts to drift</div>
-                <div style="color:var(--amber);font-weight:700">88m</div>
-                <div style="color:var(--t3);font-weight:700">7 PM</div>
-                <div style="background:linear-gradient(90deg,rgba(34,197,94,.18) 50%,rgba(245,158,11,.34) 50%);height:22px;border-radius:3px;display:flex;align-items:center;padding:0 8px;color:var(--amber);font-size:10px;font-family:var(--sans)">+24 min over · busy hour, Stage 4 running long</div>
-                <div style="color:var(--amber);font-weight:700">100m</div>
-                <div style="color:var(--t3);font-weight:700">8 PM</div>
-                <div style="background:linear-gradient(90deg,rgba(34,197,94,.18) 42%,rgba(239,68,68,.32) 42%);height:22px;border-radius:3px;display:flex;align-items:center;padding:0 8px;color:var(--red);font-size:10px;font-family:var(--sans)">+32 min over · worst hour · all stages drift</div>
-                <div style="color:var(--red);font-weight:700">108m</div>
-                <div style="color:var(--t3);font-weight:700">9 PM</div>
-                <div style="background:linear-gradient(90deg,rgba(34,197,94,.18) 55%,rgba(245,158,11,.30) 55%);height:22px;border-radius:3px;display:flex;align-items:center;padding:0 8px;color:var(--amber);font-size:10px;font-family:var(--sans)">+22 min over · still elevated, slow recovery</div>
-                <div style="color:var(--amber);font-weight:700">98m</div>
-              </div>
-              <div style="margin-top:10px;padding:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:4px;font-size:10.5px;color:var(--t3);line-height:1.5">
-                <strong style="color:var(--t2)">7–8 PM is your worst stretch.</strong> Total overage peaks at +32 min, with Stage 4 running well past its 12-min target. Dessert-menu-at-60 has its biggest impact here. 5-hour average lands at 94 min.
-              </div>
-            </div>
-          </div>
-        </div>
-        </div><!-- /#ttDay-friday -->
-
-        <!-- ═══ SATURDAY · Oakland — generated by ttRenderDay() from TT_WATCH_SCENARIOS ═══ -->
-        <div id="ttDay-saturday" class="tt-day-view" style="display:none">
+        <!-- Stage + hour visuals (per service) -->
+        <div id="ttServiceBody">
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:64px 24px;background:var(--surface);border:1px dashed var(--border);border-radius:var(--r-md)">
             <div style="font-size:28px;line-height:1">⏱</div>
-            <div style="font-size:15px;font-weight:700;color:var(--t1)">Saturday Dinner · Oakland</div>
-            <div style="font-size:12px;color:var(--t3);line-height:1.55;max-width:440px">Loading service detail…</div>
-          </div>
-        </div>
-
-        <!-- ═══ SUNDAY · Oakland — generated by ttRenderDay() from TT_WATCH_SCENARIOS ═══ -->
-        <div id="ttDay-sunday" class="tt-day-view" style="display:none">
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:64px 24px;background:var(--surface);border:1px dashed var(--border);border-radius:var(--r-md)">
-            <div style="font-size:28px;line-height:1">⏱</div>
-            <div style="font-size:15px;font-weight:700;color:var(--t1)">Sunday Dinner · Oakland</div>
-            <div style="font-size:12px;color:var(--t3);line-height:1.55;max-width:440px">Loading service detail…</div>
-          </div>
-        </div>
-
-        <!-- ═══ No Table Turns data for the selected location ═══ -->
-        <div id="ttDay-empty" class="tt-day-view" style="display:none">
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:64px 24px;background:var(--surface);border:1px dashed var(--border);border-radius:var(--r-md)">
-            <div style="font-size:28px;line-height:1">📍</div>
-            <div style="font-size:15px;font-weight:700;color:var(--t1)">No Table Turns data for this location yet</div>
-            <div style="font-size:12px;color:var(--t3);line-height:1.55;max-width:440px">Table Turns is live for <strong style="color:var(--t2)">Oakland</strong> (Friday, Saturday, Sunday dinner). Pick Oakland in the sidebar location selector to see service-pace detail.</div>
+            <div style="font-size:15px;font-weight:700;color:var(--t1)">Loading service detail…</div>
           </div>
         </div>
 
