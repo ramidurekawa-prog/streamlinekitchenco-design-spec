@@ -53,179 +53,10 @@ const LABOR_SUBPAGE_TITLES = {
   overview:   'Labor Efficiency',
   heatmap:    'Labor Heatmap',
   staffing:   'Staffing Plan',
-  benchmarks: 'Labor Benchmarks',
-  coaching:   'Server Coaching',
   evidence:   'Labor Evidence',
 };
 
 
-// ── from source lines 24020-24044 (LE_CO_AXES) ──
-const LE_CO_AXES = {
-  revenue: {
-    state: 'full',
-    label: 'Revenue contribution',
-    sub: 'Premium attach · items/check · modifier capture',
-    metricNote: 'Toast item categories tagged · ready'
-  },
-  retention: {
-    state: 'partial', // loyalty captures ~28% of covers
-    label: 'Guest retention',
-    sub: 'Repeat-guest rate · regular request rate',
-    metricNote: 'Toast loyalty connected · 28% capture rate · suggest 60%+'
-  },
-  reliability: {
-    state: 'full',
-    label: 'Service reliability',
-    sub: 'Comp rate · void rate · re-fire rate',
-    metricNote: 'Toast void/comp reasons structured · ready'
-  }
-};
-
-// Servers: 14 total, but only those with top/bottom quartile signal are surfaced.
-// Each server has scores 0–100 per axis. 'null' = no data for that axis (server hasn't
-// hit min sample, OR axis is locked at the platform level).
-// Pattern is derived from scores by classifyPattern().
-
-// ── from source lines 24045-24154 (LE_CO_SERVERS) ──
-const LE_CO_SERVERS = [
-  {
-    name: 'Sarah C.', shift: 'Dinner', location: 'Oakland', section: '4-top',
-    shifts: 23, confidence: 86,
-    scores: { revenue: 90, retention: 84, reliability: 88 },
-    prevScores: { revenue: 85, retention: 82, reliability: 87 },
-    lastCoachedDays: 14, lastCoachedTopic: 'Modifier upsell',
-    rawMetrics: {
-      premiumAttach: '41%', premiumMedian: '23%',
-      itemsCheck: '5.2', itemsMedian: '4.1',
-      modCapture: '71%', modMedian: '52%',
-      repeatRate: '34%', repeatMedian: '21%',
-      compRate: '0.4%', compMedian: '1.1%'
-    }
-  },
-  {
-    name: 'Priya R.', shift: 'Dinner', location: 'Berkeley', section: 'patio',
-    shifts: 21, confidence: 81,
-    scores: { revenue: 82, retention: 76, reliability: 79 },
-    prevScores: { revenue: 78, retention: 72, reliability: 76 },
-    lastCoachedDays: null,
-    rawMetrics: {
-      premiumAttach: '34%', premiumMedian: '23%',
-      itemsCheck: '4.7', itemsMedian: '4.1',
-      modCapture: '64%', modMedian: '52%',
-      repeatRate: '28%', repeatMedian: '21%',
-      compRate: '0.6%', compMedian: '1.1%'
-    }
-  },
-  {
-    name: 'Devon K.', shift: 'Brunch', location: 'Walnut Creek', section: '4-top',
-    shifts: 19, confidence: 76,
-    scores: { revenue: 78, retention: 52, reliability: 71 },
-    prevScores: { revenue: 81, retention: 55, reliability: 72 },
-    lastCoachedDays: 21, lastCoachedTopic: 'Retention follow-up',
-    rawMetrics: {
-      premiumAttach: '29%', premiumMedian: '19%',
-      itemsCheck: '3.8', itemsMedian: '3.2',
-      modCapture: '58%', modMedian: '46%',
-      repeatRate: '19%', repeatMedian: '18%',
-      compRate: '0.9%', compMedian: '1.3%'
-    }
-  },
-  {
-    name: 'Elena V.', shift: 'Dinner', location: 'Oakland', section: 'window',
-    shifts: 18, confidence: 79,
-    scores: { revenue: 58, retention: 88, reliability: 84 },
-    prevScores: { revenue: 60, retention: 85, reliability: 82 },
-    lastCoachedDays: null,
-    rawMetrics: {
-      premiumAttach: '21%', premiumMedian: '23%',
-      itemsCheck: '4.0', itemsMedian: '4.1',
-      modCapture: '50%', modMedian: '52%',
-      repeatRate: '42%', repeatMedian: '21%',
-      compRate: '0.3%', compMedian: '1.1%'
-    }
-  },
-  {
-    name: 'Tom F.', shift: 'Brunch', location: 'Berkeley', section: '4-top',
-    shifts: 17, confidence: 73,
-    scores: { revenue: 49, retention: 81, reliability: 78 },
-    prevScores: { revenue: 52, retention: 79, reliability: 76 },
-    lastCoachedDays: 28, lastCoachedTopic: 'Premium attach drills',
-    rawMetrics: {
-      premiumAttach: '15%', premiumMedian: '19%',
-      itemsCheck: '3.0', itemsMedian: '3.2',
-      modCapture: '43%', modMedian: '46%',
-      repeatRate: '36%', repeatMedian: '18%',
-      compRate: '0.5%', compMedian: '1.3%'
-    }
-  },
-  {
-    name: 'Marcus L.', shift: 'Dinner', location: 'Oakland', section: '4-top',
-    shifts: 16, confidence: 74,
-    scores: { revenue: 22, retention: 48, reliability: 56 },
-    prevScores: { revenue: 26, retention: 52, reliability: 58 },
-    lastCoachedDays: 9, lastCoachedTopic: 'Premium attach focus',
-    rawMetrics: {
-      premiumAttach: '12%', premiumMedian: '23%',
-      itemsCheck: '3.4', itemsMedian: '4.1',
-      modCapture: '41%', modMedian: '52%',
-      repeatRate: '17%', repeatMedian: '21%',
-      compRate: '1.2%', compMedian: '1.1%'
-    },
-    estLift: '$148/wk'
-  },
-  {
-    name: 'Jordan T.', shift: 'Dinner', location: 'Oakland', section: 'bar-rail',
-    shifts: 14, confidence: 68,
-    scores: { revenue: 28, retention: 41, reliability: 62 },
-    prevScores: { revenue: 24, retention: 38, reliability: 60 },
-    lastCoachedDays: 32, lastCoachedTopic: 'Items/check + repeat-guest',
-    rawMetrics: {
-      premiumAttach: '14%', premiumMedian: '23%',
-      itemsCheck: '3.6', itemsMedian: '4.1',
-      modCapture: '47%', modMedian: '52%',
-      repeatRate: '14%', repeatMedian: '21%',
-      compRate: '0.8%', compMedian: '1.1%'
-    },
-    estLift: '$94/wk'
-  },
-  {
-    name: 'Alex M.', shift: 'Lunch', location: 'Berkeley', section: '4-top',
-    shifts: 13, confidence: 62,
-    scores: { revenue: 18, retention: 24, reliability: 35 },
-    prevScores: { revenue: 16, retention: 22, reliability: 33 },
-    lastCoachedDays: null,
-    rawMetrics: {
-      premiumAttach: '9%', premiumMedian: '16%',
-      itemsCheck: '2.9', itemsMedian: '3.4',
-      modCapture: '38%', modMedian: '44%',
-      repeatRate: '11%', repeatMedian: '15%',
-      compRate: '1.4%', compMedian: '1.2%'
-    },
-    estLift: '$67/wk'
-  }
-];
-
-// Classify a server into a pattern based on their axis scores.
-// Rules (per-axis: top = score>=70, bottom = score<=35, otherwise mid):
-//   - top on all 3 (or top on 2 if 3rd locked) → triple-threat
-//   - top on revenue only, others mid           → revenue-specialist
-//   - top on retention/reliability, revenue mid → hospitality-specialist
-//   - bottom on 2+ axes                         → structural
-//   - bottom on exactly 1 axis                  → coaching
-//   - otherwise (all mid)                       → null (not surfaced)
-
-// ── from source lines 24170-24178 (LE_CO_PATTERN_META) ──
-const LE_CO_PATTERN_META = {
-  triple:       { label: 'Triple-threat',        cls: 'pattern-triple',       short: 'TRIPLE-THREAT' },
-  revenue:      { label: 'Revenue specialist',   cls: 'pattern-revenue',      short: 'REVENUE SPEC' },
-  hospitality:  { label: 'Hospitality spec.',    cls: 'pattern-hospitality',  short: 'HOSPITALITY' },
-  coaching:     { label: 'Coaching opportunity', cls: 'pattern-coaching',     short: 'COACHING OPP' },
-  structural:   { label: 'Structural concern',   cls: 'pattern-structural',   short: 'STRUCTURAL' }
-};
-
-// Compute the quartile class for a bar fill given a score.
-
-// ── from source lines 24397-24404 (TT_SUBPAGE_TITLES) ──
 const TT_SUBPAGE_TITLES = {
   overview:   'Table Turns · Watch',
   playbooks:  'Table Turns · Decide',
@@ -372,3 +203,83 @@ const TT_WATCH_DAYS = {
 
 if (typeof window !== "undefined") window.TT_WATCH_SCENARIOS = TT_WATCH_SCENARIOS;
 if (typeof window !== "undefined") window.TT_WATCH_DAYS = TT_WATCH_DAYS;
+
+
+/* ════════════════════════════════════════════════════════════════════
+   (benchmarks) Internal location-by-location comparison fixtures.
+   Powers screens/benchmarks.html via the controllers in shared/controllers.js.
+   `all` on each metric is the FIXED all-locations benchmark (portfolio figure)
+   — the "all locations number" each location is read against; it does NOT
+   recompute from the current selection. Comparison is internal only (your own
+   locations), never outside competition.
+
+   Per metric: dir = which direction is good (higher|lower|neutral);
+   chart = reusable chart type ('bar' = ranked bars, 'dot' = benchmark-anchored
+   lollipop, used for time/duration metrics); pre/dp/suf = number formatting.
+   Locked metrics are gated on a data source not yet connected at every
+   location — they appear in the picker disabled, with lockReason. (The shipped
+   product derives `locked` from real per-location source connections; here it's
+   a static demo flag. Demo values are kept for locked metrics so flipping the
+   flag renders a working chart.)
+
+   CANONICAL: rplh ($38.10 / $36.20 / $32.40, group $34.20) and labor_pct
+   (28.4 / 30.1 / 33.6, group 31.4%) match docs/canonical-numbers.md. Other
+   metric values are page-local demo fixtures.
+   ════════════════════════════════════════════════════════════════════ */
+const BENCHMARK_LOCATIONS = [
+  { id:'oakland',  name:'Oakland' },
+  { id:'berkeley', name:'Berkeley' },
+  { id:'walnut',   name:'Walnut Creek' },
+];
+
+const BENCHMARK_METRICS = [
+  // ── Labor ──
+  { id:'rplh', label:'Revenue per labor hour', group:'Labor', dir:'higher', chart:'bar',
+    pre:'$', dp:2, suf:'',
+    values:{ oakland:32.40, berkeley:38.10, walnut:36.20, all:34.20 } },
+  { id:'labor_pct', label:'Labor cost %', group:'Labor', dir:'lower', chart:'bar',
+    pre:'', dp:1, suf:'%',
+    values:{ oakland:33.6, berkeley:28.4, walnut:30.1, all:31.4 } },
+  { id:'ot_pct', label:'Overtime %', group:'Labor', dir:'lower', chart:'bar',
+    pre:'', dp:1, suf:'%',
+    values:{ oakland:5.8, berkeley:2.1, walnut:3.4, all:3.9 } },
+  { id:'turnover', label:'Turnover rate', group:'Labor', dir:'lower', chart:'bar',
+    pre:'', dp:0, suf:'%',
+    values:{ oakland:81, berkeley:48, walnut:62, all:64 } },
+
+  // ── Cost (gated on food-cost connection) ──
+  { id:'food_pct', label:'Food cost %', group:'Cost', dir:'lower', chart:'bar',
+    pre:'', dp:1, suf:'%', locked:true, lockReason:'Connect food cost at every location',
+    values:{ oakland:33.8, berkeley:29.5, walnut:31.2, all:31.6 } },
+  { id:'prime_pct', label:'Prime cost %', group:'Cost', dir:'lower', chart:'bar',
+    pre:'', dp:1, suf:'%', locked:true, lockReason:'Connect food cost at every location',
+    values:{ oakland:67.4, berkeley:57.9, walnut:61.3, all:63.0 } },
+
+  // ── Guest spend ──
+  { id:'avg_check', label:'Average check', group:'Guest spend', dir:'higher', chart:'bar',
+    pre:'$', dp:2, suf:'',
+    values:{ oakland:36.80, berkeley:41.20, walnut:38.50, all:38.80 } },
+  { id:'spend_cover', label:'Spend per cover', group:'Guest spend', dir:'higher', chart:'bar',
+    pre:'$', dp:2, suf:'',
+    values:{ oakland:27.60, berkeley:32.40, walnut:29.10, all:29.70 } },
+  { id:'void_pct', label:'Void / comp rate', group:'Guest spend', dir:'lower', chart:'bar',
+    pre:'', dp:1, suf:'%',
+    values:{ oakland:3.1, berkeley:1.2, walnut:1.9, all:2.1 } },
+
+  // ── Speed & throughput ──
+  { id:'dining_dur', label:'Dining duration', group:'Speed & throughput', dir:'neutral', chart:'dot',
+    pre:'', dp:0, suf:' min',
+    values:{ oakland:82, berkeley:68, walnut:74, all:75 } },
+  { id:'ticket_time', label:'Ticket time', group:'Speed & throughput', dir:'lower', chart:'dot',
+    pre:'', dp:1, suf:' min',
+    values:{ oakland:13.6, berkeley:9.8, walnut:11.4, all:11.6 } },
+  { id:'ticket_kds', label:'Ticket time (KDS)', group:'Speed & throughput', dir:'lower', chart:'dot',
+    pre:'', dp:1, suf:' min', locked:true, lockReason:'Connect a KDS at every location',
+    values:{ oakland:12.9, berkeley:9.2, walnut:10.8, all:11.0 } },
+  { id:'table_turns', label:'Table turns', group:'Speed & throughput', dir:'higher', chart:'bar',
+    pre:'', dp:1, suf:'×', locked:true, lockReason:'Configure seating capacity',
+    values:{ oakland:2.4, berkeley:3.2, walnut:2.8, all:2.8 } },
+];
+
+if (typeof window !== "undefined") window.BENCHMARK_LOCATIONS = BENCHMARK_LOCATIONS;
+if (typeof window !== "undefined") window.BENCHMARK_METRICS = BENCHMARK_METRICS;

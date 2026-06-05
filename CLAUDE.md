@@ -41,8 +41,7 @@ is fetched at runtime:
 
 - `shared/loader.js` — fetches `components/*.html` and `screens/*.html` into their
   containers, then injects scripts in order: **data → core → controllers →
-  server-coaching → tooltips**. Load order matters (`server-coaching.js` wraps
-  `showLaborSubpage` from `controllers.js`). It also patches `DOMContentLoaded`:
+  tooltips**. It also patches `DOMContentLoaded`:
   handlers are queued and re-fired after fragments land, so initializers see a
   populated DOM (mirroring the original single-file behavior). Finally calls
   `showScreen('home')`.
@@ -50,12 +49,12 @@ is fetched at runtime:
   canonical registries (`OPPORTUNITIES`, `ACTIONS`, `VERIFICATIONS`,
   `OUTPUT_TYPES`, `STATUS_TO_OUTPUT_TYPE`, `SKC_STATE.data_quality.sources`),
   and `getOutputLabel` / `getPortfolioTruth`.
-- `shared/data.js` — top-level fixtures (`MENU_DATA`, `LE_CO_*`, ...).
+- `shared/data.js` — top-level fixtures (`MENU_DATA`, `LABOR_SUBPAGE_TITLES`, ...).
 - `shared/controllers.js` — per-feature subpage controllers + nav handlers.
-- `shared/server-coaching.js`, `shared/tooltips.js` — feature-specific.
+- `shared/tooltips.js` — feature-specific.
 - `shared/styles.css` — all CSS (concatenated from the original 5 `<style>` blocks).
 - `components/*.html` — sidebar, topbar, ask-panel, drawers (all overlays/modals).
-- `screens/*.html` — one file per screen, 14 total. `screen-config` is genuinely
+- `screens/*.html` — one file per screen, 15 total. `screen-config` is genuinely
   nested inside `screen-settings`, so `settings.html` carries both. Note the two
   "home" ids: `home-dashboard.html` holds **`screen-dashboard`** (the **Home**
   landing surface — a 6-metric KPI dashboard, and the boot screen via
@@ -63,6 +62,12 @@ is fetched at runtime:
   `screen-home` (the **Today** operate screen). The six Home cards deep-link to
   ROI Proof, Profit Recovery, Labor Efficiency, Table Turns, and Menu Item
   Economics; styles are the `.dash-*` block at the end of `styles.css`.
+  `benchmarks.html` (`screen-benchmarks`) is a **standalone** page (a sidebar
+  item under Table Turns, not a Labor subpage): internal location-by-location
+  comparison where you pick a metric + locations and a dynamic chart + analysis
+  re-render. Data: `BENCHMARK_METRICS` / `BENCHMARK_LOCATIONS` in `data.js`;
+  render in `controllers.js` (`initBenchmarks`, fired from `showScreen`); styles
+  are the `.bm-*` block at the end of `styles.css`.
 
 A typical edit touches one screen file (≤1,400 lines) plus maybe one shared file.
 
@@ -91,8 +96,8 @@ change one, grep the repo and update every occurrence. Source of truth is
 
 Seven sources (Toast, 7shifts, KDS, Recipe cost, Reviews, Accounting, Inventory)
 determine whether a metric is measured vs. modeled, what approval an action needs,
-and ROI eligibility. Registry: `SKC_STATE.data_quality.sources`. Details incl. the
-Server Coaching axis-state model: [docs/data-sources.md](docs/data-sources.md).
+and ROI eligibility. Registry: `SKC_STATE.data_quality.sources`. Details:
+[docs/data-sources.md](docs/data-sources.md).
 
 ## Voice & user-facing copy
 
@@ -115,38 +120,8 @@ Favor measured, sophisticated language over terse or casual phrasing.
 ## Conventions
 
 - `main` is canonical and always demo-ready. `feature/<name>` for experiments.
-- The engineer pulls `main` or a weekly tag (`vNN`); weekly handoff write-ups in
-  `docs/handoff-notes/vNN.md` are the contract for what changed.
 - Don't invent UX, copy, or numbers not in the spec. Raise divergence as a GitHub
   issue rather than implementing it silently.
-
-## Release documentation (do this on every major push)
-
-Whenever a **major push lands on `main`** — a merged feature PR, or the moment a
-weekly `vNN` tag is cut — update the human-readable release record in the same
-turn. Don't wait to be asked; treat it as part of the push. Steps:
-
-1. **Find the delta.** `git describe --tags --abbrev=0` for the last tag, then
-   `git log <lastTag>..HEAD --oneline` and `git diff <lastTag>..HEAD --stat` to
-   see what actually changed. Read the substantive diffs, not just commit
-   subjects.
-2. **Prepend a `## vNN — YYYY-MM-DD` entry to [CHANGELOG.md](CHANGELOG.md)**, above
-   the previous version, in the existing terse bullet style. Group by screen /
-   area; name the files and key functions touched.
-3. **Add `docs/handoff-notes/vNN.md`** in the established house style (see
-   [v31.md](docs/handoff-notes/v31.md) / [v32.md](docs/handoff-notes/v32.md)):
-   header (Tagged / Predecessor / Audience), "What this version is", "What
-   changed", implementation notes, "Known caveats", "What's planned next", and
-   "Questions". This file is the contract for what the engineer should re-implement.
-4. **Guard the doctrine.** If any canonical dollar value changed, grep the repo
-   and confirm every occurrence agrees (see
-   [docs/canonical-numbers.md](docs/canonical-numbers.md)); call out any
-   `OUTPUT_TYPES` / state-model changes explicitly. Flag divergence rather than
-   silently reconciling it.
-
-Determine `NN` from the latest tag/changelog entry plus one. Committing, pushing,
-and tagging stay manual unless the user asks — this instruction covers writing the
-docs, not publishing them.
 
 ## Git Workflow
 

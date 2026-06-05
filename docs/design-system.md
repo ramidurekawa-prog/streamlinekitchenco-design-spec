@@ -243,7 +243,7 @@ Strip is always **exactly 5 cells**. If you have 4 metrics, add a guardrail stat
 
 | Old class | Becomes |
 |---|---|
-| `td-hero`, `pr-hero`, `ac-hero`, `rp-pilot-card`, `le-sf-hero`, `le-bm-hero`, `le-co-hero`, `tt-ov-hero`, `os-hero-h1` | `hero-card` with appropriate modifier |
+| `td-hero`, `pr-hero`, `ac-hero`, `rp-pilot-card`, `le-sf-hero`, `le-bm-hero`, `tt-ov-hero`, `os-hero-h1` | `hero-card` with appropriate modifier |
 
 ---
 

@@ -23,7 +23,7 @@ For each page (and each subpage):
 | Operate | Actions | Overview · Pending Decisions · Active Recovery · Ready to Verify · Blocked · History · Evidence |
 | Diagnose | Profit Recovery | — |
 | Diagnose | Menu Optimization | Overview · Matrix · Mix Shift · Item Economics · Actions · Simulations · Evidence |
-| Diagnose | Labor Efficiency | Overview · Heatmap · Staffing Plan · Benchmarks · Server Coaching · Evidence |
+| Diagnose | Labor Efficiency | Overview · Heatmap · Staffing Plan · Benchmarks · Evidence |
 | Diagnose | Table Turns | Watch · Decide · Evidence *(see Appendix A for full v32 redesign spec)* |
 | Diagnose | Kitchen Speed | — *(no sidebar entry; reached via Profit Recovery crosslinks)* |
 | Prove | ROI Proof | — |
@@ -276,11 +276,11 @@ Menu Optimization analyzes the menu's profit structure — which items are Stars
 
 ## Labor Efficiency
 
-**Group:** Diagnose · **File:** `screens/labor-efficiency.html` · **DOM id:** `screen-labor-efficiency` · **6 subpages**
+**Group:** Diagnose · **File:** `screens/labor-efficiency.html` · **DOM id:** `screen-labor-efficiency` · **5 subpages**
 
 ### Parent overview
 
-Labor Efficiency surfaces shifts where labor cost is outpacing sales. Six subpages: Overview (glance), Heatmap (hourly grid), Staffing Plan (recommended cuts), Benchmarks (peer comparison), Server Coaching (3-axis radar per server), Evidence (rules). Default: Overview.
+Labor Efficiency surfaces shifts where labor cost is outpacing sales. Five subpages: Overview (glance), Heatmap (hourly grid), Staffing Plan (recommended cuts), Benchmarks (peer comparison), Evidence (rules). Default: Overview.
 
 ### Labor · Overview
 
@@ -334,30 +334,17 @@ Labor Efficiency surfaces shifts where labor cost is outpacing sales. Six subpag
 | **How it works** | Compares against top-quarter East Bay peers (42 locations, last 90 days, refreshed quarterly). Closing-the-gap math is illustrative only — not a Staffing Plan substitute. |
 | **Buttons & flow** | **See in Heatmap** / **Open Staffing Plan** / **Full methodology in Evidence**. |
 
-### Labor · Server Coaching
-
-| | |
-|---|---|
-| **Overview** | Three-axis (Revenue / Retention / Reliability) scoring per server. Identifies coaching opportunities and standout performers. Tip% deliberately excluded. |
-| **Why this page exists** | Server-level coaching, separate from staffing decisions. Built to support coaching conversations — not scheduling or discipline (those are forbidden per Terms of Service). |
-| **Ideal user(s)** | Primary: GM. Secondary: Training coach, FOH lead. |
-| **When they use it** | Before weekly server huddles. When pairing new hires with top performers. When investigating a structural concern. |
-| **Where they access it** | Desktop primary. |
-| **What it enables** | (1) See servers ranked into 5 patterns (Triple / Revenue / Hospitality / Coaching / Structural) · (2) Filter by pattern · (3) Open a server's detail · (4) Read the coaching-only guardrail |
-| **How it works** | Scores from Toast POS data. Min 12 shifts in 60 days, min 3 peer servers required. Middle 50% deliberately hidden. Tip% deliberately excluded (correlates with section, not service quality). |
-| **Buttons & flow** | **Pattern filter buttons** (all / triple / revenue / hospitality / coaching / structural). Per-server card → coaching detail. |
-
 ### Labor · Evidence
 
 | | |
 |---|---|
-| **Overview** | The labor rulebook: formulas, source health, confidence thresholds, verification guardrails, server-coaching methodology, use restrictions, LLM restrictions. |
+| **Overview** | The labor rulebook: formulas, source health, confidence thresholds, verification guardrails, use restrictions, LLM restrictions. |
 | **Why this page exists** | When a labor number is contested or a verification fails, Evidence is where the rule lives. |
 | **Ideal user(s)** | Primary: Owner / CFO. Secondary: Engineer, auditor. |
 | **When they use it** | Quarterly review. When verifying a recovery. During audit. |
 | **Where they access it** | Desktop primary. |
 | **What it enables** | Read every labor formula, see source freshness rules, understand confidence math, see what the LLM can and can't do. |
-| **How it works** | TOC + 4 sections (Detection / Verification / Server Coaching / Trust & Safety) with expandable cards. |
+| **How it works** | TOC + 3 sections (Detection / Verification / Trust & Safety) with expandable cards. |
 | **Buttons & flow** | **Expand all / Collapse all**. TOC anchor links. Per-card expand. |
 
 ---

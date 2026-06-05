@@ -82,7 +82,7 @@
         <div class="nav-child" data-sub="evidence"    role="button" tabindex="0" onclick="navMenuChildClick('evidence', this)"    onkeydown="navMenuChildKeydown(event,'evidence')"    aria-label="Menu Evidence">Evidence</div>
       </div>
 
-      <!-- ── (v28b) LABOR EFFICIENCY — expandable parent + 5 children ── -->
+      <!-- ── (v28b) LABOR EFFICIENCY — expandable parent + 4 children ── -->
       <div class="nav-item nav-parent" id="navLaborParent" role="button" tabindex="0"
            aria-expanded="false" aria-controls="navLaborChildren"
            onclick="navLaborParentClick(event)" onkeydown="navLaborParentKeydown(event)">
@@ -95,8 +95,6 @@
         <div class="nav-child" data-sub="overview"  role="button" tabindex="0" onclick="navLaborChildClick('overview', this)"  onkeydown="navLaborChildKeydown(event,'overview')"  aria-label="Labor Overview">Overview</div>
         <div class="nav-child" data-sub="heatmap"   role="button" tabindex="0" onclick="navLaborChildClick('heatmap', this)"   onkeydown="navLaborChildKeydown(event,'heatmap')"   aria-label="Labor Heatmap">Heatmap</div>
         <div class="nav-child" data-sub="staffing"  role="button" tabindex="0" onclick="navLaborChildClick('staffing', this)"  onkeydown="navLaborChildKeydown(event,'staffing')"  aria-label="Staffing Plan">Staffing Plan</div>
-        <div class="nav-child" data-sub="benchmarks" role="button" tabindex="0" onclick="navLaborChildClick('benchmarks', this)" onkeydown="navLaborChildKeydown(event,'benchmarks')" aria-label="Labor Benchmarks">Benchmarks</div>
-        <div class="nav-child" data-sub="coaching" role="button" tabindex="0" onclick="navLaborChildClick('coaching', this)" onkeydown="navLaborChildKeydown(event,'coaching')" aria-label="Server Coaching">Server Coaching</div>
         <div class="nav-child" data-sub="evidence"  role="button" tabindex="0" onclick="navLaborChildClick('evidence', this)"  onkeydown="navLaborChildKeydown(event,'evidence')"  aria-label="Labor Evidence">Evidence</div>
       </div>
 
@@ -113,6 +111,12 @@
         <div class="nav-child" data-sub="overview"  role="button" tabindex="0" onclick="navTtChildClick('overview', this)"   onkeydown="navTtChildKeydown(event,'overview')"   aria-label="Watch">Watch</div>
         <div class="nav-child" data-sub="playbooks" role="button" tabindex="0" onclick="navTtChildClick('playbooks', this)"  onkeydown="navTtChildKeydown(event,'playbooks')"  aria-label="Decide">Decide</div>
         <div class="nav-child" data-sub="evidence"  role="button" tabindex="0" onclick="navTtChildClick('evidence', this)"   onkeydown="navTtChildKeydown(event,'evidence')"   aria-label="Evidence">Evidence</div>
+      </div>
+
+      <!-- ── BENCHMARKS — standalone page (was a Labor Efficiency subpage) ── -->
+      <div class="nav-item" onclick="showScreen('benchmarks',this,'Benchmarks')">
+        <svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Benchmarks
       </div>
 
     </div>

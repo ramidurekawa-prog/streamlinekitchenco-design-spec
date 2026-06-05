@@ -234,16 +234,6 @@ function navLaborChildKeydown(event, sub) {
   }
 }
 
-// ═══════════════════════════════════════════════════════════
-// (v28e) SERVER COACHING — 3-axis data model + render
-// Axes: revenue / retention / reliability
-// Each axis has a state: 'full' | 'partial' | 'locked'
-// State derived from operator's Toast data setup (demo: simulated)
-// ═══════════════════════════════════════════════════════════
-
-// Axis-level data availability (operator-side Toast setup).
-// In production this is derived from data quality checks. Demo is static.
-
 // ── from source lines 24405-24424 (showTtSubpage) ──
 function showTtSubpage(sub) {
   if (!TT_SUBPAGE_TITLES[sub]) sub = 'overview';
@@ -1306,4 +1296,331 @@ function prCheckQueueEmpty() {
     if (n === 0) empty.innerHTML =
       'All clear — you’ve decided on every finding. Committed work is now in <b>Actions</b>.';
   }
+}
+
+
+// ═══════════════════════════════════════════════════════════
+// (benchmarks) Standalone Benchmarks page — internal location-by-location
+// comparison. Metric dropdown + location pills drive a dynamic chart and a
+// written analysis. Two reusable chart types: 'bar' (ranked horizontal bars)
+// and 'dot' (benchmark-anchored lollipop, for time/duration metrics). Data:
+// BENCHMARK_METRICS / BENCHMARK_LOCATIONS in shared/data.js. Entry point:
+// initBenchmarks(), fired from showScreen('benchmarks').
+// ═══════════════════════════════════════════════════════════
+
+var benchmarkState = { metric: 'rplh', locations: ['oakland', 'berkeley', 'walnut'] };
+var _bmMenuBound = false;
+
+function benchmarkMetric(id){
+  for (var i = 0; i < BENCHMARK_METRICS.length; i++) if (BENCHMARK_METRICS[i].id === id) return BENCHMARK_METRICS[i];
+  return null;
+}
+function _bmLocName(id){
+  for (var i = 0; i < BENCHMARK_LOCATIONS.length; i++) if (BENCHMARK_LOCATIONS[i].id === id) return BENCHMARK_LOCATIONS[i].name;
+  return id;
+}
+
+// Value formatting — pre/dp/suf come off the metric.
+function fmtBenchmark(m, v){
+  if (v == null || isNaN(v)) return '—';
+  return (m.pre || '') + Number(v).toFixed(m.dp) + (m.suf || '');
+}
+// Absolute-difference formatting: percentages read as "pts", everything else
+// keeps its own unit.
+function _bmFmtDelta(m, d){
+  d = Math.abs(d);
+  if (m.suf === '%') return d.toFixed(1) + ' pts';
+  return (m.pre || '') + d.toFixed(m.dp) + (m.suf || '');
+}
+// Performance vs the all-locations benchmark, honoring direction.
+// 1 = better, -1 = worse, 0 = within ~2% (or neutral metric).
+function _bmPerf(m, v){
+  if (m.dir === 'neutral') return 0;
+  var all = m.values.all;
+  if (all == null) return 0;
+  var diff = v - all;
+  if (m.dir === 'lower') diff = -diff;
+  var rel = diff / Math.abs(all || 1);
+  if (rel > 0.02) return 1;
+  if (rel < -0.02) return -1;
+  return 0;
+}
+function _bmColor(m, v){
+  if (m.dir === 'neutral') return 'var(--blue)';
+  var p = _bmPerf(m, v);
+  return p > 0 ? 'var(--green)' : p < 0 ? 'var(--red)' : 'var(--amber)';
+}
+function _bmRel(m, v){
+  var p = _bmPerf(m, v);
+  return { perf: p, word: p > 0 ? 'better than' : p < 0 ? 'worse than' : 'on par with' };
+}
+
+function initBenchmarks(){
+  if (typeof BENCHMARK_METRICS === 'undefined') return;
+  var cur = benchmarkMetric(benchmarkState.metric);
+  if (!cur || cur.locked) benchmarkState.metric = 'rplh';
+  if (!benchmarkState.locations || !benchmarkState.locations.length){
+    benchmarkState.locations = BENCHMARK_LOCATIONS.map(function(l){ return l.id; });
+  }
+  _bmBuildMetricMenu();
+  _bmBuildLocPills();
+  _bmSyncMetricTrigger();
+  renderBenchmarkChart();
+  renderBenchmarkAnalysis();
+  if (!_bmMenuBound){
+    document.addEventListener('mousedown', function(e){
+      var dd = document.getElementById('bmMetricDropdown');
+      if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+    });
+    _bmMenuBound = true;
+  }
+}
+
+function _bmBuildMetricMenu(){
+  var menu = document.getElementById('bmMetricMenu');
+  if (!menu) return;
+  var groups = [];
+  BENCHMARK_METRICS.forEach(function(m){
+    var g = null;
+    for (var i = 0; i < groups.length; i++) if (groups[i].name === m.group) g = groups[i];
+    if (!g){ g = { name: m.group, items: [] }; groups.push(g); }
+    g.items.push(m);
+  });
+  var html = '';
+  groups.forEach(function(g){
+    html += '<div class="bm-dd-group">' + g.name + '</div>';
+    g.items.forEach(function(m){
+      if (m.locked){
+        html += '<div class="bm-dd-item is-locked" title="' + m.lockReason + '">'
+          + '<span class="bm-dd-item-label">' + m.label + '</span>'
+          + '<span class="bm-dd-lock"><svg class="bm-dd-lock-ico" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="11" width="15" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>' + m.lockReason + '</span>'
+          + '</div>';
+      } else {
+        var active = (m.id === benchmarkState.metric);
+        html += '<div class="bm-dd-item' + (active ? ' is-active' : '') + '" role="menuitem" tabindex="0"'
+          + ' onclick="benchmarkSelectMetric(\'' + m.id + '\')"'
+          + ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();benchmarkSelectMetric(\'' + m.id + '\')}">'
+          + '<span class="bm-dd-item-label">' + m.label + '</span>'
+          + (active ? '<span class="bm-dd-check">✓</span>' : '')
+          + '</div>';
+      }
+    });
+  });
+  menu.innerHTML = html;
+}
+
+function _bmBuildLocPills(){
+  var wrap = document.getElementById('bmLocPills');
+  if (!wrap) return;
+  var total = BENCHMARK_LOCATIONS.length;
+  var allOn = benchmarkState.locations.length === total;
+  var html = '<button type="button" class="bm-pill bm-pill-all' + (allOn ? ' is-active' : '') + '"'
+    + ' aria-pressed="' + (allOn ? 'true' : 'false') + '" onclick="benchmarkToggleAll()">All locations</button>';
+  BENCHMARK_LOCATIONS.forEach(function(l){
+    var on = benchmarkState.locations.indexOf(l.id) !== -1;
+    html += '<button type="button" class="bm-pill' + (on ? ' is-active' : '') + '"'
+      + ' aria-pressed="' + (on ? 'true' : 'false') + '" onclick="benchmarkToggleLocation(\'' + l.id + '\')">' + l.name + '</button>';
+  });
+  wrap.innerHTML = html;
+}
+
+function _bmSyncMetricTrigger(){
+  var m = benchmarkMetric(benchmarkState.metric);
+  if (!m) return;
+  var lbl = document.getElementById('bmMetricLabel');
+  if (lbl) lbl.textContent = m.label;
+  var ct = document.getElementById('bmChartTitle');
+  if (ct) ct.textContent = m.label;
+}
+
+function benchmarkToggleMenu(e){
+  if (e) e.stopPropagation();
+  var dd = document.getElementById('bmMetricDropdown');
+  if (!dd) return;
+  var open = dd.classList.toggle('open');
+  var trig = document.getElementById('bmMetricTrigger');
+  if (trig) trig.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+function benchmarkSelectMetric(id){
+  var m = benchmarkMetric(id);
+  if (!m || m.locked) return;
+  benchmarkState.metric = id;
+  var dd = document.getElementById('bmMetricDropdown');
+  if (dd) dd.classList.remove('open');
+  var trig = document.getElementById('bmMetricTrigger');
+  if (trig) trig.setAttribute('aria-expanded', 'false');
+  _bmBuildMetricMenu();
+  _bmSyncMetricTrigger();
+  renderBenchmarkChart();
+  renderBenchmarkAnalysis();
+}
+
+function benchmarkToggleLocation(id){
+  var idx = benchmarkState.locations.indexOf(id);
+  if (idx === -1){
+    benchmarkState.locations.push(id);
+  } else if (benchmarkState.locations.length > 1){
+    benchmarkState.locations.splice(idx, 1);  // keep at least one selected
+  }
+  // re-sort into canonical location order
+  benchmarkState.locations = BENCHMARK_LOCATIONS.map(function(l){ return l.id; })
+    .filter(function(x){ return benchmarkState.locations.indexOf(x) !== -1; });
+  _bmBuildLocPills();
+  renderBenchmarkChart();
+  renderBenchmarkAnalysis();
+}
+
+function benchmarkToggleAll(){
+  benchmarkState.locations = BENCHMARK_LOCATIONS.map(function(l){ return l.id; });
+  _bmBuildLocPills();
+  renderBenchmarkChart();
+  renderBenchmarkAnalysis();
+}
+
+function renderBenchmarkChart(){
+  var host = document.getElementById('bmChart');
+  if (!host) return;
+  var m = benchmarkMetric(benchmarkState.metric);
+  if (!m){ host.innerHTML = ''; return; }
+  var sub = document.getElementById('bmChartSub');
+  if (sub) sub.textContent = 'By location vs the all-locations benchmark (' + fmtBenchmark(m, m.values.all) + ')';
+  var locs = benchmarkState.locations.slice();
+  if (!locs.length){ host.innerHTML = '<div class="bm-empty">Select at least one location to compare.</div>'; return; }
+  host.innerHTML = (m.chart === 'dot') ? _bmRenderDot(m, locs) : _bmRenderBar(m, locs);
+}
+
+// Chart type 1 — ranked horizontal bars filled from the left axis, with a
+// dashed all-locations benchmark line. Used for magnitude metrics.
+function _bmRenderBar(m, locs){
+  var data = locs.map(function(id){ return { name: _bmLocName(id), v: m.values[id] }; });
+  var all = m.values.all;
+  var vals = data.map(function(d){ return d.v; }).concat([all]);
+  var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+  var span = (hi - lo) || (Math.abs(hi) * 0.1) || 1;
+  var domMin = lo - span * 0.30; if (domMin < 0 && lo >= 0) domMin = 0;
+  var domMax = hi + span * 0.22; if (domMax <= domMin) domMax = domMin + 1;
+  var PX0 = 118, PX1 = 322, PW = PX1 - PX0;
+  var sx = function(v){ return PX0 + (v - domMin) / (domMax - domMin) * PW; };
+  var rowH = 36, top = 16, n = data.length;
+  var axisY = top + n * rowH + 4, H = axisY + 24;
+  var bx = sx(all);
+  var s = '<svg viewBox="0 0 400 ' + H + '" preserveAspectRatio="xMidYMid meet" class="bm-svg" role="img" aria-label="' + m.label + ' by location">';
+  s += '<line x1="' + bx.toFixed(1) + '" y1="' + (top - 6) + '" x2="' + bx.toFixed(1) + '" y2="' + (axisY - 2) + '" stroke="var(--t3)" stroke-dasharray="4,4" stroke-width="1"/>';
+  s += '<text x="' + bx.toFixed(1) + '" y="' + (axisY + 13) + '" font-size="9" fill="var(--t3)" text-anchor="middle" font-family="var(--mono)">All ' + fmtBenchmark(m, all) + '</text>';
+  data.forEach(function(d, i){
+    var y = top + i * rowH, color = _bmColor(m, d.v);
+    var bw = Math.max(2, sx(d.v) - PX0);
+    s += '<text x="' + (PX0 - 8) + '" y="' + (y + 16) + '" font-size="11" fill="var(--t2)" text-anchor="end" font-weight="600">' + d.name + '</text>';
+    s += '<rect x="' + PX0 + '" y="' + (y + 4) + '" width="' + bw.toFixed(1) + '" height="18" rx="3" fill="' + color + '" opacity="0.85"/>';
+    s += '<text x="396" y="' + (y + 17) + '" font-size="11.5" font-weight="700" fill="' + color + '" text-anchor="end" font-family="var(--mono)">' + fmtBenchmark(m, d.v) + '</text>';
+  });
+  s += '</svg>';
+  return s;
+}
+
+// Chart type 2 — benchmark-anchored lollipop: each location is a stem from the
+// all-locations benchmark line out to its value, tipped with a dot. Length and
+// direction read as deviation from the benchmark. Used for time/duration metrics.
+function _bmRenderDot(m, locs){
+  var data = locs.map(function(id){ return { name: _bmLocName(id), v: m.values[id] }; });
+  var all = m.values.all;
+  var vals = data.map(function(d){ return d.v; }).concat([all]);
+  var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+  var span = (hi - lo) || (Math.abs(hi) * 0.1) || 1;
+  var domMin = lo - span * 0.30; if (domMin < 0 && lo >= 0) domMin = 0;
+  var domMax = hi + span * 0.30; if (domMax <= domMin) domMax = domMin + 1;
+  var PX0 = 118, PX1 = 322, PW = PX1 - PX0;
+  var sx = function(v){ return PX0 + (v - domMin) / (domMax - domMin) * PW; };
+  var rowH = 36, top = 16, n = data.length;
+  var axisY = top + n * rowH + 4, H = axisY + 24;
+  var bx = sx(all);
+  var s = '<svg viewBox="0 0 400 ' + H + '" preserveAspectRatio="xMidYMid meet" class="bm-svg" role="img" aria-label="' + m.label + ' by location">';
+  s += '<line x1="' + bx.toFixed(1) + '" y1="' + (top - 6) + '" x2="' + bx.toFixed(1) + '" y2="' + (axisY - 2) + '" stroke="var(--t3)" stroke-dasharray="4,4" stroke-width="1.2"/>';
+  s += '<text x="' + bx.toFixed(1) + '" y="' + (axisY + 13) + '" font-size="9" fill="var(--t3)" text-anchor="middle" font-family="var(--mono)">All ' + fmtBenchmark(m, all) + '</text>';
+  data.forEach(function(d, i){
+    var y = top + i * rowH + 11, dx = sx(d.v), color = _bmColor(m, d.v);
+    s += '<text x="' + (PX0 - 8) + '" y="' + (y + 4) + '" font-size="11" fill="var(--t2)" text-anchor="end" font-weight="600">' + d.name + '</text>';
+    s += '<line x1="' + bx.toFixed(1) + '" y1="' + y + '" x2="' + dx.toFixed(1) + '" y2="' + y + '" stroke="' + color + '" stroke-width="2.5" opacity="0.45"/>';
+    s += '<circle cx="' + dx.toFixed(1) + '" cy="' + y + '" r="6" fill="' + color + '"/>';
+    s += '<text x="396" y="' + (y + 4) + '" font-size="11.5" font-weight="700" fill="' + color + '" text-anchor="end" font-family="var(--mono)">' + fmtBenchmark(m, d.v) + '</text>';
+  });
+  s += '</svg>';
+  return s;
+}
+
+function renderBenchmarkAnalysis(){
+  var host = document.getElementById('bmAnalysis');
+  if (!host) return;
+  var m = benchmarkMetric(benchmarkState.metric);
+  if (!m){ host.innerHTML = ''; return; }
+  var all = m.values.all;
+  var data = benchmarkState.locations.map(function(id){ return { id: id, name: _bmLocName(id), v: m.values[id] }; });
+  if (!data.length){ host.innerHTML = ''; return; }
+
+  var betterThan = function(a, b){ return m.dir === 'lower' ? a < b : a > b; };
+  var ranked = data.slice().sort(function(a, b){ return betterThan(a.v, b.v) ? -1 : 1; });
+  var leader = ranked[0], laggard = ranked[ranked.length - 1];
+  var lo = data.reduce(function(a, b){ return b.v < a.v ? b : a; });
+  var hi = data.reduce(function(a, b){ return b.v > a.v ? b : a; });
+  var spread = hi.v - lo.v;
+  var ml = m.label.toLowerCase();
+
+  function statCell(k, v, tone){
+    return '<div class="bm-stat' + (tone ? ' is-' + tone : '') + '"><div class="bm-stat-k">' + k + '</div><div class="bm-stat-v">' + v + '</div></div>';
+  }
+
+  // Headline
+  var head;
+  if (data.length === 1){
+    var d0 = data[0];
+    if (m.dir === 'neutral'){
+      head = '<strong>' + d0.name + '</strong> runs ' + ml + ' of <strong>' + fmtBenchmark(m, d0.v) + '</strong>, against an all-locations average of ' + fmtBenchmark(m, all) + '.';
+    } else {
+      head = '<strong>' + d0.name + '</strong> posts ' + fmtBenchmark(m, d0.v) + ' on ' + ml + ' — ' + _bmFmtDelta(m, d0.v - all) + ' ' + _bmRel(m, d0.v).word + ' the all-locations benchmark of ' + fmtBenchmark(m, all) + '.';
+    }
+  } else if (m.dir === 'neutral'){
+    head = '<strong>' + lo.name + '</strong> runs the shortest ' + ml + ' at ' + fmtBenchmark(m, lo.v) + ' and <strong>' + hi.name + '</strong> the longest at ' + fmtBenchmark(m, hi.v) + ' — a spread of ' + _bmFmtDelta(m, spread) + ' across the ' + data.length + ' locations in view. The all-locations average is ' + fmtBenchmark(m, all) + '.';
+  } else {
+    head = '<strong>' + leader.name + '</strong> leads on ' + ml + ' at ' + fmtBenchmark(m, leader.v) + ', ' + _bmFmtDelta(m, leader.v - all) + ' ' + _bmRel(m, leader.v).word + ' the all-locations benchmark. <strong>' + laggard.name + '</strong> sits at ' + fmtBenchmark(m, laggard.v) + ' — closing that ' + _bmFmtDelta(m, spread) + ' gap is the opportunity in view.';
+  }
+
+  // Stat row
+  var stats = statCell('All-locations benchmark', fmtBenchmark(m, all), '');
+  if (m.dir === 'neutral'){
+    stats += statCell('Shortest', lo.name + ' · ' + fmtBenchmark(m, lo.v), 'good');
+    stats += statCell('Longest', hi.name + ' · ' + fmtBenchmark(m, hi.v), '');
+  } else {
+    stats += statCell('Leads', leader.name + ' · ' + fmtBenchmark(m, leader.v), 'good');
+    stats += statCell('Trails', laggard.name + ' · ' + fmtBenchmark(m, laggard.v), 'bad');
+  }
+  stats += statCell('Spread', _bmFmtDelta(m, spread), '');
+
+  // Per-location read (canonical order)
+  var rows = data.map(function(d){
+    var tone = '', note;
+    if (m.dir === 'neutral'){
+      var diffN = d.v - all;
+      if (Math.abs(diffN) < 1e-9) note = 'level with the all-locations average';
+      else note = _bmFmtDelta(m, diffN) + (diffN > 0 ? ' longer than' : ' shorter than') + ' the all-locations average';
+    } else {
+      var p = _bmPerf(m, d.v);
+      tone = p > 0 ? 'good' : p < 0 ? 'bad' : 'warn';
+      note = (p === 0 ? 'on par with the benchmark' : _bmFmtDelta(m, d.v - all) + ' ' + _bmRel(m, d.v).word + ' the benchmark');
+    }
+    return '<div class="bm-read-row' + (tone ? ' is-' + tone : '') + '">'
+      + '<span class="bm-read-name">' + d.name + '</span>'
+      + '<span class="bm-read-val">' + fmtBenchmark(m, d.v) + '</span>'
+      + '<span class="bm-read-note">' + note + '</span>'
+      + '</div>';
+  }).join('');
+
+  var doctrine = 'This compares your own locations against each other and against your all-locations average — not against outside restaurants. Figures refresh as new data lands; where a number is modeled rather than directly measured, it stays labeled as such.';
+
+  host.innerHTML =
+      '<div class="bm-analysis-head">Analysis</div>'
+    + '<p class="bm-headline">' + head + '</p>'
+    + '<div class="bm-stat-row">' + stats + '</div>'
+    + '<div class="bm-read">' + rows + '</div>'
+    + '<div class="bm-doctrine">' + doctrine + '</div>';
 }

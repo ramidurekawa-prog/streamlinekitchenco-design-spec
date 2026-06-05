@@ -45,14 +45,13 @@
     'home-dashboard', 'today', 'profit-recovery', 'actions', 'action-detail',
     'recovery-detail', 'labor-efficiency', 'roi-proof', 'reports',
     'operating-system', 'settings', 'menu-optimization',
-    'kitchen-speed', 'table-turns',
+    'kitchen-speed', 'table-turns', 'benchmarks',
   ];
 
   const SCRIPTS = [
     'shared/data.js',
     'shared/core.js',
     'shared/controllers.js',
-    'shared/server-coaching.js',
     'shared/tooltips.js',
   ];
 

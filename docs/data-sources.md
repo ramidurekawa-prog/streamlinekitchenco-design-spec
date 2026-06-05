@@ -58,16 +58,6 @@ Currently stale (18 days) in the demo, which is why every CM number is badged `E
 - **Recipe costs** — already covered above; needs upload + refresh cadence.
 - **Seating capacity** — needed for the Table Turns "lost covers" model. Surfaced as a setup prompt on Table Turns when missing.
 
-## Server Coaching — axis-state model
-
-Server Coaching (a Labor sub-page) has its own data-availability state, since it depends on per-server attribution which not every POS exports cleanly.
-
-| State | Means | UI behavior |
-|---|---|---|
-| `full` | All 3 axes (Sales, Add-on rate, Refire rate) have ≥ 14 days of attributed data per server. | Radar renders with all 3 axes filled. Pattern classified ("Strong All-Around", "Add-on Lift Needed", etc.). |
-| `partial` | 2 of 3 axes available; one is missing per-server attribution. | Radar renders with the missing axis dashed. Pattern classified using available axes only; confidence reduced. |
-| `locked` | Fewer than 2 axes available, or POS doesn't export server-attributed data. | Card is shown but greyed out, with a setup prompt to enable per-server export. |
-
 ## Reading the source caveat chips
 
 Anywhere a metric is shown, you may see a chip like `EST · −7 pts · 7shifts stale 18h`. The format is:

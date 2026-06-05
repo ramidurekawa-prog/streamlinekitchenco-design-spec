@@ -1,0 +1,55 @@
+<div class="screen" id="screen-benchmarks">
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       BENCHMARKS · standalone page (extracted from Labor Efficiency).
+       Internal, location-by-location comparison across the operator's own
+       locations — never outside competition. RPLH is the default metric.
+       Layout: header card → Metric + Location(s) selectors → dynamic chart
+       → analysis. The chart and analysis are rendered by controllers.js
+       (initBenchmarks / renderBenchmarkChart / renderBenchmarkAnalysis),
+       fired from showScreen('benchmarks'). All values: BENCHMARK_METRICS in
+       shared/data.js.
+       ══════════════════════════════════════════════════════════════════════ -->
+  <div class="bm-shell">
+
+    <!-- ── Header card: title + one-liner ── -->
+    <div class="bm-header">
+      <h1 class="bm-title">Benchmarks</h1>
+      <p class="bm-oneliner">See how your locations stack up against one another — where each one leads, and where it has room to close the gap. A read across your own locations, never outside competition.</p>
+    </div>
+
+    <!-- ── Selectors: Metric dropdown + Location pills ── -->
+    <div class="bm-controls">
+      <div class="bm-control">
+        <span class="bm-control-label">Metric</span>
+        <div class="bm-dropdown" id="bmMetricDropdown">
+          <button type="button" class="bm-dd-trigger" id="bmMetricTrigger"
+                  aria-haspopup="true" aria-expanded="false"
+                  onclick="benchmarkToggleMenu(event)">
+            <span id="bmMetricLabel">Revenue per labor hour</span>
+            <svg class="bm-dd-caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="bm-dd-menu" id="bmMetricMenu" role="menu" aria-label="Choose a metric"></div>
+        </div>
+      </div>
+
+      <div class="bm-control bm-control-loc">
+        <span class="bm-control-label">Location(s)</span>
+        <div class="bm-loc-pills" id="bmLocPills" role="group" aria-label="Choose locations"></div>
+      </div>
+    </div>
+
+    <!-- ── Dynamic chart ── -->
+    <div class="bm-chart-card">
+      <div class="bm-chart-head">
+        <div class="bm-chart-title" id="bmChartTitle">Revenue per labor hour</div>
+        <div class="bm-chart-sub" id="bmChartSub">By location vs the all-locations benchmark</div>
+      </div>
+      <div class="bm-chart" id="bmChart"><!-- SVG injected by renderBenchmarkChart() --></div>
+    </div>
+
+    <!-- ── Analysis of selected metric ── -->
+    <div class="bm-analysis" id="bmAnalysis"><!-- injected by renderBenchmarkAnalysis() --></div>
+
+  </div>
+</div>

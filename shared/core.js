@@ -4,7 +4,7 @@
    ════════════════════════════════════════════════════════════════════ */
 
 // ────────────────────────────────────────────────────────────────────
-// Bulk of script 3: everything not routed to data/controllers/server-coaching/tooltips
+// Bulk of script 3: everything not routed to data/controllers/tooltips
 // (preserves source order; chunks routed elsewhere appear as gaps here)
 // ────────────────────────────────────────────────────────────────────
 // ═══════════════════════════════════════════════════════════════
@@ -4382,6 +4382,8 @@ function showScreen(id, navEl, title) {
     if (tp) tp.classList.remove('parent-active');
     document.querySelectorAll('#navTtChildren .nav-child').forEach(c => c.classList.remove('active'));
   }
+  // Benchmarks: standalone page with a dynamic chart — (re)build it on entry.
+  if (id === 'benchmarks') setTimeout(initBenchmarks, 20);
   // Persist this view for refresh-resume. sub:null clears any prior subpage;
   // subpage screens immediately overwrite it via their own saveLastView call.
   saveLastView({ screen: id, sub: null, title: displayTitle });
@@ -4446,7 +4448,6 @@ function _laborUpdateNav(sub) {
   });
 }
 
-let LE_CO_ACTIVE_FILTER = 'all';
 function _ttUpdateNav(sub) {
   const parent = document.getElementById('navTtParent');
   if (parent) {
